@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11612.150 stable
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zucchinimvc", "Zucchinimvc.csproj", "{F22148D0-7E93-1E4E-B39F-6002ED41C25A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F22148D0-7E93-1E4E-B39F-6002ED41C25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F22148D0-7E93-1E4E-B39F-6002ED41C25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F22148D0-7E93-1E4E-B39F-6002ED41C25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F22148D0-7E93-1E4E-B39F-6002ED41C25A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {640EF054-A30D-4338-8D60-14723B5CA1A5}
+	EndGlobalSection
+EndGlobal
