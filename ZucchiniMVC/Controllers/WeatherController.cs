@@ -13,10 +13,7 @@ namespace Zucchinimvc.Controllers
         }
         public async Task<ActionResult> Index(string city)
         {
-            if (string.IsNullOrEmpty(city))
-            {
-                return View();
-            }
+            city = string.IsNullOrWhiteSpace(city) ? "Linköping" : city;
 
             var weather = await _service.GetWeatherByCityAsync(city);
 
@@ -24,6 +21,7 @@ namespace Zucchinimvc.Controllers
             {
                 return View("Error");
             }
+
             return View(weather);
         }
 

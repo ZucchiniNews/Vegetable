@@ -1,0 +1,20 @@
+﻿@model Zucchinimvc.Models.ViewModels.WeatherViewModel
+
+
+<form method="get">
+    <input type="text" name="city" placeholder="Enter city" />
+    <button type="submit">Search</button>
+</form>
+
+@if (Model != null)
+{
+    <h2>@Model.City</h2>
+    <p>@Model.Temp °C</p>
+    <p>@Model.Description</p>
+    <img src="@Model.IconUrl" />
+
+}
+else
+{
+    <p>No data available. Please search for a city.</p>
+}
