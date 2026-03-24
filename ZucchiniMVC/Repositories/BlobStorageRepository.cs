@@ -1,7 +1,7 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
-using Zucchinimvc.Repositories;
+namespace Zucchinimvc.Repositories;
 public class BlobStorageRepository : IBlobStorageRepository
 {
     private readonly BlobContainerClient _containerClient;
@@ -11,8 +11,8 @@ public class BlobStorageRepository : IBlobStorageRepository
     {
         _logger = logger;
         _containerClient = new BlobContainerClient(
-            configuration.GetConnectionString("AzureBlobStorage"),"zucchiniimages"
-         );
+            configuration.GetConnectionString("AzureStorage"),"zucchiniimages"
+            );
     }
 
     public async Task<string> UploadFileAsync(string fileName, string contentType, Stream fileStream)

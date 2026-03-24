@@ -2,9 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Zucchinimvc.Data;
 using Zucchinimvc.Models;
+using Zucchinimvc.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+// logger
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -15,6 +20,29 @@ builder.Services.AddRazorPages();
 builder.Services.AddIdentity<User, Roles>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+// Repositories
+builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
+
+// missing Entity "Subscription"
+/*builder.Services.AddScoped<ISubscriptionRepo, SubscriptionRepo>();*/
+
+// missing Entity "WeatherHistoryEntity"
+/*builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
+    new HistoryRepository<WeatherHistoryEntity>(
+        sp.GetRequiredService<IConfiguration>(),
+        sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
+        "ExternalApiHistory"
+    ));
+*/
+
+// missing Entity CurrencyHistoryEntity
+/*builder.Services.AddSingleton<IHistoryRepository<CurrencyHistoryEntity>>(sp =>
+    new HistoryRepository<CurrencyHistoryEntity>(
+        sp.GetRequiredService<IConfiguration>(),
+        sp.GetRequiredService<ILogger<HistoryRepository<CurrencyHistoryEntity>>>(),
+        "ExternalApiHistory"
+    ));*/
 
 var app = builder.Build();
 
