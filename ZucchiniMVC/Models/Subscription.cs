@@ -4,7 +4,7 @@
     {
 
         public int Id { get; set; }
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
         public User User { get; set; }
         public int SubscriptionTypeId { get; set; }  // Subscription type (e.g., Monthly, Yearly)
         public SubscriptionType SubscriptionType { get; set; }
