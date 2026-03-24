@@ -27,9 +27,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item me-3">
+                            @{
+                                    var city = Context.Request.Query["city"].ToString();
+                              }
+                                @await Component.InvokeAsync("Weather", new { city })
+                            </li>
 
-                    <ul class="navbar-nav">
-                        @await Html.PartialAsync("_LoginPartial")
+                        <li class="nav-item">
+                            @await Html.PartialAsync("_LoginPartial")
+                        </li>
                     </ul>
                 </div>
             </div>
