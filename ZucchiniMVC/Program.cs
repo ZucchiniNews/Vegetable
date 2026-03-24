@@ -23,9 +23,7 @@ builder.Services.AddIdentity<User, Roles>()
 
 // Repositories
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
-
-// missing Entity "Subscription"
-/*builder.Services.AddScoped<ISubscriptionRepo, SubscriptionRepo>();*/
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
 // missing Entity "WeatherHistoryEntity"
 /*builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>

@@ -1,46 +1,101 @@
 using Microsoft.EntityFrameworkCore;
 using Zucchinimvc.Data;
+using Zucchinimvc.Models;
 
 namespace Zucchinimvc.Repositories;
 
-/*public class SubscriptionRepo : ISubscriptionRepo
+public class SubscriptionRepository : ISubscriptionRepository
 {
-    private readonly ApplicationDbContext _context;
+	private readonly ApplicationDbContext _context;
+    private readonly ILogger<SubscriptionRepository> _logger;
 
-    public SubscriptionRepo(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+	public SubscriptionRepository(ApplicationDbContext context, ILogger<SubscriptionRepository> logger)
+	{
+		_context = context;
+		_logger = logger;
+	}
 
-    public async Task<IEnumerable<Subscription>> GetAllSubscriptionsAsync()
-    {
-        return await _context.Subscriptions.ToListAsync();
-    }
-
-    public async Task<Subscription> GetSubscriptionByIdAsync(int id)
-    {
-        return await _context.Subscriptions.FindAsync(id);
-    }
-
-    public async Task AddSubscriptionAsync(Subscription subscription)
-    {
-        _context.Subscriptions.Add(subscription);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateSubscriptionAsync(Subscription subscription)
-    {
-        _context.Subscriptions.Update(subscription);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteSubscriptionAsync(int id)
-    {
-        var subscription = await _context.Subscriptions.FindAsync(id);
-        if (subscription != null)
+	public async Task<Subscription?> GetByUserIdAsync(string userId)
+	{
+        try
         {
-            _context.Subscriptions.Remove(subscription);
-            await _context.SaveChangesAsync();
+    		return await _context.Subscriptions
+                .Include(s => s.SubscriptionType)
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            throw;
         }
     }
-}*/
+
+	public async Task<Subscription?> GetByIdAsync(int id)
+	{
+		try
+        {
+            return await _context.Subscriptions
+                .Include(s => s.SubscriptionType)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            throw;
+        }
+	}
+
+	public async Task<IEnumerable<SubscriptionType>> GetAllTypesAsync()
+    {
+        try
+        {
+            return await _context.SubscriptionTypes.ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            throw;
+        }
+    }
+
+	public async Task<SubscriptionType?> GetTypeByIdAsync(int id)
+	{
+		try 
+        {
+            return await _context.SubscriptionTypes.FirstOrDefaultAsync(st => st.Id == id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            throw;
+        }
+	}
+
+	public async Task AddAsync(Subscription subscription)
+	{
+		try 
+        {
+            await _context.Subscriptions.AddAsync(subscription);
+			await _context.SaveChangesAsync();
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex.ToString());
+			throw;
+		}
+	}
+
+	public async Task UpdateAsync(Subscription subscription)
+	{
+		try
+        {
+            _context.Subscriptions.Update(subscription);
+			await _context.SaveChangesAsync();
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex.ToString());
+			throw;
+		}
+	}
+}
