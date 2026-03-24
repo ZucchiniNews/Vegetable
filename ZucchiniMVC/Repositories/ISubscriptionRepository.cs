@@ -1,10 +1,12 @@
+using Zucchinimvc.Models;
 namespace Zucchinimvc.Repositories;
 
-/*public interface ISubscriptionRepo
+public interface ISubscriptionRepository
 {
-    Task<IEnumerable<Subscription>> GetAllSubscriptionsAsync();
-    Task<Subscription> GetSubscriptionByIdAsync(int id);
-    Task AddSubscriptionAsync(Subscription subscription);
-    Task UpdateSubscriptionAsync(Subscription subscription);
-    Task DeleteSubscriptionAsync(int id);
-}*/
+    Task<Subscription?> GetByUserIdAsync(string userId);
+    Task<Subscription?> GetByIdAsync(int Id);
+    Task<IEnumerable<SubscriptionType>> GetAllTypesAsync();
+    Task<SubscriptionType?> GetTypeByIdAsync(int id);
+    Task AddAsync(Subscription subscription);
+    Task UpdateAsync(Subscription subscription);
+}
