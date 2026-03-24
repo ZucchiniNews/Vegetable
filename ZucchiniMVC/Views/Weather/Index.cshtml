@@ -9,9 +9,10 @@
 @if (Model != null)
 {
     <h2>@Model.City</h2>
-    <p>@Model.Temp °C</p>
-    <p>@Model.Description</p>
     <img src="@Model.IconUrl" />
+
+    <p> Current temperature: @Model.Temp °C</p>
+    <p> Description: @Model.Description</p>
 
 }
 else
