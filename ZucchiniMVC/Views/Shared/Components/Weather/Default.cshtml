@@ -1,0 +1,14 @@
+﻿@model Zucchinimvc.Models.ViewModels.WeatherViewModel
+
+    @if (Model != null && !string.IsNullOrEmpty(Model.Icon))
+    {
+        <a asp-controller="Weather"
+               asp-action="Index"
+               asp-route-city="@Model.City"
+               class="d-flex align-items-center text-decoration-none text-dark">
+            <span> @Model.City Now: </span>
+            <img src="@Model.IconUrl" style="width:40px;" />
+            <span class="ms-1">@Model.Temp °C</span>
+
+        </a>
+    }
