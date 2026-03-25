@@ -4,7 +4,7 @@ using Zucchinimvc.Data;
 using Zucchinimvc.Models;
 using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Repositories;
-using Zucchinimvc.Services;
+using Zucchinimvc.Services.API;
 using Zucchinimvc.Services.Subscriptions;
 
 
