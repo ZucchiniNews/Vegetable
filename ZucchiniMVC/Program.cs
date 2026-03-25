@@ -45,6 +45,9 @@ builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         "ExternalApiHistory"
     ));*/
 
+// Services
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
