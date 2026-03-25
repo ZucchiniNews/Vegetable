@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
+using Zucchinimvc.Models;
 
 namespace Zucchinimvc.Services.Emails;
 
-public class EmailSender : IEmailSender
+public class EmailSender : IEmailSender<User>
 {
     private readonly IEmailService _emailService;
     public EmailSender(IEmailService emailService)
@@ -10,8 +12,18 @@ public class EmailSender : IEmailSender
         _emailService = emailService;
     }
 
-    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+    public async Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
     {
-        await _emailService.SendAsync(email, subject, htmlMessage);
+        await _emailService.SendConfirmationEmailAsync(email, confirmationLink);
+    }
+
+    public async Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
+    {
+        await _emailService.SendPasswordResetAsync(email, resetLink);
+    }
+
+    public async Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
+    {
+        await _emailService.SendAsync(email, "Password Reset Code", $"Your reset code is: {resetCode}");
     }
 }

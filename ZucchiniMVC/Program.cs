@@ -4,8 +4,10 @@ using Zucchinimvc.Data;
 using Zucchinimvc.Models;
 using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Repositories;
-using Zucchinimvc.Services.API;
 using Zucchinimvc.Services.Subscriptions;
+using Zucchinimvc.Services.Emails;
+using Zucchinimvc.Services.API;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +21,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddHttpClient<WeatherService>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddIdentity<User, Roles>()
@@ -48,6 +49,9 @@ builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 
 // Services
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
+builder.Services.AddHttpClient<WeatherService>();
 
 var app = builder.Build();
 

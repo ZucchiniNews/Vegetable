@@ -36,6 +36,9 @@ namespace Zucchinimvc.Services.API
             if (weather == null)
                 return null;
 
+            return new WeatherViewModel
+            {
+                City = weather.Name,
             var entity = new WeatherHistoryEntity
             {
                 PartitionKey = city,
