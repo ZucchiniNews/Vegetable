@@ -48,7 +48,7 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
         }
     }
 
-    public async Task<IEnumerable<T>> GetByPartitionKeyAsync(string partitionKey)
+    public async Task<IEnumerable<T>> GetRecentByPartitionKeyAsync(string partitionKey, int take = 50)
     {
         try
         {
@@ -60,7 +60,9 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
                 results.Add(entity);
             }
 
-            return results;
+            return results
+                .OrderBy(x => x.RowKey)
+                .TakeLast(take);
         }
         catch (Exception ex)
         {
