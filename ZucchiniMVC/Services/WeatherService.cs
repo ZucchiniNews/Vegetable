@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Azure.Data.Tables;
+using Newtonsoft.Json;
 using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Models.ViewModels;
 using Zucchinimvc.Models.Weather;
@@ -11,12 +12,16 @@ namespace Zucchinimvc.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
         private readonly IHistoryRepository<WeatherHistoryEntity> _repository;
+        private readonly TableClient _tableClient;
 
         public WeatherService(HttpClient httpClient, IConfiguration config, IHistoryRepository<WeatherHistoryEntity> repository)
         {
             _httpClient = httpClient;
             _apiKey = config["WeatherApi:ApiKey"];
             _repository = repository;
+            _tableClient = new TableClient(
+           config["AzureStorage"],
+           "ExternalApiHistory");
         }
 
         public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
@@ -76,5 +81,18 @@ namespace Zucchinimvc.Services
 
             return JsonConvert.DeserializeObject<WeatherResponse>(response);
         }
+
+        public async Task<List<WeatherHistoryEntity>> GetWeatherAsync()
+        {
+            var results = new List<WeatherHistoryEntity>();
+
+            await foreach (var entity in _tableClient.QueryAsync<WeatherHistoryEntity>())
+            {
+                results.Add(entity);
+            }
+
+            return results.OrderBy(e => e.RecordedAt).ToList();
+        }
+
     }
 }
