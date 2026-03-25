@@ -94,5 +94,14 @@ namespace Zucchinimvc.Services
             return results.OrderBy(e => e.RecordedAt).ToList();
         }
 
+        public async Task<List<WeatherHistoryEntity>> GetHistoryAsync(string city)
+        {
+            var results = await _repository.GetByPartitionKeyAsync(city);
+
+            return results
+                .OrderBy(x => x.RecordedAt)
+                .ToList();
+        }
+
     }
 }

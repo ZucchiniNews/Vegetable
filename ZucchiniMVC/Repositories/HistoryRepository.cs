@@ -47,4 +47,25 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
             throw;
         }
     }
+
+    public async Task<IEnumerable<T>> GetByPartitionKeyAsync(string partitionKey)
+    {
+        try
+        {
+            var results = new List<T>();
+
+            await foreach (var entity in _tableClient.QueryAsync<T>(
+                e => e.PartitionKey == partitionKey))
+            {
+                results.Add(entity);
+            }
+
+            return results;
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex.ToString());
+            throw;
+        }
+    }
 }
