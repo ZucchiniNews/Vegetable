@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Zucchinimvc.Data;
 using Zucchinimvc.Models;
 using Zucchinimvc.Repositories;
+using Zucchinimvc.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +42,9 @@ builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         sp.GetRequiredService<ILogger<HistoryRepository<CurrencyHistoryEntity>>>(),
         "ExternalApiHistory"
     ));*/
+
+// Services
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 
 var app = builder.Build();
 
