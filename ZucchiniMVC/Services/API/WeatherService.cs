@@ -2,7 +2,7 @@
 using Zucchinimvc.Models.ViewModels;
 using Zucchinimvc.Models.Weather;
 
-namespace Zucchinimvc.Services
+namespace Zucchinimvc.Services.API
 {
     public class WeatherService
     {

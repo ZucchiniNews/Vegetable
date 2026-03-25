@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Services;
+using Zucchinimvc.Services.API;
 
 namespace Zucchinimvc.Controllers
 {
