@@ -19,3 +19,38 @@ else
 {
     <p>No data available. Please search for a city.</p>
 }
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="weatherChart" style="max-width: 800px;"></canvas>
+
+<script>
+    const labels = @Html.Raw(Json.Serialize(Model.Labels));
+    const temps = @Html.Raw(Json.Serialize(Model.Temperatures));
+
+    const ctx = document.getElementById('weatherChart');
+
+    new Chart(ctx, {
+    type: 'line',
+    data: {
+    labels: labels,
+    datasets: [{
+    label: 'Temperature (°C)',
+    data: temps,
+    borderWidth: 2,
+    tension: 0.3
+    }]
+    },
+    options: {
+    responsive: true,
+    scales: {
+    y: {
+    min: -10,
+    max: 30
+    }
+    }
+    }
+    });
+</script>

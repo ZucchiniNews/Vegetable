@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Azure.Data.Tables;
+using Newtonsoft.Json;
+using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Models.ViewModels;
 using Zucchinimvc.Models.Weather;
+using Zucchinimvc.Repositories;
 
 namespace Zucchinimvc.Services.API
 {
@@ -8,11 +11,14 @@ namespace Zucchinimvc.Services.API
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
+        private readonly IHistoryRepository<WeatherHistoryEntity> _repository;
+        private readonly TableClient _tableClient;
 
-        public WeatherService(HttpClient httpClient, IConfiguration config)
+        public WeatherService(HttpClient httpClient, IConfiguration config, IHistoryRepository<WeatherHistoryEntity> repository)
         {
             _httpClient = httpClient;
             _apiKey = config["WeatherApi:ApiKey"];
+            _repository = repository;
         }
 
         public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
@@ -33,6 +39,21 @@ namespace Zucchinimvc.Services.API
             return new WeatherViewModel
             {
                 City = weather.Name,
+            var entity = new WeatherHistoryEntity
+            {
+                PartitionKey = city,
+                RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"),
+                Temperature = weather.Main?.Temp ?? 0,
+                Humidity = weather.Main?.Humidity ?? 0,
+                Condition = weather.Weather?.FirstOrDefault()?.Description ?? "",
+                RecordedAt = DateTime.UtcNow
+            };
+
+            await _repository.UpsertDailyAsync(entity);
+
+            return new WeatherViewModel
+            {
+                City = weather.Name, // or use City = city, maybe??
                 Temp = weather.Main?.Temp ?? 0,
                 Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
                 Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
@@ -41,7 +62,6 @@ namespace Zucchinimvc.Services.API
 
         public async Task<GeoLocation> GetCoordinatesAsync(string city)
         {
-
             string encodedCity = Uri.EscapeDataString(city);
 
             string url = $"http://api.openweathermap.org/geo/1.0/direct?q={encodedCity}&limit=1&appid={_apiKey}";
@@ -62,7 +82,26 @@ namespace Zucchinimvc.Services.API
             return JsonConvert.DeserializeObject<WeatherResponse>(response);
         }
 
+        public async Task<List<WeatherHistoryEntity>> GetWeatherAsync()
+        {
+            var results = new List<WeatherHistoryEntity>();
+
+            await foreach (var entity in _tableClient.QueryAsync<WeatherHistoryEntity>())
+            {
+                results.Add(entity);
+            }
+
+            return results.OrderBy(e => e.RecordedAt).ToList();
+        }
+
+        public async Task<List<WeatherHistoryEntity>> GetHistoryAsync(string city)
+        {
+            var data = await _repository.GetRecentByPartitionKeyAsync(city, 10);  // 50?
+
+            return data
+                .OrderBy(x => x.RecordedAt)
+                .ToList();
+        }
 
     }
-
 }

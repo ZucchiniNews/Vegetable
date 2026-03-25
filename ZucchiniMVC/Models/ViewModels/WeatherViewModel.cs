@@ -6,6 +6,14 @@
         public double Temp { get; set; }
         public string Description { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
-        public string IconUrl => $"https://openweathermap.org/img/wn/{Icon}@2x.png"; 
+        public string IconUrl => $"https://openweathermap.org/img/wn/{Icon}@2x.png";
+
+
+        // for the history, chartJS
+
+        public List<string> Labels { get; set; } = new();
+        public List<double> Temperatures { get; set; } = new();
+
+
     }
 }

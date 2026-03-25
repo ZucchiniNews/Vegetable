@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Zucchinimvc.Data;
 using Zucchinimvc.Models;
+using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Repositories;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Emails;
@@ -30,14 +31,13 @@ builder.Services.AddIdentity<User, Roles>()
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
-// missing Entity "WeatherHistoryEntity"
-/*builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
+builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     new HistoryRepository<WeatherHistoryEntity>(
         sp.GetRequiredService<IConfiguration>(),
         sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
         "ExternalApiHistory"
     ));
-*/
+
 
 // missing Entity CurrencyHistoryEntity
 /*builder.Services.AddSingleton<IHistoryRepository<CurrencyHistoryEntity>>(sp =>
