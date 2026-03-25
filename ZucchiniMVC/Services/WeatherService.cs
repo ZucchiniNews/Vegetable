@@ -19,9 +19,6 @@ namespace Zucchinimvc.Services
             _httpClient = httpClient;
             _apiKey = config["WeatherApi:ApiKey"];
             _repository = repository;
-            _tableClient = new TableClient(
-            config.GetConnectionString("AzureStorage"),
-            "ExternalApiHistory");
         }
 
         public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
