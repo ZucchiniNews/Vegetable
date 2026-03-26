@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Services;
+using Zucchinimvc.Services.API;
 
 namespace Zucchinimvc.Controllers
 {
@@ -21,6 +21,18 @@ namespace Zucchinimvc.Controllers
             {
                 return View("Error");
             }
+
+            var history = await _service.GetHistoryAsync(city);
+
+            weather.Labels = history
+                .OrderBy(x => x.RecordedAt)
+                .Select(x => x.RecordedAt.ToString("MM-dd HH:mm"))
+                .ToList();
+
+            weather.Temperatures = history
+                .OrderBy(x => x.RecordedAt)
+                .Select(x => x.Temperature)
+                .ToList();
 
             return View(weather);
         }

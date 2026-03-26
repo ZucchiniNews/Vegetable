@@ -47,4 +47,27 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
             throw;
         }
     }
+
+    public async Task<IEnumerable<T>> GetRecentByPartitionKeyAsync(string partitionKey, int take = 50)
+    {
+        try
+        {
+            var results = new List<T>();
+
+            await foreach (var entity in _tableClient.QueryAsync<T>(
+                e => e.PartitionKey == partitionKey))
+            {
+                results.Add(entity);
+            }
+
+            return results
+                .OrderBy(x => x.RowKey)
+                .TakeLast(take);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex.ToString());
+            throw;
+        }
+    }
 }
