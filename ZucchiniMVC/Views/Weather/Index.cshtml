@@ -1,6 +1,5 @@
 ﻿@model Zucchinimvc.Models.ViewModels.WeatherViewModel
 
-
 <form method="get">
     <input type="text" name="city" placeholder="Enter city" />
     <button type="submit">Search</button>
@@ -8,53 +7,80 @@
 
 @if (Model != null)
 {
-    <h2>@Model.City</h2>
-    <img src="@Model.IconUrl" />
+    <div class="current-weather">
+        <h2>@Model.City</h2>
+        <img src="@Model.IconUrl" />
+        <p>Current temperature: @Model.Temp °C</p>
+        <p>Description: @Model.Description</p>
+    </div>
 
-    <p> Current temperature: @Model.Temp °C</p>
-    <p> Description: @Model.Description</p>
+    <hr />
 
+    @foreach (var cityChart in Model.Cities)
+    {
+        <div class="chart-container" style="margin-bottom: 40px;">
+            <h3>@cityChart.City History</h3>
+            <canvas id="chart-@cityChart.City.Replace(" ", "-")"></canvas>
+        </div>
+    }
 }
-else
-{
-    <p>No data available. Please search for a city.</p>
-}
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 
-<canvas id="weatherChart" style="max-width: 800px;"></canvas>
-
 <script>
-    const labels = @Html.Raw(Json.Serialize(Model.Labels));
-    const temps = @Html.Raw(Json.Serialize(Model.Temperatures));
+    const cityData = @Html.Raw(Json.Serialize(Model.Cities));
 
-    const ctx = document.getElementById('weatherChart');
+    // Global Y-axis limits for better comparison
+    const GLOBAL_MIN_TEMP = -15;
+    const GLOBAL_MAX_TEMP = 35;
+
+    cityData.forEach(city => {
+    const canvasId = `chart-${city.city.replace(" ", "-")}`;
+    const ctx = document.getElementById(canvasId);
+
+    if (!ctx) return;
 
     new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-               label: 'Temperature (°C)',
-               data: temps,
-               borderWidth: 2,
-               tension: 0.3
-        }]
+    type: 'line',
+    data: {
+    labels: city.labels,
+    datasets: [{
+    label: 'Temp (°C)',
+    data: city.temperatures,
+    borderColor: 'rgb(54, 162, 235)',
+    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+    borderWidth: 2,
+    pointRadius: 2,
+    fill: true,
+    tension: 0.3
+    }]
     },
     options: {
-        responsive: true,
-            scales: {
-                x: {
-                    type: 'time'
-                },
-                 y: {
-                    min: -10,
-                    max: 30
-                }
-            }
-        }
+    responsive: true,
+    maintainAspectRatio: true, // Keeps charts from getting too tall
+    plugins: {
+    legend: { display: false } // Hiding legend saves space in small boxes
+    },
+    scales: {
+    x: {
+    type: 'time',
+    time: { unit: 'day' },
+    grid: { display: false }
+    },
+    y: {
+    min: GLOBAL_MIN_TEMP,
+    max: GLOBAL_MAX_TEMP,
+    ticks: {
+    stepSize: 5 // Clean increments of 5 degrees
+    },
+    title: {
+    display: true,
+    text: '°C'
+    }
+    }
+    }
+    }
+    });
     });
 </script>

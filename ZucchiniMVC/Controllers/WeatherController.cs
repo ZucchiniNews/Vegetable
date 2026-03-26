@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Zucchinimvc.Models.ViewModels;
 using Zucchinimvc.Services.API;
 
 namespace Zucchinimvc.Controllers
@@ -14,36 +15,25 @@ namespace Zucchinimvc.Controllers
         public async Task<ActionResult> Index(string city)
         {
             city = string.IsNullOrWhiteSpace(city) ? "Linköping" : city;
-
             var weather = await _service.GetWeatherByCityAsync(city);
 
-            if (weather == null)
+            if (weather == null) return View("Error");
+
+            var chartCities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
+            weather.Cities = new List<CityWeatherChart>();
+
+            foreach (var cityName in chartCities)
             {
-                return View("Error");
+                var history = await _service.GetHistoryAsync(cityName);
+                var orderedHistory = history.OrderBy(x => x.RecordedAt).ToList();
+
+                weather.Cities.Add(new CityWeatherChart
+                {
+                    City = cityName,
+                    Labels = orderedHistory.Select(x => x.RecordedAt).ToList(), 
+                    Temperatures = orderedHistory.Select(x => x.Temperature).ToList()
+                });
             }
-
-            var history = await _service.GetHistoryAsync(city);
-
-            TimeZoneInfo tz;
-            try
-            {
-                tz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Stockholm");
-            }
-            catch
-            {
-                tz = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-            }
-
-            var orderedHistory = history.OrderBy(x => x.RecordedAt).ToList();
-
-            weather.Labels = orderedHistory
-    .Select(x => TimeZoneInfo.ConvertTimeFromUtc(x.RecordedAt, tz)
-        .ToString("yyyy-MM-ddTHH:mm:ss"))
-    .ToList();
-
-            weather.Temperatures = orderedHistory
-                .Select(x => x.Temperature)
-                .ToList();
 
             return View(weather);
         }
