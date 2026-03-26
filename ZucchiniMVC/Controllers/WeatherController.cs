@@ -24,13 +24,24 @@ namespace Zucchinimvc.Controllers
 
             var history = await _service.GetHistoryAsync(city);
 
-            weather.Labels = history
-                .OrderBy(x => x.RecordedAt)
-                .Select(x => x.RecordedAt.ToString("MM-dd HH:mm"))
-                .ToList();
+            TimeZoneInfo tz;
+            try
+            {
+                tz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Stockholm");
+            }
+            catch
+            {
+                tz = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            }
 
-            weather.Temperatures = history
-                .OrderBy(x => x.RecordedAt)
+            var orderedHistory = history.OrderBy(x => x.RecordedAt).ToList();
+
+            weather.Labels = orderedHistory
+    .Select(x => TimeZoneInfo.ConvertTimeFromUtc(x.RecordedAt, tz)
+        .ToString("yyyy-MM-ddTHH:mm:ss"))
+    .ToList();
+
+            weather.Temperatures = orderedHistory
                 .Select(x => x.Temperature)
                 .ToList();
 

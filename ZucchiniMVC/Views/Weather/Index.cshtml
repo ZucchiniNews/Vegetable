@@ -23,6 +23,7 @@ else
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 
 <canvas id="weatherChart" style="max-width: 800px;"></canvas>
 
@@ -33,24 +34,27 @@ else
     const ctx = document.getElementById('weatherChart');
 
     new Chart(ctx, {
-    type: 'line',
-    data: {
-    labels: labels,
-    datasets: [{
-    label: 'Temperature (°C)',
-    data: temps,
-    borderWidth: 2,
-    tension: 0.3
-    }]
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+               label: 'Temperature (°C)',
+               data: temps,
+               borderWidth: 2,
+               tension: 0.3
+        }]
     },
     options: {
-    responsive: true,
-    scales: {
-    y: {
-    min: -10,
-    max: 30
-    }
-    }
-    }
+        responsive: true,
+            scales: {
+                x: {
+                    type: 'time'
+                },
+                 y: {
+                    min: -10,
+                    max: 30
+                }
+            }
+        }
     });
 </script>
