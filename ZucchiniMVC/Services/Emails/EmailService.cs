@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Mail;
-using Zucchinimvc.Services.Emails;
 
 namespace Zucchinimvc.Services.Emails;
 
