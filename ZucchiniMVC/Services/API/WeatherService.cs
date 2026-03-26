@@ -39,21 +39,6 @@ namespace Zucchinimvc.Services.API
             return new WeatherViewModel
             {
                 City = weather.Name,
-            var entity = new WeatherHistoryEntity
-            {
-                PartitionKey = city,
-                RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"),
-                Temperature = weather.Main?.Temp ?? 0,
-                Humidity = weather.Main?.Humidity ?? 0,
-                Condition = weather.Weather?.FirstOrDefault()?.Description ?? "",
-                RecordedAt = DateTime.UtcNow
-            };
-
-            await _repository.UpsertDailyAsync(entity);
-
-            return new WeatherViewModel
-            {
-                City = weather.Name, // or use City = city, maybe??
                 Temp = weather.Main?.Temp ?? 0,
                 Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
                 Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
