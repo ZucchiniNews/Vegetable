@@ -17,7 +17,7 @@ public class Function1
     [Function("Function1")]
     public void Run([TimerTrigger("0 0 0,6,12,18 * * *")] TimerInfo myTimer)
     {
-        _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTime.Now);
+        _logger.LogInformation("Timer trigger function executed at: {executionTime}", DateTime.Now);
         
         if (myTimer.ScheduleStatus is not null)
         {

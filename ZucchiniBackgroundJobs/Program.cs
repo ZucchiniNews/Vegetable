@@ -11,4 +11,6 @@ builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
     .ConfigureFunctionsApplicationInsights();
 
+builder.Services.AddHttpClient<WeatherService>();
+
 builder.Build().Run();
