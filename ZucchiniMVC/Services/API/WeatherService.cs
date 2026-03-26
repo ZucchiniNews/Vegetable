@@ -26,25 +26,38 @@ namespace Zucchinimvc.Services.API
             var location = await GetCoordinatesAsync(city);
 
             if (location == null)
+            {
                 return new WeatherViewModel
                 {
                     City = city
                 };
+            }
 
             var weather = await GetWeatherAsync(location.Lat, location.Lon);
 
             if (weather == null)
                 return null;
 
+            var entity = new WeatherHistoryEntity
+            {
+                PartitionKey = city,
+                RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"),
+                Temperature = weather.Main?.Temp ?? 0,
+                Humidity = weather.Main?.Humidity ?? 0,
+                Condition = weather.Weather?.FirstOrDefault()?.Description ?? "",
+                RecordedAt = DateTime.UtcNow
+            };
+
+            await _repository.UpsertDailyAsync(entity);
+
             return new WeatherViewModel
             {
-                City = weather.Name,
+                City = city,
                 Temp = weather.Main?.Temp ?? 0,
                 Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
                 Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
             };
         }
-
         public async Task<GeoLocation> GetCoordinatesAsync(string city)
         {
             string encodedCity = Uri.EscapeDataString(city);

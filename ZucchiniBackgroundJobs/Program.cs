@@ -1,7 +1,12 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Zucchinimvc.Models.Entities;
+using Zucchinimvc.Repositories;
+using Zucchinimvc.Services.API;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -13,6 +18,10 @@ builder.Services
 
 builder.Services.AddHttpClient<WeatherService>();
 
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>, < WeatherHistoryEntity >>();
-
+builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
+    new HistoryRepository<WeatherHistoryEntity>(
+        sp.GetRequiredService<IConfiguration>(),
+        sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
+        "ExternalApiHistory"
+    ));
 builder.Build().Run();
