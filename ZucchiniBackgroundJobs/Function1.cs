@@ -1,6 +1,7 @@
-using System;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using System;
+using Zucchinimvc.Services.API;
 
 namespace ZucchiniBackgroundJobs;
 
