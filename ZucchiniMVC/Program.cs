@@ -4,8 +4,9 @@ using Zucchinimvc.Data;
 using Zucchinimvc.Models;
 using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Repositories;
-using Zucchinimvc.Services.API;
 using Zucchinimvc.Services.Subscriptions;
+using Zucchinimvc.Services.Emails;
+using Zucchinimvc.Services.API;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,12 +20,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddHttpClient<WeatherService>();
 
 builder.Services.AddRazorPages();
-builder.Services.AddIdentity<User, Roles>()
+builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();
 
 // Repositories
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
@@ -48,6 +49,10 @@ builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 
 // Services
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
+builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
+builder.Services.AddHttpClient<WeatherService>();
 
 var app = builder.Build();
 
@@ -61,6 +66,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
