@@ -11,6 +11,27 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Local()
+    {
+        return View();
+    }
+    public IActionResult Sweden()
+    {
+        return View();
+    }
+    public IActionResult World()
+    {
+        return View();
+    }
+    public IActionResult Sport()
+    {
+        return View();
+    }
+    public IActionResult Economey()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
