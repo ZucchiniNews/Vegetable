@@ -6,7 +6,6 @@
         public List<WeatherInfo>? Weather { get; set; }
 
         public string Name { get; set; } = string.Empty; // City name
-        public SysInfo Sys { get; set; }
     }
 
     public class MainInfo
@@ -24,8 +23,4 @@
         public string Icon { get; set; } = string.Empty;   // <img src="https://openweathermap.org/img/wn/@Model.Weather[0].Icon@2x.png" alt="Weather icon" />
     }
 
-    public class SysInfo
-    {
-        public string Country { get; set; } = string.Empty;
-    }
 }
