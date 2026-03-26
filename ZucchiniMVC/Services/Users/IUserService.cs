@@ -19,7 +19,7 @@ public interface IUserService
     
     // Admin operations
     Task<List<User>> GetAllUsersAsync();
-    Task<List<User>> SearchUserAsync(string searchTerm);
+    Task<List<User>> SearchUsersAsync(string searchTerm);
     Task LockUserAsync(string userId);
     Task UnlockUserAsync(string userId);
 
@@ -27,5 +27,5 @@ public interface IUserService
 
     // Newsletter 
     Task UpdateNewsletterPreferenceAsync(string userId, bool subscribe);
-    Task<List<User>> GetNewsletterSubscribersAsync(string userId);
+    Task<List<User>> GetNewsletterSubscribersAsync();
 }
