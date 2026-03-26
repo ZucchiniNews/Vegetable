@@ -1,8 +1,89 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="categories-section">
+    <button class="category-pill active">All</button>
+    <button class="category-pill">Environment</button>
+    <button class="category-pill">Technology</button>
+    <button class="category-pill">Business</button>
+    <button class="category-pill">Health</button>
+    <button class="category-pill">Science</button>
+</section>
+
+<section class="featured-section">
+    <div class="featured-image">
+        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop" alt="Featured news" />
+        <span class="featured-badge">Featured</span>
+    </div>
+
+    <div class="featured-content">
+        <span class="news-tag">Environment</span>
+        <h1>Global Climate Summit Reaches Historic Agreement</h1>
+        <p>
+            World leaders commit to stronger climate action and new emissions targets,
+            marking one of the most significant environmental agreements in recent years.
+        </p>
+
+        <div class="news-meta">
+            <span>March 25, 2026</span>
+            <span>5 min read</span>
+        </div>
+    </div>
+</section>
+
+<section class="weather-section">
+    <div class="weather-card">
+        <h2>Weather</h2>
+        <p class="mb-2">Current update for your selected city</p>
+
+        <div class="mt-3">
+            @{
+                var city = Context.Request.Query["city"].ToString();
+            }
+            @await Component.InvokeAsync("Weather", new { city })
+        </div>
+    </div>
+</section>
+
+<section class="latest-news-section">
+    <h2>Latest News</h2>
+
+    <div class="news-grid">
+        <article class="news-card">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop" alt="Technology news" />
+            <div class="news-card-body">
+                <span class="news-tag light">Technology</span>
+                <h3>New AI Tools Are Transforming Digital Classrooms</h3>
+                <div class="news-meta">
+                    <span>March 24, 2026</span>
+                    <span>4 min read</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="news-card">
+            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1000&auto=format&fit=crop" alt="Business news" />
+            <div class="news-card-body">
+                <span class="news-tag light">Business</span>
+                <h3>Markets React to New Global Trade Developments</h3>
+                <div class="news-meta">
+                    <span>March 24, 2026</span>
+                    <span>3 min read</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="news-card">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1000&auto=format&fit=crop" alt="Health news" />
+            <div class="news-card-body">
+                <span class="news-tag light">Health</span>
+                <h3>Hospitals Expand Access to Smart Remote Care</h3>
+                <div class="news-meta">
+                    <span>March 23, 2026</span>
+                    <span>6 min read</span>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>

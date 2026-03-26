@@ -4,14 +4,17 @@ using Zucchinimvc.Models;
 
 namespace Zucchinimvc.Services.Emails;
 
-public class EmailSender : IEmailSender<User>
+public class EmailSender : IEmailSender<User>, IEmailSender
 {
     private readonly IEmailService _emailService;
     public EmailSender(IEmailService emailService)
     {
         _emailService = emailService;
     }
-
+    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+    {
+        await _emailService.SendAsync(email, subject, htmlMessage);
+    }
     public async Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
     {
         await _emailService.SendConfirmationEmailAsync(email, confirmationLink);
