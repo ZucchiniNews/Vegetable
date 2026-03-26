@@ -3,57 +3,76 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Zucchinimvc</title>
+    <title>@ViewData["Title"] - ZicchiniNews</title>
     <script type="importmap"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Zucchinimvc.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Zucchinimvc</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+<body class="news-body">
+    <header class="news-header">
+        <nav class="navbar navbar-expand-lg news-navbar">
+            <div class="container news-navbar-container">
+                <a class="navbar-brand news-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="news-brand-icon">📰</span>
+                    <span class="news-brand-text">ZicchiniNews</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav align-items-center">
-                        <li class="nav-item me-3">
-                            @{
-                                    var city = Context.Request.Query["city"].ToString();
-                              }
-                                @await Component.InvokeAsync("Weather", new { city })
-                            </li>
 
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav mx-auto news-nav-links">
                         <li class="nav-item">
-                            @await Html.PartialAsync("_LoginPartial")
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">World</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Politics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Business</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Tech</a>
                         </li>
                     </ul>
+
+                    <div class="d-flex align-items-center gap-3 news-header-right">
+                        <div class="weather-header-box">
+                            @{
+                                var city = Context.Request.Query["city"].ToString();
+                            }
+                            @await Component.InvokeAsync("Weather", new { city })
+                        </div>
+
+                        <div class="login-header-box">
+                            @await Html.PartialAsync("_LoginPartial")
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <main class="news-main">
         <div class="container">
-            &copy; 2026 - Zucchinimvc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="news-footer">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <span>&copy; 2026 - ZicchiniNews</span>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
