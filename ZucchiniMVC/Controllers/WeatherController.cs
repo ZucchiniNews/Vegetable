@@ -30,7 +30,7 @@ namespace Zucchinimvc.Controllers
                 weather.Cities.Add(new CityWeatherChart
                 {
                     City = cityName,
-                    Labels = orderedHistory.Select(x => x.RecordedAt).ToList(), 
+                    Labels = orderedHistory.Select(x => x.RecordedAt.ToString("s")).ToList(),
                     Temperatures = orderedHistory.Select(x => x.Temperature).ToList()
                 });
             }

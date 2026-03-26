@@ -30,7 +30,7 @@ body {
   text-align: start;
 }
 
-/* Weather Dashboard Charts */
+/* Cleaned up version for your site.css */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -39,22 +39,17 @@ body {
 }
 
 .chart-card {
-    background: #f9f9f9;
-    padding: 15px;
+    background: #ffffff;
+    padding: 10px;
     border-radius: 8px;
     border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Added a subtle shadow for depth */
+    height: 250px !important;
+    width: 100%;
+    position: relative;
 }
 
-/* Responsive Breakpoints */
 @media (max-width: 1000px) {
     .charts-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .charts-grid {
-        grid-template-columns: 1fr;
     }
 }

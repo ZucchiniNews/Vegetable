@@ -16,13 +16,15 @@
 
     <hr />
 
-    @foreach (var cityChart in Model.Cities)
-    {
-        <div class="chart-container" style="margin-bottom: 40px;">
-            <h3>@cityChart.City History</h3>
-            <canvas id="chart-@cityChart.City.Replace(" ", "-")"></canvas>
-        </div>
-    }
+    <div class="charts-grid">
+        @foreach (var cityChart in Model.Cities)
+        {
+            <div class="chart-card">
+                <h3>@cityChart.City</h3>
+                <canvas id="chart-@cityChart.City.Replace(" ", "-")"></canvas>
+            </div>
+        }
+    </div>
 }
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -30,15 +32,15 @@
 
 <script>
     const cityData = @Html.Raw(Json.Serialize(Model.Cities));
-
-    // Global Y-axis limits for better comparison
-    const GLOBAL_MIN_TEMP = -15;
-    const GLOBAL_MAX_TEMP = 35;
+    
+    // 1. Find the Global Min and Max across all cities
+    let allTemps = cityData.flatMap(c => c.temperatures);
+    let globalMin = Math.floor(Math.min(...allTemps) - 2); // Buffer of 2 degrees
+    let globalMax = Math.ceil(Math.max(...allTemps) + 2);  // Buffer of 2 degrees
 
     cityData.forEach(city => {
-    const canvasId = `chart-${city.city.replace(" ", "-")}`;
+    const canvasId = `chart-${city.city.replace(/\s+/g, '-')}`;
     const ctx = document.getElementById(canvasId);
-
     if (!ctx) return;
 
     new Chart(ctx, {
@@ -48,37 +50,40 @@
     datasets: [{
     label: 'Temp (°C)',
     data: city.temperatures,
-    borderColor: 'rgb(54, 162, 235)',
-    backgroundColor: 'rgba(54, 162, 235, 0.1)',
-    borderWidth: 2,
-    pointRadius: 2,
+    borderColor: '#3498db',
+    backgroundColor: 'rgba(52, 152, 219, 0.1)',
     fill: true,
+    borderWidth: 2,
+    pointRadius: 0, // Cleaner look
     tension: 0.3
     }]
     },
     options: {
     responsive: true,
-    maintainAspectRatio: true, // Keeps charts from getting too tall
-    plugins: {
-    legend: { display: false } // Hiding legend saves space in small boxes
-    },
+    maintainAspectRatio: false,
     scales: {
     x: {
     type: 'time',
-    time: { unit: 'day' },
-    grid: { display: false }
+    time: {
+    unit: 'hour',
+    displayFormats: { hour: 'HH:mm' }
+    },
+    ticks: {
+    source: 'auto',
+    maxTicksLimit: 5,
+    color: '#666'
+    }
     },
     y: {
-    min: GLOBAL_MIN_TEMP,
-    max: GLOBAL_MAX_TEMP,
-    ticks: {
-    stepSize: 5 // Clean increments of 5 degrees
+    // 2. Use the dynamic boundaries
+    min: globalMin,
+    max: globalMax,
+    ticks: { stepSize: 5 },
+    title: { display: true, text: '°C' }
+    }
     },
-    title: {
-    display: true,
-    text: '°C'
-    }
-    }
+    plugins: {
+    legend: { display: false }
     }
     }
     });
