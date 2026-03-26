@@ -36,7 +36,8 @@ builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
         sp.GetRequiredService<IConfiguration>(),
         sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
         "ExternalApiHistory"
-    ));
+    )); 
+
 
 
 // missing Entity CurrencyHistoryEntity
