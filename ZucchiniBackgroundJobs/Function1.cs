@@ -1,27 +1,37 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using System;
 using Zucchinimvc.Services.API;
 
 namespace ZucchiniBackgroundJobs;
 
-public class Function1
+public class WeatherJob
 {
     private readonly ILogger _logger;
+    private readonly WeatherService _weatherService;
 
-    public Function1(ILoggerFactory loggerFactory)
+    public WeatherJob(ILoggerFactory loggerFactory, WeatherService weatherService)
     {
-        _logger = loggerFactory.CreateLogger<Function1>();
+        _logger = loggerFactory.CreateLogger<WeatherJob>();
+        _weatherService = weatherService;
     }
 
-    [Function("Function1")]
-    public void Run([TimerTrigger("0 0 0,6,12,18 * * *")] TimerInfo myTimer)
+    [Function("WeatherJob")]
+//    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *")] TimerInfo myTimer)
+    public async Task Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
     {
-        _logger.LogInformation("Timer trigger function executed at: {executionTime}", DateTime.Now);
-        
+        _logger.LogInformation("Weather job started at: {time}", DateTime.Now);
+
+        var cities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
+
+        var tasks = cities.Select(city => _weatherService.GetWeatherByCityAsync(city));
+
+        await Task.WhenAll(tasks);
+
+        _logger.LogInformation("Weather job finished");
+
         if (myTimer.ScheduleStatus is not null)
         {
-            _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
+            _logger.LogInformation("Next run: {next}", myTimer.ScheduleStatus.Next);
         }
     }
 }
