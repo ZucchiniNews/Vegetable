@@ -10,10 +10,6 @@ env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './ZucchiniBackgroundJobs'
   DOTNET_VERSION: '10.0.x'
 
-defaults:
-  run:
-    working-directory: ./ZucchiniBackgroundJobs
-
 jobs:
   build-and-deploy:
     runs-on: windows-latest
@@ -29,6 +25,7 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release --output ./output
+        working-directory: ./ZucchiniBackgroundJobs
 
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
