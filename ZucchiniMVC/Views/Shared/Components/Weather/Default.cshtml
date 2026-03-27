@@ -2,7 +2,7 @@
 
     @if (Model != null && !string.IsNullOrEmpty(Model.Icon))
     {
-        <a asp-controller="Weather"
+        <a asp-controller="Analytics"
                asp-action="Index"
                asp-route-city="@Model.City"
                class="d-flex align-items-center text-decoration-none text-dark">
