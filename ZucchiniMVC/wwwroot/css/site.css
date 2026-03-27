@@ -1,29 +1,156 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
+/* ============================= */
+/* ZicchiniNews Global Styling   */
+/* ============================= */
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #f7f7f7;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* ============================= */
+/* NAVBAR                        */
+/* ============================= */
+
+.news-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.news-navbar {
+    padding: 1rem 0;
+}
+
+.news-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: #111 !important;
+    text-decoration: none;
+}
+
+.news-brand-text {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.news-nav-links .nav-link {
+    color: #111 !important;
+    font-weight: 500;
+    margin: 0 8px;
+}
+
+    .news-nav-links .nav-link:hover {
+        color: #666 !important;
+    }
+
+/* ============================= */
+/* CATEGORY PILLS                */
+/* ============================= */
+
+.categories-section {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.category-pill {
+    border: none;
+    background: #eaeaea;
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+    .category-pill.active {
+        background: #000;
+        color: #fff;
+    }
+
+/* ============================= */
+/* FEATURED SECTION              */
+/* ============================= */
+
+.featured-section {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 30px;
+    background: #efefef;
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 35px;
+    align-items: center;
+}
+
+.featured-image {
+    position: relative;
+}
+
+    .featured-image img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+.featured-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #ff4d57;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+.featured-content h1 {
+    font-size: 40px;
+    line-height: 1.2;
+    margin: 16px 0;
+}
+
+.featured-content p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* ============================= */
+/* TAG + META                    */
+/* ============================= */
+
+.news-tag {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+    .news-tag.light {
+        background: #ececec;
+        color: #111;
+    }
+
+.news-meta {
+    display: flex;
+    gap: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* ============================= */
+/* WEATHER SECTION               */
+/* ============================= */
+
+.weather-section {
+    margin-bottom: 40px;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
@@ -51,5 +178,112 @@ body {
 @media (max-width: 1000px) {
     .charts-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+.weather-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+    .weather-card h2 {
+        font-size: 24px;
+    }
+
+.weather-temp {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.weather-details {
+    display: flex;
+    gap: 20px;
+    color: #555;
+}
+
+/* ============================= */
+/* LATEST NEWS GRID              */
+/* ============================= */
+
+.latest-news-section h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.news-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease;
+}
+
+    .news-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .news-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+.news-card-body {
+    padding: 15px;
+}
+
+.news-card h3 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* ============================= */
+/* FOOTER                        */
+/* ============================= */
+
+.news-footer {
+    background: #fff;
+    border-top: 1px solid #e5e5e5;
+    padding: 1rem 0;
+    color: #666;
+}
+
+/* ============================= */
+/* RESPONSIVE                    */
+/* ============================= */
+
+@media (max-width: 992px) {
+    .featured-section {
+        grid-template-columns: 1fr;
+    }
+
+    .news-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .featured-content h1 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-content h1 {
+        font-size: 24px;
+    }
+
+    .featured-content p {
+        font-size: 16px;
     }
 }
