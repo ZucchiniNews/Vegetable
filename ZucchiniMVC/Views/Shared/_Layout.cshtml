@@ -8,10 +8,11 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/weather-dashboard.css" />
     <link rel="stylesheet" href="~/Zucchinimvc.styles.css" asp-append-version="true" />
 </head>
 <body class="news-body">
-    <header class="news-header">
+    <header class="news-header sticky-top">
         <nav class="navbar navbar-expand-lg news-navbar">
             <div class="container news-navbar-container">
                 <a class="navbar-brand news-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -27,19 +28,27 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mx-auto news-nav-links">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">World</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Local" ? "active" : "")"
+                               asp-controller="Home" asp-action="Local">Local</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Politics</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Sweden" ? "active" : "")"
+                               asp-controller="Home" asp-action="Sweden">Sweden</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Business</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "World" ? "active" : "")"
+                               asp-controller="Home" asp-action="World">World</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Tech</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Sport" ? "active" : "")"
+                               asp-controller="Home" asp-action="Sport">Sport</a>
                         </li>
                     </ul>
 

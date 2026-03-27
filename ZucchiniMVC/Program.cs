@@ -7,6 +7,7 @@ using Zucchinimvc.Repositories;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.API;
+using Zucchinimvc.Services.Users;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +37,8 @@ builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
         sp.GetRequiredService<IConfiguration>(),
         sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
         "ExternalApiHistory"
-    ));
+    )); 
+
 
 
 // missing Entity CurrencyHistoryEntity
@@ -49,6 +51,7 @@ builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 
 // Services
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();

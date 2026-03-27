@@ -8,9 +8,9 @@
         public string Icon { get; set; } = string.Empty;
         public string IconUrl => $"https://openweathermap.org/img/wn/{Icon}@2x.png";
 
+        public List<CityWeatherChart> Cities { get; set; } = new();
 
         // for the history, chartJS
-
         public List<string> Labels { get; set; } = new();
         public List<double> Temperatures { get; set; } = new();
 
