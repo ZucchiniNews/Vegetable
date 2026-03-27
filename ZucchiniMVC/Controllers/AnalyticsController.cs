@@ -6,9 +6,9 @@ namespace Zucchinimvc.Controllers
 {
     public class AnalyticsController : Controller
     {
-        private readonly WeatherService _service;
+        private readonly IWeatherService _service;
 
-        public AnalyticsController(WeatherService service)
+        public AnalyticsController(IWeatherService service)
         {
             _service = service;
         }

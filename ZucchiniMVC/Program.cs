@@ -27,6 +27,7 @@ builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfi
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 
 // Repositories
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();

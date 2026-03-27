@@ -7,7 +7,7 @@ using Zucchinimvc.Repositories;
 
 namespace Zucchinimvc.Services.API
 {
-    public class WeatherService
+    public class WeatherService : IWeatherService
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
