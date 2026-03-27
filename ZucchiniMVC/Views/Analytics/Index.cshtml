@@ -1,0 +1,128 @@
+﻿@model Zucchinimvc.Models.ViewModels.WeatherViewModel
+
+<style>
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .chart-card {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        height: 300px; /* Fixed height is important for Chart.js responsive: true */
+    }
+    .current-weather {
+        text-align: center;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 10px;
+    }
+</style>
+
+<form method="get">
+    <input type="text" name="city" placeholder="Enter city" />
+    <button type="submit">Search</button>
+</form>
+
+@if (Model != null && Model.Cities.Any())
+{
+    <div class="current-weather">
+        <h2>@Model.City</h2>
+        <img src="@Model.IconUrl" alt="Weather icon" />
+        <p>Current temperature: <strong>@Model.Temp °C</strong></p>
+        <p>Description: @Model.Description</p>
+    </div>
+
+    <hr />
+
+    <div class="charts-grid">
+        @foreach (var cityChart in Model.Cities)
+        {
+            var canvasId = "chart-" + cityChart.City.Replace(" ", "-");
+            <div class="chart-card">
+                <h3>@cityChart.City</h3>
+                <canvas id="@canvasId"></canvas>
+            </div>
+        }
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rawData = @Html.Raw(Json.Serialize(Model.Cities));
+            
+            // Helper to handle C# property casing
+            const getProp = (obj, prop) => obj[prop.toLowerCase()] || obj[prop];
+
+            if (!rawData || rawData.length === 0) return;
+
+            // Calculate global Min/Max for Y-axis consistency
+            const allTemps = rawData.flatMap(c => getProp(c, 'Temperatures'));
+            const globalMin = Math.floor(Math.min(...allTemps) - 2);
+            const globalMax = Math.ceil(Math.max(...allTemps) + 2);
+
+            rawData.forEach(city => {
+                const cityName = getProp(city, 'City');
+                const canvasId = `chart-${cityName.replace(/\s+/g, '-')}`;
+                const ctx = document.getElementById(canvasId);
+
+                if (!ctx) return;
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: getProp(city, 'Labels'), // These are your ISO strings "2026-03-27T..."
+                        datasets: [{
+                            label: 'Temp (°C)',
+                            data: getProp(city, 'Temperatures'),
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 2
+                        }]
+                    },
+                    options: {
+                         responsive: true,
+                         maintainAspectRatio: false,
+                         scales: { // <--- This was missing!
+                             x: {
+                                 type: 'time',
+                                 time: {
+                                     parser: "yyyy-MM-dd'T'HH:mm:ss", 
+                                     unit: 'hour',
+                                     displayFormats: {
+                                         hour: 'HH:mm'
+                                     }
+                                 },
+                                 ticks: {
+                                     source: 'data',
+                                     autoSkip: true,
+                                     maxTicksLimit: 6
+                                 }
+                             },
+                             y: {
+                                 min: globalMin,
+                                 max: globalMax,
+                                 ticks: { stepSize: 2 },
+                                 title: {
+                                     display: true,
+                                     text: '°C'
+                                 }
+                             }
+                         },
+                             plugins: {
+                                 legend: { display: false }
+                             }
+                         }
+                });
+            });
+        });
+    </script>
+}

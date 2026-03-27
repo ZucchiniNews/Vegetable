@@ -4,9 +4,10 @@ using Zucchinimvc.Data;
 using Zucchinimvc.Models;
 using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Repositories;
-using Zucchinimvc.Services.Subscriptions;
-using Zucchinimvc.Services.Emails;
+using Zucchinimvc.Services;
 using Zucchinimvc.Services.API;
+using Zucchinimvc.Services.Emails;
+using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
 
 
@@ -27,6 +28,8 @@ builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfi
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 // Repositories
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
