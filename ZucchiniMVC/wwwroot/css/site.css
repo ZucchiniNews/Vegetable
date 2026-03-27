@@ -45,7 +45,78 @@ body {
     .news-nav-links .nav-link:hover {
         color: #666 !important;
     }
+    /*Login and register sperated by line in the mobile view*/
+.news-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
 
+.weather-header-box {
+    display: flex;
+    align-items: center;
+}
+
+.login-header-box {
+    display: flex;
+    align-items: center;
+    padding-left: 14px;
+    border-left: 1px solid #d9d9d9;
+}
+
+    .login-header-box ul,
+    .login-header-box .navbar-nav {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .login-header-box a,
+    .login-header-box .nav-link {
+        text-decoration: none;
+        color: #111 !important;
+        font-weight: 500;
+        padding: 0;
+    }
+
+/* Mobile layout */
+@media (max-width: 991.98px) {
+    .news-header-right {
+        width: 100%;
+        margin-top: 1rem;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .weather-header-box {
+        flex: 1;
+    }
+
+    .login-header-box {
+        flex-shrink: 0;
+        padding-left: 12px;
+        margin-left: 12px;
+        border-left: 1px solid #d9d9d9;
+        align-self: flex-start;
+    }
+
+        .login-header-box ul,
+        .login-header-box .navbar-nav {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .login-header-box a,
+        .login-header-box .nav-link {
+            text-align: right;
+            white-space: nowrap;
+        }
+}
 /* ============================= */
 /* CATEGORY PILLS                */
 /* ============================= */
