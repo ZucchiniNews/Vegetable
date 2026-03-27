@@ -4,11 +4,11 @@ using Zucchinimvc.Services.API;
 
 namespace Zucchinimvc.Controllers
 {
-    public class WeatherController : Controller
+    public class AnalyticsController : Controller
     {
         private readonly WeatherService _service;
 
-        public WeatherController(WeatherService service)
+        public AnalyticsController(WeatherService service)
         {
             _service = service;
         }
