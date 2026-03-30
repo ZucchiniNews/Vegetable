@@ -1,4 +1,4 @@
-﻿using Zucchinimvc.Application.Services.Analytical;
+﻿using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Models.ViewModels;
 

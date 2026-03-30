@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Application.Services.Analytical;
+using Zucchinimvc.Application.Services.Analytics;
 
 
 
