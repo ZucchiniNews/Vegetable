@@ -49,6 +49,7 @@ namespace Zucchinimvc.Application.Services.Weather
             {
                 City = city,
                 Temp = weather.Main.Temp,
+                Humidity = weather.Main.Humidity,
                 Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
                 Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
             };
