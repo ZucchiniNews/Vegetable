@@ -1,4 +1,3 @@
-using Infrastrcture.Repositories;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Weather;
+using Zucchinimvc.Infrastrcture.Repositories;
 
 
 var builder = FunctionsApplication.CreateBuilder(args);

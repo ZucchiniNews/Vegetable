@@ -1,10 +1,10 @@
-using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
+using Zucchinimvc.Infrastrcture.Repositories;
 using Zucchinimvc.Models;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;

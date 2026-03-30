@@ -1,4 +1,4 @@
-using Infrastrcture.Repositories;
+using Zucchinimvc.Infrastrcture.Repositories;
 using Zucchinimvc.Models;
 
 namespace Zucchinimvc.Services.Subscriptions;
