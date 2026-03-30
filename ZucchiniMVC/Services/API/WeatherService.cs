@@ -31,41 +31,19 @@ namespace Zucchinimvc.Services.API
             return !string.IsNullOrWhiteSpace(_apiKey);
         }
 
+        // 1. Remove the repository logic from here
         public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
         {
-            if (string.IsNullOrWhiteSpace(city))
-                return null;
-
-            if (!HasValidApiKey())
+            if (string.IsNullOrWhiteSpace(city) || !HasValidApiKey())
                 return null;
 
             var location = await GetCoordinatesAsync(city);
-
-            if (location == null)
-            {
-                return new WeatherViewModel
-                {
-                    City = city
-                };
-            }
+            if (location == null) return new WeatherViewModel { City = city };
 
             var weather = await GetWeatherAsync(location.Lat, location.Lon);
+            if (weather?.Main == null) return null;
 
-            if (weather?.Main == null)
-                return null;
-
-            var entity = new WeatherHistoryEntity
-            {
-                PartitionKey = city,
-                RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"),
-                Temperature = weather.Main.Temp,
-                Humidity = weather.Main.Humidity,
-                Condition = weather.Weather?.FirstOrDefault()?.Description ?? "",
-                RecordedAt = DateTime.UtcNow
-            };
-
-            await _repository.UpsertDailyAsync(entity);
-
+            // We NO LONGER call _repository.UpsertDailyAsync(entity) here
             return new WeatherViewModel
             {
                 City = city,
@@ -73,6 +51,20 @@ namespace Zucchinimvc.Services.API
                 Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
                 Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
             };
+        }
+
+        public async Task SaveWeatherHistoryAsync(WeatherViewModel model)
+        {
+            var entity = new WeatherHistoryEntity
+            {
+                PartitionKey = model.City,
+                RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
+                Temperature = model.Temp,
+                RecordedAt = DateTime.UtcNow,
+                // Add other properties as needed
+            };
+
+            await _repository.UpsertDailyAsync(entity);
         }
 
         public async Task<GeoLocation?> GetCoordinatesAsync(string city)

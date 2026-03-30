@@ -39,13 +39,27 @@ body {
 .news-nav-links .nav-link {
     color: #111 !important;
     font-weight: 500;
-    margin: 0 8px;
+    margin: 0 4px; 
+    padding: 8px 16px !important;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: all 0.25s ease-in-out;
 }
 
     .news-nav-links .nav-link:hover {
-        color: #666 !important;
+        color: #000 !important;
+        background-color: #f0f0f0;
+        border-color: #d1d1d1; 
+        transform: translateY(-1px); 
     }
-    /*Login and register sperated by line in the mobile view*/
+
+    /* Active State: For the current page */
+    .news-nav-links .nav-link.active {
+        background-color: #111 !important;
+        color: #fff !important;
+        border-color: #111;
+    }
+
 .news-header-right {
     display: flex;
     align-items: center;
@@ -142,9 +156,6 @@ body {
         color: #fff;
     }
 
-/* ============================= */
-/* FEATURED SECTION              */
-/* ============================= */
 
 .featured-section {
     display: grid;
@@ -191,10 +202,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* ============================= */
-/* TAG + META                    */
-/* ============================= */
-
 .news-tag {
     display: inline-block;
     background: #000;
@@ -216,24 +223,12 @@ body {
     font-size: 14px;
 }
 
-/* ============================= */
-/* WEATHER SECTION               */
-/* ============================= */
-
 .weather-section {
     margin-bottom: 40px;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
-}
-
-/* Cleaned up version for your site.css */
-.charts-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 30px;
 }
 
 .chart-card {
@@ -244,6 +239,27 @@ body {
     height: 250px !important;
     width: 100%;
     position: relative;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.chart-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    height: 300px; /* Fixed height is important for Chart.js responsive: true */
+}
+
+.current-weather {
+    text-align: center;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
 }
 
 @media (max-width: 1000px) {
@@ -273,10 +289,6 @@ body {
     gap: 20px;
     color: #555;
 }
-
-/* ============================= */
-/* LATEST NEWS GRID              */
-/* ============================= */
 
 .latest-news-section h2 {
     font-size: 30px;
@@ -316,20 +328,12 @@ body {
     margin: 10px 0;
 }
 
-/* ============================= */
-/* FOOTER                        */
-/* ============================= */
-
 .news-footer {
     background: #fff;
     border-top: 1px solid #e5e5e5;
     padding: 1rem 0;
     color: #666;
 }
-
-/* ============================= */
-/* RESPONSIVE                    */
-/* ============================= */
 
 @media (max-width: 992px) {
     .featured-section {
