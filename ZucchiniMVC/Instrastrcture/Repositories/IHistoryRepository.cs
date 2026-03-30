@@ -1,6 +1,6 @@
 using Azure.Data.Tables;
 
-namespace Zucchinimvc.Repositories;
+namespace Instrastrcture.Repositories;
 
 public interface IHistoryRepository<T> where T : class, ITableEntity, new()
 {

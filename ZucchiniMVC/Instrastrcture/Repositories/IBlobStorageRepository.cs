@@ -1,4 +1,4 @@
-namespace Zucchinimvc.Repositories;
+namespace Instrastrcture.Repositories;
 
 public interface IBlobStorageRepository
 {

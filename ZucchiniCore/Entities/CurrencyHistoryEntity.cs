@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Models.Entities
+﻿namespace ZucchiniCore.Entities
 {
     public class CurrencyHistoryEntity
     {

@@ -1,12 +1,12 @@
+using Instrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
 using Zucchinimvc.Models;
-using Zucchinimvc.Models.Entities;
-using Zucchinimvc.Repositories;
-using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Emails;
-using Zucchinimvc.Services.API;
+using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
 
 
@@ -37,7 +37,7 @@ builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
         sp.GetRequiredService<IConfiguration>(),
         sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
         "ExternalApiHistory"
-    )); 
+    ));
 
 
 

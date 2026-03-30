@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Services.API;
 using Zucchinimvc.Models.ViewModels;
+using Zucchinimvc.Application.Services.Weather;
 namespace Zucchinimvc.ViewComponents;
 
 public class WeatherViewComponent : ViewComponent

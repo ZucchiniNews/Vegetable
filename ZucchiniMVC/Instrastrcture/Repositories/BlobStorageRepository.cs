@@ -1,7 +1,9 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
-namespace Zucchinimvc.Repositories;
+
+namespace Instrastrcture.Repositories;
+
 public class BlobStorageRepository : IBlobStorageRepository
 {
     private readonly BlobContainerClient _containerClient;
@@ -11,7 +13,7 @@ public class BlobStorageRepository : IBlobStorageRepository
     {
         _logger = logger;
         _containerClient = new BlobContainerClient(
-            configuration.GetConnectionString("AzureStorage"),"zucchiniimages"
+            configuration.GetConnectionString("AzureStorage"), "zucchiniimages"
             );
     }
 

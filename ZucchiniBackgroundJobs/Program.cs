@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Models.Entities;
 using Zucchinimvc.Repositories;
-using Zucchinimvc.Services.API;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 

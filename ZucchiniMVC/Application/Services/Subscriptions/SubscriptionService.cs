@@ -1,4 +1,4 @@
-using Zucchinimvc.Repositories;
+using Instrastrcture.Repositories;
 using Zucchinimvc.Models;
 
 namespace Zucchinimvc.Services.Subscriptions;
@@ -36,7 +36,7 @@ public class SubscriptionService : ISubscriptionService
         var subscription = await GetActiveSubscriptionByUserIdAsync(userId);
         return subscription != null;
     }
-    
+
     public async Task<IEnumerable<SubscriptionType>> GetAllSubscriptionTypesAsync()
     {
         try
@@ -98,8 +98,8 @@ public class SubscriptionService : ISubscriptionService
             var subscription = await _subscriptionRepository.GetByIdAsync(subscriptionId)
                 ?? throw new ArgumentException($"Subscription {subscriptionId} not found.");
 
-                subscription.PaymentComplete = true;
-                await _subscriptionRepository.UpdateAsync(subscription);
+            subscription.PaymentComplete = true;
+            await _subscriptionRepository.UpdateAsync(subscription);
         }
         catch (Exception ex)
         {
@@ -118,10 +118,10 @@ public class SubscriptionService : ISubscriptionService
              ? subscription.Expires
              : DateTime.UtcNow;
 
-             subscription.Expires = baseDate.AddMonths(1);
-             subscription.PaymentComplete = false; // reset payment status for renewal
+            subscription.Expires = baseDate.AddMonths(1);
+            subscription.PaymentComplete = false; // reset payment status for renewal
 
-             await _subscriptionRepository.UpdateAsync(subscription);
+            await _subscriptionRepository.UpdateAsync(subscription);
         }
         catch (Exception ex)
         {
@@ -136,8 +136,8 @@ public class SubscriptionService : ISubscriptionService
             var subscription = await _subscriptionRepository.GetByIdAsync(subscriptionId)
                 ?? throw new ArgumentException($"Subscription {subscriptionId} not found.");
 
-                subscription.Expires = DateTime.UtcNow; // expire immediately
-                subscription.PaymentComplete = false; // mark as inactive
+            subscription.Expires = DateTime.UtcNow; // expire immediately
+            subscription.PaymentComplete = false; // mark as inactive
 
             await _subscriptionRepository.UpdateAsync(subscription);
         }
