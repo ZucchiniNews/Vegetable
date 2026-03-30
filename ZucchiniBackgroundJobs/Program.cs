@@ -19,6 +19,8 @@ builder.Services
 
 builder.Services.AddHttpClient<WeatherService>();
 
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     new HistoryRepository<WeatherHistoryEntity>(
         sp.GetRequiredService<IConfiguration>(),
