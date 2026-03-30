@@ -60,8 +60,8 @@ namespace Zucchinimvc.Services.API
                 PartitionKey = model.City,
                 RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
                 Temperature = model.Temp,
+                Condition = model.Description,
                 RecordedAt = DateTime.UtcNow,
-                // Add other properties as needed
             };
 
             await _repository.UpsertDailyAsync(entity);
