@@ -1,7 +1,8 @@
-﻿using Zucchinimvc.Models.Entities;
+﻿
+using ZucchiniCore.Entities;
 using Zucchinimvc.Models.ViewModels;
 
-namespace Zucchinimvc.Services.API
+namespace Zucchinimvc.Application.Services.Weather
 {
     public interface IWeatherService
     {

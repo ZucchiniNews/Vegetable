@@ -5,6 +5,7 @@ using ZucchiniCore.Entities;
 using Zucchinimvc.Models.ViewModels;
 
 
+
 namespace Zucchinimvc.Application.Services.Weather
 {
     public class WeatherService : IWeatherService

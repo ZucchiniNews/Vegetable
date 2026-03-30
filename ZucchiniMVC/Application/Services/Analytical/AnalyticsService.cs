@@ -1,7 +1,7 @@
-﻿using Zucchinimvc.Models.ViewModels;
-using Zucchinimvc.Services;
-using Zucchinimvc.Services.API;
-using Zucchinimvc.Services.Users;
+﻿using Zucchinimvc.Application.Services.Analytical;
+using Zucchinimvc.Application.Services.Weather;
+using Zucchinimvc.Models.ViewModels;
+
 
 public class AnalyticsService : IAnalyticsService
 {

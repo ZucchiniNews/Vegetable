@@ -1,7 +1,7 @@
 
 using Infrastrcture.ApiClients.StrapiClient;
 
-namespace Application.Services.CMS;
+namespace Zucchinimvc.Application.Services.CMS;
 
 public class ArticleService : IArticleService
 {
