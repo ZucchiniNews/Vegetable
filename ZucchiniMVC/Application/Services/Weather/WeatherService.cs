@@ -1,11 +1,11 @@
 ﻿using Azure.Data.Tables;
+using Infrastrcture.Repositories;
 using Newtonsoft.Json;
-using Zucchinimvc.Models.Entities;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Models.ViewModels;
-using Zucchinimvc.Models.Weather;
-using Zucchinimvc.Repositories;
 
-namespace Zucchinimvc.Services.API
+
+namespace Zucchinimvc.Application.Services.Weather
 {
     public class WeatherService : IWeatherService
     {
