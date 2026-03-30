@@ -2,7 +2,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
 
-namespace Instrastrcture.Repositories;
+namespace Infrastrcture.Repositories;
 
 public class BlobStorageRepository : IBlobStorageRepository
 {

@@ -1,5 +1,5 @@
 using Zucchinimvc.Models;
-namespace Instrastrcture.Repositories;
+namespace Infrastrcture.Repositories;
 
 public interface ISubscriptionRepository
 {

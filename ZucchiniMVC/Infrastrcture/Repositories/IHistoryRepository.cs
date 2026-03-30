@@ -1,6 +1,6 @@
 using Azure.Data.Tables;
 
-namespace Instrastrcture.Repositories;
+namespace Infrastrcture.Repositories;
 
 public interface IHistoryRepository<T> where T : class, ITableEntity, new()
 {

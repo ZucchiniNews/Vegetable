@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Zucchinimvc.Data;
 using Zucchinimvc.Models;
 
-namespace Instrastrcture.Repositories;
+namespace Infrastrcture.Repositories;
 
 public class SubscriptionRepository : ISubscriptionRepository
 {
