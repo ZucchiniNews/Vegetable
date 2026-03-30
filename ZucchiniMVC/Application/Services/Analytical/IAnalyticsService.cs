@@ -1,7 +1,5 @@
 ﻿using Zucchinimvc.Models.ViewModels;
-using Zucchinimvc.Services.API;
-
-namespace Zucchinimvc.Services
+namespace Zucchinimvc.Application.Services.Analytical
 {
     public interface IAnalyticsService
     {

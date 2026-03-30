@@ -2,6 +2,7 @@ using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Analytical;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
 using Zucchinimvc.Models;
