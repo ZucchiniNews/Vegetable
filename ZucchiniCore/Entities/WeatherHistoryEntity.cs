@@ -1,8 +1,8 @@
-﻿namespace Zucchinimvc.Models.Entities
-{
-    using Azure;
-    using Azure.Data.Tables;
+﻿using Azure;
+using Azure.Data.Tables;
 
+namespace ZucchiniCore.Entities
+{
     public class WeatherHistoryEntity : ITableEntity
     {
         public string PartitionKey { get; set; } = "Linköping";

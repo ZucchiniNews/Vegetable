@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Models.Weather
+﻿namespace ZucchiniCore.Entities
 {
     public class GeoLocation
     {

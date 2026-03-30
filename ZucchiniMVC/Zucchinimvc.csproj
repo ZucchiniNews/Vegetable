@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Currency\**" />
+    <Compile Remove="Repositories\**" />
+    <Content Remove="Models\Currency\**" />
+    <Content Remove="Repositories\**" />
+    <EmbeddedResource Remove="Models\Currency\**" />
+    <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="Models\Currency\**" />
+    <None Remove="Repositories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.27.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.5" />
@@ -27,8 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Currency\" />
-    <Folder Include="Repositories\" />
+    <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
   </ItemGroup>
 
 </Project>

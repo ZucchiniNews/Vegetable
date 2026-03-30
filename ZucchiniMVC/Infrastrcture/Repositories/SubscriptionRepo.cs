@@ -2,24 +2,24 @@ using Microsoft.EntityFrameworkCore;
 using Zucchinimvc.Data;
 using Zucchinimvc.Models;
 
-namespace Zucchinimvc.Repositories;
+namespace Infrastrcture.Repositories;
 
 public class SubscriptionRepository : ISubscriptionRepository
 {
-	private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly ILogger<SubscriptionRepository> _logger;
 
-	public SubscriptionRepository(ApplicationDbContext context, ILogger<SubscriptionRepository> logger)
-	{
-		_context = context;
-		_logger = logger;
-	}
+    public SubscriptionRepository(ApplicationDbContext context, ILogger<SubscriptionRepository> logger)
+    {
+        _context = context;
+        _logger = logger;
+    }
 
-	public async Task<Subscription?> GetByUserIdAsync(string userId)
-	{
+    public async Task<Subscription?> GetByUserIdAsync(string userId)
+    {
         try
         {
-    		return await _context.Subscriptions
+            return await _context.Subscriptions
                 .Include(s => s.SubscriptionType)
                 .FirstOrDefaultAsync(s => s.UserId == userId);
         }
@@ -30,9 +30,9 @@ public class SubscriptionRepository : ISubscriptionRepository
         }
     }
 
-	public async Task<Subscription?> GetByIdAsync(int id)
-	{
-		try
+    public async Task<Subscription?> GetByIdAsync(int id)
+    {
+        try
         {
             return await _context.Subscriptions
                 .Include(s => s.SubscriptionType)
@@ -43,9 +43,9 @@ public class SubscriptionRepository : ISubscriptionRepository
             _logger.LogError(ex.ToString());
             throw;
         }
-	}
+    }
 
-	public async Task<IEnumerable<SubscriptionType>> GetAllTypesAsync()
+    public async Task<IEnumerable<SubscriptionType>> GetAllTypesAsync()
     {
         try
         {
@@ -58,9 +58,9 @@ public class SubscriptionRepository : ISubscriptionRepository
         }
     }
 
-	public async Task<SubscriptionType?> GetTypeByIdAsync(int id)
-	{
-		try 
+    public async Task<SubscriptionType?> GetTypeByIdAsync(int id)
+    {
+        try
         {
             return await _context.SubscriptionTypes.FirstOrDefaultAsync(st => st.Id == id);
         }
@@ -69,33 +69,33 @@ public class SubscriptionRepository : ISubscriptionRepository
             _logger.LogError(ex.ToString());
             throw;
         }
-	}
+    }
 
-	public async Task AddAsync(Subscription subscription)
-	{
-		try 
+    public async Task AddAsync(Subscription subscription)
+    {
+        try
         {
             await _context.Subscriptions.AddAsync(subscription);
-			await _context.SaveChangesAsync();
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex.ToString());
-			throw;
-		}
-	}
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            throw;
+        }
+    }
 
-	public async Task UpdateAsync(Subscription subscription)
-	{
-		try
+    public async Task UpdateAsync(Subscription subscription)
+    {
+        try
         {
             _context.Subscriptions.Update(subscription);
-			await _context.SaveChangesAsync();
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex.ToString());
-			throw;
-		}
-	}
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            throw;
+        }
+    }
 }
