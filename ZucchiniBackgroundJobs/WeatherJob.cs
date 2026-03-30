@@ -16,7 +16,7 @@ public class WeatherJob
     }
 
     [Function("WeatherJob")]
-    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *", RunOnStartup = true)] TimerInfo myTimer)
+    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *", RunOnStartup = false)] TimerInfo myTimer)
 
     {
         var cities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
