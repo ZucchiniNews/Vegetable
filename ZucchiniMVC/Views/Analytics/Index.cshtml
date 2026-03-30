@@ -1,26 +1,5 @@
 ﻿@model Zucchinimvc.Models.ViewModels.WeatherViewModel
 
-<style>
-    .charts-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-    }
-    .chart-card {
-        border: 1px solid #ddd;
-        padding: 15px;
-        border-radius: 8px;
-        height: 300px; /* Fixed height is important for Chart.js responsive: true */
-    }
-    .current-weather {
-        text-align: center;
-        padding: 20px;
-        background: #f9f9f9;
-        border-radius: 10px;
-    }
-</style>
-
 <form method="get">
     <input type="text" name="city" placeholder="Enter city" />
     <button type="submit">Search</button>
@@ -91,7 +70,7 @@
                     options: {
                          responsive: true,
                          maintainAspectRatio: false,
-                         scales: { // <--- This was missing!
+                         scales: {
                              x: {
                                  type: 'time',
                                  time: {
