@@ -61,6 +61,7 @@ namespace Zucchinimvc.Application.Services.Weather
                 PartitionKey = model.City,
                 RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
                 Temperature = model.Temp,
+                Humidity = model.Humidity,
                 Condition = model.Description,
                 RecordedAt = DateTime.UtcNow,
             };
