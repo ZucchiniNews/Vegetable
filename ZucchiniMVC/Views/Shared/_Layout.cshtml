@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="~/css/weather-dashboard.css" />
     <link rel="stylesheet" href="~/Zucchinimvc.styles.css" asp-append-version="true" />
 </head>
-<body class="news-body">
+<body class="news-body d-flex flex-column min-vh-100">
     <header class="news-header sticky-top">
         <nav class="navbar navbar-expand-lg news-navbar">
             <div class="container news-navbar-container">
@@ -69,7 +69,7 @@
         </nav>
     </header>
 
-    <main class="news-main">
+    <main class="news-main flex-grow-1">
         <div class="container">
             @RenderBody()
         </div>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+<div class="d-flex justify-content-center bg-light pt-5" style="min-height: 100vh;">
     <div class="card shadow-sm p-4" style="width: 400px; border-radius: 12px;">
         
         <div class="text-center mb-4">
@@ -15,14 +15,12 @@
         <form id="account" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <!-- Email -->
             <div class="mb-3">
                 <label asp-for="Input.Email" class="form-label">Email Address</label>
                 <input asp-for="Input.Email" class="form-control form-control-lg" placeholder="john@example.com" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
 
-            <!-- Password -->
             <div class="mb-3">
                 <div class="d-flex justify-content-between">
                     <label asp-for="Input.Password" class="form-label">Password</label>
@@ -32,7 +30,6 @@
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
 
-            <!-- Remember Me -->
             <div class="form-check mb-3">
                 <input class="form-check-input" asp-for="Input.RememberMe" />
                 <label class="form-check-label" asp-for="Input.RememberMe">
@@ -40,12 +37,10 @@
                 </label>
             </div>
 
-            <!-- Submit -->
             <button type="submit" class="btn btn-dark w-100 btn-lg">
                 Log In
             </button>
 
-            <!-- Register -->
             <div class="text-center mt-3">
                 <span class="text-muted">Don't have an account?</span>
                 <a asp-page="./Register">Sign Up</a>

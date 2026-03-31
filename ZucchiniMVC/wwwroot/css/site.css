@@ -4,9 +4,14 @@
 
 body {
     margin-bottom: 60px;
-    background-color: #f7f7f7;
+    background-color: #f8f9fa; /* old color:  #f7f7f7; changed by penny : ) */
     font-family: Arial, Helvetica, sans-serif;
     color: #111;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
 }
 
 /* ============================= */
@@ -94,6 +99,29 @@ body {
         color: #111 !important;
         font-weight: 500;
         padding: 0;
+    }
+
+    /* for the register and login view */
+.card {
+    border: none;
+}
+
+.btn-dark {
+    background-color: #0b0b1f;
+    border: none;
+}
+
+    .btn-dark:hover {
+        background-color: #1a1a3d;
+    }
+
+.form-control {
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+    .form-control::placeholder {
+        font-size: 0.85rem;
     }
 
 /* Mobile layout */
@@ -361,4 +389,20 @@ body {
     .featured-content p {
         font-size: 16px;
     }
+}
+
+.news-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.news-main {
+    flex: 1 0 auto;
+}
+
+.news-footer {
+    padding: 20px 0;
+    background-color: #f8f9fa;
+    flex-shrink: 0;
 }
