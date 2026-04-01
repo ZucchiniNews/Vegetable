@@ -5,4 +5,5 @@ public class ArticleDto
     public string Description { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
+    public string? Cover { get; internal set; }
 }
