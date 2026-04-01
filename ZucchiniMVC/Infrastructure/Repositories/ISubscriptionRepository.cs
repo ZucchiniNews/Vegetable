@@ -1,5 +1,5 @@
 ﻿using Zucchinimvc.Models;
-namespace Zucchinimvc.Infrastrcture.Repositories;
+namespace Zucchinimvc.Infrastructure.Repositories;
 public interface ISubscriptionRepository
 {
     Task<Subscription?> GetByUserIdAsync(string userId);
