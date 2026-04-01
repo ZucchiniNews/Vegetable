@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Zucchinimvc.Models;
+using ZucchiniCore.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Zucchinimvc.Data
