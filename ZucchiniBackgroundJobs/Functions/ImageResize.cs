@@ -1,13 +1,15 @@
 using System.IO;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace ZucchiniBackgroundJobs;
+namespace ZucchiniBackgroundJobs.Functions;
 
 public class ImageResize
 {
     private readonly ILogger<ImageResize> _logger;
+    private readonly BlobContainerClient _smallContainerClient;
 
     public ImageResize(ILogger<ImageResize> logger)
     {
