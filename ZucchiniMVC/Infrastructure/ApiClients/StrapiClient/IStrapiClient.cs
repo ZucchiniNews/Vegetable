@@ -2,5 +2,5 @@
 
 public interface IStrapiClient
 {
-    Task<StrapiResponse<T>> GetAsync<T>(string endpoint);
+    Task<IEnumerable<ArticleDto>> GetArticlesAsync<T>(string endpoint);
 }

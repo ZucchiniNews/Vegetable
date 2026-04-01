@@ -1,5 +1,6 @@
-﻿using ZucchiniCore.Entities;
-namespace Zucchinimvc.Infrastructure.Repositories;
+using ZucchiniCore.Entities;
+namespace Infrastrcture.Repositories;
+
 public interface ISubscriptionRepository
 {
     Task<Subscription?> GetByUserIdAsync(string userId);

@@ -41,4 +41,8 @@
     <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Services\CMS\" />
+  </ItemGroup>
+
 </Project>

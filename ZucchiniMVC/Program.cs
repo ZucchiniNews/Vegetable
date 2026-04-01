@@ -1,11 +1,11 @@
+using Infrastrcture.ApiClients.StrapiClient;
+using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
-using Zucchinimvc.Infrastructure.Repositories;
-using Zucchinimvc.Models;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
@@ -59,6 +59,10 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
 builder.Services.AddHttpClient<WeatherService>();
+
+// Strapi Client
+builder.Services.AddHttpClient<IStrapiClient, StrapiClient>();
+builder.Services.Configure<StrapiSettings>(builder.Configuration.GetSection("StrapiSettings"));
 
 var app = builder.Build();
 

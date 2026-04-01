@@ -10,4 +10,3 @@ public class Roles : IdentityRole
     public const string Reader = "Reader";
     public string Description { get; set; } = string.Empty;
 }
-    

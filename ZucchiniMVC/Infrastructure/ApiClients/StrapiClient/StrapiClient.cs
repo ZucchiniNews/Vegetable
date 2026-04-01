@@ -13,14 +13,22 @@ public class StrapiClient : IStrapiClient
         _http = http;
         _settings = settings.Value;
     }
-
-    public async Task<StrapiResponse<T>> GetAsync<T>(string endpoint)
+    private async Task<T> GetAsync<T>(string endpoint)
     {
-        var url = $"{_settings.BaseUrl}{endpoint}";
-        var res = await _http.GetAsync(url);
-        res.EnsureSuccessStatusCode();
-
-        var json = await res.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<StrapiResponse<T>>(json);
+        var response = await _http.GetAsync(endpoint);
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
     }
+
+
+    public async Task<IEnumerable<ArticleDto>> GetArticlesAsync<T>(string endpoint)
+    {
+        var result = await GetAsync<IEnumerable<ArticleDto>>(endpoint);
+        return result;
+    }
+
 }

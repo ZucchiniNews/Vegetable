@@ -5,7 +5,7 @@
     <button type="submit">Search</button>
 </form>
 
-@if (Model != null && Model.Cities.Any())
+@if (Model != null && Model.Cities != null && Model.Cities.Any())
 {
     <div class="current-weather">
         <h2>@Model.City</h2>
@@ -34,7 +34,8 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const rawData = @Html.Raw(Json.Serialize(Model.Cities));
+            // Ensure Model and Model.Cities are not null before serializing
+            const rawData = @((Model != null && Model.Cities != null) ? Html.Raw(Json.Serialize(Model.Cities)) : "[]");
             
             // Helper to handle C# property casing
             const getProp = (obj, prop) => obj[prop.toLowerCase()] || obj[prop];
