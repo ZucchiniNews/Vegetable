@@ -2,6 +2,7 @@
 using Infrastrcture.Repositories;
 using Newtonsoft.Json;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
 
 
