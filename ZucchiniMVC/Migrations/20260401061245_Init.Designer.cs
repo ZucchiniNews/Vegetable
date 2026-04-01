@@ -12,8 +12,8 @@ using Zucchinimvc.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260331132049_AddUserCustomFields")]
-    partial class AddUserCustomFields
+    [Migration("20260401061245_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
