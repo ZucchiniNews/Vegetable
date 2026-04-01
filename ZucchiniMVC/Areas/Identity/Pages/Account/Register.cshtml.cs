@@ -87,7 +87,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account
             [Required]
             [DataType(DataType.Date)]
             [Display(Name = "Date of Birth")]
-            public DateTime DateOfBirth { get; set; }
+            public DateTime DateOfBirth { get; set; } = new DateTime(1998, 9, 20);
 
 
             [Required]
@@ -118,6 +118,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["MaxDate"] = DateTime.Now.ToString("yyyy-MM-dd");
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }

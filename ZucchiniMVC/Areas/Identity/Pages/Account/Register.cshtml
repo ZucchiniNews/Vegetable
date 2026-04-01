@@ -25,7 +25,7 @@
 
             <div class="mb-3">
                 <label asp-for="Input.DateOfBirth" class="form-label">Date of Birth</label>
-                <input asp-for="Input.DateOfBirth" class="form-control form-control-lg" type="date" />
+                <input asp-for="Input.DateOfBirth" class="form-control form-control-lg" type="date" max="@ViewData["MaxDate"]" />
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
             </div>
 
