@@ -1,5 +1,4 @@
-
-using Infrastrcture.ApiClients.StrapiClient;
+using Zucchinimvc.Infrastrcture.ApiClients.StrapiClient;
 
 namespace Zucchinimvc.Application.Services.CMS;
 

@@ -1,8 +1,7 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
-
-namespace Infrastrcture.Repositories;
+namespace Zucchinimvc.Infrastrcture.Repositories;
 
 public class BlobStorageRepository : IBlobStorageRepository
 {

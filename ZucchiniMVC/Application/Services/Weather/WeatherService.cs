@@ -1,7 +1,7 @@
 ﻿using Azure.Data.Tables;
-using Infrastrcture.Repositories;
 using Newtonsoft.Json;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastrcture.Repositories;
 using Zucchinimvc.Models.ViewModels;
 
 
