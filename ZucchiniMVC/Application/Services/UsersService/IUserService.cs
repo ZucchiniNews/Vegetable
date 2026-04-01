@@ -1,4 +1,4 @@
-using Zucchinimvc.Models;
+using ZucchiniCore.Entities;
 
 namespace Zucchinimvc.Services.Users;
 
@@ -16,7 +16,7 @@ public interface IUserService
     Task<IList<string>> GetUserRolesAsync(string userId);
     Task AssignRoleAsync(string userId, string roleName);
     Task RemoveRoleAsync(string userId, string roleName);
-    
+
     // Admin operations
     Task<List<User>> GetAllUsersAsync();
     Task<List<User>> SearchUsersAsync(string searchTerm);

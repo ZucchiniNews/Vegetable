@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Zucchinimvc.Models;
+namespace ZucchiniCore.Entities;
 
 public class Roles : IdentityRole
 {
@@ -10,4 +10,3 @@ public class Roles : IdentityRole
     public const string Reader = "Reader";
     public string Description { get; set; } = string.Empty;
 }
-    

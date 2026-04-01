@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Data;
-using Zucchinimvc.Models;
 
 namespace Infrastrcture.Repositories;
 

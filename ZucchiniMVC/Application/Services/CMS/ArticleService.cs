@@ -15,7 +15,7 @@ public class ArticleService : IArticleService
     public async Task<List<ArticleDto>> GetArticles()
     {
         var result = await _strapiClient
-            .GetAsync<ArticleRawDto>(
+            .GetAsync(
                 "/api/articles?populate=cover"
             );
 

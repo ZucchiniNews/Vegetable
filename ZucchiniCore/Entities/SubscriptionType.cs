@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Models
+﻿namespace ZucchiniCore.Entities
 {
     public class SubscriptionType
     {

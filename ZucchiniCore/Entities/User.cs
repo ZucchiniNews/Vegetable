@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 
-namespace Zucchinimvc.Models
+namespace ZucchiniCore.Entities
 {
     public class User : IdentityUser
     {
-        
+
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTime? DateOfBirth { get; set; }
