@@ -1,6 +1,7 @@
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System.Text.Json;
-using Zucchinimvc.Infrastrcture.ApiClients.StrapiClient;
+using Zucchinimvc.Infrastructure.ApiClients.StrapiClient;
+using Zucchinimvc.Infrastructure.Config;
 
 public class StrapiClient : IStrapiClient
 {

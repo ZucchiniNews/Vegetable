@@ -4,9 +4,14 @@
 
 body {
     margin-bottom: 60px;
-    background-color: #f7f7f7;
+    background-color: #f8f9fa; /* old color:  #f7f7f7; */
     font-family: Arial, Helvetica, sans-serif;
     color: #111;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
 }
 
 /* ============================= */
@@ -16,6 +21,22 @@ body {
 .news-header {
     background-color: #ffffff;
     border-bottom: 1px solid #e5e5e5;
+}
+
+.news-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.news-main {
+    flex: 1 0 auto;
+}
+
+.news-footer {
+    padding: 20px 0;
+    background-color: #f8f9fa;
+    flex-shrink: 0;
 }
 
 .news-navbar {
@@ -94,6 +115,43 @@ body {
         color: #111 !important;
         font-weight: 500;
         padding: 0;
+    }
+
+/* Custom Login Button Style */
+#login.btn-dark {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff !important;
+    border-radius: 4px; 
+    transition: opacity 0.2s ease-in-out;
+}
+
+    #login.btn-dark:hover {
+        background-color: #333333; 
+        color: #ffffff !important;
+    }
+
+    /* for the register and login view */
+.card {
+    border: none;
+}
+
+.btn-dark {
+    background-color: #0b0b1f;
+    border: none;
+}
+
+    .btn-dark:hover {
+        background-color: #1a1a3d;
+    }
+
+.form-control {
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+    .form-control::placeholder {
+        font-size: 0.85rem;
     }
 
 /* Mobile layout */

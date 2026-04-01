@@ -1,8 +1,7 @@
+﻿namespace Zucchinimvc.Infrastructure.Repositories;
+
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-
-namespace Zucchinimvc.Infrastrcture.Repositories;
-
 public class BlobStorageRepository : IBlobStorageRepository
 {
     private readonly BlobContainerClient _containerClient;

@@ -1,7 +1,7 @@
 ﻿using Azure.Data.Tables;
 using Newtonsoft.Json;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastrcture.Repositories;
+using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Models.ViewModels;
 
 
@@ -49,6 +49,7 @@ namespace Zucchinimvc.Application.Services.Weather
             {
                 City = city,
                 Temp = weather.Main.Temp,
+                Humidity = weather.Main.Humidity,
                 Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
                 Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
             };
@@ -61,6 +62,7 @@ namespace Zucchinimvc.Application.Services.Weather
                 PartitionKey = model.City,
                 RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
                 Temperature = model.Temp,
+                Humidity = model.Humidity,
                 Condition = model.Description,
                 RecordedAt = DateTime.UtcNow,
             };

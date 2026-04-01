@@ -1,4 +1,4 @@
-namespace Zucchinimvc.Infrastrcture.ApiClients.StrapiClient;
+﻿namespace Zucchinimvc.Infrastructure.ApiClients.StrapiClient;
 
 public interface IStrapiClient
 {

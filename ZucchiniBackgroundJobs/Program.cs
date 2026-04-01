@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Infrastrcture.Repositories;
+using Zucchinimvc.Infrastructure.Repositories;
 
 
 var builder = FunctionsApplication.CreateBuilder(args);
@@ -18,6 +18,8 @@ builder.Services
     .ConfigureFunctionsApplicationInsights();
 
 builder.Services.AddHttpClient<WeatherService>();
+
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     new HistoryRepository<WeatherHistoryEntity>(

@@ -16,17 +16,25 @@ public class WeatherJob
     }
 
     [Function("WeatherJob")]
-    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *")] TimerInfo myTimer)
+    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *", RunOnStartup = false)] TimerInfo myTimer)
+
     {
         var cities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
 
         foreach (var city in cities)
         {
-            var weather = await _weatherService.GetWeatherByCityAsync(city);
-            if (weather != null)
+            try
             {
-                await _weatherService.SaveWeatherHistoryAsync(weather);
-                _logger.LogInformation("Saved history for {City}", city);
+                var weather = await _weatherService.GetWeatherByCityAsync(city);
+                if (weather != null)
+                {
+                    await _weatherService.SaveWeatherHistoryAsync(weather);
+                    _logger.LogInformation("Saved history for {City}", city);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing weather for {City}", city);
             }
         }
     }
