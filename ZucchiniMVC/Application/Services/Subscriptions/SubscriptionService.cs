@@ -1,5 +1,5 @@
 using Zucchinimvc.Infrastructure.Repositories;
-using Zucchinimvc.Models;
+using ZucchiniCore.Entities;
 
 namespace Zucchinimvc.Services.Subscriptions;
 

@@ -1,4 +1,4 @@
-using Zucchinimvc.Models;
+using ZucchiniCore.Entities;
 
 namespace Zucchinimvc.Services.Users;
 

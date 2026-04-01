@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Zucchinimvc.Models;
+namespace ZucchiniCore.Entities;
 
 public class Roles : IdentityRole
 {

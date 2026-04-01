@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Zucchinimvc.Models;
+using ZucchiniCore.Entities;
 namespace Zucchinimvc.Services.Users;
 
 public class UserService : IUserService

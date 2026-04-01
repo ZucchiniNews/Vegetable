@@ -1,6 +1,6 @@
-﻿namespace Zucchinimvc.Models
-{
-    public class Subscription
+﻿namespace ZucchiniCore.Entities;
+
+public class Subscription
     {
 
         public int Id { get; set; }
@@ -15,4 +15,3 @@
         public bool IsActive { get; set; }   // optional tracking
     }
 
-}
