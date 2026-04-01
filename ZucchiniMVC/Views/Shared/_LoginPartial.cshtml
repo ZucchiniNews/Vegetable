@@ -4,25 +4,42 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Log Out</button>
-        </form>
-    </li>
-}
-else
-{
-        <li class="nav-item">
-            <a class="btn btn-dark text-white px-4"
-               id="login"
-               asp-area="Identity"
-               asp-page="/Account/Login">Sign in</a>
+<ul class="navbar-nav align-items-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item me-3">
+            <a id="manage" class="nav-link d-flex align-items-center text-dark fw-semibold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                </svg>
+                <span>
+                    @{
+                        var user = await UserManager.GetUserAsync(User);
+                        @user?.FirstName
+                    }
+                </span>
+            </a>
         </li>
-}
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="btn btn-outline-dark fw-bold px-4"
+                        style="height: 40px; border-radius: 8px; white-space: nowrap;">
+                    Log Out
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="btn btn-dark text-white fw-bold px-4 d-flex align-items-center justify-content-center"
+                   id="login"
+                   asp-area="Identity"
+                   asp-page="/Account/Login"
+                   style="height: 40px; border-radius: 8px; min-width: 120px;">
+                Log In
+            </a>
+        </li>
+    }
 </ul>
