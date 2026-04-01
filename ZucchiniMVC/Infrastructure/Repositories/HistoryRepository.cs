@@ -1,7 +1,7 @@
 ﻿namespace Zucchinimvc.Infrastructure.Repositories;
 
 using Azure.Data.Tables;
-lic class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITableEntity, new()
+public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITableEntity, new()
 {
     private readonly TableClient _tableClient;
     private readonly ILogger<HistoryRepository<T>> _logger;
