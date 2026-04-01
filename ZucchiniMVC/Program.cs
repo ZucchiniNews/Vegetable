@@ -1,4 +1,4 @@
-using Infrastrcture.ApiClients.StrapiClient;
+
 using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +6,9 @@ using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
+using Zucchinimvc.Infrastructure.ApiClients.StrapiClient;
+using Zucchinimvc.Infrastructure.Config;
+using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;

@@ -3,6 +3,7 @@ using System.Text.Json;
 using Zucchinimvc.Infrastructure.ApiClients.StrapiClient;
 using Zucchinimvc.Infrastructure.Config;
 
+
 public class StrapiClient : IStrapiClient
 {
     private readonly HttpClient _http;

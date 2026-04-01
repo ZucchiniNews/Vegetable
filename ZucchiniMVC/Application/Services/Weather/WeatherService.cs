@@ -1,6 +1,7 @@
 ﻿using Azure.Data.Tables;
 using Newtonsoft.Json;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
 
