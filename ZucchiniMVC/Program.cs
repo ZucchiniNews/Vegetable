@@ -35,14 +35,19 @@ builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 
-
+// CMS DI registration -=-=-=--=-==--==-=-=-=--==--=-=-=-=--=-==--==-=-=-=--==--=-=-=-=-=-=-=-=-=-=-
 // CMS Services
 builder.Services.AddScoped<ICmsService, CmsService>();
+// CMS Repository
+builder.Services.AddScoped<ICmsRepository, CmsRepository>();
+// CMS Client
+builder.Services.AddHttpClient<CmsClient>();
+builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
+//-=-=-=--=-==--==-=-=-=--==--=-=-=-=--=-==--==-=-=-=--==--=-==-=-=-=-=-=-=-=-=-=-=--=-=-==-=-=-=-=-
+
 // Repositories
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-//CMS Repository
-builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 
 
 builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
@@ -70,9 +75,6 @@ builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
 builder.Services.AddHttpClient<WeatherService>();
 
-// Strapi Client
-builder.Services.AddHttpClient<CmsClient>();
-builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 
 var app = builder.Build();
 
