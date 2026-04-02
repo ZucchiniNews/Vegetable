@@ -17,19 +17,39 @@ public class WeatherRepository : IWeatherRepository
 
     public async Task<GeoLocation?> GetCoordinatesAsync(string city)
     {
-        var result = await _client.GetAsync<List<GeoLocation>>($"geo/1.0/direct?q={city}&limit=1");
-        if (result == null) _apiLogger.LogApiWarning("Weather", "Geocoding failed for " + city);
-        return result?.FirstOrDefault();
+        try
+        {
+            var result = await _client.GetAsync<List<GeoLocation>>(
+                $"geo/1.0/direct?q={city}&limit=1");
+
+            if (result == null)
+                _apiLogger.LogApiWarning("Weather", "Geocoding failed for " + city);
+
+            return result?.FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            _apiLogger.LogApiError("Weather", ex);
+            return null;
+        }
     }
 
     public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
     {
-        var result = await _client.GetAsync<WeatherResponse>(
+        try
+        {
+            var result = await _client.GetAsync<WeatherResponse>(
                 $"data/2.5/weather?lat={lat}&lon={lon}&units=metric");
 
-        if (result == null)
-            _apiLogger.LogApiWarning("Weather", $"Weather fetch failed for coords {lat},{lon}");
+            if (result == null)
+                _apiLogger.LogApiWarning("Weather", $"Weather fetch failed for coords {lat},{lon}");
 
-        return result;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _apiLogger.LogApiError("Weather", ex);
+            return null;
+        }
     }
 }
