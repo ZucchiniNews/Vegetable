@@ -38,4 +38,4 @@ public class WeatherClient
         return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
     }
 }
-}
+
