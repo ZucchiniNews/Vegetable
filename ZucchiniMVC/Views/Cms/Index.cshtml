@@ -11,8 +11,10 @@
         <tr>
             <th>Id</th>
             <th>Title</th>
-            <th>Author</th>
+            <th>Description</th>
+            <th>Slug</th>
             <th>Published Date</th>
+            <th>Cover</th>
         </tr>
     </thead>
     <tbody>
@@ -27,10 +29,19 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Author)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @item.PublishedDate.ToShortDateString()
+                @Html.DisplayFor(modelItem => item.Slug)
+            </td>
+            <td>
+                @item.PublishedAt.ToShortDateString()
+            </td>
+            <td>
+                @if (item.Cover != null && !string.IsNullOrEmpty(item.Cover.Url))
+                {
+                    <img src="@item.Cover.Url" alt="Cover" style="max-height: 50px; max-width: 50px;" />
+                }
             </td>
         </tr>
     }
