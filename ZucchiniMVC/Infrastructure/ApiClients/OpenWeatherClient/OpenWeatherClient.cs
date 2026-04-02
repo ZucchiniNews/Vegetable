@@ -8,22 +8,22 @@ public class WeatherClient
 {
     private readonly HttpClient _http;
     private readonly OpenWeatherSettings _settings;
-    private readonly JsonSerializerOptions _jsonOptions;
+    private readonly ILogger<WeatherClient> _logger;
 
-    public WeatherClient(HttpClient http, IOptions<OpenWeatherSettings> settings)
+    public WeatherClient(HttpClient http, IOptions<OpenWeatherSettings> settings, ILogger<WeatherClient> logger)
     {
         _http = http;
         _settings = settings.Value;
+        _logger = logger;
         _http.BaseAddress = new Uri(_settings.BaseUrl);
-        _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
-
     public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.ApiKey);
     public async Task<T?> GetAsync<T>(string endpoint)
     {
         if (!IsConfigured)
         {
-            // Log a warning here if you want!
+            _logger.LogWarning("WeatherClient: API request to '{Endpoint}' was skipped because the ApiKey is not configured in settings.", endpoint);
+            _logger.LogWarning("WeatherClient: Missing credentials for BaseAddress: {BaseAddress}. Check 'WeatherApi:ApiKey' in appsettings.json.", _http.BaseAddress);
             return default;
         }
 
