@@ -1,0 +1,39 @@
+@model IEnumerable<ZucchiniCore.Entities.Article>
+
+@{
+    ViewData["Title"] = "CMS Articles";
+}
+
+<h1>CMS Articles</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published Date</th>
+        </tr>
+    </thead>
+    <tbody>
+@if (Model != null)
+{
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @item.PublishedDate.ToShortDateString()
+            </td>
+        </tr>
+    }
+}
+    </tbody>
+</table>
