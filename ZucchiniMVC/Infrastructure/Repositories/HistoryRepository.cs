@@ -68,4 +68,23 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
             throw;
         }
     }
+
+    public async Task<IEnumerable<T>> GetAllAsync()
+    {
+        try
+        {
+            var results = new List<T>();
+
+            await foreach (var entity in _tableClient.QueryAsync<T>())
+            {
+                results.Add(entity);
+            }
+            return results;
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError($"Error fetching all entities: {ex}");
+            throw;
+        }
+    }
 }

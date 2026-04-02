@@ -8,8 +8,8 @@ namespace Zucchinimvc.Application.Services.Weather
     {
         Task<WeatherViewModel?> GetWeatherByCityAsync(string city);
         Task SaveWeatherHistoryAsync(WeatherViewModel model);
-        Task<List<WeatherHistoryEntity>> GetWeatherAsync();
-        Task<List<WeatherHistoryEntity>> GetHistoryAsync(string city);
+        Task<List<WeatherHistoryEntity>> GetAllHistoryAsync();
+        Task<List<WeatherHistoryEntity>> GetHistoryByCityAsync(string city);
 
     }
 }

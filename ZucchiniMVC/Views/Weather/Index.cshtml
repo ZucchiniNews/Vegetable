@@ -19,7 +19,7 @@
     <div class="charts-grid">
         @foreach (var cityChart in Model.Cities)
         {
-            var canvasId = "chart-" + cityChart.City.Replace(" ", "-");
+            var canvasId = "chart-" + cityChart.City.ToLower().Replace(" ", "-");
             <div class="chart-card">
                 <h3>@cityChart.City</h3>
                 <canvas id="@canvasId"></canvas>
@@ -47,23 +47,26 @@
             const globalMin = Math.floor(Math.min(...allTemps) - 2);
             const globalMax = Math.ceil(Math.max(...allTemps) + 2);
 
-            rawData.forEach(city => {
-                const cityName = getProp(city, 'City');
-                const canvasId = `chart-${cityName.replace(/\s+/g, '-')}`;
-                const ctx = document.getElementById(canvasId);
+        rawData.forEach(city => {
+        const cityName = getProp(city, 'City');
+        const canvasId = `chart-${cityName.replace(/\s+/g, '-').toLowerCase()}`;
+        const ctx = document.getElementById(canvasId);
 
-                if (!ctx) return;
+        if (!ctx) {
+        console.warn("Could not find canvas for ID:", canvasId);
+        return;
+        }
 
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: getProp(city, 'Labels'), // These are your ISO strings "2026-03-27T..."
+                        labels: getProp(city, 'Labels'),
                         datasets: [{
                             label: 'Temp (°C)',
                             data: getProp(city, 'Temperatures'),
                             borderColor: '#3498db',
                             backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                            fill: true,
+                            fill: false,
                             tension: 0.3,
                             pointRadius: 2
                         }]
@@ -90,7 +93,7 @@
                              y: {
                                  min: globalMin,
                                  max: globalMax,
-                                 ticks: { stepSize: 2 },
+                                 // ticks: { stepSize: 2 },
                                  title: {
                                      display: true,
                                      text: '°C'

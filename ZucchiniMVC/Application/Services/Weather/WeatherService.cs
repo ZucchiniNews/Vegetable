@@ -1,140 +1,87 @@
-﻿using Azure.Data.Tables;
-using Newtonsoft.Json;
-using ZucchiniCore.Entities;
+﻿using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
 
+namespace Zucchinimvc.Application.Services.Weather;
 
-
-namespace Zucchinimvc.Application.Services.Weather
+public class WeatherService : IWeatherService
 {
-    public class WeatherService : IWeatherService
+    private readonly IHistoryRepository<WeatherHistoryEntity> _historyRepo;
+    private readonly IWeatherRepository _weatherRepo;
+
+    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo)
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _apiKey;
-        private readonly IHistoryRepository<WeatherHistoryEntity> _repository;
-        private readonly TableClient? _tableClient;
+        _weatherRepo = weatherRepo;
+        _historyRepo = historyRepo;
+    }
 
-        public WeatherService(
-            HttpClient httpClient,
-            IConfiguration config,
-            IHistoryRepository<WeatherHistoryEntity> repository,
-            TableClient? tableClient = null)
+    private static WeatherViewModel MapToViewModel(string city, WeatherResponse weather)
+    {
+        if (weather.Main == null)
+            throw new ArgumentException("Weather.Main cannot be null");
+
+        var condition = weather.Weather?.FirstOrDefault();
+
+        return new WeatherViewModel
         {
-            _httpClient = httpClient;
-            _repository = repository;
-            _tableClient = tableClient;
-            _apiKey = config["WeatherApi:ApiKey"] ?? string.Empty;
-        }
+            City = city,
+            Temp = weather.Main.Temp,
+            Humidity = weather.Main.Humidity,
+            Description = condition?.Description ?? "",
+            Icon = condition?.Icon ?? ""
+        };
+    }
 
-        private bool HasValidApiKey()
+    public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
+    {
+        if (string.IsNullOrWhiteSpace(city)) return null;
+
+        var location = await _weatherRepo.GetCoordinatesAsync(city);
+        if (location == null) return null;
+
+        var weather = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
+        if (weather?.Main == null) return null;
+
+        return MapToViewModel(city, weather);
+    }
+
+    public async Task SaveWeatherHistoryAsync(WeatherViewModel model)
+    {
+        if (model == null || string.IsNullOrWhiteSpace(model.City))
+            return;
+
+        var entity = new WeatherHistoryEntity
         {
-            return !string.IsNullOrWhiteSpace(_apiKey);
-        }
+            PartitionKey = model.City.Trim(),
+            RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
+            Temperature = model.Temp,
+            Humidity = model.Humidity,
+            Condition = model.Description,
+            RecordedAt = DateTime.UtcNow,
+        };
 
-        // 1. Remove the repository logic from here
-        public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
-        {
-            if (string.IsNullOrWhiteSpace(city) || !HasValidApiKey())
-                return null;
+        await _historyRepo.UpsertDailyAsync(entity);
+    }
 
-            var location = await GetCoordinatesAsync(city);
-            if (location == null) return new WeatherViewModel { City = city };
+    public async Task<List<WeatherHistoryEntity>> GetAllHistoryAsync()
+    {
+        var data = await _historyRepo.GetAllAsync();
 
-            var weather = await GetWeatherAsync(location.Lat, location.Lon);
-            if (weather?.Main == null) return null;
+        return data?
+            .OrderBy(e => e.RecordedAt)
+            .ToList() ?? new List<WeatherHistoryEntity>();
+    }
 
-            // We NO LONGER call _repository.UpsertDailyAsync(entity) here
-            return new WeatherViewModel
-            {
-                City = city,
-                Temp = weather.Main.Temp,
-                Humidity = weather.Main.Humidity,
-                Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
-                Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
-            };
-        }
+    public async Task<List<WeatherHistoryEntity>> GetHistoryByCityAsync(string city)
+    {
+        if (string.IsNullOrWhiteSpace(city))
+            return new List<WeatherHistoryEntity>();
 
-        public async Task SaveWeatherHistoryAsync(WeatherViewModel model)
-        {
-            var entity = new WeatherHistoryEntity
-            {
-                PartitionKey = model.City,
-                RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
-                Temperature = model.Temp,
-                Humidity = model.Humidity,
-                Condition = model.Description,
-                RecordedAt = DateTime.UtcNow,
-            };
+        var data = await _historyRepo.GetRecentByPartitionKeyAsync(city, 10);
 
-            await _repository.UpsertDailyAsync(entity);
-        }
-
-        public async Task<GeoLocation?> GetCoordinatesAsync(string city)
-        {
-            if (string.IsNullOrWhiteSpace(city) || !HasValidApiKey())
-                return null;
-
-            string encodedCity = Uri.EscapeDataString(city);
-
-            string url =
-                $"http://api.openweathermap.org/geo/1.0/direct?q={encodedCity}&limit=1&appid={_apiKey}";
-
-            var response = await _httpClient.GetStringAsync(url);
-
-            if (string.IsNullOrWhiteSpace(response))
-                return null;
-
-            var data = JsonConvert.DeserializeObject<List<GeoLocation>>(response);
-
-            return data?.FirstOrDefault();
-        }
-
-        public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
-        {
-            if (!HasValidApiKey())
-                return null;
-
-            string url =
-                $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={_apiKey}&units=metric";
-
-            var response = await _httpClient.GetStringAsync(url);
-
-            if (string.IsNullOrWhiteSpace(response))
-                return null;
-
-            return JsonConvert.DeserializeObject<WeatherResponse>(response);
-        }
-
-        public async Task<List<WeatherHistoryEntity>> GetWeatherAsync()
-        {
-            var results = new List<WeatherHistoryEntity>();
-
-            if (_tableClient == null)
-                return results;
-
-            await foreach (var entity in _tableClient.QueryAsync<WeatherHistoryEntity>())
-            {
-                if (entity != null)
-                    results.Add(entity);
-            }
-
-            return results.OrderBy(e => e.RecordedAt).ToList();
-        }
-
-        public async Task<List<WeatherHistoryEntity>> GetHistoryAsync(string city)
-        {
-            if (string.IsNullOrWhiteSpace(city))
-                return new List<WeatherHistoryEntity>();
-
-            var data = await _repository.GetRecentByPartitionKeyAsync(city, 10);
-
-            return data?
-                .Where(x => x != null)
-                .OrderBy(x => x.RecordedAt)
-                .ToList()
-                ?? new List<WeatherHistoryEntity>();
-        }
+        return (data ?? Enumerable.Empty<WeatherHistoryEntity>())
+                .OrderBy(e => e.RecordedAt)
+                .ToList();
     }
 }

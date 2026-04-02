@@ -6,9 +6,9 @@ namespace Zucchinimvc.ViewComponents;
 
 public class WeatherViewComponent : ViewComponent
 {
-    private readonly WeatherService _service;
+    private readonly IWeatherService _service;
 
-    public WeatherViewComponent(WeatherService service)
+    public WeatherViewComponent(IWeatherService service)
     {
         _service = service;
     }
