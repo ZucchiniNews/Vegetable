@@ -48,6 +48,7 @@ builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 
 // Weather Repository
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     new HistoryRepository<WeatherHistoryEntity>(
         sp.GetRequiredService<IConfiguration>(),

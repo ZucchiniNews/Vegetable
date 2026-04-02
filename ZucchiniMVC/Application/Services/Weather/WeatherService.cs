@@ -1,47 +1,46 @@
 ﻿using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
 using Zucchinimvc.Infrastructure.Repositories;
-using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Application.Services.Weather;
 
 public class WeatherService : IWeatherService
 {
-    private readonly IHistoryRepository<WeatherHistoryEntity> _repository;
-    private readonly WeatherClient _client;
+    private readonly IHistoryRepository<WeatherHistoryEntity> _historyRepo;
+    private readonly IWeatherRepository _weatherRepo;
 
-    public WeatherService(WeatherClient client, IHistoryRepository<WeatherHistoryEntity> repository)
+    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo)
     {
-        _client = client;
-        _repository = repository;
+        _weatherRepo = weatherRepo;
+        _historyRepo = historyRepo;
     }
 
     public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
     {
-        if (string.IsNullOrWhiteSpace(city) || !_client.IsConfigured)
-            return null;
+        if (string.IsNullOrWhiteSpace(city)) return null;
 
-        // 1. Use the client to get coordinates
-        var location = await GetCoordinatesAsync(city);
-        if (location == null) return new WeatherViewModel { City = city };
+        var location = await _weatherRepo.GetCoordinatesAsync(city);
+        if (location == null) return null;
 
-        // 2. Use the client to get weather
-        var weather = await GetWeatherAsync(location.Lat, location.Lon);
+        var weather = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
         if (weather?.Main == null) return null;
+        var condition = weather.Weather?.FirstOrDefault();
 
         return new WeatherViewModel
         {
             City = city,
             Temp = weather.Main.Temp,
             Humidity = weather.Main.Humidity,
-            Description = weather.Weather?.FirstOrDefault()?.Description ?? "",
-            Icon = weather.Weather?.FirstOrDefault()?.Icon ?? ""
+            Description = condition?.Description ?? "",
+            Icon = condition?.Icon ?? ""
         };
     }
 
     public async Task SaveWeatherHistoryAsync(WeatherViewModel model)
     {
+        if (model == null || string.IsNullOrWhiteSpace(model.City))
+            return;
+
         var entity = new WeatherHistoryEntity
         {
             PartitionKey = model.City,
@@ -52,46 +51,27 @@ public class WeatherService : IWeatherService
             RecordedAt = DateTime.UtcNow,
         };
 
-        await _repository.UpsertDailyAsync(entity);
+        await _historyRepo.UpsertDailyAsync(entity);
     }
 
-    public async Task<GeoLocation?> GetCoordinatesAsync(string city)
+    public async Task<List<WeatherHistoryEntity>> GetAllHistoryAsync()
     {
-        if (string.IsNullOrWhiteSpace(city) || !_client.IsConfigured)
-            return null;
-
-        var results = await _client.GetAsync<List<GeoLocation>>(
-            $"geo/1.0/direct?q={Uri.EscapeDataString(city)}&limit=1");
-
-        return results?.FirstOrDefault();
-    }
-
-    public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
-    {
-        if (!_client.IsConfigured) return null;
-
-        return await _client.GetAsync<WeatherResponse>(
-            $"data/2.5/weather?lat={lat}&lon={lon}&units=metric");
-    }
-
-    public async Task<List<WeatherHistoryEntity>> GetWeatherAsync()
-    {
-        var data = await _repository.GetAllAsync();
+        var data = await _historyRepo.GetAllAsync();
 
         return data?
             .OrderBy(e => e.RecordedAt)
             .ToList() ?? new List<WeatherHistoryEntity>();
     }
 
-    public async Task<List<WeatherHistoryEntity>> GetHistoryAsync(string city)
+    public async Task<List<WeatherHistoryEntity>> GetHistoryByCityAsync(string city)
     {
         if (string.IsNullOrWhiteSpace(city))
             return new List<WeatherHistoryEntity>();
 
-        var data = await _repository.GetRecentByPartitionKeyAsync(city, 10);
+        var data = await _historyRepo.GetRecentByPartitionKeyAsync(city, 10);
 
-        return data?
-            .OrderBy(x => x.RecordedAt)
-            .ToList() ?? new List<WeatherHistoryEntity>();
+        return (data ?? Enumerable.Empty<WeatherHistoryEntity>())
+                .OrderBy(e => e.RecordedAt)
+                .ToList();
     }
 }
