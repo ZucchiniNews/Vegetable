@@ -5,11 +5,11 @@ using Zucchinimvc.Application.Services.Analytics;
 
 namespace Zucchinimvc.Controllers
 {
-    public class AnalyticsController : Controller
+    public class WeatherController : Controller
     {
         private readonly IAnalyticsService _analyticsService;
 
-        public AnalyticsController(IAnalyticsService analyticsService)
+        public WeatherController(IAnalyticsService analyticsService)
         {
             _analyticsService = analyticsService;
 
