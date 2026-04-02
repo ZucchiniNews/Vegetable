@@ -1,12 +1,12 @@
-
 using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
+using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
-using Zucchinimvc.Infrastructure.ApiClients.StrapiClient;
+using Zucchinimvc.Infrastrcture.Repositories;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Services.Emails;
@@ -34,9 +34,16 @@ builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfi
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
+
+
+// CMS Services
+builder.Services.AddScoped<ICmsService, CmsService>();
 // Repositories
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+//CMS Repository
+builder.Services.AddScoped<ICmsRepository, CmsRepository>();
+
 
 builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     new HistoryRepository<WeatherHistoryEntity>(
@@ -64,8 +71,8 @@ builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSe
 builder.Services.AddHttpClient<WeatherService>();
 
 // Strapi Client
-builder.Services.AddHttpClient<IStrapiClient, StrapiClient>();
-builder.Services.Configure<StrapiSettings>(builder.Configuration.GetSection("StrapiSettings"));
+builder.Services.AddHttpClient<CmsClient>();
+builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 
 var app = builder.Build();
 
