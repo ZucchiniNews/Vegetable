@@ -33,9 +33,6 @@ public class WeatherService : IWeatherService
         };
     }
 
-    private static string NormalizeCity(string city) =>
-    city.ToLowerInvariant().Trim();
-
     public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
     {
         if (string.IsNullOrWhiteSpace(city)) return null;
@@ -56,8 +53,8 @@ public class WeatherService : IWeatherService
 
         var entity = new WeatherHistoryEntity
         {
-            PartitionKey = NormalizeCity(model.City),
-            RowKey = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff"),
+            PartitionKey = model.City.Trim(),
+            RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
             Temperature = model.Temp,
             Humidity = model.Humidity,
             Condition = model.Description,
@@ -81,9 +78,7 @@ public class WeatherService : IWeatherService
         if (string.IsNullOrWhiteSpace(city))
             return new List<WeatherHistoryEntity>();
 
-        var normalizedCity = NormalizeCity(city);
-
-        var data = await _historyRepo.GetRecentByPartitionKeyAsync(NormalizeCity(city), 10);
+        var data = await _historyRepo.GetRecentByPartitionKeyAsync(city, 10);
 
         return (data ?? Enumerable.Empty<WeatherHistoryEntity>())
                 .OrderBy(e => e.RecordedAt)

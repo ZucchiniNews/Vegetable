@@ -1,4 +1,5 @@
-﻿using Zucchinimvc.Application.Services.Analytics;
+﻿using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Models.ViewModels;
 
@@ -25,9 +26,10 @@ public class AnalyticsService : IAnalyticsService
 
         foreach (var cityName in chartCities)
         {
-            var history = await _weatherService.GetHistoryAsync(cityName);
+            var history = await _weatherService.GetHistoryByCityAsync(cityName);
 
-            var orderedHistory = history.OrderBy(x => x.RecordedAt).ToList();
+            var orderedHistory = (history ?? new List<WeatherHistoryEntity>())
+                                 .OrderBy(x => x.RecordedAt).ToList();
 
             weather.Cities.Add(new CityWeatherChart
             {
