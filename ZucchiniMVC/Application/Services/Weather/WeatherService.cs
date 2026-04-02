@@ -1,5 +1,6 @@
 ﻿using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Repositories;
+using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Application.Services.Weather;
@@ -15,15 +16,11 @@ public class WeatherService : IWeatherService
         _historyRepo = historyRepo;
     }
 
-    public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
+    private static WeatherViewModel MapToViewModel(string city, WeatherResponse weather)
     {
-        if (string.IsNullOrWhiteSpace(city)) return null;
+        if (weather.Main == null)
+            throw new ArgumentException("Weather.Main cannot be null");
 
-        var location = await _weatherRepo.GetCoordinatesAsync(city);
-        if (location == null) return null;
-
-        var weather = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
-        if (weather?.Main == null) return null;
         var condition = weather.Weather?.FirstOrDefault();
 
         return new WeatherViewModel
@@ -36,6 +33,22 @@ public class WeatherService : IWeatherService
         };
     }
 
+    private static string NormalizeCity(string city) =>
+    city.ToLowerInvariant().Trim();
+
+    public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
+    {
+        if (string.IsNullOrWhiteSpace(city)) return null;
+
+        var location = await _weatherRepo.GetCoordinatesAsync(city);
+        if (location == null) return null;
+
+        var weather = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
+        if (weather?.Main == null) return null;
+
+        return MapToViewModel(city, weather);
+    }
+
     public async Task SaveWeatherHistoryAsync(WeatherViewModel model)
     {
         if (model == null || string.IsNullOrWhiteSpace(model.City))
@@ -43,8 +56,8 @@ public class WeatherService : IWeatherService
 
         var entity = new WeatherHistoryEntity
         {
-            PartitionKey = model.City,
-            RowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm"),
+            PartitionKey = NormalizeCity(model.City),
+            RowKey = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff"),
             Temperature = model.Temp,
             Humidity = model.Humidity,
             Condition = model.Description,
@@ -68,7 +81,9 @@ public class WeatherService : IWeatherService
         if (string.IsNullOrWhiteSpace(city))
             return new List<WeatherHistoryEntity>();
 
-        var data = await _historyRepo.GetRecentByPartitionKeyAsync(city, 10);
+        var normalizedCity = NormalizeCity(city);
+
+        var data = await _historyRepo.GetRecentByPartitionKeyAsync(NormalizeCity(city), 10);
 
         return (data ?? Enumerable.Empty<WeatherHistoryEntity>())
                 .OrderBy(e => e.RecordedAt)

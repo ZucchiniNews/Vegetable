@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
+using Zucchinimvc.Application.Services.ApiLogger;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
@@ -75,6 +76,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
+
+// Logger
+builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 
 var app = builder.Build();
 
