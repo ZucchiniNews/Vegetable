@@ -7,6 +7,7 @@ using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Data;
 using Zucchinimvc.Infrastrcture.Repositories;
+using Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Services.Emails;
@@ -25,34 +26,34 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
 builder.Services.AddRazorPages();
 builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
-builder.Services.AddScoped<IWeatherService, WeatherService>();
-builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 
+// --- Configurations ---
+builder.Services.Configure<OpenWeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
+builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 
-// CMS Services
-builder.Services.AddScoped<ICmsService, CmsService>();
-// Repositories
+// --- Http Clients (Typed) ---
+// These handle the BaseUrl and specific API logic
+builder.Services.AddHttpClient<WeatherClient>();
+builder.Services.AddHttpClient<CmsClient>();
+
+// --- Repositories ---
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-//CMS Repository
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 
-
-builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
+// Weather Repository
+builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     new HistoryRepository<WeatherHistoryEntity>(
         sp.GetRequiredService<IConfiguration>(),
         sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
         "ExternalApiHistory"
     ));
-
-
 
 // missing Entity CurrencyHistoryEntity
 /*builder.Services.AddSingleton<IHistoryRepository<CurrencyHistoryEntity>>(sp =>
@@ -62,17 +63,17 @@ builder.Services.AddSingleton<IHistoryRepository<WeatherHistoryEntity>>(sp =>
         "ExternalApiHistory"
     ));*/
 
-// Services
+// --- Services ---
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddScoped<ICmsService, CmsService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
-builder.Services.AddHttpClient<WeatherService>();
-
-// Strapi Client
-builder.Services.AddHttpClient<CmsClient>();
-builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 
 var app = builder.Build();
 
