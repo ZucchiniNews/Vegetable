@@ -1,35 +1,41 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Text.Json;
-using Zucchinimvc.Infrastructure.ApiClients.StrapiClient;
 using Zucchinimvc.Infrastructure.Config;
 
 
-public class StrapiClient : IStrapiClient
+public class CmsClient
 {
     private readonly HttpClient _http;
-    private readonly StrapiSettings _settings;
+    private readonly CmsSettings _settings;
 
-    public StrapiClient(HttpClient http, IOptions<StrapiSettings> settings)
+    public CmsClient(HttpClient http, IOptions<CmsSettings> settings)
     {
         _http = http;
         _settings = settings.Value;
+
+        _http.BaseAddress = new Uri(_settings.BaseUrl);
+
+        if (!string.IsNullOrWhiteSpace(_settings.Token))
+        {
+            _http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _settings.Token);
+        }
     }
-    private async Task<T> GetAsync<T>(string endpoint)
+
+    public async Task<T> GetAsync<T>(string endpoint)
     {
         var response = await _http.GetAsync(endpoint);
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+
+        using var jsonDocument = JsonDocument.Parse(json);
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        if (jsonDocument.RootElement.ValueKind == JsonValueKind.Object && jsonDocument.RootElement.TryGetProperty("data", out var dataElement))
         {
-            PropertyNameCaseInsensitive = true
-        })!;
+            return dataElement.Deserialize<T>(options)!;
+        }
+
+        return JsonSerializer.Deserialize<T>(json, options)!;
     }
-
-
-    public async Task<IEnumerable<ArticleDto>> GetArticlesAsync<T>(string endpoint)
-    {
-        var result = await GetAsync<IEnumerable<ArticleDto>>(endpoint);
-        return result;
-    }
-
 }
