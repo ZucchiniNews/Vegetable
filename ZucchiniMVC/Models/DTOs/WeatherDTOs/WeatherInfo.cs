@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Models.WeatherDTOs;
+﻿namespace Zucchinimvc.Models.DTOs.WeatherDTOs;
 
 public class WeatherInfo
 {
