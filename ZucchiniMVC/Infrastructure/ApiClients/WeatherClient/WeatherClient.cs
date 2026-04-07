@@ -2,15 +2,15 @@
 using System.Text.Json;
 using Zucchinimvc.Infrastructure.Config;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
+namespace Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 
 public class WeatherClient
 {
     private readonly HttpClient _http;
-    private readonly OpenWeatherSettings _settings;
+    private readonly WeatherSettings _settings;
     private readonly ILogger<WeatherClient> _logger;
 
-    public WeatherClient(HttpClient http, IOptions<OpenWeatherSettings> settings, ILogger<WeatherClient> logger)
+    public WeatherClient(HttpClient http, IOptions<WeatherSettings> settings, ILogger<WeatherClient> logger)
     {
         _http = http;
         _settings = settings.Value;

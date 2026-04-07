@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Zucchinimvc.Application.Services.ApiLogger;
+namespace Zucchinimvc.Application.Services.Logger;
 
 public class ApiLoggerService : IApiLoggerService
 {

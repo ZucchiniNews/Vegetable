@@ -11,5 +11,8 @@ namespace Zucchinimvc.Application.Services.Weather
         Task<List<WeatherHistoryEntity>> GetAllHistoryAsync();
         Task<List<WeatherHistoryEntity>> GetHistoryByCityAsync(string city);
 
+        Task<WeatherViewModel?> GetWeatherAnalyticsAsync(string city);
+
+
     }
 }

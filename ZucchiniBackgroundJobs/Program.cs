@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.ApiLogger;
+using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
+using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories;
@@ -27,7 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 3. Configurations (Settings for API Keys, etc.)
-builder.Services.Configure<OpenWeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
+builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
 
 // 4. Clients and Repositories
 builder.Services.AddHttpClient<WeatherClient>();

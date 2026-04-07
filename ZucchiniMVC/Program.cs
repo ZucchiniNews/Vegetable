@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
-using Zucchinimvc.Application.Services.ApiLogger;
+using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
+using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
@@ -36,7 +36,7 @@ builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfi
 
 
 // --- Configurations ---
-builder.Services.Configure<OpenWeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
+builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
 builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 
 // --- Http Clients (Typed) ---

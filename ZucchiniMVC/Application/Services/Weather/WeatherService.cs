@@ -82,4 +82,33 @@ public class WeatherService : IWeatherService
                 .OrderBy(e => e.RecordedAt)
                 .ToList();
     }
+
+    public async Task<WeatherViewModel?> GetWeatherAnalyticsAsync(string city)
+    {
+
+        var targetCity = string.IsNullOrWhiteSpace(city) ? "Linköping" : city;
+
+        var weather = await GetWeatherByCityAsync(targetCity);
+        if (weather == null) return null;
+
+        var chartCities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
+        weather.Cities = new List<CityWeatherChart>();
+
+        foreach (var cityName in chartCities)
+        {
+            var history = await GetHistoryByCityAsync(cityName);
+
+            var orderedHistory = (history ?? new List<WeatherHistoryEntity>())
+                                 .OrderBy(x => x.RecordedAt).ToList();
+
+            weather.Cities.Add(new CityWeatherChart
+            {
+                City = cityName,
+                Labels = orderedHistory.Select(x => x.RecordedAt.ToString("s")).ToList(),
+                Temperatures = orderedHistory.Select(x => x.Temperature).ToList()
+            });
+        }
+
+        return weather;
+    }
 }
