@@ -7,13 +7,12 @@ namespace Zucchinimvc.Application.Services.Weather;
 
 public class WeatherService : IWeatherService
 {
-    private readonly IHistoryRepository<WeatherHistoryEntity> _historyRepo;
     private readonly IWeatherRepository _weatherRepo;
+    private readonly IApiLoggerService _apiLogger;
 
-    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo)
+    public WeatherService(IWeatherRepository weatherRepoo)
     {
         _weatherRepo = weatherRepo;
-        _historyRepo = historyRepo;
     }
 
     private static WeatherViewModel MapToViewModel(string city, WeatherResponse weather)

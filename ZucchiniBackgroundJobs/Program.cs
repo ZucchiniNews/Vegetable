@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.ApiLogger;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Data;
 using Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
 using Zucchinimvc.Infrastructure.Config;
+using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories;
 
 var builder = FunctionsApplication.CreateBuilder(args);

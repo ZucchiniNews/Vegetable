@@ -1,5 +1,5 @@
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastrcture.Repositories;
+using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 
 namespace Zucchinimvc.Application.Services.CMS;
 

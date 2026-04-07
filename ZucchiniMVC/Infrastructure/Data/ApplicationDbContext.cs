@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 
-namespace Zucchinimvc.Data
+namespace Zucchinimvc.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, Roles, string>
     {

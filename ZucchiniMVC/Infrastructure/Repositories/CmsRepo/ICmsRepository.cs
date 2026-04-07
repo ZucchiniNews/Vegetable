@@ -1,5 +1,5 @@
 ﻿using ZucchiniCore.Entities;
-namespace Zucchinimvc.Infrastrcture.Repositories
+namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
 {
     public interface ICmsRepository
     {
