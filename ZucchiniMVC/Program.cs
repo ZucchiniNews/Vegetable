@@ -7,6 +7,7 @@ using Zucchinimvc.Application.Services.ApiLogger;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
+using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories;
@@ -42,28 +43,22 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 // These handle the BaseUrl and specific API logic
 builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CmsClient>();
-
+// --- Provider client for Azure Table Storage ---
+builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 // --- Repositories ---
-builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 
 // Weather Repository
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
-    new HistoryRepository<WeatherHistoryEntity>(
-        sp.GetRequiredService<IConfiguration>(),
-        sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>(),
-        "ExternalApiHistory"
-    ));
-
-// missing Entity CurrencyHistoryEntity
-/*builder.Services.AddSingleton<IHistoryRepository<CurrencyHistoryEntity>>(sp =>
-    new HistoryRepository<CurrencyHistoryEntity>(
-        sp.GetRequiredService<IConfiguration>(),
-        sp.GetRequiredService<ILogger<HistoryRepository<CurrencyHistoryEntity>>>(),
-        "ExternalApiHistory"
-    ));*/
+builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp => 
+    {
+        var provider = sp.GetRequiredService<IAzureTableClient>();
+        var client = provider.GetClient("ExternalApiHistory");
+        var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
+        
+        return new HistoryRepository<WeatherHistoryEntity>(client, logger);
+    });
 
 // --- Services ---
 builder.Services.AddScoped<IWeatherService, WeatherService>();
