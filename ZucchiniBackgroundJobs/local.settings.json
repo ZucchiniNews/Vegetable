@@ -1,8 +1,0 @@
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "ConnectionStrings__DefaultConnection": "Server=(LocalDB)\\MSSQLLocalDB;Database=ZucchiniNewsDb;Trusted_Connection=True;TrustServerCertificate=True;"
-  }
-}
