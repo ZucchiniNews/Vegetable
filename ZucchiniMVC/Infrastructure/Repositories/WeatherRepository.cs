@@ -15,25 +15,6 @@ public class WeatherRepository : IWeatherRepository
         _apiLogger = apiLogger;
     }
 
-    public async Task<GeoLocation?> GetCoordinatesAsync(string city)
-    {
-        try
-        {
-            var result = await _client.GetAsync<List<GeoLocation>>(
-                $"geo/1.0/direct?q={city}&limit=1");
-
-            if (result == null)
-                _apiLogger.LogApiWarning("Weather", "Geocoding failed for " + city);
-
-            return result?.FirstOrDefault();
-        }
-        catch (Exception ex)
-        {
-            _apiLogger.LogApiError("Weather", ex);
-            return null;
-        }
-    }
-
     public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
     {
         try

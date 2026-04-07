@@ -1,4 +1,6 @@
-﻿using ZucchiniCore.Entities;
+﻿using Azure.Data.Tables;
+using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
@@ -8,10 +10,12 @@ namespace Zucchinimvc.Application.Services.Weather;
 public class WeatherService : IWeatherService
 {
     private readonly IWeatherRepository _weatherRepo;
+    private readonly TableClient _historyTable;
 
-    public WeatherService(IWeatherRepository weatherRepo)
+    public WeatherService(IWeatherRepository weatherRepo, IAzureTableClient azureTableClient)
     {
         _weatherRepo = weatherRepo;
+        _historyTable = azureTableClient.GetClient("ExternalApiHistory");
     }
 
     private static WeatherViewModel MapToViewModel(string city, WeatherResponse weather)
@@ -59,9 +63,27 @@ public class WeatherService : IWeatherService
             RecordedAt = DateTime.UtcNow,
         };
 
-        await _historyRepo.UpsertDailyAsync(entity);
+        await _historyTable.UpsertDailyAsync(entity);
     }
 
+    public async Task<GeoLocation?> GetCoordinatesAsync(string city)
+    {
+        try
+        {
+            var result = await _client.GetAsync<List<GeoLocation>>(
+                $"geo/1.0/direct?q={city}&limit=1");
+
+            if (result == null)
+                _apiLogger.LogApiWarning("Weather", "Geocoding failed for " + city);
+
+            return result?.FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            _apiLogger.LogApiError("Weather", ex);
+            return null;
+        }
+    }
     public async Task<List<WeatherHistoryEntity>> GetAllHistoryAsync()
     {
         var data = await _historyRepo.GetAllAsync();

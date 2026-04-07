@@ -10,9 +10,8 @@ namespace Zucchinimvc.Application.Services.Weather
         Task SaveWeatherHistoryAsync(WeatherViewModel model);
         Task<List<WeatherHistoryEntity>> GetAllHistoryAsync();
         Task<List<WeatherHistoryEntity>> GetHistoryByCityAsync(string city);
-
         Task<WeatherViewModel?> GetWeatherAnalyticsAsync(string city);
 
-
+        Task<GeoLocation?> GetCoordinatesAsync(string city);
     }
 }

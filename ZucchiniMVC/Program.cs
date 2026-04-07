@@ -2,7 +2,6 @@ using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Weather;
@@ -63,7 +62,6 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 // --- Services ---
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
-builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
