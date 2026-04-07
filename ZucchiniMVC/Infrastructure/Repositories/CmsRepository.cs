@@ -18,7 +18,14 @@ namespace Zucchinimvc.Infrastrcture.Repositories
             return articleDtos.Select(dto => new Article
             {
                 Id = dto.Id,
-                // Map other properties
+                DocumentId = dto.DocumentId,
+                Title = dto.Title,
+                Description = dto.Description,
+                Slug = dto.Slug,
+                CreatedAt = dto.CreatedAt,
+                UpdatedAt = dto.UpdatedAt,
+                PublishedAt = dto.PublishedAt,
+                Cover = dto.Cover != null ? new ArticleCover { Url = dto.Cover.Url } : null
             });
         }
     }
