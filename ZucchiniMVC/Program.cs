@@ -2,11 +2,10 @@ using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Analytics;
-using Zucchinimvc.Application.Services.ApiLogger;
+using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Infrastructure.ApiClients.OpenWeatherClient;
+using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
@@ -15,6 +14,7 @@ using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
+using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +36,7 @@ builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfi
 
 
 // --- Configurations ---
-builder.Services.Configure<OpenWeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
+builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
 builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 
 // --- Http Clients (Typed) ---
@@ -63,7 +63,6 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 // --- Services ---
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
-builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 

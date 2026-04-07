@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Application.Services.Analytics;
+using Zucchinimvc.Application.Services.Weather;
 
 
 
@@ -7,16 +7,16 @@ namespace Zucchinimvc.Controllers
 {
     public class WeatherController : Controller
     {
-        private readonly IAnalyticsService _analyticsService;
+        private readonly IWeatherService _weatherService;
 
-        public WeatherController(IAnalyticsService analyticsService)
+        public WeatherController(IWeatherService weatherService)
         {
-            _analyticsService = analyticsService;
+            _weatherService = weatherService;
 
         }
         public async Task<ActionResult> Index(string city)
         {
-            var model = await _analyticsService.GetWeatherAnalyticsAsync(city);
+            var model = await _weatherService.GetWeatherAnalyticsAsync(city);
 
             if (model == null) return View("Error");
 

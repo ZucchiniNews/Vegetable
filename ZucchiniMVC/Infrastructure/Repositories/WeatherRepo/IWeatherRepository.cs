@@ -1,7 +1,7 @@
 ﻿using ZucchiniCore.Entities;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 
-namespace Zucchinimvc.Infrastructure.Repositories;
+namespace Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 public interface IWeatherRepository
 {
