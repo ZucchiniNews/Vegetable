@@ -5,12 +5,10 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
 {
     private readonly TableClient _tableClient;
     private readonly ILogger<HistoryRepository<T>> _logger;
-    public HistoryRepository(IConfiguration configuration, ILogger<HistoryRepository<T>> logger, string tableName)
+    public HistoryRepository(TableClient tableClient, ILogger<HistoryRepository<T>> logger)
     {
         _logger = logger;
-        _tableClient = new TableClient(
-            configuration.GetConnectionString("AzureStorage"), tableName
-            );
+        _tableClient = tableClient;
     }
 
     public async Task UpsertDailyAsync(T entity)
@@ -21,7 +19,7 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex.ToString());
+            _logger?.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
             throw;
         }
     }
