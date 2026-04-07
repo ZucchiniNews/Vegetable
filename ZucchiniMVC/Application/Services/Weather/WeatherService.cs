@@ -8,9 +8,8 @@ namespace Zucchinimvc.Application.Services.Weather;
 public class WeatherService : IWeatherService
 {
     private readonly IWeatherRepository _weatherRepo;
-    private readonly IApiLoggerService _apiLogger;
 
-    public WeatherService(IWeatherRepository weatherRepoo)
+    public WeatherService(IWeatherRepository weatherRepo)
     {
         _weatherRepo = weatherRepo;
     }
