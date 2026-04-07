@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Application.Services.Analytics;
+using Zucchinimvc.Application.Services.Weather;
 
 
 
@@ -7,9 +7,9 @@ namespace Zucchinimvc.Controllers
 {
     public class WeatherController : Controller
     {
-        private readonly IAnalyticsService _analyticsService;
+        private readonly IWeatherService _analyticsService;
 
-        public WeatherController(IAnalyticsService analyticsService)
+        public WeatherController(IWeatherService analyticsService)
         {
             _analyticsService = analyticsService;
 
