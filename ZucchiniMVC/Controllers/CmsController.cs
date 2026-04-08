@@ -16,5 +16,11 @@ namespace Zucchinimvc.Controllers
             var articles = await _cmsService.GetArticles();
             return View(articles);
         }
+
+        public async Task<IActionResult> Categories()
+        {
+            var categories = await _cmsService.GetCategories();
+            return View(categories);
+        }
     }
 }
