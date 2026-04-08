@@ -1,27 +1,22 @@
 ﻿using Azure.Data.Tables;
 using Microsoft.Extensions.Configuration;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.AzureTableClient
+namespace Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
+
+public interface IAzureTableClient { TableClient GetClient(string tableName); }
+
+public class AzureTableClient : IAzureTableClient
 {
-    public interface IAzureTableClient
+    private readonly TableServiceClient _serviceClient;
+
+    public AzureTableClient(IConfiguration configuration)
     {
-        TableClient GetClient(string tableName);
+        _serviceClient = new TableServiceClient(configuration.GetConnectionString("AzureStorage"));
     }
-
-    public class AzureTableClient : IAzureTableClient
+    public TableClient GetClient(string tableName)
     {
-        private readonly TableServiceClient _serviceClient;
-
-        public AzureTableClient(IConfiguration configuration)
-        {
-            var connectionString = configuration.GetConnectionString("AzureStorage");
-            _serviceClient = new TableServiceClient(connectionString);
-        }
-        public TableClient GetClient(string tableName)
-        {
-            var client = _serviceClient.GetTableClient(tableName);
-            client.CreateIfNotExists();
-            return client;
-        }
+        var client = _serviceClient.GetTableClient(tableName);
+        client.CreateIfNotExists();
+        return client;
     }
 }
