@@ -45,7 +45,7 @@ public class WeatherService : IWeatherService
             RecordedAt = DateTime.UtcNow,
         };
 
-        await _historyRepo.UpsertDailyAsync(entity);
+        await _historyRepo.UpsertAsync(entity);
     }
 
     public async Task<List<WeatherHistoryEntity>> GetAllHistoryAsync()

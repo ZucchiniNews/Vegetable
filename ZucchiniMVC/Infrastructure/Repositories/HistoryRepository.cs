@@ -11,7 +11,7 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
         _tableClient = tableClient;
     }
 
-    public async Task UpsertDailyAsync(T entity)
+    public async Task UpsertAsync(T entity)
     {
         try
         {
