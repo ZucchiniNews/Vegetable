@@ -18,7 +18,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
             return articleDtos.Select(dto => new Article
             {
                 Id = dto.Id,
-                DocumentId = dto.DocumentId,
                 Title = dto.Title,
                 Description = dto.Description,
                 Slug = dto.Slug,
@@ -36,14 +35,12 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
             return categoryDtos.Select(dto => new Category
             {
                 Id = dto.Id,
-                DocumentId = dto.DocumentId,
                 Name = dto.Name,
                 Description = dto.Description,
                 Slug = dto.Slug,
                 Articles = dto.Articles?.Select(a => new Article
                 {
                     Id = a.Id,
-                    DocumentId = a.DocumentId,
                     Title = a.Title,
                     Description = a.Description,
                     Slug = a.Slug,
