@@ -17,4 +17,10 @@ public class CmsService : ICmsService
         var articles = await _cmsRepository.GetArticlesAsync();
         return articles.ToList();
     }
+
+    public async Task<List<Category>> GetCategories()
+    {
+        var categories = await _cmsRepository.GetCategoriesAsync();
+        return categories.ToList();
+    }
 }
