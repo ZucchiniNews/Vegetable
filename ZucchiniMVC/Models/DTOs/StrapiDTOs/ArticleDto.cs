@@ -1,3 +1,5 @@
+namespace Zucchinimvc.Models.DTOs.StrapiDTOs;
+
 public class ArticleDto
 {
     public int Id { get; set; }

@@ -1,7 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Home";
-}
+﻿@model IEnumerable<Zucchinimvc.Models.DTOs.StrapiDTOs.ArticleDto>
 
+@{
+    ViewData["Title"] = "Articles Index";
+}
 
 <section class="featured-section">
     <div class="featured-image">
@@ -42,40 +43,22 @@
     <h2>Latest News</h2>
 
     <div class="news-grid">
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop" alt="Technology news" />
-            <div class="news-card-body">
-                <span class="news-tag light">Technology</span>
-                <h3>New AI Tools Are Transforming Digital Classrooms</h3>
-                <div class="news-meta">
-                    <span>March 24, 2026</span>
-                    <span>4 min read</span>
-                </div>
-            </div>
-        </article>
+        @foreach (var article in Model)
+        {
+            <article class="news-card">
+                <img src="@article.Cover?.Url" alt="@article.Title" />
 
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1000&auto=format&fit=crop" alt="Business news" />
-            <div class="news-card-body">
-                <span class="news-tag light">Business</span>
-                <h3>Markets React to New Global Trade Developments</h3>
-                <div class="news-meta">
-                    <span>March 24, 2026</span>
-                    <span>3 min read</span>
-                </div>
-            </div>
-        </article>
+                <div class="news-card-body">
+                    <span class="news-tag light">News</span>
 
-        <article class="news-card">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1000&auto=format&fit=crop" alt="Health news" />
-            <div class="news-card-body">
-                <span class="news-tag light">Health</span>
-                <h3>Hospitals Expand Access to Smart Remote Care</h3>
-                <div class="news-meta">
-                    <span>March 23, 2026</span>
-                    <span>6 min read</span>
+                    <h3>@article.Title</h3>
+
+                    <div class="news-meta">
+                        <span>@article.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                        <span>5 min read</span>
+                    </div>
                 </div>
-            </div>
-        </article>
+            </article>
+        }
     </div>
 </section>
