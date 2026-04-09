@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\CmsController.cs" />
     <Compile Remove="Models\DTOs\StrapiDTOs\ArticleRawDto.cs" />
   </ItemGroup>
 

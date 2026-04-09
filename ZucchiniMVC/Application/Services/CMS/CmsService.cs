@@ -1,5 +1,7 @@
+using NuGet.Protocol.Core.Types;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
+using Zucchinimvc.Models.DTOs.StrapiDTOs;
 
 namespace Zucchinimvc.Application.Services.CMS;
 
@@ -12,10 +14,11 @@ public class CmsService : ICmsService
         _cmsRepository = cmsRepository;
     }
 
-    public async Task<List<Article>> GetArticles()
+    public async Task<IEnumerable<Article>> GetArticles()
     {
         var articles = await _cmsRepository.GetArticlesAsync();
-        return articles.ToList();
+
+        return articles;
     }
 
     public async Task<List<Category>> GetCategories()
