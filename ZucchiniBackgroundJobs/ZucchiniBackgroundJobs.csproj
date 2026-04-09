@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
+    <ProjectReference Include="..\ZucchiniCore\Zucchini.Domain.csproj" />
     <ProjectReference Include="..\ZucchiniMVC\Zucchinimvc.csproj" />
   </ItemGroup>
 

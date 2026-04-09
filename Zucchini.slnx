@@ -1,0 +1,7 @@
+<Solution>
+        <Project Path="Zucchini.Presentation/Presentation.csproj" />
+        <Project Path="Zucchini.Infrastructure/Infrastructure.csproj" />
+        <Project Path="Zucchini.Domain/Domain.csproj" />
+        <Project Path="Zucchini.Application/Application.csproj" />
+        <Project Path="ZucchiniBackGroundJobs/ZucchiniBackgroundJobs.csproj" />
+</Solution>
