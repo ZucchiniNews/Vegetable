@@ -1,8 +1,7 @@
-﻿using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
-using Zucchinimvc.Models.DTOs.WeatherDTOs;
-using Zucchinimvc.Application.Services.Logger;
-using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+﻿using Domain.Entities;
+using Infrastructure.ApiClients.WeatherClient;
+using Application.Services.Logger;
+using Application.Interfaces;
 
 namespace Infrastructure.Repositories;
 

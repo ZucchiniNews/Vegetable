@@ -1,4 +1,4 @@
-﻿namespace Zucchini.Application.Services.Logger;
+﻿namespace Application.Services.Logger;
 
 public interface IApiLoggerService
 {

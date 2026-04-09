@@ -1,5 +1,4 @@
-﻿using Azure.Data.Tables;
-namespace Zucchini.Infrastructure.Repositories;
+﻿namespace Application.Interfaces;
 
 public interface IHistoryRepository<T> where T : class, ITableEntity, new()
 {

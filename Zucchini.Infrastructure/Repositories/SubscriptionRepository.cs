@@ -1,9 +1,9 @@
-using Zucchini.Application.Interfaces;
+using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Zucchini.Domain.Entities;
-using Zucchini.Infrastructure.Data;
+using Domain.Entities;
+using Infrastructure.Data;
 
-namespace Zucchini.Infrastructure.Repositories;
+namespace Infrastructure.Repositories;
 
 public class SubscriptionRepository : ISubscriptionRepository
 {

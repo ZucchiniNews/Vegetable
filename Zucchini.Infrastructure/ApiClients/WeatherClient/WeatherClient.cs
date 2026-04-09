@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Text.Json;
-using Zucchini.Infrastructure.Config;
+using Infrastructure.Config;
 
-namespace Zucchini.Infrastructure.ApiClients.WeatherClient;
+namespace Infrastructure.ApiClients.WeatherClient;
 
 public class WeatherClient
 {

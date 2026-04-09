@@ -1,4 +1,4 @@
-﻿namespace Zucchini.Infrastructure.Config.WeatherSettings;
+﻿namespace Infrastructure.Config;
 
 public class WeatherSettings
 {

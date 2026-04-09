@@ -1,10 +1,7 @@
-﻿using Zucchini.Domain.Entities;
-using Zucchini.Infrastructure.Repositories.WeatherRepo;
-using Zucchini.Application.Models.DTOs.WeatherDTOs;
-using Zucchini.Infrastructure.Repositories;
-using Zucchini.Application.Models.ViewModels;
+﻿using Domain.Entities;
+using Application.Interfaces;
 
-namespace Zucchini.Application.Services.Weather;
+namespace Application.Services.Weather;
 
 public class WeatherService : IWeatherService
 {

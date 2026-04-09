@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
-using ZucchiniCore.Entities;
+using Domain.Entities;
 
-namespace Zucchinimvc.Areas.Identity.Pages.Account
+namespace Presentation.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailChangeModel : PageModel
     {

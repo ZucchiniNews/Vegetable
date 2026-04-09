@@ -1,8 +1,8 @@
 using Azure;
 using Azure.Data.Tables;
-using Zucchini.Domain.Entities;
+using Domain.Entities;
 
-namespace Zucchini.Infrastructure.Data;
+namespace Infrastructure.Data;
 public class WeatherHistoryTableEntity : ITableEntity
 {
     public string PartitionKey { get; set; } = "Linköping";

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
-using ZucchiniCore.Entities;
+using Domain.Entities;
 
-namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
+namespace Presentation.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {

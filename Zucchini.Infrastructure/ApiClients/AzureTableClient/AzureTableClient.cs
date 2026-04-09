@@ -1,7 +1,7 @@
 ﻿using Azure.Data.Tables;
 using Microsoft.Extensions.Configuration;
 
-namespace Zucchini.Infrastructure.ApiClients.AzureTableClient;
+namespace Infrastructure.ApiClients.AzureTableClient;
 
 public interface IAzureTableClient { TableClient GetClient(string tableName); }
 

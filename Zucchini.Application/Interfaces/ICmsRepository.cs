@@ -1,6 +1,6 @@
-﻿using Zucchini.Domain.Entities;
+﻿using Domain.Entities;
 
-namespace Zucchini.Infrastructure.Repositories.CmsRepo;
+namespace Application.Interfaces;
 
 public interface ICmsRepository
 {

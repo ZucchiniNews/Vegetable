@@ -1,4 +1,4 @@
-namespace Zucchini.Application.Services.Emails;
+namespace Application.Services.Emails;
 
 public interface IEmailService
 {

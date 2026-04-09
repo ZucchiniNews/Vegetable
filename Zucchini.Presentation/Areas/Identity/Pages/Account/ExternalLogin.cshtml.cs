@@ -12,9 +12,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using ZucchiniCore.Entities;
+using Domain.Entities;
 
-namespace Zucchinimvc.Areas.Identity.Pages.Account
+namespace Presentation.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel

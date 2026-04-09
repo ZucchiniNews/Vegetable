@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Zucchini.Domain.Entities;
+using Domain.Entities;
 
-namespace Zucchini.Infrastructure.Data
+namespace Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, Roles, string>
     {

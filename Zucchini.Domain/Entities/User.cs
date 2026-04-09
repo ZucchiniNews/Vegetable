@@ -1,4 +1,4 @@
-﻿namespace Zucchini.Domain.Entities;
+﻿namespace Domain.Entities;
 public class User
 {
     public string FirstName { get; set; } = string.Empty;

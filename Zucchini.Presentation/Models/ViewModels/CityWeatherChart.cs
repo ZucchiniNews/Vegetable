@@ -1,4 +1,4 @@
-﻿namespace Zucchini.Presentation.Models.ViewModels;
+﻿namespace Presentation.Models.ViewModels;
 public class CityWeatherChart
 {
     public string City { get; set; } = "City";

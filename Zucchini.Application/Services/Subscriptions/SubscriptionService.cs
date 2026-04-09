@@ -1,7 +1,7 @@
-using Zucchini.Domain.Entities;
-using Zucchini.Application.Interfaces;
+using Domain.Entities;
+using Application.Interfaces;
 
-namespace Zucchini.Application.Services.Subscriptions;
+namespace Application.Services.Subscriptions;
 
 public class SubscriptionService : ISubscriptionService
 {

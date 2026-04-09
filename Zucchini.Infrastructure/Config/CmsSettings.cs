@@ -1,4 +1,4 @@
-﻿namespace Zucchini.Infrastructure.Config.CMsSettings;
+﻿namespace Infrastructure.Config;
 
 public class CmsSettings
 {

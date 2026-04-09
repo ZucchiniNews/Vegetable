@@ -1,7 +1,7 @@
-﻿// using Zucchini.Domain.Entities;  // Shound NOT refer to Domain. need workaround
+﻿using Domain.Entities;
 // using Zucchini.Presentation.Models.DTOs.WeatherDTOs; // Shound NOT refer to Presentaion. need workaround
 
-namespace Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+namespace Application.Interfaces;
 
 public interface IWeatherRepository
 {

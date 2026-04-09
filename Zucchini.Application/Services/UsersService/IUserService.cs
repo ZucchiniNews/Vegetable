@@ -1,6 +1,6 @@
-using Zucchini.Domain.Entities;
+using Domain.Entities;
 
-namespace Zucchini.Application.Services.Users;
+namespace Application.Services.UsersService;
 
 public interface IUserService
 {

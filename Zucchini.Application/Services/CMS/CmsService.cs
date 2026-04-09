@@ -1,7 +1,7 @@
-using Zucchini.Domain.Entities;
-using Zucchini.Infrastructure.Repositories.CmsRepo;
+using Domain.Entities;
+using Application.Interfaces;
 
-namespace Zucchini.Application.Services.CMS;
+namespace Application.Services.CMS;
 
 public class CmsService : ICmsService
 {

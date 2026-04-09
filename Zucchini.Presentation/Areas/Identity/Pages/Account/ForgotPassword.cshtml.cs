@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using ZucchiniCore.Entities;
+using Domain.Entities;
 
 
-namespace Zucchinimvc.Areas.Identity.Pages.Account
+namespace Presentation.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {

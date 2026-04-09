@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Zucchini.Infrastructure.Data
+namespace Infrastructure.Data
 {
     public class DbInitializer
     {

@@ -1,7 +1,7 @@
-﻿using Zucchini.Domain.Entities;
+﻿using Domain.Entities;
 // using Zucchini.Presentation.Models.ViewModels;  // no referencing to presentaion
 
-namespace Zucchini.Application.Services.Weather;
+namespace Application.Services.Weather;
 
 public interface IWeatherService
 {

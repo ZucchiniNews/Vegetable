@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Text.Json;
-using Zucchini.Infrastructure.Config.CMsSettings;
+using Infrastructure.Config;
 
-namespace Zucchini.Infrastructure.ApiClients.CmsClient;
+namespace Infrastructure.ApiClients.CmsClient;
 
 public class CmsClient
 {

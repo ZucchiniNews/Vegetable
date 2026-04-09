@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Zucchini.Domain.Entities;
-namespace Zucchini.Application.Services.Users;
+using Domain.Entities;
+
+namespace Application.Services.UsersService;
 
 public class UserService : IUserService
 {

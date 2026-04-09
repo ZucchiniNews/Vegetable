@@ -1,6 +1,6 @@
-﻿using Zucchini.Domain.Entities;
-using Zucchini.Infrastructure.ApiClients.CmsClient;
-using Zucchini.Infrastructure.Repositories.CmsRepo;
+﻿using Domain.Entities;
+using Application.Interfaces;
+using Infrastructure.ApiClients.CmsClient;
 
 namespace Infrastructure.Repositories;
 

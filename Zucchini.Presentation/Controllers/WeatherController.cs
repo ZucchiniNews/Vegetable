@@ -1,28 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Application.Services.Weather;
+using Application.Services.Weather;
 
+namespace Presentation.Controllers;
 
-
-namespace Zucchinimvc.Controllers
+public class WeatherController : Controller
 {
-    public class WeatherController : Controller
+    private readonly IWeatherService _weatherService;
+
+    public WeatherController(IWeatherService weatherService)
     {
-        private readonly IWeatherService _weatherService;
+        _weatherService = weatherService;
 
-        public WeatherController(IWeatherService weatherService)
-        {
-            _weatherService = weatherService;
+    }
+    public async Task<ActionResult> Index(string city)
+    {
+        var model = await _weatherService.GetWeatherAnalyticsAsync(city);
 
-        }
-        public async Task<ActionResult> Index(string city)
-        {
-            var model = await _weatherService.GetWeatherAnalyticsAsync(city);
+        if (model == null) return View("Error");
 
-            if (model == null) return View("Error");
-
-            return View(model);
-        }
-
-
+        return View(model);
     }
 }

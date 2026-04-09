@@ -1,5 +1,6 @@
-using Zucchini.Domain.Entities;
-namespace Zucchini.Application.Services.Subscriptions;
+using Domain.Entities;
+
+namespace Application.Services.Subscriptions;
 
 public interface ISubscriptionService
 {

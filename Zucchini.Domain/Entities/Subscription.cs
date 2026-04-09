@@ -1,4 +1,5 @@
-﻿namespace Zucchini.Domain.Entities;
+﻿namespace Domain.Entities;
+
 public class Subscription
 {
     public int Id { get; set; }

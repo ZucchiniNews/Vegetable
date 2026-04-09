@@ -1,4 +1,6 @@
-using Zucchini.Domain.Entities;
+using Domain.Entities;
+
+namespace Application.Services.CMS;
 
 public interface ICmsService
 {
