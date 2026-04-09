@@ -1,5 +1,5 @@
-﻿using ZucchiniCore.Entities;
-using Zucchinimvc.Models.DTOs.WeatherDTOs;
+﻿// using Zucchini.Domain.Entities;  // Shound NOT refer to Domain. need workaround
+// using Zucchini.Presentation.Models.DTOs.WeatherDTOs; // Shound NOT refer to Presentaion. need workaround
 
 namespace Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
