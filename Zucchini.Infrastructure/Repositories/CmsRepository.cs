@@ -1,7 +1,8 @@
 ﻿using Zucchini.Domain.Entities;
 using Zucchini.Infrastructure.ApiClients.CmsClient;
+using Zucchini.Infrastructure.Repositories.CmsRepo;
 
-namespace Zucchini.Infrastructure.Repositories.CmsRepo;
+namespace Infrastructure.Repositories;
 
 public class CmsRepository : ICmsRepository
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using ZucchiniCore.Entities;
+using Domain.Entities;
 
 namespace Zucchinimvc.Services.Emails;
 
