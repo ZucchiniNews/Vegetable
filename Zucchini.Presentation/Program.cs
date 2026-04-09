@@ -15,6 +15,7 @@ using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+using Infrastructure.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);

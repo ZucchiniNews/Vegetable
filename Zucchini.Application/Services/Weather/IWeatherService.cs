@@ -1,5 +1,5 @@
 ﻿using Zucchini.Domain.Entities;
-using Zucchini.Application.Models.ViewModels;
+using Zucchini.Presentation.Models.ViewModels;
 
 namespace Zucchini.Application.Services.Weather;
 

@@ -2,8 +2,9 @@
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
-namespace Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+namespace Infrastructure.Repositories;
 
 public class WeatherRepository : IWeatherRepository
 {
