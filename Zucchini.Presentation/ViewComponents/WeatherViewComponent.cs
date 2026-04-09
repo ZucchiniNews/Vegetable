@@ -2,7 +2,7 @@
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Models.ViewModels;
 
-namespace Zucchinimvc.ViewComponents;
+namespace Zucchini.Presentation.ViewComponents;
 
 public class WeatherViewComponent : ViewComponent
 {

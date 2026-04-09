@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Models.DTOs.WeatherDTOs;
+﻿namespace Zucchini.Presentation.Models.DTOs.WeatherDTOs;
 public class MainInfo
 {
     public double Temp { get; set; }

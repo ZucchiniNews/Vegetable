@@ -1,4 +1,4 @@
-namespace Zucchinimvc.Models.ViewModels;
+namespace Zucchini.Presentation.Models.ViewModels;
 
 public class ErrorViewModel
 {
