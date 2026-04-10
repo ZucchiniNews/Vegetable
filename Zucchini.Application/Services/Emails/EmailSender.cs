@@ -1,6 +1,6 @@
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Domain.Entities;
 
 namespace Application.Services.Emails;
 

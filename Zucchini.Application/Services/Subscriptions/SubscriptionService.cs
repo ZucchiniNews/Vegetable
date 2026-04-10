@@ -1,17 +1,18 @@
 using Domain.Entities;
 using Application.Interfaces;
+using Application.Services.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services.Subscriptions;
 
-public class SubscriptionService : ISubscriptionService
+public class SubscriptionService : ServiceBase<SubscriptionService>, ISubscriptionService
 {
     private readonly ISubscriptionRepository _subscriptionRepository;
-    private readonly ILogger<SubscriptionService> _logger;
 
-    public SubscriptionService(ISubscriptionRepository subscriptionRepository, ILogger<SubscriptionService> logger)
+    public SubscriptionService(ISubscriptionRepository subscriptionRepository, ILoggerFactory loggerFactory)
+        : base(loggerFactory)
     {
         _subscriptionRepository = subscriptionRepository;
-        _logger = logger;
     }
 
     public async Task<Subscription?> GetActiveSubscriptionByUserIdAsync(string userId)
@@ -27,7 +28,7 @@ public class SubscriptionService : ISubscriptionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get active subscription for user {UserId}", userId);
+            logger.LogError(ex, "Failed to get active subscription for user {UserId}", userId);
             throw;
         }
     }
@@ -45,7 +46,7 @@ public class SubscriptionService : ISubscriptionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get all subscription types");
+            logger.LogError(ex, "Failed to get all subscription types");
             throw;
         }
     }
@@ -57,7 +58,7 @@ public class SubscriptionService : ISubscriptionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get subscription type by ID {Id}", id);
+            logger.LogError(ex, "Failed to get subscription type by ID {Id}", id);
             throw;
         }
     }
@@ -68,7 +69,7 @@ public class SubscriptionService : ISubscriptionService
             var existing = await _subscriptionRepository.GetByUserIdAsync(userId);
             if (existing != null)
             {
-                _logger.LogWarning("User {UserId} already has a subscription. Consider renewing instead.", userId);
+                logger.LogWarning("User {UserId} already has a subscription. Consider renewing instead.", userId);
                 throw new InvalidOperationException("User already has a subscription.");
             }
             var subscriptionType = await _subscriptionRepository.GetTypeByIdAsync(subscriptionTypeId)
@@ -87,7 +88,7 @@ public class SubscriptionService : ISubscriptionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to create subscription for user {UserId}", userId);
+            logger.LogError(ex, "Failed to create subscription for user {UserId}", userId);
             throw;
         }
     }
@@ -103,7 +104,7 @@ public class SubscriptionService : ISubscriptionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to complete payment for subscription {SubscriptionId}", subscriptionId);
+            logger.LogError(ex, "Failed to complete payment for subscription {SubscriptionId}", subscriptionId);
             throw;
         }
     }
@@ -125,7 +126,7 @@ public class SubscriptionService : ISubscriptionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to renew subscription {SubscriptionId}", subscriptionId);
+            logger.LogError(ex, "Failed to renew subscription {SubscriptionId}", subscriptionId);
             throw;
         }
     }
@@ -143,7 +144,7 @@ public class SubscriptionService : ISubscriptionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to unsubscribe subscription {SubscriptionId}", subscriptionId);
+            logger.LogError(ex, "Failed to unsubscribe subscription {SubscriptionId}", subscriptionId);
             throw;
         }
     }

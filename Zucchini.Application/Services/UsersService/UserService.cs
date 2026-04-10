@@ -1,22 +1,22 @@
-using Microsoft.AspNetCore.Identity;
 using Domain.Entities;
+using Application.Services.Logger;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services.UsersService;
 
-public class UserService : IUserService
+public class UserService : ServiceBase<UserService>, IUserService
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Roles> _roleManager;
-    private readonly ILogger<UserService> _logger;
 
     public UserService(
         UserManager<User> userManager,
         RoleManager<Roles> roleManager,
-        ILogger<UserService> logger)
+        ILoggerFactory loggerFactory) : base(loggerFactory)
     {
         _userManager = userManager;
         _roleManager = roleManager;
-        _logger = logger;
     }
 
     public async Task<User?> GetUserByIdAsync(string userId)
@@ -27,7 +27,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get user by id {UserId}", userId);
+            logger.LogError(ex, "Failed to get user by id {UserId}", userId);
             throw;
         }
     }
@@ -40,7 +40,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get user by email {Email}", email);
+            logger.LogError(ex, "Failed to get user by email {Email}", email);
             throw;
         }
     }
@@ -55,7 +55,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to update user {UserId}", user.Id);
+            logger.LogError(ex, "Failed to update user {UserId}", user.Id);
             throw;
         }
     }
@@ -77,7 +77,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to delete user {UserId}", userId);
+            logger.LogError(ex, "Failed to delete user {UserId}", userId);
             throw;
         }
     }
@@ -104,7 +104,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to anonymize user {UserId}", userId);
+            logger.LogError(ex, "Failed to anonymize user {UserId}", userId);
             throw;
         }
     }
@@ -120,7 +120,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get roles for user {UserId}", userId);
+            logger.LogError(ex, "Failed to get roles for user {UserId}", userId);
             throw;
         }
     }
@@ -133,7 +133,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get user with roles {UserId}", userId);
+            logger.LogError(ex, "Failed to get user with roles {UserId}", userId);
             throw;
         }
     }
@@ -154,7 +154,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to assign role {Role} to user {UserId}", roleName, userId);
+            logger.LogError(ex, "Failed to assign role {Role} to user {UserId}", roleName, userId);
             throw;
         }
     }
@@ -172,7 +172,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to remove role {Role} from user {UserId}", roleName, userId);
+            logger.LogError(ex, "Failed to remove role {Role} from user {UserId}", roleName, userId);
             throw;
         }
     }
@@ -185,7 +185,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get all users");
+            logger.LogError(ex, "Failed to get all users");
             throw;
         }
     }
@@ -204,7 +204,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to search users with term {SearchTerm}", searchTerm);
+            logger.LogError(ex, "Failed to search users with term {SearchTerm}", searchTerm);
             throw;
         }
     }
@@ -221,7 +221,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to lock user {UserId}", userId);
+            logger.LogError(ex, "Failed to lock user {UserId}", userId);
             throw;
         }
     }
@@ -237,7 +237,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to unlock user {UserId}", userId);
+            logger.LogError(ex, "Failed to unlock user {UserId}", userId);
             throw;
         }
     }
@@ -252,7 +252,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get user with subscription {UserId}", userId);
+            logger.LogError(ex, "Failed to get user with subscription {UserId}", userId);
             throw;
         }
     }
@@ -272,7 +272,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to update newsletter preference for user {UserId}", userId);
+            logger.LogError(ex, "Failed to update newsletter preference for user {UserId}", userId);
             throw;
         }
     }
@@ -287,7 +287,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get newsletter subscribers");
+            logger.LogError(ex, "Failed to get newsletter subscribers");
             throw;
         }
     }

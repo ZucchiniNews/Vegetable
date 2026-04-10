@@ -1,9 +1,10 @@
 using Azure;
 using Azure.Data.Tables;
 using Domain.Entities;
+using Domain.Interfaces;
 
 namespace Infrastructure.Data;
-public class WeatherHistoryTableEntity : ITableEntity
+public class WeatherHistoryTableEntity : IHistoryRecord, ITableEntity
 {
     public string PartitionKey { get; set; } = "Linköping";
     public string RowKey { get; set; } = DateTime.UtcNow.ToString("yyyy-MM-dd-HH");
