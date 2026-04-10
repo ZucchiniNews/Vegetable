@@ -1,20 +1,20 @@
-﻿using Microsoft.Extensions.Options;
-using System.Text.Json;
+﻿using Application.Services.Logger;
 using Infrastructure.Config;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace Infrastructure.ApiClients.WeatherClient;
 
-public class WeatherClient
+public class WeatherClient : ServiceBase<WeatherClient>
 {
     private readonly HttpClient _http;
     private readonly WeatherSettings _settings;
-    private readonly ILogger<WeatherClient> _logger;
-
-    public WeatherClient(HttpClient http, IOptions<WeatherSettings> settings, ILogger<WeatherClient> logger)
+    public WeatherClient(HttpClient http, IOptions<WeatherSettings> settings, ILoggerFactory loggerFactory)
+        : base(loggerFactory)  // ← pass to base
     {
         _http = http;
         _settings = settings.Value;
-        _logger = logger;
         _http.BaseAddress = new Uri(_settings.BaseUrl);
     }
     public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.ApiKey);
@@ -22,8 +22,7 @@ public class WeatherClient
     {
         if (!IsConfigured)
         {
-            _logger.LogWarning("WeatherClient: API request to '{Endpoint}' was skipped because the ApiKey is not configured in settings.", endpoint);
-            _logger.LogWarning("WeatherClient: Missing credentials for BaseAddress: {BaseAddress}. Check 'WeatherApi:ApiKey' in appsettings.json.", _http.BaseAddress);
+            logger.LogWarning("WeatherClient: API request to '{Endpoint}' was skipped because the ApiKey is not configured.", endpoint);
             return default;
         }
 

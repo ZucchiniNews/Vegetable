@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewComponents\WeatherViewComponent.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -22,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Models\DTOs\" />
+    <Folder Include="ViewComponents\" />
   </ItemGroup>
 
 </Project>
