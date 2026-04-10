@@ -21,10 +21,11 @@ public class WeatherService : IWeatherService
         var location = await _weatherRepo.GetCoordinatesAsync(city);
         if (location == null) return null;
 
-        var weather = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
-        if (weather?.Main == null) return null;
+        var snapshot = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
+        if (snapshot == null) return null;
 
-        return MapToEntity(city, weather);
+        snapshot.City = city;
+        return snapshot;
     }
 
     public async Task SaveWeatherHistoryAsync(WeatherHistory model)
@@ -72,16 +73,4 @@ public class WeatherService : IWeatherService
         return new WeatherAnalytics { CityHistories = cityHistories };
     }
 
-    private static WeatherSnapshot MapToEntity(string city, WeatherResponse weather)
-    {
-        var condition = weather.Weather?.FirstOrDefault();
-        return new WeatherSnapshot
-        {
-            City = city,
-            Temperature = weather.Main!.Temp,
-            Humidity = weather.Main.Humidity,
-            Description = condition?.Description ?? "",
-            Icon = condition?.Icon ?? ""
-        };
-    }
 }
