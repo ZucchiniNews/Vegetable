@@ -5,7 +5,7 @@ namespace Application.Services.Weather;
 
 public interface IWeatherService
 {
-    Task<WeatherHistory?> GetWeatherByCityAsync(string city);
+    Task<WeatherSnapshot?> GetWeatherByCityAsync(string city);
     Task SaveWeatherHistoryAsync(WeatherHistory model);
     Task<List<WeatherHistory>> GetAllHistoryAsync();
     Task<List<WeatherHistory>> GetHistoryByCityAsync(string city);

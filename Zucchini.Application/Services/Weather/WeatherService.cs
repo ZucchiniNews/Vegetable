@@ -1,10 +1,11 @@
-﻿using Domain.Entities;
-using Application.Interfaces;
+﻿using Application.Interfaces;
+using Domain.Entities;
+using Domain.Interfaces;
 
 namespace Application.Services.Weather;
 
 public class WeatherService : IWeatherService
-{
+
     private readonly IWeatherRepository _weatherRepo;
     private readonly IHistoryRepository<WeatherHistory> _historyRepo;
 
@@ -14,7 +15,7 @@ public class WeatherService : IWeatherService
         _historyRepo = historyRepo;
     }
 
-    public async Task<WeatherHistory?> GetWeatherByCityAsync(string city)
+    public async Task<WeatherSnapshot?> GetWeatherByCityAsync(string city)
     {
         if (string.IsNullOrWhiteSpace(city)) return null;
 

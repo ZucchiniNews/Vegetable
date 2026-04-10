@@ -2,6 +2,6 @@ namespace Domain.Interfaces;
 
 public interface IHistoryRecord
 {
-    string PartitionKey { get; set; }
-    string RowKey { get; set; }
+    public string PartitionKey { get; set; }
+    public string RowKey { get; set; }
 }
