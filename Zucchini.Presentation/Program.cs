@@ -6,15 +6,11 @@ using Infrastructure.ApiClients.AzureTableClient;
 using Infrastructure.Config;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
-using Infrastructure.Repositories.CmsRepo;
 using Application.Services.Emails;
 using Application.Services.Subscriptions;
 using Application.Services.UsersService;
-using Application.Services.Logger;
 using Application.Services.CMS;
 using Application.Services.Weather;
-using Infrastructure.Repositories.WeatherRepo;
-using Infrastructure.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
