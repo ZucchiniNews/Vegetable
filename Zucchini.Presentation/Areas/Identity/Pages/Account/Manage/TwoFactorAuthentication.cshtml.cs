@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ZucchiniCore.Entities;
+using Domain.Entities;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {
