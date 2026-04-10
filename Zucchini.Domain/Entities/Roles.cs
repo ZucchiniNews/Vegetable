@@ -1,6 +1,7 @@
-﻿namespace Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+namespace Domain.Entities;
 
-public class Roles
+public class Roles : IdentityRole
 {
     public const string Admin = "Admin";
     public const string Editor = "Editor";
