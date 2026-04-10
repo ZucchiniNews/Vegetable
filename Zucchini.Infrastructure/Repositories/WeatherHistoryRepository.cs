@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Repositories;
 
-internal class WeatherHistoryRepository
+public class WeatherHistoryRepository
     : HistoryRepository<WeatherHistoryTableEntity>,
       IHistoryRepository<WeatherHistory>
 {

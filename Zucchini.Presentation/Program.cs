@@ -49,20 +49,19 @@ builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 
 // Weather Repository
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistory>>(sp =>
+builder.Services.AddScoped(sp =>
 {
     var provider = sp.GetRequiredService<IAzureTableClient>();
-    var client = provider.GetClient("ExternalApiHistory");
-    var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-
-    return new HistoryRepository<WeatherHistory>(client, loggerFactory);
+    return provider.GetClient("ExternalApiHistory");
 });
+builder.Services.AddScoped<IHistoryRepository<WeatherHistory>, WeatherHistoryRepository>();
 
 // --- Services ---
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();
