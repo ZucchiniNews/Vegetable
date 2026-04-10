@@ -26,7 +26,7 @@ public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, IS
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }
@@ -41,7 +41,7 @@ public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, IS
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }
@@ -54,7 +54,7 @@ public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, IS
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }
@@ -67,7 +67,7 @@ public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, IS
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }
@@ -81,7 +81,7 @@ public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, IS
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }
@@ -95,7 +95,7 @@ public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, IS
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }

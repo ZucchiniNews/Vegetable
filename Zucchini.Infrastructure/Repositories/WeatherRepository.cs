@@ -26,7 +26,7 @@ public class WeatherRepository : RepositoryBase<WeatherRepository>, IWeatherRepo
         }
         catch (Exception ex)
         {
-            _apiLogger.LogApiError("Geocoding", ex);
+            logger.LogError("Geocoding", ex);
             return null;
         }
     }
