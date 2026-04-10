@@ -4,28 +4,16 @@ namespace Application.Interfaces;
 
 public interface IUserRepository
 {
-    Task<User?> GetUserByIdAsync(string userId);
-    Task<User?> GetUserByEmailAsync(string email);
-    Task UpdateUserAsync(User user);
-    Task DeleteUserAsync(string userId); // soft delete for GDPR compliance
-    Task AnonymizeUserDataAsync(string userId); // for GDPR compliance
-
-
-    // Role management
-    Task<User?> GetUserWithRolesAsync(string userId);
-    Task<IList<string>> GetUserRolesAsync(string userId);
-    Task AssignRoleAsync(string userId, string roleName);
-    Task RemoveRoleAsync(string userId, string roleName);
-
-    // Admin operations
-    Task<List<User>> GetAllUsersAsync();
-    Task<List<User>> SearchUsersAsync(string searchTerm);
-    Task LockUserAsync(string userId);
-    Task UnlockUserAsync(string userId);
-
-    Task<User?> GetUserWithSubscriptionAsync(string userId);
-
-    // Newsletter 
-    Task UpdateNewsletterPreferenceAsync(string userId, bool subscribe);
+    Task<User?> GetByIdAsync(string userId);
+    Task<User?> GetByEmailAsync(string email);
+    Task UpdateAsync(User user);
+    Task<IList<string>> GetRolesAsync(User user);
+    Task AddToRoleAsync(User user, string roleName);
+    Task RemoveFromRoleAsync(User user, string roleName);
+    Task<List<User>> GetAllAsync();
+    Task<List<User>> SearchAsync(string searchTerm);
+    Task LockAsync(User user);
+    Task UnlockAsync(User user);
+    Task<User?> GetWithSubscriptionAsync(string userId);
     Task<List<User>> GetNewsletterSubscribersAsync();
 }
