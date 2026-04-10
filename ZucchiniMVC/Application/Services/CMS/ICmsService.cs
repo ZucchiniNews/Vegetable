@@ -1,7 +1,8 @@
 using ZucchiniCore.Entities;
+using Zucchinimvc.Models.DTOs.StrapiDTOs;
 
 public interface ICmsService
 {
-    Task<List<Article>> GetArticles();
+    Task<IEnumerable<Article>> GetArticles();
     Task<List<Category>> GetCategories();
 }

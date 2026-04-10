@@ -1,4 +1,6 @@
 ﻿using ZucchiniCore.Entities;
+using Zucchinimvc.Models.DTOs.StrapiDTOs;
+
 
 namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
 {

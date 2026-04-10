@@ -74,6 +74,9 @@ builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSe
 // Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 
+builder.Services.Configure<CmsSettings>(
+    builder.Configuration.GetSection("StrapiSettings"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
