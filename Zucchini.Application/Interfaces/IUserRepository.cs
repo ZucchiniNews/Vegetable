@@ -8,6 +8,7 @@ public interface IUserRepository
     Task<User?> GetByEmailAsync(string email);
     Task UpdateAsync(User user);
     Task<IList<string>> GetRolesAsync(User user);
+    Task<bool> RoleExistsAsync(string roleName);
     Task AddToRoleAsync(User user, string roleName);
     Task RemoveFromRoleAsync(User user, string roleName);
     Task<List<User>> GetAllAsync();
