@@ -1,11 +1,10 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Interfaces;
 
 namespace Application.Services.Weather;
 
 public class WeatherService : IWeatherService
-
+{
     private readonly IWeatherRepository _weatherRepo;
     private readonly IHistoryRepository<WeatherHistory> _historyRepo;
 
@@ -25,7 +24,7 @@ public class WeatherService : IWeatherService
         var weather = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
         if (weather?.Main == null) return null;
 
-        return MapToViewModel(city, weather);
+        return MapToEntity(city, weather);
     }
 
     public async Task SaveWeatherHistoryAsync(WeatherHistory model)
@@ -37,9 +36,9 @@ public class WeatherService : IWeatherService
         {
             PartitionKey = model.City.Trim(),
             RowKey = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
-            Temperature = model.Temp,
+            Temperature = model.Temperature,
             Humidity = model.Humidity,
-            Condition = model.Description,
+            Condition = model.Condition,
             RecordedAt = DateTime.UtcNow,
         };
 
@@ -62,38 +61,24 @@ public class WeatherService : IWeatherService
                 .ToList();
     }
 
-    public async Task<WeatherHistory?> GetWeatherAnalyticsAsync(string city)
+    public async Task<WeatherAnalytics> GetWeatherAnalyticsAsync()
     {
-        var targetCity = string.IsNullOrWhiteSpace(city) ? "Linköping" : city;
-        var weather = await GetWeatherByCityAsync(targetCity);
-
-        if (weather == null) return null;
-
         var chartCities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
-        weather.Cities = new List<CityWeatherChart>();
+        var cityHistories = new Dictionary<string, List<WeatherHistory>>();
 
         foreach (var cityName in chartCities)
-        {
-            var history = await GetHistoryByCityAsync(cityName);
+            cityHistories[cityName] = await GetHistoryByCityAsync(cityName);
 
-            weather.Cities.Add(new CityWeatherChart
-            {
-                City = cityName,
-                Labels = history.Select(x => x.RecordedAt.ToString("s")).ToList(),
-                Temperatures = history.Select(x => x.Temperature).ToList()
-            });
-        }
-
-        return weather;
+        return new WeatherAnalytics { CityHistories = cityHistories };
     }
 
-    private static WeatherViewModel MapToViewModel(string city, WeatherResponse weather)
+    private static WeatherSnapshot MapToEntity(string city, WeatherResponse weather)
     {
         var condition = weather.Weather?.FirstOrDefault();
-        return new WeatherViewModel
+        return new WeatherSnapshot
         {
             City = city,
-            Temp = weather.Main!.Temp,
+            Temperature = weather.Main!.Temp,
             Humidity = weather.Main.Humidity,
             Description = condition?.Description ?? "",
             Icon = condition?.Icon ?? ""

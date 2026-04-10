@@ -9,5 +9,5 @@ public interface IWeatherService
     Task SaveWeatherHistoryAsync(WeatherHistory model);
     Task<List<WeatherHistory>> GetAllHistoryAsync();
     Task<List<WeatherHistory>> GetHistoryByCityAsync(string city);
-    Task<WeatherHistory?> GetWeatherAnalyticsAsync(string city);
+    Task<WeatherAnalytics> GetWeatherAnalyticsAsync();
 }
