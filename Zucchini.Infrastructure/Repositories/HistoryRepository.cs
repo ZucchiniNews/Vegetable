@@ -1,15 +1,15 @@
 ﻿using Azure.Data.Tables;
+using Microsoft.Extensions.Logging;
 using Application.Interfaces;
 
 namespace Infrastructure.Repositories;
 
-public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITableEntity, new()
+public class HistoryRepository<T> : RepositoryBase<HistoryRepository<T>>, IHistoryRepository<T> where T : class, ITableEntity, new()
 {
     private readonly TableClient _tableClient;
-    private readonly ILogger<HistoryRepository<T>> _logger;
-    public HistoryRepository(TableClient tableClient, ILogger<HistoryRepository<T>> logger)
+    public HistoryRepository(TableClient tableClient, ILoggerFactory loggerFactory)
+        : base(loggerFactory)
     {
-        _logger = logger;
         _tableClient = tableClient;
     }
 
@@ -21,7 +21,7 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
+            logger.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
             throw;
         }
     }
@@ -41,7 +41,7 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }
@@ -64,7 +64,7 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex.ToString());
+            logger.LogError(ex.ToString());
             throw;
         }
     }
@@ -83,7 +83,7 @@ public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITabl
         }
         catch (Exception ex)
         {
-            _logger?.LogError($"Error fetching all entities: {ex}");
+            logger.LogError(ex, $"Error fetching all entities: {ex}");
             throw;
         }
     }
