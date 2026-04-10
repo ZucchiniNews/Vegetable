@@ -40,7 +40,7 @@ public class WeatherRepository : RepositoryBase<WeatherRepository>, IWeatherRepo
         }
         catch (Exception ex)
         {
-            _apiLogger.LogApiError("WeatherAPI", ex);
+            logger.LogError("WeatherAPI", ex);
             return null;
         }
     }
