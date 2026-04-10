@@ -9,12 +9,11 @@ namespace Infrastructure.Repositories;
 public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, ISubscriptionRepository
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<SubscriptionRepository> _logger;
 
-    public SubscriptionRepository(ApplicationDbContext context, ILogger<SubscriptionRepository> logger)
+    public SubscriptionRepository(ApplicationDbContext context, ILoggerFactory loggerFactory)
+     : base(loggerFactory)
     {
         _context = context;
-        _logger = logger;
     }
 
     public async Task<Subscription?> GetByUserIdAsync(string userId)

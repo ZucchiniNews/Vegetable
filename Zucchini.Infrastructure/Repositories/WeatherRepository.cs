@@ -11,6 +11,7 @@ public class WeatherRepository : RepositoryBase<WeatherRepository>, IWeatherRepo
     private readonly WeatherClient _client;
 
     public WeatherRepository(WeatherClient client, ILoggerFactory loggerFactory)
+        : base(loggerFactory)
     {
         _client = client;
     }
