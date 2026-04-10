@@ -19,6 +19,15 @@ public class WeatherViewComponent : ViewComponent
 
         var weather = await _service.GetWeatherByCityAsync(city);
 
-        return View(weather ?? new WeatherViewModel { City = city });
+        var model = weather != null
+            ? new WeatherViewModel
+            {
+                City = city,
+                Temp = weather.Temperature,
+                Icon = weather.Icon
+            }
+            : new WeatherViewModel { City = city };
+
+        return View(model);
     }
 }
