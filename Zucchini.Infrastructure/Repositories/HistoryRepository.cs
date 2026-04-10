@@ -34,7 +34,7 @@ public class HistoryRepository<T> : RepositoryBase<HistoryRepository<T>>, IHisto
             var from = DateTime.UtcNow.AddDays(-days).ToString("yyyy-MM-dd");
             var results = new List<T>();
             await foreach (var entity in _tableClient.QueryAsync<T>(
-                e => e.PartitionKey == partitionKey && e.RowKey.CompareTo(from) >= 0))
+                e => ((ITableEntity)e).PartitionKey == partitionKey && ((ITableEntity)e).RowKey.CompareTo(from) >= 0))
             {
                 results.Add(entity);
             }
@@ -54,13 +54,13 @@ public class HistoryRepository<T> : RepositoryBase<HistoryRepository<T>>, IHisto
             var results = new List<T>();
 
             await foreach (var entity in _tableClient.QueryAsync<T>(
-                e => e.PartitionKey == partitionKey))
+                e => ((ITableEntity)e).PartitionKey == partitionKey))
             {
                 results.Add(entity);
             }
 
             return results
-                .OrderBy(x => x.RowKey)
+                .OrderBy(x => ((ITableEntity)x).RowKey)
                 .TakeLast(take);
         }
         catch (Exception ex)
