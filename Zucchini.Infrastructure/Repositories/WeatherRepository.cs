@@ -31,11 +31,11 @@ public class WeatherRepository : RepositoryBase<WeatherRepository>, IWeatherRepo
         }
     }
 
-    public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon)
+    public async Task<WeatherSnapshot?> GetWeatherAsync(double lat, double lon)
     {
         try
         {
-            return await _client.GetAsync<WeatherResponse>(
+            return await _client.GetAsync<WeatherSnapshot>(
                 $"data/2.5/weather?lat={lat}&lon={lon}&units=metric");
         }
         catch (Exception ex)

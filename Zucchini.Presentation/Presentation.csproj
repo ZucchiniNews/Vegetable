@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Zucchini.Application\Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\DTOs\" />
+  </ItemGroup>
+
 </Project>
