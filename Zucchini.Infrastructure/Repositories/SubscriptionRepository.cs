@@ -1,11 +1,12 @@
 using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Domain.Entities;
 using Infrastructure.Data;
 
 namespace Infrastructure.Repositories;
 
-public class SubscriptionRepository : ISubscriptionRepository
+public class SubscriptionRepository : RepositoryBase<SubscriptionRepository>, ISubscriptionRepository
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<SubscriptionRepository> _logger;

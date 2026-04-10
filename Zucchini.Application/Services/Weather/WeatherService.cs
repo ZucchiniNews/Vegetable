@@ -6,15 +6,15 @@ namespace Application.Services.Weather;
 public class WeatherService : IWeatherService
 {
     private readonly IWeatherRepository _weatherRepo;
-    private readonly IHistoryRepository<WeatherHistoryEntity> _historyRepo;
+    private readonly IHistoryRepository<WeatherHistory> _historyRepo;
 
-    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo)
+    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistory> historyRepo)
     {
         _weatherRepo = weatherRepo;
         _historyRepo = historyRepo;
     }
 
-    public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
+    public async Task<WeatherHistory?> GetWeatherByCityAsync(string city)
     {
         if (string.IsNullOrWhiteSpace(city)) return null;
 
@@ -27,12 +27,12 @@ public class WeatherService : IWeatherService
         return MapToViewModel(city, weather);
     }
 
-    public async Task SaveWeatherHistoryAsync(WeatherViewModel model)
+    public async Task SaveWeatherHistoryAsync(WeatherHistory model)
     {
         if (model == null || string.IsNullOrWhiteSpace(model.City))
             return;
 
-        var entity = new WeatherHistoryEntity
+        var entity = new WeatherHistory
         {
             PartitionKey = model.City.Trim(),
             RowKey = DateTime.UtcNow.ToString("yyyyMMddHHmm"),
@@ -45,23 +45,23 @@ public class WeatherService : IWeatherService
         await _historyRepo.UpsertAsync(entity);
     }
 
-    public async Task<List<WeatherHistoryEntity>> GetAllHistoryAsync()
+    public async Task<List<WeatherHistory>> GetAllHistoryAsync()
     {
         var data = await _historyRepo.GetAllAsync();
-        return data?.OrderBy(e => e.RecordedAt).ToList() ?? new List<WeatherHistoryEntity>();
+        return data?.OrderBy(e => e.RecordedAt).ToList() ?? new List<WeatherHistory>();
     }
 
-    public async Task<List<WeatherHistoryEntity>> GetHistoryByCityAsync(string city)
+    public async Task<List<WeatherHistory>> GetHistoryByCityAsync(string city)
     {
-        if (string.IsNullOrWhiteSpace(city)) return new List<WeatherHistoryEntity>();
+        if (string.IsNullOrWhiteSpace(city)) return new List<WeatherHistory>();
 
         var data = await _historyRepo.GetRecentByPartitionKeyAsync(city, 10);
-        return (data ?? Enumerable.Empty<WeatherHistoryEntity>())
+        return (data ?? Enumerable.Empty<WeatherHistory>())
                 .OrderBy(e => e.RecordedAt)
                 .ToList();
     }
 
-    public async Task<WeatherViewModel?> GetWeatherAnalyticsAsync(string city)
+    public async Task<WeatherHistory?> GetWeatherAnalyticsAsync(string city)
     {
         var targetCity = string.IsNullOrWhiteSpace(city) ? "Linköping" : city;
         var weather = await GetWeatherByCityAsync(targetCity);

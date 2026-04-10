@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Application.Services.CMS;
-
 namespace Presentation.Controllers;
 
 public class CmsController : Controller

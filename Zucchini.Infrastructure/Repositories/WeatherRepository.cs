@@ -2,18 +2,17 @@
 using Infrastructure.ApiClients.WeatherClient;
 using Application.Services.Logger;
 using Application.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Repositories;
 
-public class WeatherRepository : IWeatherRepository
+public class WeatherRepository : RepositoryBase<WeatherRepository>, IWeatherRepository
 {
     private readonly WeatherClient _client;
-    private readonly IApiLoggerService _apiLogger;
 
-    public WeatherRepository(WeatherClient client, IApiLoggerService apiLogger)
+    public WeatherRepository(WeatherClient client, ILoggerFactory loggerFactory)
     {
         _client = client;
-        _apiLogger = apiLogger;
     }
 
     public async Task<GeoLocation?> GetCoordinatesAsync(string city)

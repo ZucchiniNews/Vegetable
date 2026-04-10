@@ -5,9 +5,9 @@ namespace Application.Services.Weather;
 
 public interface IWeatherService
 {
-    Task<WeatherViewModel?> GetWeatherByCityAsync(string city);
-    Task SaveWeatherHistoryAsync(WeatherViewModel model);
-    Task<List<WeatherHistoryEntity>> GetAllHistoryAsync();
-    Task<List<WeatherHistoryEntity>> GetHistoryByCityAsync(string city);
-    Task<WeatherViewModel?> GetWeatherAnalyticsAsync(string city);
+    Task<WeatherHistory?> GetWeatherByCityAsync(string city);
+    Task SaveWeatherHistoryAsync(WeatherHistory model);
+    Task<List<WeatherHistory>> GetAllHistoryAsync();
+    Task<List<WeatherHistory>> GetHistoryByCityAsync(string city);
+    Task<WeatherHistory?> GetWeatherAnalyticsAsync(string city);
 }
