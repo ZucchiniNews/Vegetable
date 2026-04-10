@@ -1,6 +1,7 @@
-﻿namespace Application.Interfaces;
+﻿using Domain.Interfaces;
+namespace Application.Interfaces;
 
-public interface IHistoryRepository<T> where T : class, ITableEntity, new()
+public interface IHistoryRepository<T> where T : class, IHistoryRecord, new()
 {
     Task UpsertAsync(T entity);
     Task<IEnumerable<T>> GetDailyHistoryAsync(string partitionKey, int days);

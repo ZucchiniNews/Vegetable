@@ -1,17 +1,19 @@
+using Application.Services.Logger;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services.Emails;
 
-public class EmailService : IEmailService
+public class EmailService : ServiceBase<EmailService>, IEmailService
 {
     private readonly IConfiguration _configuration;
-    private readonly ILogger<EmailService> _logger;
 
-    public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
+    public EmailService(IConfiguration configuration, ILoggerFactory loggerFactory)
+        : base(loggerFactory)
     {
         _configuration = configuration;
-        _logger = logger;
     }
 
     public async Task SendAsync(string to, string subject, string htmlMessage)
@@ -39,7 +41,7 @@ public class EmailService : IEmailService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to send email to {To}", to);
+            logger.LogError(ex, "Failed to send email to {To}", to);
             throw;
         }
     }
