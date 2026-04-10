@@ -22,7 +22,7 @@ public class HistoryRepository<T> : RepositoryBase<HistoryRepository<T>>, IHisto
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
+            logger.LogError(ex, "Error upserting entity to {TableName}", _tableClient.Name);
             throw;
         }
     }

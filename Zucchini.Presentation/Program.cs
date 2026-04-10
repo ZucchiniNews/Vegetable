@@ -2,16 +2,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Infrastructure.ApiClients.WeatherClient;
+using Infrastructure.ApiClients.CmsClient;
 using Infrastructure.ApiClients.AzureTableClient;
 using Infrastructure.Config;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Application.Interfaces;
 using Application.Services.Emails;
 using Application.Services.Subscriptions;
 using Application.Services.UsersService;
 using Application.Services.CMS;
 using Application.Services.Weather;
-
+using Application.Services.Logger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,14 +49,14 @@ builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 
 // Weather Repository
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp => 
-    {
-        var provider = sp.GetRequiredService<IAzureTableClient>();
-        var client = provider.GetClient("ExternalApiHistory");
-        var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
-        
-        return new HistoryRepository<WeatherHistoryEntity>(client, logger);
-    });
+builder.Services.AddScoped<IHistoryRepository<WeatherHistory>>(sp =>
+{
+    var provider = sp.GetRequiredService<IAzureTableClient>();
+    var client = provider.GetClient("ExternalApiHistory");
+    var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
+
+    return new HistoryRepository<WeatherHistory>(client, loggerFactory);
+});
 
 // --- Services ---
 builder.Services.AddScoped<IWeatherService, WeatherService>();
@@ -66,9 +68,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
-
-// Logger
-builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 
 var app = builder.Build();
 

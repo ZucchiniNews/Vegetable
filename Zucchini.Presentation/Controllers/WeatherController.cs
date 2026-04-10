@@ -14,7 +14,7 @@ public class WeatherController : Controller
     }
     public async Task<ActionResult> Index(string city)
     {
-        var model = await _weatherService.GetWeatherAnalyticsAsync(city);
+        var model = await _weatherService.GetWeatherAnalyticsAsync();
 
         if (model == null) return View("Error");
 

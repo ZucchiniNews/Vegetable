@@ -29,7 +29,7 @@ public class HomeController : Controller
     }
     public IActionResult Economy()
     {
-        //return View();
+        return View();
     }
 
     public IActionResult Privacy()
