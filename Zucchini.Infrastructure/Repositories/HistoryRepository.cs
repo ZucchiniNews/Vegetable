@@ -1,10 +1,11 @@
-﻿using Azure.Data.Tables;
+﻿using Application.Interfaces;
+using Domain.Interfaces;
+using Azure.Data.Tables;
 using Microsoft.Extensions.Logging;
-using Application.Interfaces;
 
 namespace Infrastructure.Repositories;
 
-public class HistoryRepository<T> : RepositoryBase<HistoryRepository<T>>, IHistoryRepository<T> where T : class, ITableEntity, new()
+public class HistoryRepository<T> : RepositoryBase<HistoryRepository<T>>, IHistoryRepository<T> where T : class, IHistoryRecord, ITableEntity, new()
 {
     private readonly TableClient _tableClient;
     public HistoryRepository(TableClient tableClient, ILoggerFactory loggerFactory)
