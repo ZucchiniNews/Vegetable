@@ -60,6 +60,10 @@
                             @await Component.InvokeAsync("Weather", new { city })
                         </div>
 
+                        <div class="subscribe-header-box">
+                            <a class="btn btn-warning fw-bold text-dark" asp-controller="Subscription" asp-action="Index">Subscribe</a>
+                        </div>
+
                         <div class="login-header-box">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>
