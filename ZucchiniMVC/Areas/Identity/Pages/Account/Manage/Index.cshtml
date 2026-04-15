@@ -1,27 +1,59 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Account";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
+<div class="container py-4 manage-container">
+    
+    <partial name="_ManageNav" />
+    <partial name="_StatusMessage" for="StatusMessage" />
+
+    <div class="card card-settings mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-1">
+                <i class="bi bi-person-circle me-2 fs-5"></i>
+                <h5 class="card-title mb-0 fw-bold">Profile Settings</h5>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            <p class="text-muted small mb-4">Update your account information and how we contact you.</p>
+
+            <form id="profile-form" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.05em;"></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="bi bi-at"></i></span>
+                        <input asp-for="Username" class="form-control bg-light border-start-0 rounded-end-3" disabled />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Input.PhoneNumber" class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.05em;"></label>
+                    <input asp-for="Input.PhoneNumber" class="form-control rounded-3" placeholder="e.g. +1 (555) 000-0000" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
+                </div>
+
+                <button id="update-profile-button" type="submit" class="btn btn-dark w-100 fw-bold py-2 rounded-3">
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border rounded-4 shadow-sm" style="background-color: #f0f7ff; border-color: #cce3ff !important;">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="fw-bold mb-1">Membership & Billing</h6>
+                    <p class="text-muted small mb-0">Manage your subscription plan and payment methods.</p>
+                </div>
+                <a asp-controller="Subscription" asp-action="Index" class="btn btn-outline-primary bg-white fw-bold rounded-pill px-4">
+                    Manage <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
+        </div>
     </div>
 </div>
 
