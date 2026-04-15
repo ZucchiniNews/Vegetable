@@ -1,6 +1,6 @@
 ﻿namespace Zucchinimvc.Models.DTOs.CurrencyDTOs
 {
-    public class CurrencyDTO
+    public class CurrencyRateDto
     {
         public Dictionary<string, decimal> Rates { get; set; }
         public string Base { get; set; }
