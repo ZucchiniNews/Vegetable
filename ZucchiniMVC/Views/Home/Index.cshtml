@@ -51,18 +51,20 @@
         @foreach (var article in Model)
         {
             <article class="news-card">
-                <img src="@article.Cover?.Url" alt="@article.Title" />
+                <a asp-controller="Home" asp-action="Article" asp-route-slug="@article.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
+                    <img src="@article.Cover?.Url" alt="@article.Title" />
 
-                <div class="news-card-body">
-                    <span class="news-tag light">News</span>
+                    <div class="news-card-body">
+                        <span class="news-tag light">News</span>
 
-                    <h3>@article.Title</h3>
+                        <h3>@article.Title</h3>
 
-                    <div class="news-meta">
-                        <span>@article.PublishedAt.ToString("MMMM dd, yyyy")</span>
-                        <span>5 min read</span>
+                        <div class="news-meta">
+                            <span>@article.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                            <span>5 min read</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </article>
         }
     </div>
