@@ -47,6 +47,18 @@ public class HomeController : Controller
         return View("Index", categoryArticles);
     }
 
+    [HttpGet("/article/{slug}")]
+    public async Task<IActionResult> Article(string slug)
+    {
+        var articles = await _cmsService.GetArticles();
+        var article = articles.FirstOrDefault(a => string.Equals(a.Slug, slug, StringComparison.OrdinalIgnoreCase));
+
+        if (article == null)
+            return NotFound();
+
+        return View(article);
+    }
+
     public IActionResult Privacy()
     {
         return View();
