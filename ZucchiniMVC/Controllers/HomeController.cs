@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Zucchinimvc.Models.DTOs.StrapiDTOs;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
@@ -17,9 +16,6 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var articles = await _cmsService.GetArticles();
-
-        Console.WriteLine($"Articles count: {articles.Count()}");
-
         ViewData["IsHome"] = true;
         return View(articles);
     }
@@ -41,7 +37,7 @@ public class HomeController : Controller
 
         var allArticles = await _cmsService.GetArticles();
         var categoryArticleIds = category.Articles?.Select(a => a.Id).ToHashSet() ?? new HashSet<int>();
-        
+
         var categoryArticles = allArticles.Where(a => categoryArticleIds.Contains(a.Id)).ToList();
 
         return View("Index", categoryArticles);
