@@ -3,8 +3,11 @@
 
 @{
     ViewData["Title"] = "Articles Index";
+    var isHome = ViewData["IsHome"] as bool? == true;
 }
 
+@if (isHome)
+{
 <section class="featured-section">
     <div class="featured-image">
         <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop" alt="Featured news" />
@@ -39,6 +42,7 @@
         </div>
     </div>
 </section>
+}
 
 <section class="latest-news-section">
     <h2>Latest News</h2>
@@ -47,18 +51,20 @@
         @foreach (var article in Model)
         {
             <article class="news-card">
-                <img src="@article.Cover?.Url" alt="@article.Title" />
+                <a asp-controller="Home" asp-action="Article" asp-route-slug="@article.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
+                    <img src="@article.Cover?.Url" alt="@article.Title" />
 
-                <div class="news-card-body">
-                    <span class="news-tag light">News</span>
+                    <div class="news-card-body">
+                        <span class="news-tag light">News</span>
 
-                    <h3>@article.Title</h3>
+                        <h3>@article.Title</h3>
 
-                    <div class="news-meta">
-                        <span>@article.PublishedAt.ToString("MMMM dd, yyyy")</span>
-                        <span>5 min read</span>
+                        <div class="news-meta">
+                            <span>@article.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                            <span>5 min read</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </article>
         }
     </div>
