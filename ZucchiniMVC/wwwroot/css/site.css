@@ -420,3 +420,24 @@ html, body {
         font-size: 16px;
     }
 }
+
+
+/* User Management pages */
+
+.nav-pills .nav-link {
+    color: #555;
+}
+
+    .nav-pills .nav-link.active {
+        background-color: white;
+        color: black;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+.card-user-management {
+    background-color: #fff;
+}
+
+body {
+    background-color: #f8f9fb;
+}
