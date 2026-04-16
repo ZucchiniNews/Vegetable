@@ -14,16 +14,20 @@ namespace Zucchinimvc.Infrastructure.Data
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {
-                    await roleManager.CreateAsync(new Roles {Name = role});
+                    var newRole = new Roles();
+                    newRole.Name = role;
+                    newRole.NormalizedName = role.ToUpper();
+
+                    await roleManager.CreateAsync(newRole);
                 }
             }
         }
 
         public static async Task SeedAdminAsync(UserManager<User> userManager)
-        {
+        see{
             var defaultUser = new User
             {
-                UserName = "Zucchini_Admin",
+                UserName = "ZucchiniNews@gmail.com",
                 Email = "ZucchiniNews@gmail.com",
                 FirstName = "System",
                 LastName = "Admin",
@@ -31,10 +35,10 @@ namespace Zucchinimvc.Infrastructure.Data
                 PhoneNumberConfirmed = true
             };
 
-            var user = await userManager.FindByEmailAsync(defaultUser.Email);
-            if (user == null)
+            var result = await userManager.CreateAsync(defaultUser, "PrettyPenny123;)");
+
+            if (result.Succeeded)
             {
-                await userManager.CreateAsync(defaultUser, "PrettyPenny;)");  // password ;)
                 await userManager.AddToRoleAsync(defaultUser, "Admin");
             }
         }
