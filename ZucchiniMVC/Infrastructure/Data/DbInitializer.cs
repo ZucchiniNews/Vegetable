@@ -24,7 +24,7 @@ namespace Zucchinimvc.Infrastructure.Data
             var defaultUser = new User
             {
                 UserName = "Zucchini_Admin",
-                Email = "zucchiniNews@gmail.com",
+                Email = "ZucchiniNews@gmail.com",
                 FirstName = "System",
                 LastName = "Admin",
                 EmailConfirmed = true,
