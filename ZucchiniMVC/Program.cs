@@ -7,11 +7,13 @@ using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
+using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
+using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
@@ -62,6 +64,8 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     });
 // Currency Repo
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
+builder.Services.AddHttpClient<CurrencyClient>();
+builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 // --- Services ---
