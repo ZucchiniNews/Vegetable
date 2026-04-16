@@ -2,19 +2,20 @@ using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.CMS;
+using Zucchinimvc.Application.Services.Currency;
+using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
+using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
+using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
-using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +60,9 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
         
         return new HistoryRepository<WeatherHistoryEntity>(client, logger);
     });
+// Currency Repo
+builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 // --- Services ---
 builder.Services.AddScoped<IWeatherService, WeatherService>();
