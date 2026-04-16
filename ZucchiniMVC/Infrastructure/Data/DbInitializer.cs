@@ -6,7 +6,7 @@ namespace Zucchinimvc.Infrastructure.Data
     public class DbInitializer
     {
 
-        public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRoles(RoleManager<Roles> roleManager)
         {
             string[] roles = { "Admin", "Editor", "Writer", "Reader" };
 
@@ -14,7 +14,7 @@ namespace Zucchinimvc.Infrastructure.Data
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {
-                    await roleManager.CreateAsync(new IdentityRole(role));
+                    await roleManager.CreateAsync(new Roles {Name = role});
                 }
             }
         }
@@ -34,7 +34,7 @@ namespace Zucchinimvc.Infrastructure.Data
             var user = await userManager.FindByEmailAsync(defaultUser.Email);
             if (user == null)
             {
-                await userManager.CreateAsync(defaultUser, "Password123!");
+                await userManager.CreateAsync(defaultUser, "PrettyPenny;)");  // password ;)
                 await userManager.AddToRoleAsync(defaultUser, "Admin");
             }
         }
