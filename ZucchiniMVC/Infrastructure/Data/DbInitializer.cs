@@ -24,7 +24,7 @@ namespace Zucchinimvc.Infrastructure.Data
         }
 
         public static async Task SeedAdminAsync(UserManager<User> userManager)
-        see{
+        {
             var defaultUser = new User
             {
                 UserName = "ZucchiniNews@gmail.com",
