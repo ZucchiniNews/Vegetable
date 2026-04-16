@@ -1,5 +1,4 @@
 ﻿using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
-using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Application.Services.Currency
 {
