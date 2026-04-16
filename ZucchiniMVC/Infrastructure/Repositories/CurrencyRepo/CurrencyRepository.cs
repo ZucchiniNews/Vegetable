@@ -40,9 +40,8 @@ namespace Zucchinimvc.Infrastructure.Repositories.CurrencyRepo
             {
                 var rates = await _apiClient.GetLatestRatesAsync();
 
-                var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(CACHE_DURATION_MINUTES))
-                    .SetPriority(CacheItemPriority.High);
+            // Store in cache for 1 hour
+            _cache.Set(CACHE_KEY, rates, TimeSpan.FromHours(1));
 
                 _cache.Set(CACHE_KEY, rates, cacheOptions);
 
