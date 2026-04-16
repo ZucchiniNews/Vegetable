@@ -16,23 +16,23 @@ namespace Zucchinimvc.Controllers
             _logger = logger;
         }
 
-        [HttpGet("rates/{baseCurrency}")]
-        public async Task<ActionResult<Dictionary<string, decimal>>> GetRates(string baseCurrency)
+        [HttpGet("{baseCurrency}")]
+        public async Task<ActionResult<Dictionary<string, decimal>>> GetRates(string baseCurrency = "USD")
         {
+            // Quick guard clause for the request itself
             if (string.IsNullOrWhiteSpace(baseCurrency))
+                return BadRequest("Base currency is required.");
+
+            try
             {
-                return BadRequest("Base currency cannot be empty");
+                var rates = await _currencyService.GetRatesAsync(baseCurrency);
+                return Ok(rates);
             }
-
-            var rates = await _currencyService.GetLatestRatesAsync(baseCurrency.ToUpper());
-
-            if (rates == null || rates.Count == 0)
+            catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning("Failed to fetch currency rates for {BaseCurrency}", baseCurrency);
-                return NotFound($"Unable to fetch rates for {baseCurrency}");
+                _logger.LogWarning(ex.Message);
+                return NotFound(ex.Message);
             }
-
-            return Ok(rates);
         }
 
         [HttpGet("usd")]
