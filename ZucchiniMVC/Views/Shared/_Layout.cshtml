@@ -13,8 +13,8 @@
 </head>
 <body class="news-body d-flex flex-column min-vh-100">
     @using Zucchinimvc.Application.Services.CMS
-    @inject ICmsService CmsService
-    @{
+@inject ICmsService CmsService
+@{
         var categories = await CmsService.GetCategories();
     }
     <header class="news-header sticky-top">
@@ -30,24 +30,25 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav me-auto ms-3 news-nav-links">
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        @if (categories != null)
-                        {
-                            @foreach (var category in categories)
+                <div class="collapse navbar-collapse d-flex align-items-center gap-3" id="mainNavbar">
+                    <div class="news-nav-wrapper">
+                        <ul class="navbar-nav news-nav-links">
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            @if (categories != null)
                             {
-                                var isActive = ViewContext.RouteData.Values["slug"]?.ToString() == category.Slug;
-                                <li class="nav-item">
-                                    <a class="nav-link @(isActive ? "active" : "")"
-                                       asp-controller="Home" asp-action="Category" asp-route-slug="@category.Slug">@category.Name</a>
-                                </li>
+                                @foreach (var category in categories)
+                                {
+                                    var isActive = ViewContext.RouteData.Values["slug"]?.ToString() == category.Slug;
+                                    <li class="nav-item">
+                                        <a class="nav-link @(isActive ? "active" : "")"
+                                           asp-controller="Home" asp-action="Category" asp-route-slug="@category.Slug">@category.Name</a>
+                                    </li>
+                                }
                             }
-                        }
-                    </ul>
-
+                        </ul>
+                    </div>
                     <div class="d-flex align-items-center gap-3 news-header-right">
                         <div class="weather-header-box text-nowrap">
                             @{

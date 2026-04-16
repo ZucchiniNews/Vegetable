@@ -57,6 +57,26 @@ html, body {
     font-weight: 700;
 }
 
+.news-nav-wrapper {
+    flex: 0 1 auto; 
+    min-width: 0;
+    overflow: hidden;
+}
+
+.news-navbar-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.news-nav-links {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
 .news-nav-links .nav-link {
     color: #111 !important;
     font-weight: 500;
@@ -74,17 +94,25 @@ html, body {
         transform: translateY(-1px); 
     }
 
-    /* Active State: For the current page */
     .news-nav-links .nav-link.active {
         background-color: #111 !important;
         color: #fff !important;
         border-color: #111;
     }
 
+    .news-nav-links::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .news-nav-links::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 2px;
+    }
+
 .news-header-right {
+    flex-shrink: 0; 
     display: flex;
     align-items: center;
-    gap: 16px;
 }
 
 .weather-header-box {
