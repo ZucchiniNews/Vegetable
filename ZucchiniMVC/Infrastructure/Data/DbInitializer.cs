@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ZucchiniCore.Entities;
 
 namespace Zucchinimvc.Infrastructure.Data
 {
@@ -15,6 +16,26 @@ namespace Zucchinimvc.Infrastructure.Data
                 {
                     await roleManager.CreateAsync(new IdentityRole(role));
                 }
+            }
+        }
+
+        public static async Task SeedAdminAsync(UserManager<User> userManager)
+        {
+            var defaultUser = new User
+            {
+                UserName = "Zucchini_Admin",
+                Email = "zucchiniNews@gmail.com",
+                FirstName = "System",
+                LastName = "Admin",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
+            var user = await userManager.FindByEmailAsync(defaultUser.Email);
+            if (user == null)
+            {
+                await userManager.CreateAsync(defaultUser, "Password123!");
+                await userManager.AddToRoleAsync(defaultUser, "Admin");
             }
         }
     }
