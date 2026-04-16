@@ -26,9 +26,9 @@ namespace Zucchinimvc.Application.Services.Currency
             return response.Rates;
         }
 
-        public async Task<Dictionary<string, decimal>> GetRatesAsync(string baseCurrency)
+        public async Task<Dictionary<string, decimal>> GetRatesAsync(string toCurrency)
         {
-            var currency = baseCurrency.ToUpper().Trim();
+            var currency = toCurrency.ToUpper().Trim();
 
             var rates = await GetLatestRatesAsync(currency);
 
@@ -36,6 +36,32 @@ namespace Zucchinimvc.Application.Services.Currency
             {
                 _logger.LogWarning("No rates found for {Currency}", currency);
                 throw new KeyNotFoundException($"Rates for {currency} not found.");
+            }
+
+            return rates;
+        }
+
+        public async Task<ActionResult<Dictionary<string, decimal>>> GetEURRates()
+        {
+            var rates = await GetLatestRatesAsync("EUR");
+
+            if (rates.Count == 0)
+            {
+                _logger.LogWarning("No rates found for EUR");
+                throw new KeyNotFoundException($"Rates for EUR not found.");
+            }
+
+            return rates;
+        }
+
+        public async Task<ActionResult<Dictionary<string, decimal>>> GetSEKRates()
+        {
+            var rates = await GetLatestRatesAsync("SEK");
+
+            if (rates.Count == 0)
+            {
+                _logger.LogWarning("No rates found for SEK");
+                throw new KeyNotFoundException($"Rates for SEK not found.");
             }
 
             return rates;
