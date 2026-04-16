@@ -35,6 +35,7 @@ public class AdminController : Controller
         return View();
     }
 
+    [Authorize(Roles = "Admin")]
     public IActionResult ManageUsers()
     {
         return View();

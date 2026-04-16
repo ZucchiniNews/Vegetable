@@ -1,3 +1,13 @@
-﻿Manage Users
+﻿@if (User.IsInRole("Admin"))
+{
+    <p>
+        Manage User
+    </p>
 
-manage other accounts like the subscribers, writers and editors. 
+    @* 
+    @foreach (var user in Model.Users)
+    {
+
+    } 
+    *@
+}
