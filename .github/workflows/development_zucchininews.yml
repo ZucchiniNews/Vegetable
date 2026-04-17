@@ -29,6 +29,9 @@ jobs:
       - name: dotnet publish
         run: dotnet publish ZucchiniMVC/Zucchinimvc.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      - name: Copy appsettings.json to publish directory
+        run: cp ZucchiniMVC/appsettings.json ${{env.DOTNET_ROOT}}/myapp/appsettings.json
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
