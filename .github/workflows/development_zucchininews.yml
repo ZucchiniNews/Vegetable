@@ -27,7 +27,7 @@ jobs:
         run: dotnet build ZucchiniMVC/Zucchinimvc.sln --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ZucchiniMVC/Zucchinimvc.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ZucchiniMVC/Zucchinimvc.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -44,6 +44,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
+
+      - name: List published files
+        run: ls -R .net-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
