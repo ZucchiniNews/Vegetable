@@ -51,5 +51,5 @@ jobs:
         with:
           app-name: "ZucchiniNews"
           slot-name: "Production"
-          package: ./publish_output
+          package: ./.net-app
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_95754D7839F944ED9416E20DE732DFE0 }}
