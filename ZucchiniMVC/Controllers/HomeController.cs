@@ -62,8 +62,6 @@ public class HomeController : Controller
         var isSubscribed = user != null && await _subscriptionService.HasActiveSubscriptionAsync(user.Id);
 
         return View(new ArticleDetailViewModel
-
-        return View(new ArticleDetailViewModel
         {
             Article = article,
             IsSubscribed = isSubscribed
