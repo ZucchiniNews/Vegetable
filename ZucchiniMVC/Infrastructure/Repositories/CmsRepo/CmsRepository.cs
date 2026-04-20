@@ -26,7 +26,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 CreatedAt = dto.CreatedAt,
                 UpdatedAt = dto.UpdatedAt,
                 PublishedAt = dto.PublishedAt,
-                Cover = dto.Cover != null ? new ArticleCover { Url = dto.Cover.Url } : null
+                Cover = dto.Cover != null ? new ArticleCover { OriginalUrl = dto.Cover.Url } : null
             });
         }
 

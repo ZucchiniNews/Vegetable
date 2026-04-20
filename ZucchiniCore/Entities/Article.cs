@@ -16,8 +16,3 @@ public class Article
     public int ReadingTimeMinutes { get; set; } = 1;
     public int ReaderLikes { get; set; } = 0;
 }
-
-public class ArticleCover
-{
-    public string Url { get; set; } = string.Empty;
-}

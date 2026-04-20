@@ -52,7 +52,7 @@
         {
             <article class="news-card">
                 <a asp-controller="Home" asp-action="Article" asp-route-slug="@article.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
-                    <img src="@article.Cover?.Url" alt="@article.Title" />
+                    <img src="@article.Cover?.DisplayUrl" alt="@article.Title" />
 
                     <div class="news-card-body">
                         <span class="news-tag light">News</span>
