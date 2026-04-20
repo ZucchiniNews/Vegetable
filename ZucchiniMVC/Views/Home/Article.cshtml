@@ -30,7 +30,7 @@
                 
                 <p>@Model.Article.BodyPreview</p>
 
-                @if (Model.IsSubscribed)
+                @if (Model.IsSubscribed || User.IsInRole("Admin"))
                 {
                     <p>@Model.Article.BodyGated</p>
                 }

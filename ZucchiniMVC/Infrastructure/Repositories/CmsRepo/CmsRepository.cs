@@ -26,6 +26,8 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 CreatedAt = dto.CreatedAt,
                 UpdatedAt = dto.UpdatedAt,
                 PublishedAt = dto.PublishedAt,
+                BodyPreview = dto.BodyPreview,
+                BodyGated = dto.BodyGated,
                 Cover = dto.Cover != null ? new ArticleCover { OriginalUrl = dto.Cover.Url } : null
             });
         }
@@ -48,7 +50,9 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                     Slug = a.Slug,
                     CreatedAt = a.CreatedAt,
                     UpdatedAt = a.UpdatedAt,
-                    PublishedAt = a.PublishedAt
+                    PublishedAt = a.PublishedAt,
+                    BodyPreview = a.BodyPreview,
+                    BodyGated = a.BodyGated
                 }).ToList()
             });
         }
