@@ -21,7 +21,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
             {
                 Id = dto.Id,
                 Title = dto.Title,
-                Description = dto.Description,
+                ContentSummary = dto.ContentSummary,
                 Slug = dto.Slug,
                 CreatedAt = dto.CreatedAt,
                 UpdatedAt = dto.UpdatedAt,
@@ -44,7 +44,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 {
                     Id = a.Id,
                     Title = a.Title,
-                    Description = a.Description,
+                    ContentSummary = a.ContentSummary,
                     Slug = a.Slug,
                     CreatedAt = a.CreatedAt,
                     UpdatedAt = a.UpdatedAt,

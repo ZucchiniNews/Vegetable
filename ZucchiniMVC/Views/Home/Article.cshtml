@@ -14,7 +14,7 @@
                 <div class="article-meta text-muted mb-4 d-flex align-items-center gap-3">
                     <span>Published on @Model.PublishedAt.ToString("MMMM dd, yyyy")</span>
                     <span>•</span>
-                    <span>5 min read</span>
+                    <span>@Model.ReadingTimeMinutes min read</span>
                 </div>
             </div>
 
@@ -26,7 +26,7 @@
             }
 
             <div class="article-content" style="font-size: 1.15rem; line-height: 1.8;">
-                <p class="lead fw-bold mb-4">@Model.Description</p>
+                <p class="lead fw-bold mb-4">@Model.ContentSummary</p>
                 
                 <!-- Additional generic content blocks, in a real scenario this would render rich text or markdown -->
                 <p>Curabitur blandit tempus porttitor. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
