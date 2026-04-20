@@ -8,6 +8,7 @@ public class Article
     public string Slug { get; set; } = string.Empty;
     public string BodyPreview { get; set; } = string.Empty;
     public string BodyGated { get; set; } = string.Empty;
+    public bool EditorsChoice { get; set; } = false;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public DateTime PublishedAt { get; set; }
