@@ -50,22 +50,7 @@
     <div class="news-grid">
         @foreach (var article in Model)
         {
-            <article class="news-card">
-                <a asp-controller="Home" asp-action="Article" asp-route-slug="@article.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
-                    <img src="@article.Cover?.DisplayUrl" alt="@article.Title" />
-
-                    <div class="news-card-body">
-                        <span class="news-tag light">News</span>
-
-                        <h3>@article.Title</h3>
-
-                        <div class="news-meta">
-                            <span>@article.PublishedAt.ToString("MMMM dd, yyyy")</span>
-                            <span>5 min read</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
+            <partial name="_NewscardPartial" model="article" />
         }
     </div>
 </section>

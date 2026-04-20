@@ -1,0 +1,19 @@
+﻿@using ZucchiniCore.Entities
+@model Article
+
+<article class="news-card">
+    <a asp-controller="Home" asp-action="Article" asp-route-slug="@Model.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
+        <img src="@Model.Cover?.DisplayUrl" alt="@Model.Title" />
+
+        <div class="news-card-body">
+            <span class="news-tag light">News</span>
+
+            <h3>@Model.Title</h3>
+
+            <div class="news-meta">
+                <span>@Model.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                <span>@Model.ReadingTimeMinutes min read</span>
+            </div>
+        </div>
+    </a>
+</article>
