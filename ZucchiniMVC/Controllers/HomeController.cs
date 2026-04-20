@@ -1,14 +1,58 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Models;
+using System.Diagnostics;
+using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    private readonly ICmsService _cmsService;
+
+    public HomeController(ICmsService cmsService)
     {
-        return View();
+        _cmsService = cmsService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var articles = await _cmsService.GetArticles();
+        ViewData["IsHome"] = true;
+        return View(articles);
+    }
+
+    public async Task<IActionResult> Categories()
+    {
+        var categories = await _cmsService.GetCategories();
+        return View(categories);
+    }
+
+    [HttpGet("/category/{slug}")]
+    public async Task<IActionResult> Category(string slug)
+    {
+        var categories = await _cmsService.GetCategories();
+        var category = categories.FirstOrDefault(c => string.Equals(c.Slug, slug, StringComparison.OrdinalIgnoreCase));
+
+        if (category == null)
+            return NotFound();
+
+        var allArticles = await _cmsService.GetArticles();
+        var categoryArticleIds = category.Articles?.Select(a => a.Id).ToHashSet() ?? new HashSet<int>();
+
+        var categoryArticles = allArticles.Where(a => categoryArticleIds.Contains(a.Id)).ToList();
+
+        return View("Index", categoryArticles);
+    }
+
+    [HttpGet("/article/{slug}")]
+    public async Task<IActionResult> Article(string slug)
+    {
+        var articles = await _cmsService.GetArticles();
+        var article = articles.FirstOrDefault(a => string.Equals(a.Slug, slug, StringComparison.OrdinalIgnoreCase));
+
+        if (article == null)
+            return NotFound();
+
+        return View(article);
     }
 
     public IActionResult Privacy()
