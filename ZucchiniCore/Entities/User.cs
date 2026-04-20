@@ -11,10 +11,7 @@ namespace ZucchiniCore.Entities
         public bool IsActive { get; set; } = true;
         public bool NewsletterSubscribed { get; set; } = false;
         public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
-
-        //    public ICollection<UserCategoryPreference> Preferences { get; set; }
-        //    public ICollection<ArticleView> ArticleViews { get; set; }
-        //    public ICollection<ArticleLike> ArticleLikes { get; set; }
-
+        public ICollection<Article> LikedArticle { get; set; } = new List<Article>();
+        
     }
 }
