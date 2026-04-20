@@ -24,11 +24,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ZucchiniMVC/Zucchinimvc.sln
 
-      - name: Build
-        run: dotnet build ZucchiniMVC/Zucchinimvc.sln --configuration Release --no-restore
-
       - name: Publish
-        run: dotnet publish ZucchiniMVC/Zucchinimvc.csproj --configuration Release --no-build --output ./publish
+        run: dotnet publish ZucchiniMVC/Zucchinimvc.csproj --configuration Release --output ./publish
 
       - name: Upload published app
         uses: actions/upload-artifact@v4
