@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
@@ -7,10 +9,12 @@ namespace Zucchinimvc.Controllers;
 public class HomeController : Controller
 {
     private readonly ICmsService _cmsService;
+    private readonly UserManager<User> _userManager;
 
-    public HomeController(ICmsService cmsService)
+    public HomeController(ICmsService cmsService, UserManager<User> userManager)
     {
         _cmsService = cmsService;
+        _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
@@ -52,7 +56,16 @@ public class HomeController : Controller
         if (article == null)
             return NotFound();
 
-        return View(article);
+        var user = await _userManager.GetUserAsync(User);
+        var isSubscribed = user?.Subscriptions
+            .Any(s => s.IsActive && s.PaymentComplete && s.Expires > DateTime.UtcNow)
+            ?? false;
+
+        return View(new ArticleDetailViewModel
+        {
+            Article = article,
+            IsSubscribed = isSubscribed
+        });
     }
 
     public IActionResult Privacy()
