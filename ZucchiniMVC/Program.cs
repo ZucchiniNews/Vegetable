@@ -15,6 +15,7 @@ using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+using Zucchinimvc.Application.Services.Articles;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,7 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     });
 
 // --- Services ---
+builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
