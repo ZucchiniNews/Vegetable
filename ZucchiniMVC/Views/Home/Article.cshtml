@@ -1,8 +1,8 @@
-@using ZucchiniCore.Entities
-@model Article
+@using Zucchinimvc.Models.ViewModels
+@model ArticleDetailViewModel
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Article.Title;
 }
 
 <div class="container my-5">
@@ -10,29 +10,29 @@
         <div class="col-lg-8 col-md-10">
             <div class="article-header mb-4">
                 <span class="news-tag mb-2 d-inline-block">News</span>
-                <h1 class="fw-bold mb-3">@Model.Title</h1>
+                <h1 class="fw-bold mb-3">@Model.Article.Title</h1>
                 <div class="article-meta text-muted mb-4 d-flex align-items-center gap-3">
-                    <span>Published on @Model.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                    <span>Published on @Model.Article.PublishedAt.ToString("MMMM dd, yyyy")</span>
                     <span>•</span>
-                    <span>@Model.ReadingTimeMinutes min read</span>
+                    <span>@Model.Article.ReadingTimeMinutes min read</span>
                 </div>
             </div>
 
-            @if (Model.Cover != null)
+            @if (Model.Article.Cover != null)
             {
                 <div class="article-image mb-5">
-                    <img src="@Model.Cover.DisplayUrl" alt="@Model.Title" class="img-fluid rounded w-100 shadow-sm" style="max-height: 500px; object-fit: cover;" />
+                    <img src="@Model.Article.Cover.DisplayUrl" alt="@Model.Article.Title" class="img-fluid rounded w-100 shadow-sm" style="max-height: 500px; object-fit: cover;" />
                 </div>
             }
 
             <div class="article-content" style="font-size: 1.15rem; line-height: 1.8;">
-                <p class="lead fw-bold mb-4">@Model.ContentSummary</p>
+                <p class="lead fw-bold mb-4">@Model.Article.ContentSummary</p>
                 
-                <p>@Model.BodyPreview</p>
+                <p>@Model.Article.BodyPreview</p>
 
-                @if (User)
+                @if (Model.IsSubscribed)
                 {
-                    <p>@Model.BodyGated</p>
+                    <p>@Model.Article.BodyGated</p>
                 }
                 else
                 {
