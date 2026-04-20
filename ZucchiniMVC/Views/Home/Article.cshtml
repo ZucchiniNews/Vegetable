@@ -1,8 +1,8 @@
-@using ZucchiniCore.Entities
-@model Article
+@using Zucchinimvc.Models.ViewModels
+@model ArticleDetailViewModel
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Article.Title;
 }
 
 <div class="container my-5">
@@ -10,27 +10,38 @@
         <div class="col-lg-8 col-md-10">
             <div class="article-header mb-4">
                 <span class="news-tag mb-2 d-inline-block">News</span>
-                <h1 class="fw-bold mb-3">@Model.Title</h1>
+                <h1 class="fw-bold mb-3">@Model.Article.Title</h1>
                 <div class="article-meta text-muted mb-4 d-flex align-items-center gap-3">
-                    <span>Published on @Model.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                    <span>Published on @Model.Article.PublishedAt.ToString("MMMM dd, yyyy")</span>
                     <span>•</span>
-                    <span>5 min read</span>
+                    <span>@Model.Article.ReadingTimeMinutes min read</span>
                 </div>
             </div>
 
-            @if (Model.Cover != null)
+            @if (Model.Article.Cover != null)
             {
                 <div class="article-image mb-5">
-                    <img src="@Model.Cover.Url" alt="@Model.Title" class="img-fluid rounded w-100 shadow-sm" style="max-height: 500px; object-fit: cover;" />
+                    <img src="@Model.Article.Cover.DisplayUrl" alt="@Model.Article.Title" class="img-fluid rounded w-100 shadow-sm" style="max-height: 500px; object-fit: cover;" />
                 </div>
             }
 
             <div class="article-content" style="font-size: 1.15rem; line-height: 1.8;">
-                <p class="lead fw-bold mb-4">@Model.Description</p>
+                <p class="lead fw-bold mb-4">@Model.Article.ContentSummary</p>
                 
-                <!-- Additional generic content blocks, in a real scenario this would render rich text or markdown -->
-                <p>Curabitur blandit tempus porttitor. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-                <p>Donec id elit non mi porta gravida at eget metus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                <p>@Model.Article.BodyPreview</p>
+
+                @if (Model.IsSubscribed || User.IsInRole("Admin"))
+                {
+                    <p>@Model.Article.BodyGated</p>
+                }
+                else
+                {
+                    <div class="border rounded p-5 text-center bg-light mt-4">
+                        <h4 class="fw-bold mb-2">This content is for subscribers only</h4>
+                        <p class="text-muted mb-4">Subscribe to get full access to this article and all premium content.</p>
+                        <a asp-controller="Subscription" asp-action="Index" class="btn btn-primary px-4">Subscribe Now</a>
+                    </div>
+                }
             </div>
             
             <div class="mt-5 pt-4 border-top">
