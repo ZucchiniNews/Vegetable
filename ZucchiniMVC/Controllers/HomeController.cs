@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Models.ViewModels;
+using Zucchinimvc.Application.Services.Subscriptions;
 
 namespace Zucchinimvc.Controllers;
 
@@ -10,6 +11,7 @@ public class HomeController : Controller
 {
     private readonly ICmsService _cmsService;
     private readonly UserManager<User> _userManager;
+    private readonly ISubscriptionService _subscriptionService;
 
     public HomeController(ICmsService cmsService, UserManager<User> userManager)
     {
@@ -57,9 +59,9 @@ public class HomeController : Controller
             return NotFound();
 
         var user = await _userManager.GetUserAsync(User);
-        var isSubscribed = user?.Subscriptions
-            .Any(s => s.IsActive && s.PaymentComplete && s.Expires > DateTime.UtcNow)
-            ?? false;
+        var isSubscribed = user != null && await _subscriptionService.HasActiveSubscriptionAsync(user.Id);
+
+        return View(new ArticleDetailViewModel
 
         return View(new ArticleDetailViewModel
         {

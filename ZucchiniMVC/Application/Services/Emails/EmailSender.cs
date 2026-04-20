@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ZucchiniCore.Entities;
 
-namespace Zucchinimvc.Services.Emails;
+namespace Zucchinimvc.Application.Services.Emails;
 
 public class EmailSender : IEmailSender<User>, IEmailSender
 {

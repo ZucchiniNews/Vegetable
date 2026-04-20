@@ -1,5 +1,5 @@
 using ZucchiniCore.Entities;
-namespace Zucchinimvc.Services.Subscriptions;
+namespace Zucchinimvc.Application.Services.Subscriptions;
 
 public interface ISubscriptionService
 {
