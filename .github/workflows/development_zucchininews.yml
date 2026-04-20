@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy ASP.Net Core app to Azure Web App - ZucchiniNews
 
 on:
@@ -13,47 +10,53 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Set up .NET Core
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.x"
 
-      - name: Build with dotnet
-        run: dotnet build ZucchiniMVC/Zucchinimvc.sln --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore ZucchiniMVC/Zucchinimvc.sln
 
-      - name: dotnet publish
-        run: dotnet publish ZucchiniMVC/Zucchinimvc.csproj -c Release -o ./myapp
+      - name: Build
+        run: dotnet build ZucchiniMVC/Zucchinimvc.sln --configuration Release --no-restore
 
-      - name: Upload artifact for deployment job
+      - name: Publish
+        run: dotnet publish ZucchiniMVC/Zucchinimvc.csproj \
+          --configuration Release \
+          --no-build \
+          --output ./publish
+
+      - name: Upload published app
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ./myapp
+          name: app
+          path: ./publish
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
-          path: .net-app
+          name: app
+          path: ./app
 
-      - name: List published files
-        run: ls -R .net-app
+      - name: Verify contents
+        run: ls -R ./app
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: "ZucchiniNews"
           slot-name: "Production"
-          package: .net-app
+          package: ./app
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A33A3476DBE24AB49CEC801EF8B13566 }}
