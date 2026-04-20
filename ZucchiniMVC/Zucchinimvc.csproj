@@ -7,19 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Currency\**" />
-    <Compile Remove="Repositories\**" />
-    <Content Remove="Models\Currency\**" />
-    <Content Remove="Repositories\**" />
-    <EmbeddedResource Remove="Models\Currency\**" />
-    <EmbeddedResource Remove="Repositories\**" />
-    <None Remove="Models\Currency\**" />
-    <None Remove="Repositories\**" />
+    <Compile Remove="Models/Currency/**" />
+    <Compile Remove="Repositories/**" />
+    <Content Remove="Models/Currency/**" />
+    <Content Remove="Repositories/**" />
+    <EmbeddedResource Remove="Models/Currency/**" />
+    <EmbeddedResource Remove="Repositories/**" />
+    <None Remove="Models/Currency/**" />
+    <None Remove="Repositories/**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\CmsController.cs" />
-    <Compile Remove="Models\DTOs\StrapiDTOs\ArticleRawDto.cs" />
+    <Compile Remove="Controllers/CmsController.cs" />
+    <Compile Remove="Models/DTOs/StrapiDTOs/ArticleRawDto.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
+    <ProjectReference Include="../ZucchiniCore/ZucchiniCore.csproj" />
   </ItemGroup>
 
 </Project>
