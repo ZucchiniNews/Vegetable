@@ -35,7 +35,7 @@ namespace Zucchinimvc.Infrastructure.Data
                 PhoneNumberConfirmed = true
             };
 
-            var result = await userManager.CreateAsync(defaultUser, "Zucchi26?");
+            var result = await userManager.CreateAsync(defaultUser, "PrettyPenny123(:");
 
             if (result.Succeeded)
             {
