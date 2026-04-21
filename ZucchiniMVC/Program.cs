@@ -2,20 +2,20 @@ using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Logger;
-using Zucchinimvc.Application.Services.CMS;
-using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
-using Zucchinimvc.Services.Emails;
-using Zucchinimvc.Services.Subscriptions;
-using Zucchinimvc.Services.Users;
-using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+using Zucchinimvc.Application.Services.Weather;
+using Zucchinimvc.Application.Services.CMS;
+using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Application.Services.Emails;
+using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Articles;
+using Zucchinimvc.Application.Services.Users;
+using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 
 var builder = WebApplication.CreateBuilder(args);

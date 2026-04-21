@@ -29,7 +29,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 BodyPreview = dto.BodyPreview,
                 BodyGated = dto.BodyGated,
                 Cover = dto.Cover != null ? new ArticleCover { OriginalUrl = dto.Cover.Url } : null
-            });
+            }).ToList();
         }
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()

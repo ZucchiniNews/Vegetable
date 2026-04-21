@@ -1,6 +1,6 @@
 using ZucchiniCore.Entities;
 
-namespace Zucchinimvc.Services.Users;
+namespace Zucchinimvc.Application.Services.Users;
 
 public interface IUserService
 {

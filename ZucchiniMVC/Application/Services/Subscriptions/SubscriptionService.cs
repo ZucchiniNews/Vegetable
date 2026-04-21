@@ -1,7 +1,7 @@
 using Infrastrcture.Repositories;
 using ZucchiniCore.Entities;
 
-namespace Zucchinimvc.Services.Subscriptions;
+namespace Zucchinimvc.Application.Services.Subscriptions;
 
 public class SubscriptionService : ISubscriptionService
 {
