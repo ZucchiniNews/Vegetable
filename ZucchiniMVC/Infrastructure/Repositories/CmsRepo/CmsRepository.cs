@@ -28,6 +28,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 PublishedAt = dto.PublishedAt,
                 BodyPreview = dto.BodyPreview,
                 BodyGated = dto.BodyGated,
+                EditorsChoice = dto.EditorsChoice,
                 Cover = dto.Cover != null ? new ArticleCover { OriginalUrl = dto.Cover.Url } : null
             }).ToList();
         }
@@ -52,7 +53,8 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                     UpdatedAt = a.UpdatedAt,
                     PublishedAt = a.PublishedAt,
                     BodyPreview = a.BodyPreview,
-                    BodyGated = a.BodyGated
+                    BodyGated = a.BodyGated,
+                    EditorsChoice = a.EditorsChoice
                 }).ToList()
             });
         }
