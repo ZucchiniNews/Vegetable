@@ -59,7 +59,6 @@ html, body {
 
 .news-nav-wrapper {
     flex: 1 1 auto;
-    min-width: 0;
     overflow: visible;
 }
 
@@ -72,9 +71,12 @@ html, body {
 .news-nav-links {
     display: flex;
     flex-wrap: nowrap;
-    overflow-x: visible;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
 }
 
     .news-nav-links .dropdown-menu {
@@ -124,29 +126,76 @@ html, body {
     border-radius: 8px;
     transition: all 0.25s ease-in-out;
 }
-
-    .news-nav-links .nav-link:hover {
-        color: #000 !important;
-        background-color: #f0f0f0;
-        border-color: #d1d1d1; 
-        transform: translateY(-1px); 
+    .news-nav-links .nav-link,
+    .news-nav-links .dropdown-item {
+        color: #111 !important;
+        font-weight: 500;
+        padding: 8px 16px !important;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        transition: all 0.2s ease-in-out;
+        flex: 0 0 auto;
     }
 
-    .news-nav-links .nav-link.active {
-        background-color: #111 !important;
-        color: #fff !important;
-        border-color: #111;
+        .news-nav-links .nav-link:hover,
+        .news-nav-links .dropdown-item:hover,
+        .news-nav-links .nav-link:focus,
+        .news-nav-links .show.dropdown-toggle {
+            color: #000 !important;
+            background-color: #f0f0f0;
+            border-color: #d1d1d1;
+            transform: translateY(-1px);
+        }
+
+        .news-nav-links .dropdown-item:hover {
+            transform: translateX(5px); /* Keeps that nice slide-in feel for flyouts */
+        }
+
+        .news-nav-links .nav-link.active {
+            background-color: #111 !important;
+            color: #fff !important;
+            border-color: #111;
+        }
+
+    .news-nav-links .dropdown-menu {
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        padding: 0.5rem;
+        margin-top: 10px;
+        min-width: 200px;
+        animation: fadeIn 0.2s ease-out;
     }
 
-    .news-nav-links::-webkit-scrollbar {
-        height: 4px;
+    .news-nav-links .dropdown-item {
+        margin-bottom: 2px;
     }
 
-    .news-nav-links::-webkit-scrollbar-thumb {
-        background: #ccc;
-        border-radius: 2px;
+        .news-nav-links .dropdown-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .news-nav-links .dropdown-toggle::after {
+        vertical-align: middle;
+        margin-left: 8px;
+        transition: transform 0.3s ease;
     }
 
+    .news-nav-links .show.dropdown-toggle::after {
+        transform: rotate(180deg);
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 .news-header-right {
     flex-shrink: 0; 
     display: flex;
