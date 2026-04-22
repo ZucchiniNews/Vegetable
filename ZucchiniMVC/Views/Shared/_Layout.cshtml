@@ -15,6 +15,7 @@
 @inject ICmsService CmsService
 @{
         var categories = await CmsService.GetCategories();
+        var city = Context.Request.Query["city"].ToString();
     }
     <header class="news-header">
         <nav class="navbar navbar-expand-lg news-navbar">
@@ -23,26 +24,18 @@
                     <span class="news-brand-icon">
                         <img src="~/images/site_logo.png" />
                     </span>
-                    <span class="news-brand-text">ZicchiniNews</span>
+                    <span class="news-brand-text">Zicchini <sub>News</sub></span>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
                         aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                @{
-                    var visibleCategories = categories?.Take(4).ToList();
-                    var hiddenCategories = categories?.Skip(4).ToList();
-                }
-                @{
-                    var city = Context.Request.Query["city"].ToString();
-                }
                 <div class="collapse navbar-collapse d-flex align-items-center gap-1" id="mainNavbar">
                     <div class="news-nav-wrapper">
                         <ul class="navbar-nav news-nav-links">
-                            
                             @if (categories != null)
-                                @foreach (var category in visibleCategories)
+                                @foreach (var category in categories)
                                 {
                                     var isActive = ViewContext.RouteData.Values["slug"]?.ToString() == category.Slug;
                                     <li class="nav-item">
@@ -53,32 +46,6 @@
                                         </a>
                                     </li>
                                 }
-
-                            @if (hiddenCategories != null && hiddenCategories.Any())
-                            {
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle"
-                                           href="#"
-                                           role="button"
-                                           data-bs-toggle="dropdown"
-                                           aria-expanded="false">
-                                        More
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        @foreach (var category in hiddenCategories)
-                                        {
-                                            <li>
-                                                <a class="dropdown-item"
-                                                       asp-controller="Home"
-                                                       asp-action="Category"
-                                                       asp-route-slug="@category.Slug">
-                                                    @category.Name
-                                                </a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </li>
-                            }
                         </ul>
                     </div>
                     <div class="d-flex align-items-center gap-3 news-header-right">
