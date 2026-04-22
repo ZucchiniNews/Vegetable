@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using Zucchinimvc.Application.Services.Payment;
 using Zucchinimvc.Application.Services.Subscriptions;
+using ZucchiniMVC.Application.Services.Payment;
 
 namespace Zucchinimvc.Controllers;
 
