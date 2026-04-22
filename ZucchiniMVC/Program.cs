@@ -52,12 +52,12 @@ builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 
 // Weather Repository
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp => 
+builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     {
         var provider = sp.GetRequiredService<IAzureTableClient>();
         var client = provider.GetClient("ExternalApiHistory");
         var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
-        
+
         return new HistoryRepository<WeatherHistoryEntity>(client, logger);
     });
 
@@ -108,9 +108,11 @@ using (var scope = app.Services.CreateScope())
     {
         var roleManager = services.GetRequiredService<RoleManager<Roles>>();
         var userManager = services.GetRequiredService<UserManager<User>>();
+        var dbContext = services.GetRequiredService<ApplicationDbContext>();
 
         await DbInitializer.SeedRoles(roleManager);
         await DbInitializer.SeedAdminAsync(userManager);
+        await DbInitializer.SeedSubscriptionTypesAsync(dbContext);
     }
     catch (Exception ex)
     {

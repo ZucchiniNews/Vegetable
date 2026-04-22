@@ -44,4 +44,16 @@ public class SubscriptionRepository : ISubscriptionRepository
     }
 
 
+    public async Task<List<SubscriptionType>> GetAllSubscriptionTypesAsync()
+    {
+        try
+        {
+            return await _context.SubscriptionTypes.ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            throw;
+        }
+    }
 }

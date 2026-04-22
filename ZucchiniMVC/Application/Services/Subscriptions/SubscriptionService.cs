@@ -29,4 +29,8 @@ public class SubscriptionService : ISubscriptionService
         await _subscriptionRepository.AddSubscriptionAsync(subscription);
         return subscription;
     }
+    public async Task<List<SubscriptionType>> GetAllSubscriptionTypesAsync()
+    {
+        return await _subscriptionRepository.GetAllSubscriptionTypesAsync();
+    }
 }

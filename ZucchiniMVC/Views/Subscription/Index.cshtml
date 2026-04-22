@@ -11,75 +11,34 @@
     </div>
 </div>
 
+@model List<ZucchiniCore.Entities.SubscriptionType>
 <form method="post" action="/Subscription/Subscribe">
-<div class="row mb-4">
-    <div class="col-12 text-center">
-        <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow">Complete Subscription</button>
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow">Complete Subscription</button>
+        </div>
     </div>
-</div>
-<div class="row justify-content-center">
-    <!-- Weekly Plan -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-header bg-primary text-white text-center py-3">
-                    <h4 class="my-0 fw-normal">Weekly</h4>
-                </div>
-                <div class="card-body text-center d-flex flex-column">
-                    <h1 class="card-title pricing-card-title">10 SEK<small class="text-muted fw-light">/wk</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
-                        <li>Breaking news access</li>
-                        <li>Weekly recap newsletter</li>
-                    </ul>
-                    <div class="form-check d-flex justify-content-center mt-auto">
-                        <input class="form-check-input me-2" type="radio" id="weekly" name="subscriptionModel" value="weekly" required style="cursor: pointer;" />
-                        <label class="form-check-label fw-bold" for="weekly" style="cursor: pointer;">Select Weekly</label>
+    <div class="row justify-content-center">
+        @foreach (ZucchiniCore.Entities.SubscriptionType type in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h4 class="my-0 fw-normal">@type.TypeName</h4>
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
+                        <h1 class="card-title pricing-card-title">@type.Price SEK<small class="text-muted fw-light">/@(type.DurationInDays == 7 ? "wk" : type.DurationInDays == 30 ? "mo" : "yr")</small></h1>
+                        <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
+                            <li>@type.Description</li>
+                        </ul>
+                        <div class="form-check d-flex justify-content-center mt-auto">
+                            <input class="form-check-input me-2" type="radio" id="type_@type.Id" name="subscriptionTypeId" value="@type.Id" required style="cursor: pointer;" />
+                            <label class="form-check-label fw-bold" for="type_@type.Id" style="cursor: pointer;">Select @type.TypeName</label>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Monthly Plan -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow border-primary position-relative">
-                <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-warning text-dark px-3 py-2">Most Popular</span>
-                <div class="card-header bg-primary text-white text-center py-3">
-                    <h4 class="my-0 fw-normal">Monthly</h4>
-                </div>
-                <div class="card-body text-center d-flex flex-column">
-                    <h1 class="card-title pricing-card-title">49 SEK<small class="text-muted fw-light">/mo</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
-                        <li>Unlimited news access</li>
-                        <li>Daily morning briefings</li>
-                        <li>Ad-free experience</li>
-                    </ul>
-                    <div class="form-check d-flex justify-content-center mt-auto">
-                        <input class="form-check-input me-2" type="radio" id="monthly" name="subscriptionModel" value="monthly" required style="cursor: pointer;" checked />
-                        <label class="form-check-label fw-bold" for="monthly" style="cursor: pointer;">Select Monthly</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Yearly Plan -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-header bg-primary text-white text-center py-3">
-                    <h4 class="my-0 fw-normal">Yearly</h4>
-                </div>
-                <div class="card-body text-center d-flex flex-column">
-                    <h1 class="card-title pricing-card-title">500 SEK<small class="text-muted fw-light">/yr</small></h1>
-                    <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
-                        <li>Save 15% annually</li>
-                        <li>All Monthly benefits</li>
-                        <li>Exclusive in-depth reports</li>
-                    </ul>
-                    <div class="form-check d-flex justify-content-center mt-auto">
-                        <input class="form-check-input me-2" type="radio" id="yearly" name="subscriptionModel" value="yearly" required style="cursor: pointer;" />
-                        <label class="form-check-label fw-bold" for="yearly" style="cursor: pointer;">Select Yearly</label>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </form>
 

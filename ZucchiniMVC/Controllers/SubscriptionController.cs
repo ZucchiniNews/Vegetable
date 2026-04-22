@@ -12,17 +12,21 @@ public class SubscriptionController : Controller
     {
         _subscriptionService = subscriptionService;
     }
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var subscriptionTypes = await _subscriptionService.GetAllSubscriptionTypesAsync();
+        return View(subscriptionTypes);
     }
 
     [HttpPost]
     public async Task<IActionResult> Subscribe(int subscriptionTypeId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var subscription = await _subscriptionService
-            .CreateSubscriptionAsync(userId, subscriptionTypeId);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized("User is not authenticated.");
+        }
+        var subscription = await _subscriptionService.CreateSubscriptionAsync(userId, subscriptionTypeId);
         return Ok(subscription.Id);
     }
 }
