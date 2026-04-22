@@ -33,8 +33,10 @@ body {
 
 .news-navbar-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap !important;
+    margin-left:10px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .news-brand {
@@ -53,20 +55,25 @@ body {
 }
 
 .news-brand-text {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 700;
     line-height: 1;
 }
 
 /* Nav Links Area */
 .news-nav-wrapper {
-    flex: 1 1 auto;
+    flex: 0 1 auto; 
+    overflow-x: auto; 
+    scrollbar-width: none; 
+}
+
+.news-nav-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .news-nav-links {
     display: flex;
-    flex-wrap: wrap;
-    /* align-items: center; */
+    flex-wrap: nowrap;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -129,8 +136,46 @@ body {
     padding: 6px 12px;
 }
 
-/*only logo + hamburger visible in mobile view*/
+/* Desktop Only (992px and up) */
+@media (min-width: 992px) {
+    .news-navbar-container {
+        flex-wrap: nowrap !important;
+    }
+
+    .news-nav-links {
+        flex-wrap: nowrap;
+    }
+
+    .news-nav-wrapper {
+        flex: 1 1 auto;
+        overflow-x: auto;
+        /* Hide scrollbar but keep functionality */
+        scrollbar-width: none; 
+    }
+    .news-nav-wrapper::-webkit-scrollbar { display: none; }
+}
+
+/* Mobile Only (Below 992px) */
 @media (max-width: 991.98px) {
+    .news-navbar-container {
+        flex-wrap: wrap !important; /* Allow the menu to drop below the brand */
+    }
+
+    .news-nav-links {
+        flex-direction: column; /* Stack categories vertically */
+        flex-wrap: wrap; 
+    }
+
+    .news-nav-wrapper {
+        width: 100%;
+    }
+
+    /* Reset the border-left from your previous login box on mobile */
+    .login-header-box {
+        border-left: none;
+        padding-left: 0;
+    }
+
     .news-header-right {
         display: none;
     }
@@ -417,14 +462,17 @@ body {
     margin: 0 auto;
 }
 
-.settings-nav-pills {
-    display: flex;
-    justify-content: center;
-    background-color: #f1f3f5;
-    border-radius: 50rem;
-    padding: 0.4rem;
-    margin-bottom: 3rem;
-    border: 1px solid #dee2e6;
+@media (max-width: 768px) {
+    .settings-nav-pills {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .settings-nav-pills::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .settings-nav-pills .nav-link {
@@ -435,6 +483,7 @@ body {
     transition: all 0.2s ease;
     border: 1px solid transparent;
     background: transparent;
+    white-space: nowrap;
 }
 
 .settings-nav-pills .nav-link:hover {

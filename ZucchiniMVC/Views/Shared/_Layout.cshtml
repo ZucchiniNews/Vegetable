@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Zucchinimvc.styles.css" asp-append-version="true" />
 </head>
+
 <body class="news-body d-flex flex-column min-vh-100">
     @using Zucchinimvc.Application.Services.CMS
 @inject ICmsService CmsService
@@ -27,10 +29,10 @@
                     <span class="news-brand-text">Zicchini <sub>News</sub></span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <div class="news-nav-wrapper">
                         <ul class="navbar-nav news-nav-links">
@@ -39,20 +41,26 @@
                                 {
                                     var isActive = ViewContext.RouteData.Values["slug"]?.ToString() == category.Slug;
                                     <li class="nav-item">
-                                        <a class="nav-link @(isActive ? "active" : "")"
-                                               asp-controller="Home" asp-action="Category"
-                                               asp-route-slug="@category.Slug">
+                                        <a class="nav-link @(isActive ? "active" : "")" asp-controller="Home"
+                                               asp-action="Category" asp-route-slug="@category.Slug">
                                             @category.Name
                                         </a>
                                     </li>
                                 }
                         </ul>
                     </div>
-                    <div class="d-flex align-items-center gap-3 news-header-right">
+                    <div class="d-none d-lg-flex align-items-center gap-3 news-header-right">
                         <div class="weather-header-box text-nowrap">
                             @await Component.InvokeAsync("Weather", new { city })
                         </div>
                         <div class="login-header-box">
+                            @await Html.PartialAsync("_LoginPartial")
+                        </div>
+                    </div>
+
+                    <div class="d-lg-none mt-3 pt-3 border-top">
+                        @await Component.InvokeAsync("Weather", new { city })
+                        <div class="mt-2">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>
                     </div>
@@ -79,4 +87,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
