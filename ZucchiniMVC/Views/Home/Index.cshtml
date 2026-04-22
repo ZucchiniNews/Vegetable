@@ -8,38 +8,27 @@
 
 @if (isHome)
 {
-<section class="featured-section">
-    <div class="featured-image">
-        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop" alt="Featured news" />
-        <span class="featured-badge">Featured</span>
-    </div>
-
-    <div class="featured-content">
-        <span class="news-tag">Environment</span>
-        <h1>Global Climate Summit Reaches Historic Agreement</h1>
-        <p>
-            World leaders commit to stronger climate action and new emissions targets,
-            marking one of the most significant environmental agreements in recent years.
-        </p>
-
-        <div class="news-meta">
-            <span>March 25, 2026</span>
-            <span>5 min read</span>
+    <section class="featured-section">
+        <div class="featured-image">
+            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop" alt="Featured news" />
+            <span class="featured-badge">Featured</span>
         </div>
-    </div>
-</section>
 
-<section class="weather-section">
-    <div class="weather-card">
-        <h2>Current Weather</h2>
-        <div class="mt-3">
-            @{
-                var city = Context.Request.Query["city"].ToString();
-            }
-            @await Component.InvokeAsync("Weather", new { city })
+        <div class="featured-content">
+            <span class="news-tag">Environment</span>
+            <h1>Global Climate Summit Reaches Historic Agreement</h1>
+            <p>
+                World leaders commit to stronger climate action and new emissions targets,
+                marking one of the most significant environmental agreements in recent years.
+            </p>
+
+            <div class="news-meta">
+                <span>March 25, 2026</span>
+                <span>5 min read</span>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
 }
 
 <section class="latest-news-section">

@@ -89,7 +89,7 @@ html, body {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    gap: 6px;
+    gap: 2px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -412,10 +412,6 @@ html, body {
     font-size: 14px;
 }
 
-.weather-section {
-    margin-bottom: 40px;
-}
-
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
@@ -456,16 +452,6 @@ html, body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-.weather-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-}
-
-    .weather-card h2 {
-        font-size: 24px;
-    }
 
 .weather-temp {
     font-size: 36px;
