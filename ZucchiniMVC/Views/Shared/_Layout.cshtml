@@ -39,9 +39,6 @@
                     <div class="news-nav-wrapper">
                         <ul class="navbar-nav news-nav-links">
                             
-                            <li class="nav-item">
-                                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
                             @if (categories != null)
                                 @foreach (var category in visibleCategories)
                                 {
