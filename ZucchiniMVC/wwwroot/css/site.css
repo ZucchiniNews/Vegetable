@@ -4,7 +4,7 @@
 
 body {
     margin-bottom: 60px;
-    background-color: #f8f9fa; /* old color:  #f7f7f7; */
+    background-color: #f8f9fa;
     font-family: Arial, Helvetica, sans-serif;
     color: #111;
 }
@@ -40,21 +40,38 @@ html, body {
 }
 
 .news-navbar {
-    padding: 1rem 0;
+    min-height: 60px;
+    padding-bottom: 0;
 }
 
 .news-brand {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: center; 
+    gap: 12px;
     font-weight: 700;
     color: #111 !important;
     text-decoration: none;
+    padding: 0; 
 }
+
+    .news-brand .news-brand-icon {
+        display: flex; 
+        align-items: center; 
+    }
+
+        .news-brand .news-brand-icon img {
+            height: 3em;
+            width: auto;
+            display: block;
+            position: relative;
+            margin: 2px 0;
+            z-index: 1030;
+        }
 
 .news-brand-text {
     font-size: 1.6rem;
     font-weight: 700;
+    line-height: 1;
 }
 
 .news-nav-wrapper {
