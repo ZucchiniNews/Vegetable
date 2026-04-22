@@ -1,8 +1,7 @@
 
 using Zucchinimvc.Models.ViewModels;
-using Microsoft.EntityFrameworkCore;
 using ZucchiniMVC.Infrastructure.Repositories.Payment;
-using ZucchiniCore.Entities;
+
 
 namespace ZucchiniMVC.Application.Services.Payment
 {
@@ -17,7 +16,20 @@ namespace ZucchiniMVC.Application.Services.Payment
 
         public async Task<PaymentSessionResult> CreateSubscriptionSessionAsync(int subscriptionId)
         {
-         
+            var subscription = await _paymentRepo.GetSubscriptionByIdAsync(subscriptionId);
+            if (subscription == null)
+            {
+                throw new Exception("Subscription not found");
+            }
+            // Simulate creating a Stripe session and returning the URL
+            var sessionUrl = $"https://checkout.stripe.com/pay/{subscription.Id}";
+
+            return new PaymentSessionResult
+            {
+                SessionUrl = sessionUrl
+            };
+
+
         }
     }
 }
