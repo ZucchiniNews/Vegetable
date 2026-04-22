@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Zucchinimvc.Application.Services.Payment;
 using Zucchinimvc.Application.Services.Subscriptions;
 
 namespace Zucchinimvc.Controllers;
@@ -7,10 +8,12 @@ namespace Zucchinimvc.Controllers;
 public class SubscriptionController : Controller
 {
     private readonly ISubscriptionService _subscriptionService;
+    private readonly IPaymentService _paymentService;
 
-    public SubscriptionController(ISubscriptionService subscriptionService)
+    public SubscriptionController(ISubscriptionService subscriptionService, IPaymentService paymentService)
     {
         _subscriptionService = subscriptionService;
+        _paymentService = paymentService;
     }
     public async Task<IActionResult> Index()
     {
@@ -27,7 +30,10 @@ public class SubscriptionController : Controller
             return Unauthorized("User is not authenticated.");
         }
         var subscription = await _subscriptionService.CreateSubscriptionAsync(userId, subscriptionTypeId);
-        return Ok(subscription.Id);
+        var session = await _paymentService
+    .CreateSubscriptionSessionAsync(subscription.Id);
+
+        return Redirect(session.CheckoutUrl);
     }
 }
 
