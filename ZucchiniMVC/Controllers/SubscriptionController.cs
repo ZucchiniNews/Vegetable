@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Subscriptions;
 using ZucchiniMVC.Application.Services.Payment;
 
@@ -29,8 +30,8 @@ public class SubscriptionController : Controller
         {
             return Unauthorized("User is not authenticated.");
         }
-        var subscription = await _subscriptionService.CreateSubscriptionAsync(userId, subscriptionTypeId);
-        var session = await _paymentService.CreatePaymentSessionAsync(subscription.Id);
+        Subscription subscription = await _subscriptionService.CreateSubscriptionAsync(userId, subscriptionTypeId);
+        var session = await _paymentService.CreatePaymentSessionAsync(subscription);
         return Redirect(session.CheckoutUrl);
     }
 }
