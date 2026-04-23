@@ -53,6 +53,13 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; }
+
+            [Required]
+            public string Username { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -80,6 +87,14 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             }
 
             await LoadAsync(user);
+
+            Input = new InputModel
+            {
+                Email = user.Email,
+                Username = user.UserName,
+                PhoneNumber = user.PhoneNumber
+            };
+
             return Page();
         }
 
@@ -98,13 +113,47 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            if (Input.Email != user.Email)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                var existingEmail = await _userManager.FindByEmailAsync(Input.Email);
+                if (existingEmail != null && existingEmail.Id != user.Id)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
+                    ModelState.AddModelError("Input.Email", "Email already in use.");
+                    return Page();
+                }
+
+                var result = await _userManager.SetEmailAsync(user, Input.Email);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Failed to update email.");
+                    return Page();
+                }
+            }
+
+            if (Input.Username != user.UserName)
+            {
+                var existingUser = await _userManager.FindByNameAsync(Input.Username);
+                if (existingUser != null && existingUser.Id != user.Id)
+                {
+                    ModelState.AddModelError("Input.Username", "Username already taken.");
+                    return Page();
+                }
+
+                var result = await _userManager.SetUserNameAsync(user, Input.Username);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Failed to update username.");
+                    return Page();
+                }
+            }
+
+            if (Input.PhoneNumber != user.PhoneNumber)
+            {
+                var result = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Failed to update phone number.");
+                    return Page();
                 }
             }
 
