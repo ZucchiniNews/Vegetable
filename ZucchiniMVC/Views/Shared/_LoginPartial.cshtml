@@ -28,13 +28,12 @@
                     </div>
                     <span class="d-none d-sm-inline">Admin</span>
                 }
-
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-modern" aria-labelledby="userDropdown">
                 <li class="dropdown-header-custom">
                     <span class="d-block fw-bold text-dark">@user?.FirstName @user?.LastName</span>
-                    <span class="text-muted small">@user?.Email</span>
+                    <span class="text-muted small user-email">@user?.Email</span>
                 </li>
                 <li>
                     <hr class="dropdown-divider">
@@ -73,9 +72,12 @@
     else
     {
         <li class="nav-item">
-            <a class="btn btn-dark text-white fw-bold px-4 d-flex align-items-center justify-content-center" id="login"
-                   asp-area="Identity" asp-page="/Account/Login" style="height: 40px; border-radius: 8px; min-width: 120px;">
-                Log In
+            <a class="nav-link d-flex align-items-center text-dark fw-semibold profile-trigger guest-trigger" id="login"
+                   asp-area="Identity" asp-page="/Account/Login">
+                <div class="avatar-circle me-2 guest-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <span class="d-none d-sm-inline">Log In</span>
             </a>
         </li>
     }

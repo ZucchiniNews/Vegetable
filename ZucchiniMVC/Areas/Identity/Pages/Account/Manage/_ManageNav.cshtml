@@ -2,32 +2,25 @@
 @inject SignInManager<User> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
-}
-<div class="settings-sidebar">
-    <div class="settings-nav-group">
-        <small class="nav-label text-uppercase fw-bold text-muted mb-2 d-block">Personal Settings</small>
-        <div class="settings-nav-pills">
-            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
-                <i class="bi bi-person"></i> Account
+}<div class="settings-management-wrapper">
+    <div class="settings-nav-container">
+        <div class="settings-nav-group-horizontal">
+            <a class="nav-pill-item @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
+                <i class="bi bi-person"></i> <span>Account</span>
             </a>
-            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password"
-                   asp-page="./ChangePassword">
-                <i class="bi bi-shield-lock"></i> Password
+            <a class="nav-pill-item @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
+                <i class="bi bi-shield-lock"></i> <span>Password</span>
             </a>
-            
-            <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"
-                   id="two-factor-authentication" asp-page="./TwoFactorAuthentication">
-                <i class="bi bi-shield-check"></i> Security
+            <a class="nav-pill-item @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor-authentication" asp-page="./TwoFactorAuthentication">
+                <i class="bi bi-shield-check"></i> <span>Security</span>
             </a>
-            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data"
-                   asp-page="./PersonalData">
-                <i class="bi bi-lock"></i> Privacy
+            <a class="nav-pill-item @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">
+                <i class="bi bi-lock"></i> <span>Privacy</span>
             </a>
             @if (hasExternalLogins)
             {
-                <a class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" id="external-login"
-                       asp-page="./ExternalLogins">
-                    <i class="bi bi-share"></i> Social Logins
+                <a class="nav-pill-item @ManageNavPages.ExternalLoginsNavClass(ViewContext)" id="external-login" asp-page="./ExternalLogins">
+                    <i class="bi bi-share"></i> <span>Social Logins</span>
                 </a>
             }
         </div>

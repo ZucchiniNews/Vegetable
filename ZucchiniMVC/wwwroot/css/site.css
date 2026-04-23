@@ -259,6 +259,89 @@ body {
 }
 
 /* ============================= */
+/* DROPDOWN MENU                */
+/* ============================= */
+
+.dropdown-menu .dropdown-item:active, 
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item.active {
+    background-color: #f4f4f7 !important; 
+    color: #000 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown-item {
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-header-custom {
+    padding: 1rem 1.25rem !important;
+    max-width: 280px; /* Give it a bit more breathing room */
+}
+
+/* ============================= */
+/* LOGIN PILLS                */
+/* ============================= */
+
+.guest-trigger {
+    padding: 8px 12px;
+    border-radius: 50px;
+    transition: background 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.guest-trigger:hover {
+    background-color: #f0f0f0; 
+    color: #000 !important;
+}
+
+.guest-avatar {
+    background-color: #e9ecef; 
+    color: #6c757d; 
+    border: 1px solid #dee2e6;
+}
+
+.avatar-circle i {
+    font-size: 1.1rem;
+    display: flex;
+}
+
+.dropdown-header-custom {
+    padding: 1rem 1.25rem; 
+}
+
+.user-email {
+    display: block;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #777;
+    font-size: 0.85rem;
+}
+/* ============================= */
+/* LOG OUT PILLS                */
+/* ============================= */
+
+#logoutForm button.dropdown-item:active, 
+#logoutForm button.dropdown-item:focus {
+    background-color: #fff5f5 !important; 
+    color: #dc3545 !important; 
+    outline: none !important;
+    box-shadow: none !important; 
+}
+
+#logoutForm button.dropdown-item:hover {
+    background-color: #fff5f5;
+    color: #c5303f !important;
+}
+
+.dropdown-menu-modern {
+    padding: 0.5rem;
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+/* ============================= */
 /* CATEGORY PILLS                */
 /* ============================= */
 
@@ -482,85 +565,63 @@ body {
 /* Identity & Management Pages   */
 /* ============================= */
 
-.dropdown-menu {
-    border: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    border-radius: 12px; /* Matching your card/pill style */
-    padding: 0.5rem;
-    margin-top: 15px !important;
+.settings-nav-container {
+    display: flex;
+    margin-bottom: 2rem;
+    overflow-x: auto; /* Allows scrolling on very small screens */
+    padding-bottom: 5px;
 }
 
-.dropdown-item {
+.settings-nav-group-horizontal {
+    display: flex;
+    flex-direction: row;
+    background: #ffffff;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    gap: 4px;
+}
+
+.nav-pill-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    color: #555 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    font-size: 0.95rem;
     border-radius: 8px;
-    padding: 10px 15px;
-    font-weight: 500;
-    transition: all 0.2s;
-}
-
-.dropdown-item:hover {
-    background-color: #f8f9fb;
-    color: #000;
-    transform: translateX(5px); /* Subtle modern interaction */
-}
-
-#userDropdown {
-    padding: 8px 12px;
-    border-radius: 50px;
-    transition: background 0.2s;
-}
-
-#userDropdown:hover {
-    background: #f0f0f0;
-}
-
-.manage-container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-    .settings-nav-pills {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        justify-content: flex-start;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .settings-nav-pills::-webkit-scrollbar {
-        display: none;
-    }
-}
-
-.settings-nav-pills .nav-link {
-    border-radius: 50rem;
-    padding: 0.5rem 1.5rem;
-    color: #6c757d;
-    font-weight: 500;
     transition: all 0.2s ease;
-    border: 1px solid transparent;
-    background: transparent;
-    white-space: nowrap;
+    white-space: nowrap; /* Keeps text on one line */
 }
 
-.settings-nav-pills .nav-link:hover {
-    color: #111;
-    background-color: rgba(0, 0, 0, 0.05);
+.nav-pill-item i {
+    margin-right: 8px;
+    font-size: 1.1rem;
+    color: #888;
 }
 
-.settings-nav-pills .nav-link.active {
-    background-color: #ffffff !important;
-    color: #111 !important;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.08);
-    border-color: #dee2e6 !important;
-    font-weight: 700;
+.nav-pill-item:hover {
+    background-color: #f4f4f4;
+    color: #000 !important;
 }
 
-.card-settings,
-.card-user-management {
-    background-color: #ffffff;
-    border-radius: 1rem;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+.nav-pill-item.active {
+    background-color: #000 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.nav-pill-item.active i {
+    color: #fff;
+}
+
+.settings-nav-container::-webkit-scrollbar {
+    display: none;
+}
+.settings-nav-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 /* Danger Zone */
