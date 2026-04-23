@@ -30,8 +30,7 @@ public class SubscriptionController : Controller
             return Unauthorized("User is not authenticated.");
         }
         var subscription = await _subscriptionService.CreateSubscriptionAsync(userId, subscriptionTypeId);
-        var session = await _paymentService
-    .CreateSubscriptionSessionAsync(subscription.Id);
+        var session = await _paymentService.CreatePaymentSessionAsync(subscription.Id);
 
         return Redirect(session.CheckoutUrl);
     }
