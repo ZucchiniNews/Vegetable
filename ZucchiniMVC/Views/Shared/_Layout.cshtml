@@ -49,23 +49,23 @@
                                 }
                         </ul>
                     </div>
-                    <div class="d-none d-lg-flex align-items-center gap-3 news-header-right">
-                        <div class="weather-header-box text-nowrap">
-                            @await Component.InvokeAsync("Weather", new { city })
-                        </div>
-                        <div class="login-header-box">
-                            @await Html.PartialAsync("_LoginPartial")
-                        </div>
-                    </div>
-
-                    <div class="d-lg-none mt-3 pt-3 border-top">
+                    <div class="d-lg-none mt-3 pt-3 border-top w-100">
                         @await Component.InvokeAsync("Weather", new { city })
                         <div class="mt-2">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="d-none d-lg-flex align-items-center gap-3 news-header-right">
+                    <div class="weather-header-box text-nowrap">
+                        @await Component.InvokeAsync("Weather", new { city })
+                    </div>
+                    <div class="login-header-box">
+                        @await Html.PartialAsync("_LoginPartial")
+                    </div>
+                </div>
+            </div>     
         </nav>
     </header>
 

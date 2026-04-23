@@ -23,20 +23,25 @@ body {
 .news-header {
     background-color: #ffffff;
     border-bottom: 1px solid #e5e5e5;
-    flex-shrink: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .news-navbar {
-    min-height: 60px;
-    padding: 0;
+    min-height: 70px; 
+    height: auto; 
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
 }
 
 .news-navbar-container {
     display: flex;
-    flex-wrap: nowrap !important;
-    margin-left:10px;
+    /* flex-wrap: nowrap; */
+    /* margin-left:10px; */
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
 
 .news-brand {
@@ -60,11 +65,13 @@ body {
     line-height: 1;
 }
 
-/* Nav Links Area */
 .news-nav-wrapper {
-    flex: 0 1 auto; 
-    overflow-x: auto; 
-    scrollbar-width: none; 
+    flex: 1;
+    display: flex;
+    justify-content: center; 
+    /* overflow-x: auto;  */
+    min-width: 0;
+    /* scrollbar-width: none;  */
 }
 
 .news-nav-wrapper::-webkit-scrollbar {
@@ -105,6 +112,7 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-left: auto;
 }
 
 .login-header-box {
@@ -168,6 +176,9 @@ body {
 
     .news-nav-wrapper {
         width: 100%;
+        min-width: 0;
+        overflow-x: auto; 
+    scrollbar-width: none;
     }
 
     /* Reset the border-left from your previous login box on mobile */
@@ -231,6 +242,20 @@ body {
         border-left: none;
         padding-left: 0;
     }
+
+
+    /*  Mobile  */
+@media (max-width: 991.98px) {
+    .news-header-right {
+        display: flex; 
+        margin-left: auto;
+    }
+    
+    /* mobile view: hide weather keep only login: */
+    .weather-widget-class { 
+        display: none; 
+    }
+}
 }
 
 /* ============================= */
@@ -456,6 +481,37 @@ body {
 /* ============================= */
 /* Identity & Management Pages   */
 /* ============================= */
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    border-radius: 12px; /* Matching your card/pill style */
+    padding: 0.5rem;
+    margin-top: 15px !important;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fb;
+    color: #000;
+    transform: translateX(5px); /* Subtle modern interaction */
+}
+
+#userDropdown {
+    padding: 8px 12px;
+    border-radius: 50px;
+    transition: background 0.2s;
+}
+
+#userDropdown:hover {
+    background: #f0f0f0;
+}
 
 .manage-container {
     max-width: 900px;

@@ -3,35 +3,33 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<div class="settings-nav-pills">
-    <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
-        <i class="bi bi-person me-2"></i>Account
-    </a>
-    <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
-        <i class="bi bi-shield-lock me-2"></i>Change Password
-    </a>
-    @if (!User.IsInRole("Admin"))
-    {
-        <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor-authentication" asp-page="./TwoFactorAuthentication">
-            <i class="bi bi-shield-check me-2"></i>Two-Factor Authentication
-        </a>
-    }
-    @if (hasExternalLogins)
-    {
-        <a class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" id="external-login" asp-page="./ExternalLogins">
-            <i class="bi bi-share me-2"></i>External Logins
-        </a>
-    }
-    @if (!User.IsInRole("Admin"))
-    {
-        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">
-            <i class="bi bi-lock me-2"></i>Privacy
-        </a>
-    }
-    @if (User.IsInRole("Admin"))
-    {
-        <a class="nav-link" asp-controller="Admin" asp-action="ManageUsers">
-            <i class="bi bi-lock me-2"></i>Manage Users
-        </a>
-    }
+<div class="settings-sidebar">
+    <div class="settings-nav-group">
+        <small class="nav-label text-uppercase fw-bold text-muted mb-2 d-block">Personal Settings</small>
+        <div class="settings-nav-pills">
+            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
+                <i class="bi bi-person"></i> Account
+            </a>
+            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password"
+                   asp-page="./ChangePassword">
+                <i class="bi bi-shield-lock"></i> Password
+            </a>
+            
+            <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"
+                   id="two-factor-authentication" asp-page="./TwoFactorAuthentication">
+                <i class="bi bi-shield-check"></i> Security
+            </a>
+            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data"
+                   asp-page="./PersonalData">
+                <i class="bi bi-lock"></i> Privacy
+            </a>
+            @if (hasExternalLogins)
+            {
+                <a class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" id="external-login"
+                       asp-page="./ExternalLogins">
+                    <i class="bi bi-share"></i> Social Logins
+                </a>
+            }
+        </div>
+    </div>
 </div>

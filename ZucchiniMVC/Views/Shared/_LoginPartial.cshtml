@@ -8,37 +8,73 @@
 <ul class="navbar-nav align-items-center">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item me-3">
-            <a id="manage" class="nav-link d-flex align-items-center text-dark fw-semibold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                </svg>
-                <span>
-                    @{
-                        var user = await UserManager.GetUserAsync(User);
-                        @user?.FirstName
-                    }
-                </span>
+        var user = await UserManager.GetUserAsync(User);
+        var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center text-dark fw-semibold profile-trigger" href="#"
+                   id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @if (!User.IsInRole("Admin"))
+                {
+                    <div class="avatar-circle me-2">
+                        @user?.FirstName.Substring(0, 1)
+                    </div>
+                    <span class="d-none d-sm-inline">@user?.LastName</span>
+                }
+                else
+                {
+                    <div class="avatar-circle admin-avatar me-2">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+                    <span class="d-none d-sm-inline">Admin</span>
+                }
+
             </a>
-        </li>
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="btn btn-outline-dark fw-bold px-4"
-                        style="height: 40px; border-radius: 8px; white-space: nowrap;">
-                    Log Out
-                </button>
-            </form>
+
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-modern" aria-labelledby="userDropdown">
+                <li class="dropdown-header-custom">
+                    <span class="d-block fw-bold text-dark">@user?.FirstName @user?.LastName</span>
+                    <span class="text-muted small">@user?.Email</span>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+        
+                <li>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                        <i class="bi bi-person"></i> Account Settings
+                    </a>
+                </li>
+        
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a class="dropdown-item admin-link" asp-controller="Admin" asp-action="ManageUsers">
+                            <i class="bi bi-shield-lock"></i> Admin Dashboard
+                        </a>
+                    </li>
+                }
+
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+        
+                <li>
+                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="bi bi-box-arrow-right"></i> Log Out
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="btn btn-dark text-white fw-bold px-4 d-flex align-items-center justify-content-center"
-                   id="login"
-                   asp-area="Identity"
-                   asp-page="/Account/Login"
-                   style="height: 40px; border-radius: 8px; min-width: 120px;">
+            <a class="btn btn-dark text-white fw-bold px-4 d-flex align-items-center justify-content-center" id="login"
+                   asp-area="Identity" asp-page="/Account/Login" style="height: 40px; border-radius: 8px; min-width: 120px;">
                 Log In
             </a>
         </li>
