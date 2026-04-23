@@ -30,14 +30,12 @@ public class ConfirmEmailChangeModel : PageModel
         if (user == null)
             return NotFound();
 
-        var decodedBytes = WebEncoders.Base64UrlDecode(code);
-        var decodedCode = Encoding.UTF8.GetString(decodedBytes);
+        await _userManager.ChangeEmailAsync(user, email, code);
 
-        var result = await _userManager.ChangeEmailAsync(user, email, decodedCode);
-
-        if (!result.Succeeded)
+        var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
+        if (!setUserNameResult.Succeeded)
         {
-            StatusMessage = "Error changing email.";
+            StatusMessage = "Error updating username.";
             return Page();
         }
 

@@ -62,16 +62,13 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
-            public string Username { get; set; }
-
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "phone number")]
             public string PhoneNumber { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Enter password to save changes")]
+            [Display(Name = "current password")]
             public string CurrentPassword { get; set; }
         }
 
@@ -80,7 +77,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Email = user.Email,
-                Username = user.UserName,
                 PhoneNumber = user.PhoneNumber
             };
         }
@@ -100,7 +96,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             bool emailChanged = false;
-            bool usernameChanged = false;
             bool phoneChanged = false;
 
             var user = await _userManager.GetUserAsync(User);
@@ -122,7 +117,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             }
 
             var existingEmail = await _userManager.FindByEmailAsync(Input.Email);
-            var existingUser = await _userManager.FindByNameAsync(Input.Username);
 
             if (Input.Email != user.Email)
             {
@@ -133,7 +127,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 }
 
                 var token = await _userManager.GenerateChangeEmailTokenAsync(user, Input.Email);
-                var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
                 var callbackUrl = Url.Page(
                     "/Account/Manage/ConfirmEmailChange",
@@ -142,7 +135,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                     {
                         userId = user.Id,
                         email = Input.Email,
-                        code = encodedToken
+                        code = token
                     },
                     protocol: Request.Scheme);
 
@@ -155,23 +148,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 emailChanged = true;
             }
 
-            if (Input.Username != user.UserName)
-            {
-                if (existingUser != null && existingUser.Id != user.Id)
-                {
-                    ModelState.AddModelError("Input.Username", "Username already taken.");
-                    return Page();
-                }
-
-                var result = await _userManager.SetUserNameAsync(user, Input.Username);
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("", "Failed to update username.");
-                    return Page();
-                }
-
-                usernameChanged = true;
-            }
+           
 
             if (Input.PhoneNumber != user.PhoneNumber)
             {
@@ -188,9 +165,9 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 
             if (emailChanged)
             {
-                StatusMessage = "Confirmation link sent. Please check your email.";
+                StatusMessage = "Confirmation link sent to new email address. Please confirm email and login again.";
             }
-            else if (usernameChanged || phoneChanged)
+            else if (phoneChanged)
             {
                 StatusMessage = "Your profile has been updated.";
             }
