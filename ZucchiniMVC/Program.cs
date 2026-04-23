@@ -1,4 +1,3 @@
-using Infrastrcture.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
@@ -16,6 +15,11 @@ using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Application.Services.Users;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+using Infrastrcture.Repositories.SubscriptionRepo;
+using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
+using ZucchiniMVC.Application.Services.Payment;
+using ZucchiniMVC.Infrastructure.Repositories.Payment;
+using ZucchiniMVC.Infrastructure.ApiClients.PaymentClient;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,17 +43,16 @@ builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfi
 // --- Configurations ---
 builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
 builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 
 // --- Http Clients (Typed) ---
 // These handle the BaseUrl and specific API logic
 builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CmsClient>();
-// --- Provider client for Azure Table Storage ---
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 // --- Repositories ---
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
-
 // Weather Repository
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
@@ -67,7 +70,10 @@ builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
+// In your DI setup (usually after builder.Services.AddControllers();)
+builder.Services.AddScoped<IPaymentService, StripePaymentService>();
+builder.Services.AddScoped<IPaymentSubscriptionRepository, PaymentSubscriptionRepository>();
+builder.Services.AddScoped<PaymentClient>();
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
