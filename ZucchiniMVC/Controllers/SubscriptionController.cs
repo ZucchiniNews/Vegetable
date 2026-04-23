@@ -31,7 +31,6 @@ public class SubscriptionController : Controller
         }
         var subscription = await _subscriptionService.CreateSubscriptionAsync(userId, subscriptionTypeId);
         var session = await _paymentService.CreatePaymentSessionAsync(subscription.Id);
-
         return Redirect(session.CheckoutUrl);
     }
 }
