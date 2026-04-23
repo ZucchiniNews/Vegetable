@@ -5,8 +5,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Emails;
+using System.Text;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {
@@ -14,13 +17,17 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
+        private readonly IEmailService IEmailService;
+        [DataType(DataType.Password)]
+        public string CurrentPassword { get; set; }
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            IEmailService = emailService;
         }
 
         /// <summary>
@@ -63,6 +70,10 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            public string CurrentPassword { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -112,27 +123,49 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            var isValid = await _userManager.CheckPasswordAsync(user, Input.CurrentPassword);
+            if (!isValid)
+            {
+                ModelState.AddModelError("", "Incorrect password.");
+                return Page();
+            }
+
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var existingEmail = await _userManager.FindByEmailAsync(Input.Email);
+            var existingUser = await _userManager.FindByNameAsync(Input.Username);
+
             if (Input.Email != user.Email)
             {
-                var existingEmail = await _userManager.FindByEmailAsync(Input.Email);
                 if (existingEmail != null && existingEmail.Id != user.Id)
                 {
                     ModelState.AddModelError("Input.Email", "Email already in use.");
                     return Page();
                 }
 
-                var result = await _userManager.SetEmailAsync(user, Input.Email);
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("", "Failed to update email.");
-                    return Page();
-                }
+                var token = await _userManager.GenerateChangeEmailTokenAsync(user, Input.Email);
+                var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+                var callbackUrl = Url.Page(
+                    "/Account/Manage/ConfirmEmailChange",
+                    pageHandler: null,
+                    values: new
+                    {
+                        userId = user.Id,
+                        email = Input.Email,
+                        code = encodedToken
+                    },
+                    protocol: Request.Scheme);
+
+                await IEmailService.SendConfirmationEmailAsync(
+                    Input.Email,
+                    callbackUrl);
+
+                StatusMessage = "Confirmation link sent. Please check your email.";
+                return RedirectToPage();
             }
 
             if (Input.Username != user.UserName)
             {
-                var existingUser = await _userManager.FindByNameAsync(Input.Username);
                 if (existingUser != null && existingUser.Id != user.Id)
                 {
                     ModelState.AddModelError("Input.Username", "Username already taken.");
