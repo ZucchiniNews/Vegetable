@@ -544,9 +544,7 @@ body {
     .featured-content h1 {
         font-size: 30px;
     }
-}
 
-@media (max-width: 768px) {
     .news-grid {
         grid-template-columns: 1fr;
     }
@@ -557,6 +555,27 @@ body {
 
     .featured-content p {
         font-size: 16px;
+    }
+
+    .news-header-right {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100%;
+        margin-top: 1rem;
+        padding: 10px 0;
+        border-top: 1px solid #eee;
+    }
+
+    .login-header-box {
+        margin-left: auto;
+        padding-left: 0;
+        border-left: none;
+    }
+
+    .news-header-right .navbar-nav {
+        flex-direction: row !important;
     }
 }
 
