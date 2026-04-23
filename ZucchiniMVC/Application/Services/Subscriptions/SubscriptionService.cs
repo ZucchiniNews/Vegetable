@@ -1,4 +1,4 @@
-using Infrastrcture.Repositories;
+using Infrastrcture.Repositories.SubscriptionRepo;
 using ZucchiniCore.Entities;
 
 namespace Zucchinimvc.Application.Services.Subscriptions;
@@ -22,7 +22,6 @@ public class SubscriptionService : ISubscriptionService
             SubscriptionTypeId = type.Id,
             Price = type.Price,
             Created = DateTime.UtcNow,
-            // Temporary (will be corrected after payment)
             Expires = DateTime.UtcNow.AddDays(type.DurationInDays),
             Status = SubscriptionStatus.Pending
         };
