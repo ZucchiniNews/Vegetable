@@ -5,6 +5,6 @@ namespace ZucchiniMVC.Application.Services.Payment
 {
     public interface IPaymentService
     {
-        Task<PaymentSessionResult> CreateSubscriptionSessionAsync(int subscriptionId);
+        Task<PaymentSessionResult> CreatePaymentSessionAsync(int subscriptionId);
     }
 }
