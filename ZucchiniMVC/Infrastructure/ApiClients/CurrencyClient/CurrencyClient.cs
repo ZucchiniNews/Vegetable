@@ -24,7 +24,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
         }
 
 
-        public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.APIKey);
+        public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.ApiKey);
 
 
         public async Task<T?> GetAsync<T>(string endpoint)
@@ -38,7 +38,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
 
             // Append the API key automatically to every request
             var separator = endpoint.Contains("?") ? "&" : "?";
-            var url = $"{endpoint}{separator}apikey={_settings.APIKey}";
+            var url = $"{endpoint}{separator}apikey={_settings.ApiKey}";
 
             var response = await _http.GetAsync(url);
             if (!response.IsSuccessStatusCode) return default;

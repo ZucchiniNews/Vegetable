@@ -17,8 +17,8 @@ namespace Zucchinimvc.Infrastructure.Repositories.CurrencyRepo
 
         public async Task<CurrencyRateResponse?> GetLatestRatesAsync(string baseCurrency)
         {
-            
-            return await _currencyClient.GetAsync<CurrencyRateResponse>($"latest?base={baseCurrency.ToUpper()}");
+
+            return await _currencyClient.GetAsync<CurrencyRateResponse>($"rates/latest?base={baseCurrency.ToUpper()}");
         }
     }
 }

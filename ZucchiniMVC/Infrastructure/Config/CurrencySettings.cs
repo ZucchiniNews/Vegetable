@@ -2,7 +2,7 @@
 {
     public class CurrencySettings
     {
-        public string APIKey { get; set; } = string.Empty;
-        public string BaseUrl { get; set; } = "https://api.currencyfreaks.com/v2.0/rates/latest?apikey=";
+        public string ApiKey { get; set; } = string.Empty;
+        public string BaseUrl { get; set; } = "https://api.currencyfreaks.com/v2.0/rates/latest?apikey=/";
     }
 }

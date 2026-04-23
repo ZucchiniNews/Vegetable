@@ -24,7 +24,7 @@
                         aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+               
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav me-auto ms-3 news-nav-links">
                         <li class="nav-item">
@@ -59,7 +59,9 @@
                             }
                             @await Component.InvokeAsync("Weather", new { city })
                         </div>
-
+                        <div class="currency-header-box text-nowrap">
+                            @await Component.InvokeAsync("Currency")
+                        </div>
                         <div class="login-header-box">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>

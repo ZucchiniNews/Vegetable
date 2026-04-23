@@ -420,3 +420,70 @@ html, body {
         font-size: 16px;
     }
 }
+
+/* Currency Navbar*/
+.currency-header-box {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 8px;
+    padding: 5px 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.currency-widget {
+    display: inline-block;
+}
+
+.currency-rates {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.currency-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.currency-symbol {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.currency-value {
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+}
+
+.currency-error {
+    color: #ff6b6b;
+    font-size: 12px;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .currency-rates {
+        gap: 8px;
+    }
+
+    .currency-item {
+        font-size: 11px;
+    }
+
+    .currency-header-box {
+        padding: 3px 8px;
+    }
+}
+
+/* Hover effect */
+.currency-item:hover {
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
+}
+
+    .currency-item:hover .currency-value {
+        color: #ffd700;
+    }

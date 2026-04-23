@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
+using System.Globalization;
 
 namespace Zucchinimvc.Application.Services.Currency
 {
     public class CurrencyService : ICurrencyService
     {
-        private readonly HttpClient _httpClient;
         private readonly ILogger<CurrencyService> _logger;
         private readonly ICurrencyRepository _currencyRepo;
 
-        public CurrencyService(HttpClient httpClient, ILogger<CurrencyService> logger, ICurrencyRepository currencyRepo)
+        public CurrencyService(ILogger<CurrencyService> logger, ICurrencyRepository currencyRepo)
         {
-            _httpClient = httpClient;
             _logger = logger;
             _currencyRepo = currencyRepo;
         }
@@ -21,9 +20,36 @@ namespace Zucchinimvc.Application.Services.Currency
             var response = await _currencyRepo.GetLatestRatesAsync(baseCurrency);
 
             if (response == null || response.Rates == null)
+            {
+                _logger.LogWarning("Response or Rates is null for {BaseCurrency}", baseCurrency);
                 return new Dictionary<string, decimal>();
+            }
 
-            return response.Rates;
+            _logger.LogInformation($"Received {response.Rates.Count} rates from API");
+
+            var decimalRates = new Dictionary<string, decimal>();
+            foreach (var rate in response.Rates)
+            {
+                // Use InvariantCulture to handle dot as decimal separator
+                if (decimal.TryParse(rate.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var decimalValue))
+                {
+                    decimalRates.Add(rate.Key, decimalValue);
+                }
+                else
+                {
+                    _logger.LogWarning($"Failed to parse rate for {rate.Key}: '{rate.Value}'");
+                }
+            }
+
+            _logger.LogInformation($"Successfully parsed {decimalRates.Count} rates");
+
+            // Log if SEK and EUR are found
+            if (decimalRates.ContainsKey("SEK"))
+                _logger.LogInformation($"SEK rate: {decimalRates["SEK"]}");
+            if (decimalRates.ContainsKey("EUR"))
+                _logger.LogInformation($"EUR rate: {decimalRates["EUR"]}");
+
+            return decimalRates;
         }
 
         public async Task<Dictionary<string, decimal>> GetRatesAsync(string toCurrency)
@@ -51,7 +77,7 @@ namespace Zucchinimvc.Application.Services.Currency
                 throw new KeyNotFoundException($"Rates for EUR not found.");
             }
 
-            return rates;
+            return new ActionResult<Dictionary<string, decimal>>(rates);
         }
 
         public async Task<ActionResult<Dictionary<string, decimal>>> GetSEKRates()
@@ -64,8 +90,7 @@ namespace Zucchinimvc.Application.Services.Currency
                 throw new KeyNotFoundException($"Rates for SEK not found.");
             }
 
-            return rates;
+            return new ActionResult<Dictionary<string, decimal>>(rates);
         }
     }
-
 }
