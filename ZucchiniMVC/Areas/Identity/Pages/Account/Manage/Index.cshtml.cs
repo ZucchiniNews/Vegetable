@@ -18,8 +18,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailService IEmailService;
-        [DataType(DataType.Password)]
-        public string CurrentPassword { get; set; }
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
@@ -73,23 +71,19 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Enter current password to save changes.")]
+            [Display(Name = "Enter password to save changes")]
             public string CurrentPassword { get; set; }
         }
 
         private async Task LoadAsync(User user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                Email = user.Email,
+                Username = user.UserName,
+                PhoneNumber = user.PhoneNumber
             };
         }
-
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -100,18 +94,15 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 
             await LoadAsync(user);
 
-            Input = new InputModel
-            {
-                Email = user.Email,
-                Username = user.UserName,
-                PhoneNumber = user.PhoneNumber
-            };
-
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            bool emailChanged = false;
+            bool usernameChanged = false;
+            bool phoneChanged = false;
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -120,7 +111,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 
             if (!ModelState.IsValid)
             {
-                await LoadAsync(user);
                 return Page();
             }
 
@@ -131,7 +121,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var existingEmail = await _userManager.FindByEmailAsync(Input.Email);
             var existingUser = await _userManager.FindByNameAsync(Input.Username);
 
@@ -162,7 +151,8 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                     callbackUrl);
 
                 StatusMessage = "Confirmation link sent. Please check your email.";
-                return RedirectToPage();
+
+                emailChanged = true;
             }
 
             if (Input.Username != user.UserName)
@@ -179,6 +169,8 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                     ModelState.AddModelError("", "Failed to update username.");
                     return Page();
                 }
+
+                usernameChanged = true;
             }
 
             if (Input.PhoneNumber != user.PhoneNumber)
@@ -189,10 +181,20 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                     ModelState.AddModelError("", "Failed to update phone number.");
                     return Page();
                 }
+                phoneChanged = true;
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+
+            if (emailChanged)
+            {
+                StatusMessage = "Confirmation link sent. Please check your email.";
+            }
+            else if (usernameChanged || phoneChanged)
+            {
+                StatusMessage = "Your profile has been updated.";
+            }
+            
             return RedirectToPage();
         }
     }
