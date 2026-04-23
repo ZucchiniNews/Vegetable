@@ -2,69 +2,115 @@
 @using Microsoft.AspNetCore.Http.Features
 @model TwoFactorAuthenticationModel
 @{
-    ViewData["Title"] = "Two-factor authentication (2FA)";
+    ViewData["Title"] = "Security";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
-<h3>@ViewData["Title"]</h3>
-@{
-    var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();
-    @if (consentFeature?.CanTrack ?? true)
-    {
-        @if (Model.Is2faEnabled)
-        {
-            if (Model.RecoveryCodesLeft == 0)
-            {
-                <div class="alert alert-danger">
-                    <strong>You have no recovery codes left.</strong>
-                    <p>You must <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a> before you can log in with a recovery code.</p>
-                </div>
-            }
-            else if (Model.RecoveryCodesLeft == 1)
-            {
-                <div class="alert alert-danger">
-                    <strong>You have 1 recovery code left.</strong>
-                    <p>You can <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
-                </div>
-            }
-            else if (Model.RecoveryCodesLeft <= 3)
-            {
-                <div class="alert alert-warning">
-                    <strong>You have @Model.RecoveryCodesLeft recovery codes left.</strong>
-                    <p>You should <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
-                </div>
-            }
+<div class="container py-4 manage-container">
+    
+    <partial name="_ManageNav" />
+    <partial name="_StatusMessage" for="StatusMessage" />
 
-            if (Model.IsMachineRemembered)
-            {
-                <form method="post" style="display: inline-block">
-                    <button type="submit" class="btn btn-primary">Forget this browser</button>
-                </form>
-            }
-            <a asp-page="./Disable2fa" class="btn btn-primary">Disable 2FA</a>
-            <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Reset recovery codes</a>
-        }
+    <div class="card card-settings mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-1">
+                <i class="bi bi-shield-lock me-2 fs-5"></i>
+                <h5 class="card-title mb-0 fw-bold">Two-Factor Authentication</h5>
+            </div>
+            <p class="text-muted small mb-4">Protect your account with an additional security layer.</p>
 
-        <h4>Authenticator app</h4>
-        @if (!Model.HasAuthenticator)
-        {
-            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Add authenticator app</a>
-        }
-        else
-        {
-            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Set up authenticator app</a>
-            <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">Reset authenticator app</a>
-        }
-    }
-    else
+            @{
+                var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>();
+                if (consentFeature?.CanTrack ?? true)
+                {
+                    if (Model.Is2faEnabled)
+                    {
+                        if (Model.RecoveryCodesLeft == 0)
+                        {
+                            <div class="alert alert-danger border-0 rounded-3 mb-4">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <strong>No recovery codes left.</strong>
+                                <p class="small mb-0">You must <a asp-page="./GenerateRecoveryCodes" class="alert-link">generate new codes</a> to avoid lockout.</p>
+                            </div>
+                        }
+                        else if (Model.RecoveryCodesLeft <= 3)
+                        {
+                            <div class="alert alert-warning border-0 rounded-3 mb-4">
+                                <i class="bi bi-exclamation-circle me-2"></i>
+                                <strong>Low recovery codes:</strong> You only have @Model.RecoveryCodesLeft left.
+                            </div>
+                        }
+                    }
+
+                    <div class="list-group list-group-flush border-top">
+                        <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-phone fs-4 me-3 text-muted"></i>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Authenticator App</h6>
+                                    <small class="text-muted">Use a mobile app to generate verification codes.</small>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                @if (!Model.HasAuthenticator)
+                                {
+                                    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-dark btn-sm rounded-pill px-3">Add App</a>
+                                }
+                                else
+                                {
+                                    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-dark btn-sm rounded-pill px-3">Change App</a>
+                                    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-outline-secondary btn-sm rounded-pill px-3">Reset</a>
+                                }
+                            </div>
+                        </div>
+
+                        @if (Model.IsMachineRemembered)
+                        {
+                            <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi bi-laptop fs-4 me-3 text-muted"></i>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Trusted Browser</h6>
+                                        <small class="text-muted">This device won't ask for codes for 30 days.</small>
+                                    </div>
+                                </div>
+                                <form method="post">
+                                    <button type="submit" class="btn btn-light border btn-sm rounded-pill px-3 fw-semibold">Forget Browser</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger border-0 rounded-4 p-4 mt-2">
+                        <h6 class="fw-bold"><i class="bi bi-cookie me-2"></i>Privacy Policy Required</h6>
+                        <p class="small mb-0">You must accept the cookie policy before you can enable two-factor authentication.</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    @* Danger Zone for high-risk 2FA actions *@
+    @if (Model.Is2faEnabled)
     {
-        <div class="alert alert-danger">
-            <strong>Privacy and cookie policy have not been accepted.</strong>
-            <p>You must accept the policy before you can enable two factor authentication.</p>
+        <div class="card danger-zone mt-4">
+            <div class="card-body p-4">
+                <h5 class="text-danger fw-bold mb-1">Danger Zone</h5>
+                <p class="text-danger small mb-4">Manage critical security overrides.</p>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                    <a asp-page="./Disable2fa" class="btn btn-white border-danger text-danger w-100 fw-semibold py-2 rounded-3">
+                        Disable 2FA
+                    </a>
+                    <a asp-page="./GenerateRecoveryCodes" class="btn btn-white border-danger text-danger w-100 fw-semibold py-2 rounded-3">
+                        Reset Recovery Codes
+                    </a>
+                </div>
+            </div>
         </div>
     }
-}
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

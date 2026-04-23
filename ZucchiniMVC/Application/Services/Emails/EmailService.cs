@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace Zucchinimvc.Services.Emails;
+namespace Zucchinimvc.Application.Services.Emails;
 
 public class EmailService : IEmailService
 {

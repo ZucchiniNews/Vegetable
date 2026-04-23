@@ -6,6 +6,7 @@ using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Weather;
+using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
@@ -18,6 +19,14 @@ using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using Zucchinimvc.Services.Emails;
 using Zucchinimvc.Services.Subscriptions;
 using Zucchinimvc.Services.Users;
+using Zucchinimvc.Application.Services.Weather;
+using Zucchinimvc.Application.Services.CMS;
+using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Application.Services.Emails;
+using Zucchinimvc.Application.Services.Subscriptions;
+using Zucchinimvc.Application.Services.Articles;
+using Zucchinimvc.Application.Services.Users;
+using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,6 +78,7 @@ builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 // --- Services ---
+builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
@@ -106,5 +116,23 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var roleManager = services.GetRequiredService<RoleManager<Roles>>();
+        var userManager = services.GetRequiredService<UserManager<User>>();
+
+        await DbInitializer.SeedRoles(roleManager);
+        await DbInitializer.SeedAdminAsync(userManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred during database seeding.");
+    }
+}
 
 app.Run();

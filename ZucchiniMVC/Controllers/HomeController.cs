@@ -1,26 +1,29 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Zucchinimvc.Models.DTOs.StrapiDTOs;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Models.ViewModels;
+using Zucchinimvc.Application.Services.Subscriptions;
 
 namespace Zucchinimvc.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ICmsService _cmsService;
+    private readonly UserManager<User> _userManager;
+    private readonly ISubscriptionService _subscriptionService;
 
-    public HomeController(ICmsService cmsService)
+    public HomeController(ICmsService cmsService, UserManager<User> userManager, ISubscriptionService subscriptionService)
     {
         _cmsService = cmsService;
+        _userManager = userManager;
+        _subscriptionService = subscriptionService;
     }
 
     public async Task<IActionResult> Index()
     {
         var articles = await _cmsService.GetArticles();
-
-        Console.WriteLine($"Articles count: {articles.Count()}");
-
-
+        ViewData["IsHome"] = true;
         return View(articles);
     }
 
@@ -30,25 +33,42 @@ public class HomeController : Controller
         return View(categories);
     }
 
-    public IActionResult Local()
+    [HttpGet("/category/{slug}")]
+    public async Task<IActionResult> Category(string slug)
     {
-        return View();
+        var categories = await _cmsService.GetCategories();
+        var category = categories.FirstOrDefault(c => string.Equals(c.Slug, slug, StringComparison.OrdinalIgnoreCase));
+
+        if (category == null)
+            return NotFound();
+
+        var allArticles = await _cmsService.GetArticles();
+        var categoryArticleIds = category.Articles?.Select(a => a.Id).ToHashSet() ?? new HashSet<int>();
+
+        var categoryArticles = allArticles.Where(a => categoryArticleIds.Contains(a.Id)).ToList();
+
+        return View("Index", categoryArticles);
     }
-    public IActionResult Sweden()
+
+    [HttpGet("/article/{slug}")]
+    public async Task<IActionResult> Article(string slug)
     {
-        return View();
-    }
-    public IActionResult World()
-    {
-        return View();
-    }
-    public IActionResult Sport()
-    {
-        return View();
-    }
-    public IActionResult Economey()
-    {
-        return View();
+        var articles = await _cmsService.GetArticles();
+        var article = articles.FirstOrDefault(a => string.Equals(a.Slug, slug, StringComparison.OrdinalIgnoreCase));
+
+        if (article == null)
+            return NotFound();
+
+
+        var user = await _userManager.GetUserAsync(User);
+        var isSubscribed = user != null && await _subscriptionService.HasActiveSubscriptionAsync(user.Id);
+
+       
+        return View(new ArticleDetailViewModel
+        {
+            Article = article,
+            IsSubscribed = isSubscribed
+        });
     }
 
     public IActionResult Privacy()

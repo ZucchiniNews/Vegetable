@@ -21,13 +21,15 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
             {
                 Id = dto.Id,
                 Title = dto.Title,
-                Description = dto.Description,
+                ContentSummary = dto.ContentSummary,
                 Slug = dto.Slug,
                 CreatedAt = dto.CreatedAt,
                 UpdatedAt = dto.UpdatedAt,
                 PublishedAt = dto.PublishedAt,
-                Cover = dto.Cover != null ? new ArticleCover { Url = dto.Cover.Url } : null
-            });
+                BodyPreview = dto.BodyPreview,
+                BodyGated = dto.BodyGated,
+                Cover = dto.Cover != null ? new ArticleCover { OriginalUrl = dto.Cover.Url } : null
+            }).ToList();
         }
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
@@ -44,11 +46,13 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 {
                     Id = a.Id,
                     Title = a.Title,
-                    Description = a.Description,
+                    ContentSummary = a.ContentSummary,
                     Slug = a.Slug,
                     CreatedAt = a.CreatedAt,
                     UpdatedAt = a.UpdatedAt,
-                    PublishedAt = a.PublishedAt
+                    PublishedAt = a.PublishedAt,
+                    BodyPreview = a.BodyPreview,
+                    BodyGated = a.BodyGated
                 }).ToList()
             });
         }

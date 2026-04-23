@@ -29,7 +29,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.ContentSummary)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Slug)
@@ -38,9 +38,9 @@
                 @item.PublishedAt.ToShortDateString()
             </td>
             <td>
-                @if (item.Cover != null && !string.IsNullOrEmpty(item.Cover.Url))
+                @if (item.Cover != null && !string.IsNullOrEmpty(item.Cover.DisplayUrl))
                 {
-                    <img src="@item.Cover.Url" alt="Cover" style="max-height: 50px; max-width: 50px;" />
+                    <img src="@item.Cover.DisplayUrl" alt="Cover" style="max-height: 50px; max-width: 50px;" />
                 }
             </td>
         </tr>
