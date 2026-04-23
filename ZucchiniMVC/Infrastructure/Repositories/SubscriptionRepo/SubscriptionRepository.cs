@@ -30,6 +30,19 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
+        public async Task<Subscription?> FindSubscriptionByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.Subscriptions.FirstOrDefaultAsync(s => s.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+
         public async Task<SubscriptionType?> FindSubscriptionTypeByIdAsync(int id)
         {
             try
