@@ -73,6 +73,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Enter current password to save changes.")]
             public string CurrentPassword { get; set; }
         }
 

@@ -22,15 +22,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
                 <div class="mb-3">
-                    <label asp-for="Input.Username" class="form-label small fw-bold text-uppercase"
-                           style="letter-spacing: 0.05em;"></label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i
-                            class="bi bi-at"></i></span>
-                            <input asp-for="Input.Username" class="form-control bg-light border-start-0 rounded-end-3" />
-                        </div>
-                    </div>
-
+                    
                     <div class="mb-3">
                         <label asp-for="Input.Email" class="form-label small fw-bold text-uppercase"></label>
                         <input asp-for="Input.Email" class="form-control rounded-3" />
@@ -44,9 +36,14 @@
                                placeholder="e.g. (+46) 70-123 00 00" />
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
                     </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.CurrentPassword" class="form-label small fw-bold text-uppercase"></label>
+                        <input asp-for="Input.CurrentPassword" type="password" class="form-control rounded-3" />
+                        <span asp-validation-for="Input.CurrentPassword" class="text-danger small"></span>
+                    </div>
 
                     <button id="update-profile-button" type="submit" class="btn btn-dark w-100 fw-bold py-2 rounded-3">
-                        Save Changes
+                        Update Profile
                     </button>
                 </form>
             </div>
