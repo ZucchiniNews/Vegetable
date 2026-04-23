@@ -76,16 +76,5 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    [HttpGet("/success")]
-    public IActionResult Success(string session_id)
-    {
-        ViewBag.SessionId = session_id;
-        return View();
-    }
-
-    [HttpGet("/cancel")]
-    public IActionResult Cancel()
-    {
-        return View();
-    }
+  
 }
