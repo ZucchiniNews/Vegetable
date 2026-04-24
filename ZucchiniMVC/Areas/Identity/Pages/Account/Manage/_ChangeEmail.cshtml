@@ -1,0 +1,17 @@
+@model Zucchinimvc.Areas.Identity.Pages.Account.Manage.ManageModel
+
+<div class="row">
+    <div class="col-md-6">
+        <h4 class="mb-3">Email address</h4>
+        <p class="text-muted">Current: <strong>@Model.CurrentEmail</strong></p>
+
+        <form method="post" asp-page-handler="ChangeEmail">
+            <div class="mb-3">
+                <label asp-for="EmailForm.NewEmail" class="form-label"></label>
+                <input asp-for="EmailForm.NewEmail" class="form-control" />
+                <span asp-validation-for="EmailForm.NewEmail" class="text-danger small"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Update email</button>
+        </form>
+    </div>
+</div>

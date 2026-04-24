@@ -1,0 +1,17 @@
+@model Zucchinimvc.Areas.Identity.Pages.Account.Manage.ManageModel
+
+<div class="row">
+    <div class="col-md-6">
+        <h4 class="mb-3">Display name</h4>
+        <p class="text-muted">Current: <strong>@Model.CurrentDisplayName</strong></p>
+
+        <form method="post" asp-page-handler="ChangeName">
+            <div class="mb-3">
+                <label asp-for="NameForm.DisplayName" class="form-label"></label>
+                <input asp-for="NameForm.DisplayName" class="form-control" />
+                <span asp-validation-for="NameForm.DisplayName" class="text-danger small"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Save name</button>
+        </form>
+    </div>
+</div>
