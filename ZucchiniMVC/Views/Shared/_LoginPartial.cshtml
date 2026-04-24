@@ -17,9 +17,9 @@
                 @if (!User.IsInRole("Admin"))
                 {
                     <div class="avatar-circle me-2">
-                        @user?.FirstName.Substring(0, 1)
+                        @user?.FirstName
                     </div>
-                    <span class="d-none d-sm-inline">@user?.LastName</span>
+                    <span class="d-none d-sm-inline">@user?.LastName.Substring(0, 1).</span>
                 }
                 else
                 {
@@ -74,10 +74,9 @@
         <li class="nav-item">
             <a class="nav-link d-flex align-items-center text-dark fw-semibold profile-trigger guest-trigger" id="login"
                    asp-area="Identity" asp-page="/Account/Login">
-                <div class="avatar-circle me-2 guest-avatar">
-                    <i class="bi bi-person-fill"></i>
+                <div class="me-2">
+                    <span class="bi">Log In</span>
                 </div>
-                <span class="d-none d-sm-inline">Log In</span>
             </a>
         </li>
     }
