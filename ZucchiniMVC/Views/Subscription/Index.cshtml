@@ -1,9 +1,8 @@
-﻿
-@{
-    ViewData["Title"] = "Choose Subscription";
+﻿@{
+    ViewData["Title"] = "Choose Plan";
 }
 
-<h1>Choose Subscription</h1>
+<h1>Choose Plan</h1>
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-8 text-center mb-4">
@@ -11,7 +10,7 @@
     </div>
 </div>
 
-@model List<ZucchiniCore.Entities.SubscriptionType>
+@model List<ZucchiniCore.Entities.Plan>
 <form method="post" action="/Subscription/Subscribe">
     <div class="row mb-4">
         <div class="col-12 text-center">
@@ -19,21 +18,21 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        @foreach (ZucchiniCore.Entities.SubscriptionType type in Model)
+        @foreach (ZucchiniCore.Entities.Plan plan in Model)
         {
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm border-0">
                     <div class="card-header bg-primary text-white text-center py-3">
-                        <h4 class="my-0 fw-normal">@type.TypeName</h4>
+                        <h4 class="my-0 fw-normal">@plan.Name</h4>
                     </div>
                     <div class="card-body text-center d-flex flex-column">
-                        <h1 class="card-title pricing-card-title">@type.Price SEK<small class="text-muted fw-light">/@(type.DurationInDays == 7 ? "wk" : type.DurationInDays == 30 ? "mo" : "yr")</small></h1>
+                        <h1 class="card-title pricing-card-title">@plan.Price SEK<small class="text-muted fw-light">/@(plan.DurationInDays == 7 ? "wk" : plan.DurationInDays == 30 ? "mo" : "yr")</small></h1>
                         <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
-                            <li>@type.Description</li>
+                            <li>@plan.Description</li>
                         </ul>
                         <div class="form-check d-flex justify-content-center mt-auto">
-                            <input class="form-check-input me-2" type="radio" id="type_@type.Id" name="subscriptionTypeId" value="@type.Id" required style="cursor: pointer;" />
-                            <label class="form-check-label fw-bold" for="type_@type.Id" style="cursor: pointer;">Select @type.TypeName</label>
+                            <input class="form-check-input me-2" type="radio" id="plan_@plan.Id" name="planId" value="@plan.Id" required style="cursor: pointer;" />
+                            <label class="form-check-label fw-bold" for="plan_@plan.Id" style="cursor: pointer;">Select @plan.Name</label>
                         </div>
                     </div>
                 </div>

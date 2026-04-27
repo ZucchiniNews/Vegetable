@@ -43,11 +43,11 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
-        public async Task<SubscriptionType?> FindSubscriptionTypeByIdAsync(int id)
+        public async Task<Plan?> FindPlanByIdAsync(int id)
         {
             try
             {
-                return await _context.SubscriptionTypes.FirstOrDefaultAsync(st => st.Id == id);
+                return await _context.Plans.FirstOrDefaultAsync(st => st.Id == id);
             }
             catch (Exception ex)
             {
@@ -57,11 +57,11 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
         }
 
 
-        public async Task<List<SubscriptionType>> GetAllSubscriptionTypesAsync()
+        public async Task<List<Plan>> GetAllPlansAsync()
         {
             try
             {
-                return await _context.SubscriptionTypes.ToListAsync();
+                return await _context.Plans.ToListAsync();
             }
             catch (Exception ex)
             {

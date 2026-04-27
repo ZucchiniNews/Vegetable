@@ -1,5 +1,5 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Subscriptions;
 using ZucchiniMVC.Application.Services.Payment;
@@ -18,19 +18,19 @@ public class SubscriptionController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        var subscriptionTypes = await _subscriptionService.GetAllSubscriptionTypesAsync();
-        return View(subscriptionTypes);
+        var plans = await _subscriptionService.GetAllPlansAsync();
+        return View(plans);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Subscribe(int subscriptionTypeId)
+    public async Task<IActionResult> Subscribe(int planId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized("User is not authenticated.");
         }
-        Subscription subscription = await _subscriptionService.CreateSubscriptionAsync(userId, subscriptionTypeId);
+        Subscription subscription = await _subscriptionService.CreateSubscriptionAsync(userId, planId);
         var session = await _paymentService.CreatePaymentSessionAsync(subscription);
         return Redirect(session.CheckoutUrl);
     }

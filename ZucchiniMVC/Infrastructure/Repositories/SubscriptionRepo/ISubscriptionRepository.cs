@@ -5,8 +5,8 @@ namespace Infrastrcture.Repositories.SubscriptionRepo
     {
         Task AddSubscriptionAsync(Subscription subscription);
         Task<Subscription?> FindSubscriptionByIdAsync(int id);
-        Task<SubscriptionType?> FindSubscriptionTypeByIdAsync(int id);
-        Task<List<SubscriptionType>> GetAllSubscriptionTypesAsync();
+        Task<Plan?> FindPlanByIdAsync(int id);
+        Task<List<Plan>> GetAllPlansAsync();
     }
 
 }

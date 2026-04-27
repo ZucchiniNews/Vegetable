@@ -13,23 +13,23 @@ public class SubscriptionService : ISubscriptionService
         _logger = logger;
     }
 
-    public async Task<Subscription> CreateSubscriptionAsync(string userId, int subscriptionTypeId)
+    public async Task<Subscription> CreateSubscriptionAsync(string userId, int planId)
     {
-        var type = await _subscriptionRepository.FindSubscriptionTypeByIdAsync(subscriptionTypeId) ?? throw new Exception("Subscription type not found");
+        var plan = await _subscriptionRepository.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
         var subscription = new Subscription
         {
             UserId = userId,
-            SubscriptionTypeId = type.Id,
-            Price = type.Price,
+            PlanId = plan.Id,
+            Price = plan.Price,
             Created = DateTime.UtcNow,
-            Expires = DateTime.UtcNow.AddDays(type.DurationInDays),
+            Expires = DateTime.UtcNow.AddDays(plan.DurationInDays),
             Status = SubscriptionStatus.Pending
         };
         await _subscriptionRepository.AddSubscriptionAsync(subscription);
         return subscription;
     }
-    public async Task<List<SubscriptionType>> GetAllSubscriptionTypesAsync()
+    public async Task<List<Plan>> GetAllPlansAsync()
     {
-        return await _subscriptionRepository.GetAllSubscriptionTypesAsync();
+        return await _subscriptionRepository.GetAllPlansAsync();
     }
 }

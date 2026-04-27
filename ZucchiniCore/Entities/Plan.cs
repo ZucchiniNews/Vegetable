@@ -1,10 +1,10 @@
 ﻿namespace ZucchiniCore.Entities
 {
-    public class SubscriptionType
+    public class Plan
     {
         public int Id { get; set; }
 
-        public string TypeName { get; set; } = "None";
+        public string Name { get; set; } = "None";
         public string Description { get; set; } = string.Empty;
 
         public decimal Price { get; set; }

@@ -7,8 +7,8 @@
         public string UserId { get; set; } = string.Empty;
         public User? User { get; set; }
 
-        public int SubscriptionTypeId { get; set; }
-        public SubscriptionType? SubscriptionType { get; set; }
+        public int PlanId { get; set; }
+        public Plan? Plan { get; set; }
 
         public decimal Price { get; set; }
 
