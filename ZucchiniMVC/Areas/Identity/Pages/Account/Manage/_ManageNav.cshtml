@@ -1,4 +1,4 @@
-@using ZucchiniCore.Entities
+@* @using ZucchiniCore.Entities
 @inject SignInManager<User> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
@@ -25,4 +25,4 @@
             }
         </div>
     </div>
-</div>
+</div> *@

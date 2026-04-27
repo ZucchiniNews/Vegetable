@@ -177,7 +177,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             return string.Format(
                 CultureInfo.InvariantCulture,
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
+                _urlEncoder.Encode("Zucchini News"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
