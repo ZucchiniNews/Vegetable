@@ -34,51 +34,20 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 
 
         // ── Bound forms ──────────────────────────────────────────────────────
-        [BindProperty] public ChangeEmailInput EmailForm { get; set; }
+        [BindProperty] public ChangeEmailInput EmailForm { get; set; } = new ChangeEmailInput();
         [BindProperty] public ChangePasswordInput PasswordForm { get; set; }
-        [BindProperty] public ChangeNameInput NameForm { get; set; }
-        [BindProperty] public InputModel Input { get; set; }
+        [BindProperty] public DeleteAccountInput DeleteForm { get; set; }
+        //[BindProperty] public ChangeNameInput NameForm { get; set; }
+        [BindProperty] public ChangePhoneInput PhoneForm { get; set; }
 
-        public class InputModel
+        private async Task LoadUserStateAsync(User user)
         {
-            public string Email { get; set; }
-
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
-
-            // Change Email
-            [EmailAddress]
-            [Display(Name = "New email")]
-            public string NewEmail { get; set; }
-
-            // Change Password
-            [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
-            public string CurrentPassword { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "New password")]
-            public string NewPassword { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "Passwords do not match.")]
-            public string ConfirmPassword { get; set; }
-
-            public bool TwoFactorEnabled { get; set; }
-        }
-
-        private async Task LoadAsync(User user)
-        {
-            Input = new InputModel
+            CurrentEmail = await _userManager.GetEmailAsync(user);
+            HasPassword = await _userManager.HasPasswordAsync(user);
+            TwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+            PhoneForm = new ChangePhoneInput
             {
-                Email = await _userManager.GetEmailAsync(user),
-                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                TwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user)
+                NewPhoneNumber = await _userManager.GetPhoneNumberAsync(user)
             };
         }
 
@@ -87,19 +56,27 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound($"Unable to load user.");
 
-            await LoadAsync(user);
+            await LoadUserStateAsync(user);
             return Page();
         }
 
-        // ── POST: Profile (Phone) ────────────────────────────────────────────
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostChangePhoneAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound();
 
-            if (Input.PhoneNumber != user.PhoneNumber)
+            ModelState.Clear();
+
+            if (!TryValidateModel(PhoneForm, nameof(PhoneForm)))
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                await LoadUserStateAsync(user);
+                return Page();
+            }
+
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            if (PhoneForm.NewPhoneNumber != phoneNumber)
+            {
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, PhoneForm.NewPhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
                     SetStatus("Unexpected error when setting phone number.", "danger");
@@ -108,94 +85,120 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            SetStatus("Your profile has been updated.", "success");
+            SetStatus("Your phone number has been updated.", "success");
             return RedirectToPage();
         }
-
-        // ── POST: Change Email ───────────────────────────────────────────────
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound();
+            ModelState.Clear();
 
-            if (string.IsNullOrEmpty(Input.NewEmail))
+            if (!TryValidateModel(EmailForm, nameof(EmailForm)))
             {
-                SetStatus("New email is required.", "danger");
+                await LoadUserStateAsync(user);
+                return Page();
+            }
+
+            var currentEmail = await _userManager.GetEmailAsync(user);
+            if (EmailForm.NewEmail == currentEmail)
+            {
+                SetStatus("Email is already set to this address.", "info");
                 return RedirectToPage();
             }
 
-            var email = await _userManager.GetEmailAsync(user);
-            if (Input.NewEmail == email)
+            var setEmailResult = await _userManager.SetEmailAsync(user, EmailForm.NewEmail);
+            var setUsernameResult = await _userManager.SetUserNameAsync(user, EmailForm.NewEmail);
+
+            if (setEmailResult.Succeeded && setUsernameResult.Succeeded)
             {
-                SetStatus("Your email is unchanged.", "success");
-                return RedirectToPage();
+                user.EmailConfirmed = true;
+                await _userManager.UpdateAsync(user);
+
+                await _signInManager.RefreshSignInAsync(user);
+                SetStatus("Email updated successfully.", "success");
+            }
+            else
+            {
+                var error = setEmailResult.Errors.FirstOrDefault()?.Description ?? "Error updating email.";
+                SetStatus(error, "danger");
             }
 
-            var token = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-            var result = await _userManager.ChangeEmailAsync(user, Input.NewEmail, token);
-
-            if (!result.Succeeded)
-            {
-                SetStatus("Error changing email.", "danger");
-                return RedirectToPage();
-            }
-
-            // Sync Username if your app treats them as the same
-            await _userManager.SetUserNameAsync(user, Input.NewEmail);
-            await _signInManager.RefreshSignInAsync(user);
-
-            SetStatus("Email updated successfully.", "success");
             return RedirectToPage();
         }
 
-        // ── POST: Change Password ────────────────────────────────────────────
         public async Task<IActionResult> OnPostChangePasswordAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return NotFound();
+            var result = await _userManager.ChangePasswordAsync(user, PasswordForm.CurrentPassword, PasswordForm.NewPassword);
 
-            var result = await _userManager.ChangePasswordAsync(user, Input.CurrentPassword, Input.NewPassword);
-
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                SetStatus("Error changing password. Ensure current password is correct.", "danger");
+                await _signInManager.RefreshSignInAsync(user);
+                SetStatus("Password changed.", "success");
+            }
+            else
+            {
+                SetStatus("Incorrect current password.", "danger");
+            }
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAccountAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var passwordCorrect = await _userManager.CheckPasswordAsync(user, DeleteForm.Password);
+
+            if (!passwordCorrect)
+            {
+                SetStatus("Incorrect password. Account not deleted.", "danger");
                 return RedirectToPage();
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-            SetStatus("Your password has been changed.", "success");
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToPage("/Index");
+            }
             return RedirectToPage();
         }
 
         public class ChangeEmailInput
         {
-            [Required, EmailAddress, Display(Name = "New email")]
+            [Required, EmailAddress, Display(Name = "New Email")]
             public string NewEmail { get; set; }
         }
 
         public class ChangePasswordInput
         {
-            [Required, DataType(DataType.Password), Display(Name = "Current password")]
+            [Required, DataType(DataType.Password), Display(Name = "Current Password")]
             public string CurrentPassword { get; set; }
 
             [Required, StringLength(100, MinimumLength = 6), DataType(DataType.Password), Display(Name = "New password")]
             public string NewPassword { get; set; }
 
-            [DataType(DataType.Password), Display(Name = "Confirm new password")]
+            [DataType(DataType.Password), Display(Name = "Confirm New Password")]
             [Compare("NewPassword", ErrorMessage = "Passwords do not match.")]
             public string ConfirmPassword { get; set; }
         }
 
-        public class ChangeNameInput
+        public class DeleteAccountInput
         {
-            [Required, StringLength(100), Display(Name = "Display name")]
-            public string DisplayName { get; set; }
+            [Required, DataType(DataType.Password)]
+            public string Password { get; set; }
         }
-
+        //public class ChangeNameInput
+        //{
+        //    [Required, StringLength(100), Display(Name = "Display name")]
+        //    public string DisplayName { get; set; }
+        //}
+        public class ChangePhoneInput
+        {
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string NewPhoneNumber { get; set; }
+        }
         private void SetStatus(string message, string type)
         {
             StatusMessage = message;

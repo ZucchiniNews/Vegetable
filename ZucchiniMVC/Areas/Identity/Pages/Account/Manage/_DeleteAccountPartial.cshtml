@@ -1,0 +1,18 @@
+﻿@model Zucchinimvc.Areas.Identity.Pages.Account.Manage.IndexModel
+<div class="row">
+    <div class="col-md-6">
+        <h4 class="text-danger">Delete Account</h4>
+        <p>This action is permanent and cannot be undone.</p>
+        
+        <form method="post" asp-page-handler="DeleteAccount">
+            <div class="mb-3">
+                <label asp-for="DeleteForm.Password" class="form-label">Confirm Password to Delete</label>
+                <input asp-for="DeleteForm.Password" class="form-control" placeholder="Enter password..." />
+                <span asp-validation-for="DeleteForm.Password" class="text-danger small"></span>
+            </div>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you absolutely sure?')">
+                Permanently Delete My Account
+            </button>
+        </form>
+    </div>
+</div>
