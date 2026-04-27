@@ -24,11 +24,20 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
+
+        public string CurrentEmail { get; set; }
+        public string CurrentDisplayName { get; set; }
+        public bool HasPassword { get; set; }
+        public bool TwoFactorEnabled { get; set; }
         [TempData] public string StatusMessage { get; set; }
         [TempData] public string StatusType { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+
+        // ── Bound forms ──────────────────────────────────────────────────────
+        [BindProperty] public ChangeEmailInput EmailForm { get; set; }
+        [BindProperty] public ChangePasswordInput PasswordForm { get; set; }
+        [BindProperty] public ChangeNameInput NameForm { get; set; }
+        [BindProperty] public InputModel Input { get; set; }
 
         public class InputModel
         {
@@ -48,11 +57,13 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Current password")]
             public string CurrentPassword { get; set; }
 
-            [StringLength(100, MinimumLength = 6)]
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string NewPassword { get; set; }
 
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Confirm new password")]
             [Compare("NewPassword", ErrorMessage = "Passwords do not match.")]
@@ -132,7 +143,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             // Sync Username if your app treats them as the same
             await _userManager.SetUserNameAsync(user, Input.NewEmail);
             await _signInManager.RefreshSignInAsync(user);
-            
+
             SetStatus("Email updated successfully.", "success");
             return RedirectToPage();
         }
@@ -158,6 +169,31 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             await _signInManager.RefreshSignInAsync(user);
             SetStatus("Your password has been changed.", "success");
             return RedirectToPage();
+        }
+
+        public class ChangeEmailInput
+        {
+            [Required, EmailAddress, Display(Name = "New email")]
+            public string NewEmail { get; set; }
+        }
+
+        public class ChangePasswordInput
+        {
+            [Required, DataType(DataType.Password), Display(Name = "Current password")]
+            public string CurrentPassword { get; set; }
+
+            [Required, StringLength(100, MinimumLength = 6), DataType(DataType.Password), Display(Name = "New password")]
+            public string NewPassword { get; set; }
+
+            [DataType(DataType.Password), Display(Name = "Confirm new password")]
+            [Compare("NewPassword", ErrorMessage = "Passwords do not match.")]
+            public string ConfirmPassword { get; set; }
+        }
+
+        public class ChangeNameInput
+        {
+            [Required, StringLength(100), Display(Name = "Display name")]
+            public string DisplayName { get; set; }
         }
 
         private void SetStatus(string message, string type)
