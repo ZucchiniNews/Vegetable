@@ -39,11 +39,6 @@
                             <div id="qrCode"></div>
                         </div>
                         <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
-                        
-                        <div class="alert alert-info border-0 shadow-none rounded-3 small py-2">
-                            <i class="bi bi-info-circle me-2"></i>
-                            Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423" class="alert-link">enable QR codes</a>.
-                        </div>
                     </div>
 
                     <div class="mb-0">
@@ -71,4 +66,18 @@
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript" src="~/lib/qrcode.js"></script>
     <script type="text/javascript" src="~/js/qr.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script type="text/javascript">
+        window.addEventListener("load", () => {
+        const uri = document.getElementById("qrCodeData").getAttribute('data-url');
+        new QRCode(document.getElementById("qrCode"),
+        {
+        text: uri,
+        width: 150,
+        height: 150
+        });
+        });
+    </script>
 }
