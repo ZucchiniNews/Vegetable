@@ -6,7 +6,7 @@
         
         <form method="post" asp-page-handler="DeleteAccount">
             <div class="mb-3">
-                <label asp-for="DeleteForm.Password" class="form-label">Confirm Password to Delete</label>
+                <label asp-for="DeleteForm.Password" class="form-label">Enter password to delete</label>
                 <input asp-for="DeleteForm.Password" class="form-control" placeholder="Enter password..." />
                 <span asp-validation-for="DeleteForm.Password" class="text-danger small"></span>
             </div>

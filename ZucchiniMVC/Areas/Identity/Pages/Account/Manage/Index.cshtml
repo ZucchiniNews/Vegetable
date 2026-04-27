@@ -14,25 +14,37 @@
     </div>
 }
 
-<div class="row g-5">
-    <div class="col-12 border-bottom pb-4">
-        <partial name="_ChangeEmailPartial" model="Model" />
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_ChangeEmailPartial" model="Model" />
+        </div>
     </div>
 
-    <div class="col-12 border-bottom pb-4">
-        <partial name="_ChangePasswordPartial" model="Model" />
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_ChangePasswordPartial" model="Model" />
+        </div>
     </div>
 
-    <div class="col-12 border-bottom pb-4">
-        <partial name="_PhonePartial" model="Model" />
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_PhonePartial" model="Model" />
+        </div>
     </div>
 
-    <div class="col-12 border-bottom pb-4">
-        <partial name="_TwoFactorPartial" model="Model" />
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_TwoFactorPartial" model="Model" />
+        </div>
     </div>
 
-    <div class="col-12 text-danger">
-        <partial name="_DeleteAccountPartial" model="Model" />
+    <div class="col-12 mt-5">
+        <div class="p-4 border border-danger rounded-3 bg-light-subtle">
+            <h4 class="text-danger fw-bold">Danger Zone</h4>
+            <hr class="text-danger">
+            <partial name="_DeleteAccountPartial" model="Model" />
+        </div>
     </div>
 </div>
 
