@@ -26,7 +26,7 @@
                         <h4 class="my-0 fw-normal">@plan.Name</h4>
                     </div>
                     <div class="card-body text-center d-flex flex-column">
-                        <h1 class="card-title pricing-card-title">@plan.Price SEK<small class="text-muted fw-light">/@(plan.DurationInDays == 7 ? "wk" : plan.DurationInDays == 30 ? "mo" : "yr")</small></h1>
+                        <h1 class="card-title pricing-card-title">@plan.Price SEK<small class="text-muted fw-light">/@plan.Name</small></h1>
                         <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
                             <li>@plan.Description</li>
                         </ul>

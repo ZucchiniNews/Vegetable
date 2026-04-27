@@ -18,11 +18,10 @@ public class SubscriptionService : ISubscriptionService
         var plan = await _subscriptionRepository.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
         var subscription = new Subscription
         {
-            UserId = userId,
             PlanId = plan.Id,
-            Price = plan.Price,
+            UserId = userId,
+            ProviderPriceId = plan.ProviderPriceId,
             Created = DateTime.UtcNow,
-            Expires = DateTime.UtcNow.AddDays(plan.DurationInDays),
             Status = SubscriptionStatus.Pending
         };
         await _subscriptionRepository.AddSubscriptionAsync(subscription);

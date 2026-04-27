@@ -1,25 +1,26 @@
+using Infrastrcture.Repositories.SubscriptionRepo;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
+using Zucchinimvc.Application.Services.Articles;
+using Zucchinimvc.Application.Services.CMS;
+using Zucchinimvc.Application.Services.Emails;
+using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Application.Services.Subscriptions;
+using Zucchinimvc.Application.Services.Users;
+using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
+using Zucchinimvc.Infrastructure.ApiClients.PaymentClients.StripeGateway;
+using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
-using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Application.Services.CMS;
-using Zucchinimvc.Application.Services.Logger;
-using Zucchinimvc.Application.Services.Emails;
-using Zucchinimvc.Application.Services.Subscriptions;
-using Zucchinimvc.Application.Services.Articles;
-using Zucchinimvc.Application.Services.Users;
-using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
-using Infrastrcture.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
+using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using ZucchiniMVC.Application.Services.Payment;
 using ZucchiniMVC.Infrastructure.Repositories.Payment;
-using ZucchiniMVC.Infrastructure.ApiClients.PaymentClient;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -118,7 +119,7 @@ using (var scope = app.Services.CreateScope())
 
         await DbInitializer.SeedRoles(roleManager);
         await DbInitializer.SeedAdminAsync(userManager);
-        await DbInitializer.SeedSubscriptionTypesAsync(dbContext);
+        await DbInitializer.SeedPlansAsync(dbContext);
     }
     catch (Exception ex)
     {

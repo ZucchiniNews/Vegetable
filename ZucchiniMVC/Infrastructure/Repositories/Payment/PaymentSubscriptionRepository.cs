@@ -1,5 +1,5 @@
+using Zucchinimvc.Infrastructure.ApiClients.PaymentClients.StripeGateway;
 using Zucchinimvc.Infrastructure.Data;
-using ZucchiniMVC.Infrastructure.ApiClients.PaymentClient;
 
 namespace ZucchiniMVC.Infrastructure.Repositories.Payment
 {
@@ -15,9 +15,13 @@ namespace ZucchiniMVC.Infrastructure.Repositories.Payment
         }
 
 
-        public async Task<string> CreateStripeSessionAsync(decimal price, int subscriptionId)
+        public async Task<string> CreateProviderSessionAsync(
+            int subscriptionId,
+            string userId,
+            string providerPriceId
+            )
         {
-            return await _paymentClient.CreateCheckoutSessionAsync(price, subscriptionId);
+            return await _paymentClient.CreateCheckoutSessionAsync(subscriptionId, userId, providerPriceId);
         }
     }
 }

@@ -1,7 +1,7 @@
 using Infrastrcture.Repositories.SubscriptionRepo;
-using ZucchiniMVC.Infrastructure.Repositories.Payment;
-using Zucchinimvc.Models.ViewModels;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Models.ViewModels;
+using ZucchiniMVC.Infrastructure.Repositories.Payment;
 
 namespace ZucchiniMVC.Application.Services.Payment
 {
@@ -18,7 +18,7 @@ namespace ZucchiniMVC.Application.Services.Payment
         {
             if (subscription == null)
                 throw new Exception("Subscription not found");
-            var checkoutUrl = await _paymentRepo.CreateStripeSessionAsync(subscription.Price, subscription.Id);
+            var checkoutUrl = await _paymentRepo.CreateProviderSessionAsync(subscription.Id, subscription.UserId, subscription.ProviderPriceId);
             return new PaymentSessionResult
             {
                 CheckoutUrl = checkoutUrl,
