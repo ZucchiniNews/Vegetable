@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Models.ViewModels;
 using Zucchinimvc.Application.Services.Subscriptions;
+using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
 
@@ -11,13 +11,11 @@ public class HomeController : Controller
 {
     private readonly ICmsService _cmsService;
     private readonly UserManager<User> _userManager;
-    private readonly ISubscriptionService _subscriptionService;
 
     public HomeController(ICmsService cmsService, UserManager<User> userManager, ISubscriptionService subscriptionService)
     {
         _cmsService = cmsService;
         _userManager = userManager;
-        _subscriptionService = subscriptionService;
     }
 
     public async Task<IActionResult> Index()
@@ -76,5 +74,5 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-  
+
 }
