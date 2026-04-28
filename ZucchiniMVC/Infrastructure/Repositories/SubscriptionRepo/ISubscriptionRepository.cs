@@ -4,7 +4,7 @@ namespace Infrastrcture.Repositories.SubscriptionRepo
 {
     public interface ISubscriptionRepository
     {
-        Task<string> CreatePaymentSessionAsync(Subscription subscription);
+        Task<string> CreatePaymentSessionAsync(string userId, string stripePriceId);
 
         Task AddSubscriptionAsync(Subscription subscription);
 

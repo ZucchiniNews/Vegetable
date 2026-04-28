@@ -10,8 +10,6 @@ using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Users;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Controllers.Stripe;
-using Zucchinimvc.Controllers.Stripe.Handlers;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
@@ -54,11 +52,6 @@ builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
-builder.Services.AddScoped<CheckoutSessionCompletedHandler>();
-builder.Services.AddScoped<InvoicePaidHandler>();
-builder.Services.AddScoped<InvoicePaymentFailedHandler>();
-builder.Services.AddScoped<CustomerSubscriptionDeletedHandler>();
-builder.Services.AddScoped<StripeEventHandlerFactory>();
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 {
     var provider = sp.GetRequiredService<IAzureTableClient>();

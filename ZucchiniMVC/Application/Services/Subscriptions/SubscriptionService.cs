@@ -20,13 +20,8 @@ public class SubscriptionService : ISubscriptionService
     public async Task<PaymentSessionResult> CreatePaymentSessionAsync(string userId, int planId)
     {
         var plan = await _subscriptionRepository.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
-        var subscription = new Subscription
-        {
-            UserId = userId,
-            ProviderPriceId = plan.ProviderPriceId,
-        };
-        if (subscription == null) throw new Exception("Subscription not found");
-        var checkoutUrl = await _subscriptionRepository.CreatePaymentSessionAsync(subscription);
+
+        var checkoutUrl = await _subscriptionRepository.CreatePaymentSessionAsync(userId, plan.ProviderPriceId);
         return new PaymentSessionResult
         {
             CheckoutUrl = checkoutUrl,

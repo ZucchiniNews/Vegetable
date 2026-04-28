@@ -21,15 +21,15 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
 
 
 
-        public async Task<string> CreatePaymentSessionAsync(Subscription subscription)
+        public async Task<string> CreatePaymentSessionAsync(string userId, string providerPriceId)
         {
             try
             {
-                return await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(subscription.Id, subscription.UserId, subscription.ProviderPriceId);
+                return await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(userId, providerPriceId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating provider session for subscriptionId {SubscriptionId}, userId {UserId}", subscription.Id, subscription.UserId);
+                _logger.LogError(ex, "Error creating provider session for subscriptionId, userId {UserId}", userId);
                 throw;
             }
         }

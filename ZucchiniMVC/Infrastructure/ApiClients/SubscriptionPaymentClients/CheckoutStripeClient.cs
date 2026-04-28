@@ -16,11 +16,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
         }
 
 
-        public async Task<string> CreateCheckoutStripeSessionAsync(
-            int subscriptionId,
-            string userId,
-            string stripePriceId
-            )
+        public async Task<string> CreateCheckoutStripeSessionAsync(string userId, string stripePriceId)
         {
             var options = new Stripe.Checkout.SessionCreateOptions
             {
@@ -37,10 +33,12 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
                 SuccessUrl = $"{Settings.SuccessUrl}?session_id={{CHECKOUT_SESSION_ID}}",
                 CancelUrl = Settings.CancelUrl,
                 ClientReferenceId = userId,
-                Metadata = new Dictionary<string, string>
+                SubscriptionData = new Stripe.Checkout.SessionSubscriptionDataOptions
                 {
-                    { "subscriptionId", subscriptionId.ToString() },
-                    { "userId", userId }
+                    Metadata = new Dictionary<string, string>
+                    {
+                        { "userId", userId }
+                    }
                 }
             };
 
