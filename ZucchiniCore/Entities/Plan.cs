@@ -7,6 +7,5 @@
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public required string ProviderPriceId { get; set; }
-        public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
     }
 }

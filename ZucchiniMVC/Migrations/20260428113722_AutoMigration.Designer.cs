@@ -12,8 +12,8 @@ using Zucchinimvc.Infrastructure.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260428104957_NewMigration")]
-    partial class NewMigration
+    [Migration("20260428113722_AutoMigration")]
+    partial class AutoMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,9 +201,6 @@ namespace Zucchinimvc.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PlanId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ProviderPriceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -224,8 +221,6 @@ namespace Zucchinimvc.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlanId");
 
                     b.HasIndex("UserId");
 
@@ -389,12 +384,6 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.Subscription", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.Plan", null)
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("PlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ZucchiniCore.Entities.User", null)
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId")
@@ -411,11 +400,6 @@ namespace Zucchinimvc.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ZucchiniCore.Entities.Plan", b =>
-                {
-                    b.Navigation("Subscriptions");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.User", b =>

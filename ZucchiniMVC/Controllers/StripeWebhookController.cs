@@ -21,8 +21,6 @@ public class StripeWebhookController : ControllerBase
         _subscriptionService = subscriptionService;
         _webhookSecret = stripeOptions.Value.WebhookSecret;
     }
-
-    [HttpPost("webhook")]
     public async Task<IActionResult> StripeWebhook()
     {
         var json = await new StreamReader(Request.Body).ReadToEndAsync();

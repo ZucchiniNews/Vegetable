@@ -47,4 +47,8 @@
     <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
