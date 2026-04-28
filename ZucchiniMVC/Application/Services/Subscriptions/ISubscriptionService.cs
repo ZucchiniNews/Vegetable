@@ -12,4 +12,5 @@ public interface ISubscriptionService
     Task UpdateSubscriptionAsync(UserSubscription subscription);
     Task<List<Plan>> GetAllPlansAsync();
     Task<Plan?> FindPlanByIdAsync(int id);
+    Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId);
 }

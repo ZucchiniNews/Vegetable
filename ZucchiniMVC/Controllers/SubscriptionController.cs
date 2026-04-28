@@ -34,4 +34,16 @@ public class SubscriptionController : Controller
         var session = await _subscriptionService.CreatePaymentSessionAsync(userId, planId);
         return Redirect(session.CheckoutUrl);
     }
+
+    [Route("success")]
+    public IActionResult Success(string session_id)
+    {
+        return View();
+    }
+
+    [Route("cancel")]
+    public IActionResult Cancel()
+    {
+        return View();
+    }
 }

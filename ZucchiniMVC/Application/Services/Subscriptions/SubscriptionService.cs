@@ -56,4 +56,9 @@ public class SubscriptionService : ISubscriptionService
         return await _subscriptionRepository.GetAllPlansAsync();
     }
 
+    public async Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId)
+    {
+        return await _subscriptionRepository.GetLatestSubscriptionForUserAsync(userId);
+    }
+
 }

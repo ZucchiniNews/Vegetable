@@ -42,7 +42,6 @@
         </div>
     </div>
 
-    
     @{
         if (User.IsInRole("Admin"))
         {
@@ -60,22 +59,32 @@
                 </div>
             </div>
         }
-        else
-        {
-            <div class="card border rounded-4 shadow-sm" style="background-color: #f0f7ff; border-color: #cce3ff !important;">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-bold mb-1">Membership & Billing</h6>
-                            <p class="text-muted small mb-0">Manage your subscription plan and payment methods.</p>
-                        </div>
-                        <a asp-controller="Subscription" asp-action="Index" class="btn btn-outline-primary bg-white fw-bold rounded-pill px-4">
-                            Manage <i class="bi bi-arrow-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
+    }
+
+    @if (Model.UserSubscription != null)
+    {
+        <div class="card border rounded-4 shadow-sm mb-4" style="background-color: #e6ffe6; border-color: #b3ffb3 !important;">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-1">Your Subscription</h6>
+                <p class="mb-1">Status: <span class="fw-bold">@Model.UserSubscription.Status</span></p>
+                <p class="mb-1">Started: @Model.UserSubscription.Created.ToString("yyyy-MM-dd")</p>
+                <a asp-controller="Subscription" asp-action="Index" class="btn btn-outline-primary bg-white fw-bold rounded-pill px-4 mt-2">
+                    Manage Subscription <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
-        }
+        </div>
+    }
+    else
+    {
+        <div class="card border rounded-4 shadow-sm mb-4" style="background-color: #fffbe6; border-color: #ffe699 !important;">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-1">No Active Subscription</h6>
+                <p class="mb-1">You do not have an active subscription. Subscribe to access premium features.</p>
+                <a asp-controller="Subscription" asp-action="Index" class="btn btn-outline-primary bg-white fw-bold rounded-pill px-4 mt-2">
+                    View Plans <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
     }
 </div>
 

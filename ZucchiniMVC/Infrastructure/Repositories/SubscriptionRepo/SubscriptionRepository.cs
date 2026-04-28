@@ -109,7 +109,13 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
-
+        public async Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId)
+        {
+            return await _context.UserSubscriptions
+                .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.Created)
+                .FirstOrDefaultAsync();
+        }
 
     }
 

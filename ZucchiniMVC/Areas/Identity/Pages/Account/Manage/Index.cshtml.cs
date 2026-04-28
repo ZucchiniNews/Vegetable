@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Subscriptions;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {
@@ -14,13 +15,16 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ISubscriptionService _subscriptionService;
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ISubscriptionService subscriptionService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _subscriptionService = subscriptionService;
         }
 
         /// <summary>
@@ -71,6 +75,8 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             };
         }
 
+        public UserSubscription? UserSubscription { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -80,6 +86,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             }
 
             await LoadAsync(user);
+            UserSubscription = await _subscriptionService.GetLatestSubscriptionForUserAsync(user.Id);
             return Page();
         }
 
