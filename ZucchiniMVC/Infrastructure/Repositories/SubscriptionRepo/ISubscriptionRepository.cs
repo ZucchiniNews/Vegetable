@@ -7,6 +7,7 @@ namespace Infrastrcture.Repositories.SubscriptionRepo
         Task<string> CreatePaymentSessionAsync(string userId, string stripePriceId);
 
         Task AddSubscriptionAsync(UserSubscription subscription);
+        Task<UserSubscription?> FindByProviderSubscriptionIdAsync(string providerSubscriptionId);
 
         Task UpdateSubscriptionAsync(UserSubscription subscription);
 

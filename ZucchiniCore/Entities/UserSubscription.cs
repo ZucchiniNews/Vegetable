@@ -8,6 +8,8 @@
         public string ProviderUserId { get; set; } = string.Empty;
         public DateTime Created { get; set; }
         public SubscriptionStatus Status { get; set; }
+        //public DateTime? ActivatedAt { get; set; }
+        //public DateTime? UpdatedAt { get; set; }
     }
 }
 

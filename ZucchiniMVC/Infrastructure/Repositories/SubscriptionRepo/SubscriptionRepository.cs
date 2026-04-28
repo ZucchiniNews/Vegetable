@@ -48,6 +48,14 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
+        public async Task<UserSubscription?> FindByProviderSubscriptionIdAsync(string providerSubscriptionId)
+        {
+            return await _context.UserSubscriptions
+                .FirstOrDefaultAsync(x => x.ProviderSubscriptionId == providerSubscriptionId);
+        }
+
+
+
         public async Task UpdateSubscriptionAsync(UserSubscription subscription)
         {
             try
