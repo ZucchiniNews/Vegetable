@@ -8,7 +8,8 @@ public interface ISubscriptionService
 {
     Task<PaymentSessionResult> CreatePaymentSessionAsync(string userId, int planId);
     Task<UserSubscription> CreateSubscriptionAsync(UserSubscription subscription);
-    Task ActivateSubscriptionAsync(string providerSubscriptionId);
+    Task<UserSubscription?> FindByProviderSubscriptionIdAsync(string providerSubscriptionId);
+    Task UpdateSubscriptionAsync(UserSubscription subscription);
     Task<List<Plan>> GetAllPlansAsync();
     Task<Plan?> FindPlanByIdAsync(int id);
 }

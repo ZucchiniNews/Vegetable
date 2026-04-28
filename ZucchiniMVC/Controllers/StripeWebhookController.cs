@@ -43,60 +43,66 @@ public class StripeWebhookController : ControllerBase
 
         switch (stripeEvent.Type)
         {
-            case "checkout.session.completed":
+            case "invoice.paid":
                 {
-                    var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
-                    var userId = session?.ClientReferenceId;
-                    var subscriptionId = session?.SubscriptionId;
-                    var customerStripeId = session?.CustomerId;
+                    var invoice = stripeEvent.Data.Object as Stripe.Invoice;
 
+                    // subscription id (robust)
+                    string? providerSubscriptionId =
+                        invoice?.Parent?.SubscriptionDetails?.Subscription?.Id
+                        ?? invoice?.Lines?.Data?
+                            .FirstOrDefault()?
+                            .Parent?
+                            .SubscriptionItemDetails?
+                            .Subscription;
 
-                    if (userId != null && subscriptionId != null && customerStripeId != null)
+                    // userId (you already fixed this correctly)
+                    string? userId = invoice?
+                        .Parent?
+                        .SubscriptionDetails?
+                        .Metadata?
+                        .TryGetValue("userId", out var uid) == true
+                            ? uid
+                            : null;
+
+                    var customerStripeId = invoice?.CustomerId;
+
+                    if (string.IsNullOrEmpty(providerSubscriptionId) || string.IsNullOrEmpty(userId))
                     {
-                        var subscription = new UserSubscription
-                        {
-                            UserId = userId,
-                            ProviderSubscriptionId = subscriptionId,
-                            ProviderUserId = customerStripeId,
-                            Created = DateTime.UtcNow,
-                            Status = SubscriptionStatus.Pending
-                        };
-                        await _subscriptionService.CreateSubscriptionAsync(subscription);
+                        _logger.LogWarning(
+                            "invoice.paid missing required data. SubId: {SubId}, UserId: {UserId}",
+                            providerSubscriptionId, userId);
+
+                        return Ok();
                     }
+
+                    var existing = await _subscriptionService
+                        .FindByProviderSubscriptionIdAsync(providerSubscriptionId);
+
+                    if (existing != null)
+                    {
+                        if (existing.Status != SubscriptionStatus.Active)
+                        {
+                            existing.Status = SubscriptionStatus.Active;
+                            await _subscriptionService.UpdateSubscriptionAsync(existing);
+                        }
+
+                        return Ok();
+                    }
+
+                    var subscription = new UserSubscription
+                    {
+                        UserId = userId,
+                        ProviderSubscriptionId = providerSubscriptionId,
+                        ProviderUserId = customerStripeId,
+                        Created = DateTime.UtcNow,
+                        Status = SubscriptionStatus.Active
+                    };
+
+                    await _subscriptionService.CreateSubscriptionAsync(subscription);
+
                     break;
                 }
-
-                //case "invoice.paid":
-                //    {
-                //        var invoice = stripeEvent.Data.Object as Stripe.Invoice;
-                //        var subscriptionId = invoice?.SubscriptionId;
-
-                //        if (subscriptionId != null)
-                //        {
-                //            await _subscriptionService.ActivateAsync(subscriptionId);
-                //        }
-                //        break;
-                //    }
-
-                //case "invoice.payment_failed":
-                //    {
-                //        var invoice = stripeEvent.Data.Object as Stripe.Invoice;
-                //        if (invoice?.SubscriptionId != null)
-                //        {
-                //            await _subscriptionService.MarkPastDueAsync(invoice.SubscriptionId);
-                //        }
-                //        break;
-                //    }
-
-                //case "customer.subscription.deleted":
-                //    {
-                //        var subscription = stripeEvent.Data.Object as Stripe.Subscription;
-                //        if (subscription?.Id != null)
-                //        {
-                //            await _subscriptionService.CancelAsync(subscription.Id);
-                //        }
-                //        break;
-                //    }
         }
 
         return Ok();

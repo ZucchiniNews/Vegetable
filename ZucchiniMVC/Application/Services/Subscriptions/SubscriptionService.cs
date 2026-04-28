@@ -36,28 +36,14 @@ public class SubscriptionService : ISubscriptionService
         return subscription;
     }
 
-
-
-    public async Task ActivateSubscriptionAsync(string providerSubscriptionId)
+    public async Task<UserSubscription?> FindByProviderSubscriptionIdAsync(string providerSubscriptionId)
     {
-        var subscription = await _subscriptionRepository
-            .FindByProviderSubscriptionIdAsync(providerSubscriptionId);
-
-        if (subscription == null)
-        {
-            _logger.LogWarning("Subscription not found for provider id: {Id}", providerSubscriptionId);
-            return;
-        }
-
-        if (subscription.Status == SubscriptionStatus.Active)
-            return;
-
-        subscription.Status = SubscriptionStatus.Active;
-
+        return await _subscriptionRepository.FindByProviderSubscriptionIdAsync(providerSubscriptionId);
+    }
+    public async Task UpdateSubscriptionAsync(UserSubscription subscription)
+    {
         await _subscriptionRepository.UpdateSubscriptionAsync(subscription);
     }
-
-
 
 
     public async Task<Plan?> FindPlanByIdAsync(int id)
