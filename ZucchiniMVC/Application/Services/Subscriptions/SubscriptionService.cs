@@ -30,7 +30,7 @@ public class SubscriptionService : ISubscriptionService
     }
 
 
-    public async Task<Subscription> CreateSubscriptionAsync(Subscription subscription)
+    public async Task<UserSubscription> CreateSubscriptionAsync(UserSubscription subscription)
     {
         await _subscriptionRepository.AddSubscriptionAsync(subscription);
         return subscription;

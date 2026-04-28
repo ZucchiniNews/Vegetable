@@ -34,7 +34,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
-        public async Task AddSubscriptionAsync(Subscription subscription)
+        public async Task AddSubscriptionAsync(UserSubscription subscription)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
-        public async Task UpdateSubscriptionAsync(Subscription subscription)
+        public async Task UpdateSubscriptionAsync(UserSubscription subscription)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
-        public async Task<Subscription?> FindSubscriptionByIdAsync(int id)
+        public async Task<UserSubscription?> FindSubscriptionByIdAsync(int id)
         {
             try
             {

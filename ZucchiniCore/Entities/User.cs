@@ -10,7 +10,7 @@ namespace ZucchiniCore.Entities
         public DateTime? DateOfBirth { get; set; }
         public bool IsActive { get; set; } = true;
         public bool NewsletterSubscribed { get; set; } = false;
-        public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public ICollection<UserSubscription> Subscriptions { get; set; } = new List<UserSubscription>();
         public ICollection<UserLikedArticle> LikedArticles { get; set; } = new List<UserLikedArticle>();
 
     }

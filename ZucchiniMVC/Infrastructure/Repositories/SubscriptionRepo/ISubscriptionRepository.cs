@@ -6,9 +6,9 @@ namespace Infrastrcture.Repositories.SubscriptionRepo
     {
         Task<string> CreatePaymentSessionAsync(string userId, string stripePriceId);
 
-        Task AddSubscriptionAsync(Subscription subscription);
+        Task AddSubscriptionAsync(UserSubscription subscription);
 
-        Task UpdateSubscriptionAsync(Subscription subscription);
+        Task UpdateSubscriptionAsync(UserSubscription subscription);
 
         Task<Plan?> FindPlanByIdAsync(int id);
 

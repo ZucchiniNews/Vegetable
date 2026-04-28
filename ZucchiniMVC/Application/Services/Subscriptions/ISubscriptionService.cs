@@ -7,7 +7,7 @@ namespace Zucchinimvc.Application.Services.Subscriptions;
 public interface ISubscriptionService
 {
     Task<PaymentSessionResult> CreatePaymentSessionAsync(string userId, int planId);
-    Task<Subscription> CreateSubscriptionAsync(Subscription subscription);
+    Task<UserSubscription> CreateSubscriptionAsync(UserSubscription subscription);
     Task<List<Plan>> GetAllPlansAsync();
     Task<Plan?> FindPlanByIdAsync(int id);
 

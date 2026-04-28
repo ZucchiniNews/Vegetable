@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Stripe;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Infrastructure.Config;
 
@@ -52,7 +53,7 @@ public class StripeWebhookController : ControllerBase
 
                     if (userId != null && subscriptionId != null && customerStripeId != null)
                     {
-                        var subscription = new ZucchiniCore.Entities.Subscription
+                        var subscription = new UserSubscription
                         {
                             UserId = userId,
                             ProviderSubscriptionId = subscriptionId,
