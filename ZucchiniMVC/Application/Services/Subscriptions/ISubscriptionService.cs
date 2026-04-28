@@ -1,15 +1,22 @@
 using ZucchiniCore.Entities;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using Zucchinimvc.Models.ViewModels;
+
 
 namespace Zucchinimvc.Application.Services.Subscriptions;
 
 public interface ISubscriptionService
 {
-    Task<Subscription> CreateSubscriptionAsync(string userId, int planId);
+    Task<PaymentSessionResult> CreatePaymentSessionAsync(string userId, int planId);
+    Task<Subscription> CreateSubscriptionAsync(Subscription subscription);
     Task<List<Plan>> GetAllPlansAsync();
-    Task ActivateSubscriptionAsync(string subscriptionId, string stripeSubscriptionId);
-    Task MarkActiveByStripeId(string stripeSubscriptionId);
-    Task MarkPastDue(string stripeSubscriptionId);
-    Task CancelByStripeId(string stripeSubscriptionId);
+    Task<Plan?> FindPlanByIdAsync(int id);
+
+    //Task ActivateSubscriptionAsync(string stripeSubscriptionId);
+    //Task MarkActiveByStripeId(string stripeSubscriptionId);
+    //Task MarkPastDue(string stripeSubscriptionId);
+    //Task CancelByStripeId(string stripeSubscriptionId);
+    //Task<Subscription?> UpdateSubscriptionAsync(Subscription subscription);
+
+    //Task<Subscription?> FindSubscriptionByIdAsync(int id);
+
 }

@@ -1,26 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Stripe;
-using Stripe.Checkout;
 using System.Text;
-using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Infrastructure.Config;
+using Zucchinimvc.Controllers.Stripe;
 
 [ApiController]
 [Route("api/stripe/webhook")]
 public class StripeWebhookController : ControllerBase
 {
     private readonly ILogger<StripeWebhookController> _logger;
-    private readonly ISubscriptionService _subscriptionService;
+    private readonly StripeEventHandlerFactory _handlerFactory;
     private readonly string _webhookSecret;
 
     public StripeWebhookController(
         ILogger<StripeWebhookController> logger,
-        ISubscriptionService subscriptionService,
+        StripeEventHandlerFactory handlerFactory,
         IOptions<StripeSettings> stripeOptions)
     {
         _logger = logger;
-        _subscriptionService = subscriptionService;
+        _handlerFactory = handlerFactory;
         _webhookSecret = stripeOptions.Value.WebhookSecret;
     }
 
@@ -45,46 +44,21 @@ public class StripeWebhookController : ControllerBase
             return BadRequest();
         }
 
-        switch (stripeEvent.Type)
+        var handler = _handlerFactory.GetHandler(stripeEvent.Type);
+        if (handler == null)
         {
-            case Events.CheckoutSessionCompleted:
-                var session = stripeEvent.Data.Object as Session;
-                if (session?.Metadata != null &&
-                    session.Metadata.TryGetValue("subscriptionId", out var subscriptionId) &&
-                    session.Metadata.TryGetValue("userId", out var userId))
-                {
-                    var stripeSubscriptionId = session.SubscriptionId;
-                    await _subscriptionService.ActivateSubscriptionAsync(subscriptionId, stripeSubscriptionId);
-                }
-                break;
+            _logger.LogInformation("Unhandled Stripe event type: {Type}", stripeEvent.Type);
+            return Ok();
+        }
 
-            case Events.InvoicePaid:
-                var invoicePaid = stripeEvent.Data.Object as Invoice;
-                if (invoicePaid?.SubscriptionId != null)
-                {
-                    await _subscriptionService.MarkActiveByStripeId(invoicePaid.SubscriptionId);
-                }
-                break;
-
-            case Events.InvoicePaymentFailed:
-                var invoiceFailed = stripeEvent.Data.Object as Invoice;
-                if (invoiceFailed?.SubscriptionId != null)
-                {
-                    await _subscriptionService.MarkPastDue(invoiceFailed.SubscriptionId);
-                }
-                break;
-
-            case Events.CustomerSubscriptionDeleted:
-                var subscriptionDeleted = stripeEvent.Data.Object as Subscription;
-                if (subscriptionDeleted?.Id != null)
-                {
-                    await _subscriptionService.CancelByStripeId(subscriptionDeleted.Id);
-                }
-                break;
-
-            default:
-                _logger.LogInformation("Unhandled Stripe event type: {Type}", stripeEvent.Type);
-                break;
+        try
+        {
+            await handler.HandleAsync(stripeEvent);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error handling Stripe event {Type}", stripeEvent.Type);
+            return StatusCode(500);
         }
 
         return Ok();

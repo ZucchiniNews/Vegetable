@@ -3,21 +3,20 @@ using Microsoft.Extensions.Options;
 using Stripe;
 using Zucchinimvc.Infrastructure.Config;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.PaymentClients.StripeGateway
+namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
 {
-    public class PaymentClient
+    public class CheckoutStripeClient
     {
         public StripeClient Client { get; }
         public StripeSettings Settings { get; }
-
-        public PaymentClient(IOptions<StripeSettings> stripeOptions)
+        public CheckoutStripeClient(IOptions<StripeSettings> stripeOptions)
         {
             Settings = stripeOptions.Value;
             Client = new StripeClient(Settings.SecretKey);
         }
 
 
-        public async Task<string> CreateCheckoutSessionAsync(
+        public async Task<string> CreateCheckoutStripeSessionAsync(
             int subscriptionId,
             string userId,
             string stripePriceId
@@ -26,9 +25,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.PaymentClients.StripeGateway
             var options = new Stripe.Checkout.SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
-
                 Mode = "subscription",
-
                 LineItems = new List<Stripe.Checkout.SessionLineItemOptions>
                 {
                     new Stripe.Checkout.SessionLineItemOptions
@@ -37,7 +34,6 @@ namespace Zucchinimvc.Infrastructure.ApiClients.PaymentClients.StripeGateway
                         Quantity = 1
                     }
                 },
-
                 SuccessUrl = $"{Settings.SuccessUrl}?session_id={{CHECKOUT_SESSION_ID}}",
                 CancelUrl = Settings.CancelUrl,
                 ClientReferenceId = userId,

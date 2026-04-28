@@ -1,5 +1,6 @@
 using Infrastrcture.Repositories.SubscriptionRepo;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Articles;
@@ -9,23 +10,22 @@ using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Users;
 using Zucchinimvc.Application.Services.Weather;
+using Zucchinimvc.Controllers.Stripe;
+using Zucchinimvc.Controllers.Stripe.Handlers;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
-using Zucchinimvc.Infrastructure.ApiClients.PaymentClients.StripeGateway;
+using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
-using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
+using Zucchinimvc.Infrastructure.Repositories.HistoryRepository;
+using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
-using ZucchiniMVC.Application.Services.Payment;
-using ZucchiniMVC.Infrastructure.Repositories.Payment;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// logger
+// Logger
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
@@ -33,58 +33,57 @@ builder.Logging.SetMinimumLevel(LogLevel.Debug);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddRazorPages();
 builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
 
-
-// --- Configurations ---
+// Configurations
 builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
 builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 
-// --- Http Clients (Typed) ---
-// These handle the BaseUrl and specific API logic
+// Http Clients (Typed)
 builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
-// --- Repositories ---
+builder.Services.AddScoped<CheckoutStripeClient>();
+
+// Repositories
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
-// Weather Repository
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddScoped<CheckoutSessionCompletedHandler>();
+builder.Services.AddScoped<InvoicePaidHandler>();
+builder.Services.AddScoped<InvoicePaymentFailedHandler>();
+builder.Services.AddScoped<CustomerSubscriptionDeletedHandler>();
+builder.Services.AddScoped<StripeEventHandlerFactory>();
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
-    {
-        var provider = sp.GetRequiredService<IAzureTableClient>();
-        var client = provider.GetClient("ExternalApiHistory");
-        var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
+{
+    var provider = sp.GetRequiredService<IAzureTableClient>();
+    var client = provider.GetClient("ExternalApiHistory");
+    var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
+    // Explicit cast to the interface to resolve CS0266. 
+    // If this still fails, ensure the HistoryRepository<T> type actually implements the exact IHistoryRepository<T>
+    // (i.e. same namespace/assembly) you're referencing here.
+    return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
+});
 
-        return new HistoryRepository<WeatherHistoryEntity>(client, logger);
-    });
-
-// --- Services ---
+// Services
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
-// In your DI setup (usually after builder.Services.AddControllers();)
-builder.Services.AddScoped<IPaymentService, StripePaymentService>();
-builder.Services.AddScoped<IPaymentSubscriptionRepository, PaymentSubscriptionRepository>();
-builder.Services.AddScoped<PaymentClient>();
+
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
-builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
-
-builder.Services.Configure<CmsSettings>(
-    builder.Configuration.GetSection("StrapiSettings"));
 
 var app = builder.Build();
 
@@ -92,7 +91,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

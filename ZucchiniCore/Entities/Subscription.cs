@@ -10,10 +10,9 @@
         public string ProviderPriceId { get; set; } = string.Empty;
 
         public DateTime Created { get; set; }
-
-        public SubscriptionStatus Status { get; set; } = SubscriptionStatus.Pending;
-
+        public SubscriptionStatus Status { get; set; }
         public bool IsActive => Status == SubscriptionStatus.Active;
+
     }
 }
 

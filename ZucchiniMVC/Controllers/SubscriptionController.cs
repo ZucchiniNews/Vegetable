@@ -1,21 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Subscriptions;
-using ZucchiniMVC.Application.Services.Payment;
 
 namespace Zucchinimvc.Controllers;
 
 public class SubscriptionController : Controller
 {
     private readonly ISubscriptionService _subscriptionService;
-    private readonly IPaymentService _paymentService;
+    private readonly ILogger<SubscriptionController> _logger;
 
-    public SubscriptionController(ISubscriptionService subscriptionService, IPaymentService paymentService)
+    public SubscriptionController(
+        ISubscriptionService subscriptionService,
+        ILogger<SubscriptionController> logger)
     {
         _subscriptionService = subscriptionService;
-        _paymentService = paymentService;
+        _logger = logger;
     }
+
     public async Task<IActionResult> Index()
     {
         var plans = await _subscriptionService.GetAllPlansAsync();
@@ -30,22 +31,7 @@ public class SubscriptionController : Controller
         {
             return Unauthorized("User is not authenticated.");
         }
-        Subscription subscription = await _subscriptionService.CreateSubscriptionAsync(userId, planId);
-        var session = await _paymentService.CreatePaymentSessionAsync(subscription);
+        var session = await _subscriptionService.CreatePaymentSessionAsync(userId, planId);
         return Redirect(session.CheckoutUrl);
     }
-
-    [HttpGet("/success")]
-    public IActionResult Success(string session_id)
-    {
-        ViewBag.SessionId = session_id;
-        return View();
-    }
-
-    [HttpGet("/cancel")]
-    public IActionResult Cancel()
-    {
-        return View();
-    }
 }
-
