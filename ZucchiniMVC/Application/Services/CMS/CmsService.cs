@@ -1,8 +1,6 @@
-using NuGet.Protocol.Core.Types;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
-using Zucchinimvc.Models.DTOs.StrapiDTOs;
 
 namespace Zucchinimvc.Application.Services.CMS;
 

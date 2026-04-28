@@ -62,6 +62,7 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     // (i.e. same namespace/assembly) you're referencing here.
     return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
 });
+builder.Services.AddScoped<Zucchinimvc.Infrastructure.Repositories.PlanRepo.IPlanRepository, Zucchinimvc.Infrastructure.Repositories.PlanRepo.PlanRepository>();
 
 // Services
 builder.Services.AddScoped<IArticleService, ArticleService>();
@@ -69,6 +70,7 @@ builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<Zucchinimvc.Application.Services.Plans.IPlanService, Zucchinimvc.Application.Services.Plans.PlanService>();
 
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();

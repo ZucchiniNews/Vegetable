@@ -83,32 +83,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
-        public async Task<Plan?> FindPlanByIdAsync(int id)
-        {
-            try
-            {
-                return await _context.Plans.FirstOrDefaultAsync(st => st.Id == id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                throw;
-            }
-        }
-
-        public async Task<List<Plan>> GetAllPlansAsync()
-        {
-            try
-            {
-                return await _context.Plans.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                throw;
-            }
-        }
-
         public async Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId)
         {
             return await _context.UserSubscriptions

@@ -11,9 +11,6 @@ namespace Infrastrcture.Repositories.SubscriptionRepo
 
         Task UpdateSubscriptionAsync(UserSubscription subscription);
 
-        Task<Plan?> FindPlanByIdAsync(int id);
-
-        Task<List<Plan>> GetAllPlansAsync();
         Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId);
     }
 }

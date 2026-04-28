@@ -1,26 +1,25 @@
 using Infrastrcture.Repositories.SubscriptionRepo;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Models.ViewModels;
+using Zucchinimvc.Application.Services.Plans;
 
 namespace Zucchinimvc.Application.Services.Subscriptions;
 
 public class SubscriptionService : ISubscriptionService
 {
     private readonly ISubscriptionRepository _subscriptionRepository;
+    private readonly IPlanService _planService;
     private readonly ILogger<SubscriptionService> _logger;
-    public SubscriptionService(ISubscriptionRepository subscriptionRepository, ILogger<SubscriptionService> logger)
+    public SubscriptionService(ISubscriptionRepository subscriptionRepository, IPlanService planService, ILogger<SubscriptionService> logger)
     {
         _subscriptionRepository = subscriptionRepository;
+        _planService = planService;
         _logger = logger;
     }
 
-
-
-
     public async Task<PaymentSessionResult> CreatePaymentSessionAsync(string userId, int planId)
     {
-        var plan = await _subscriptionRepository.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
-
+        var plan = await _planService.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
         var checkoutUrl = await _subscriptionRepository.CreatePaymentSessionAsync(userId, plan.ProviderPriceId);
         return new PaymentSessionResult
         {
@@ -28,7 +27,6 @@ public class SubscriptionService : ISubscriptionService
             SessionUrl = checkoutUrl
         };
     }
-
 
     public async Task<UserSubscription> CreateSubscriptionAsync(UserSubscription subscription)
     {
@@ -45,20 +43,8 @@ public class SubscriptionService : ISubscriptionService
         await _subscriptionRepository.UpdateSubscriptionAsync(subscription);
     }
 
-
-    public async Task<Plan?> FindPlanByIdAsync(int id)
-    {
-        return await _subscriptionRepository.FindPlanByIdAsync(id);
-    }
-
-    public async Task<List<Plan>> GetAllPlansAsync()
-    {
-        return await _subscriptionRepository.GetAllPlansAsync();
-    }
-
     public async Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId)
     {
         return await _subscriptionRepository.GetLatestSubscriptionForUserAsync(userId);
     }
-
 }
