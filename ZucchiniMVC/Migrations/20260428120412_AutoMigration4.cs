@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Zucchinimvc.Migrations
 {
     /// <inheritdoc />
-    public partial class AutoMigration : Migration
+    public partial class AutoMigration4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -179,30 +179,6 @@ namespace Zucchinimvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subscriptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderSubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProviderUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProviderPriceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subscriptions_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserLikedArticles",
                 columns: table => new
                 {
@@ -216,6 +192,29 @@ namespace Zucchinimvc.Migrations
                     table.PrimaryKey("PK_UserLikedArticles", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserLikedArticles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserSubscriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderSubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSubscriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserSubscriptions_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -262,13 +261,13 @@ namespace Zucchinimvc.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_UserId",
-                table: "Subscriptions",
+                name: "IX_UserLikedArticles_UserId",
+                table: "UserLikedArticles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLikedArticles_UserId",
-                table: "UserLikedArticles",
+                name: "IX_UserSubscriptions_UserId",
+                table: "UserSubscriptions",
                 column: "UserId");
         }
 
@@ -294,10 +293,10 @@ namespace Zucchinimvc.Migrations
                 name: "Plans");
 
             migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "UserLikedArticles");
 
             migrationBuilder.DropTable(
-                name: "UserLikedArticles");
+                name: "UserSubscriptions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -38,7 +38,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
         {
             try
             {
-                await _context.Subscriptions.AddAsync(subscription);
+                await _context.UserSubscriptions.AddAsync(subscription);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
         {
             try
             {
-                _context.Subscriptions.Update(subscription);
+                _context.UserSubscriptions.Update(subscription);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -66,7 +66,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
         {
             try
             {
-                return await _context.Subscriptions.FirstOrDefaultAsync(s => s.Id == id);
+                return await _context.UserSubscriptions.FirstOrDefaultAsync(s => s.Id == id);
             }
             catch (Exception ex)
             {

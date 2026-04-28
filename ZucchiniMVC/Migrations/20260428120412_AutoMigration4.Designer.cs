@@ -12,8 +12,8 @@ using Zucchinimvc.Infrastructure.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260428115139_AutoMigration2")]
-    partial class AutoMigration2
+    [Migration("20260428120412_AutoMigration4")]
+    partial class AutoMigration4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -324,7 +324,7 @@ namespace Zucchinimvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("UserSubscriptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

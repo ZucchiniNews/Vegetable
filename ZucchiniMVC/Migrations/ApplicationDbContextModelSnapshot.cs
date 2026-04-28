@@ -321,7 +321,7 @@ namespace Zucchinimvc.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("UserSubscriptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
