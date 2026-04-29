@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Models.DTOs.CurrencyDTOs;
-using Zucchinimvc.Services;
 
 
 namespace Zucchinimvc.Infrastructure.Repositories.CurrencyRepo

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
+using Zucchinimvc.Models.ViewModels;
 using System.Globalization;
 
 namespace Zucchinimvc.Application.Services.Currency
@@ -13,6 +14,50 @@ namespace Zucchinimvc.Application.Services.Currency
         {
             _logger = logger;
             _currencyRepo = currencyRepo;
+        }
+
+        // NEW METHOD FOR CURRENCY WIDGET
+        public async Task<CurrencyWidgetViewModel> GetCurrencyWidgetDataAsync(string baseCurrency)
+        {
+            var viewModel = new CurrencyWidgetViewModel();
+
+            try
+            {
+                var usdRates = await GetLatestRatesAsync(baseCurrency);
+
+                if (usdRates == null || usdRates.Count == 0)
+                {
+                    viewModel.HasError = true;
+                    _logger.LogWarning("No currency rates returned for widget");
+                    return viewModel;
+                }
+
+                var sekEurRates = new Dictionary<string, decimal>();
+
+                if (usdRates.ContainsKey("SEK"))
+                    sekEurRates.Add("SEK", usdRates["SEK"]);
+
+                if (usdRates.ContainsKey("EUR"))
+                    sekEurRates.Add("EUR", usdRates["EUR"]);
+
+                if (sekEurRates.Count == 0)
+                {
+                    viewModel.HasError = true;
+                    _logger.LogWarning("SEK/EUR not found for widget");
+                    return viewModel;
+                }
+
+                viewModel.Rates = sekEurRates;
+                viewModel.HasError = false;
+
+                return viewModel;
+            }
+            catch (Exception ex)
+            {
+                viewModel.HasError = true;
+                _logger.LogError(ex, "Error getting currency widget data");
+                return viewModel;
+            }
         }
 
         public async Task<Dictionary<string, decimal>> GetLatestRatesAsync(string baseCurrency)
@@ -30,7 +75,7 @@ namespace Zucchinimvc.Application.Services.Currency
             var decimalRates = new Dictionary<string, decimal>();
             foreach (var rate in response.Rates)
             {
-                // Use InvariantCulture to handle dot as decimal separator
+               
                 if (decimal.TryParse(rate.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var decimalValue))
                 {
                     decimalRates.Add(rate.Key, decimalValue);
@@ -43,7 +88,7 @@ namespace Zucchinimvc.Application.Services.Currency
 
             _logger.LogInformation($"Successfully parsed {decimalRates.Count} rates");
 
-            // Log if SEK and EUR are found
+            
             if (decimalRates.ContainsKey("SEK"))
                 _logger.LogInformation($"SEK rate: {decimalRates["SEK"]}");
             if (decimalRates.ContainsKey("EUR"))

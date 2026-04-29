@@ -16,7 +16,11 @@
 @inject ICmsService CmsService
 @{
         var categories = await CmsService.GetCategories();
+        var visibleCategories = categories?.Take(4).ToList();
+        var hiddenCategories = categories?.Skip(4).ToList();
+        var city = Context.Request.Query["city"].ToString();
     }
+    
     <header class="news-header sticky-top">
         <nav class="navbar navbar-expand-lg news-navbar">
             <div class="container news-navbar-container">
@@ -31,47 +35,15 @@
                 </button>
                
                 <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav me-auto ms-3 news-nav-links">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Local" ? "active" : "")"
-                               asp-controller="Home" asp-action="Local">Local</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Sweden" ? "active" : "")"
-                               asp-controller="Home" asp-action="Sweden">Sweden</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "World" ? "active" : "")"
-                               asp-controller="Home" asp-action="World">World</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Sport" ? "active" : "")"
-                               asp-controller="Home" asp-action="Sport">Sport</a>
-                        </li>
-                    </ul>
-
-                @{
-                    var visibleCategories = categories?.Take(4).ToList();
-                    var hiddenCategories = categories?.Skip(4).ToList();
-                }
-                @{
-                    var city = Context.Request.Query["city"].ToString();
-                }
-                <div class="collapse navbar-collapse d-flex align-items-center gap-3" id="mainNavbar">
                     <div class="news-nav-wrapper">
                         <ul class="navbar-nav news-nav-links">
-                            
                             <li class="nav-item">
-                                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                                   asp-controller="Home" asp-action="Index">Home</a>
                             </li>
+                            
                             @if (categories != null)
+                            {
                                 @foreach (var category in visibleCategories)
                                 {
                                     var isActive = ViewContext.RouteData.Values["slug"]?.ToString() == category.Slug;
@@ -84,33 +56,35 @@
                                     </li>
                                 }
 
-                            @if (hiddenCategories != null && hiddenCategories.Any())
-                            {
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle"
-                                           href="#"
-                                           role="button"
-                                           data-bs-toggle="dropdown"
-                                           aria-expanded="false">
-                                        More
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        @foreach (var category in hiddenCategories)
-                                        {
-                                            <li>
-                                                <a class="dropdown-item"
-                                                       asp-controller="Home"
-                                                       asp-action="Category"
-                                                       asp-route-slug="@category.Slug">
-                                                    @category.Name
-                                                </a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </li>
+                                @if (hiddenCategories != null && hiddenCategories.Any())
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle"
+                                               href="#"
+                                               role="button"
+                                               data-bs-toggle="dropdown"
+                                               aria-expanded="false">
+                                            More
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            @foreach (var category in hiddenCategories)
+                                            {
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                           asp-controller="Home"
+                                                           asp-action="Category"
+                                                           asp-route-slug="@category.Slug">
+                                                        @category.Name
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
                             }
                         </ul>
                     </div>
+                    
                     <div class="d-flex align-items-center gap-3 news-header-right">
                         <div class="weather-header-box text-nowrap">
                             @await Component.InvokeAsync("Weather", new { city })

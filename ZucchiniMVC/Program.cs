@@ -16,9 +16,6 @@ using Zucchinimvc.Infrastructure.Repositories;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
-using Zucchinimvc.Services.Emails;
-using Zucchinimvc.Services.Subscriptions;
-using Zucchinimvc.Services.Users;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Logger;
@@ -50,6 +47,7 @@ builder.Services.AddIdentity<User, Roles>(options => options.SignIn.RequireConfi
 // --- Configurations ---
 builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("WeatherApi"));
 builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
+builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 
 // --- Http Clients (Typed) ---
 // These handle the BaseUrl and specific API logic
@@ -71,11 +69,9 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
         
         return new HistoryRepository<WeatherHistoryEntity>(client, logger);
     });
-// Currency Repo
-builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
-builder.Services.AddHttpClient<CurrencyClient>();
-builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
-builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
+
+
 
 // --- Services ---
 builder.Services.AddScoped<IArticleService, ArticleService>();
@@ -83,6 +79,9 @@ builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddHttpClient<CurrencyClient>();
+builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();
