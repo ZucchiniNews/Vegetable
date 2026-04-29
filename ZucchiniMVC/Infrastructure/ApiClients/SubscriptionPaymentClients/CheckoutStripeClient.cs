@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using Stripe;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Config;
 
 
@@ -16,7 +17,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
         }
 
 
-        public async Task<string> CreateCheckoutStripeSessionAsync(string userId, ZucchiniCore.Entities.Plan chosenPlan)
+        public async Task<string> CreateCheckoutStripeSessionAsync(string userId, ZucchiniCore.Entities.Plan chosenPlan, BillingAccount billingAccount)
         {
             var options = new Stripe.Checkout.SessionCreateOptions
             {
@@ -33,7 +34,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
                 SuccessUrl = $"{Settings.SuccessUrl}?session_id={{CHECKOUT_SESSION_ID}}",
                 CancelUrl = Settings.CancelUrl,
                 ClientReferenceId = userId,
-
+                Customer = billingAccount.StripeCustomerId,
                 Metadata = new Dictionary<string, string>
                  {
                         { "userId", userId },

@@ -40,7 +40,8 @@ namespace Zucchinimvc.Application.Services.Billing
         public async Task<PaymentSessionResult> CreatePaymentSessionAsync(string userId, int planId)
         {
             var chosenPlan = await _planService.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
-            var checkoutUrl = await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(userId, chosenPlan);
+            var billingAccount = await GetOrCreateStripeCustomerAsync(userId);
+            var checkoutUrl = await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(userId, chosenPlan, billingAccount);
             return new PaymentSessionResult
             {
                 CheckoutUrl = checkoutUrl,

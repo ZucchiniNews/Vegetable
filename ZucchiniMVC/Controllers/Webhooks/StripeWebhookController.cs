@@ -45,7 +45,7 @@ public class StripeWebhookController : ControllerBase
         {
             case "invoice.paid":
                 {
-                    var invoice = stripeEvent.Data.Object as Stripe.Invoice;
+                    var invoice = stripeEvent.Data.Object as Invoice;
                     string? providerSubscriptionId =
                         invoice?.Parent?.SubscriptionDetails?.Subscription?.Id
                         ?? invoice?.Lines?.Data?

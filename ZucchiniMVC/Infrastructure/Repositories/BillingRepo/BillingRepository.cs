@@ -29,11 +29,11 @@ namespace Zucchinimvc.Infrastructure.Repositories.BillingRepo
             await _context.SaveChangesAsync();
         }
 
-        public async Task<string> CreatePaymentSessionAsync(string userId, Plan chosenPlan)
+        public async Task<string> CreatePaymentSessionAsync(string userId, Plan chosenPlan, BillingAccount billingAccount)
         {
             try
             {
-                return await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(userId, chosenPlan);
+                return await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(userId, chosenPlan, billingAccount);
             }
             catch (Exception ex)
             {
