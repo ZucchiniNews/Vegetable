@@ -1,6 +1,5 @@
 using Infrastrcture.Repositories.SubscriptionRepo;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Models.ViewModels;
 using Zucchinimvc.Application.Services.Plans;
 
 namespace Zucchinimvc.Application.Services.Subscriptions;
@@ -8,12 +7,10 @@ namespace Zucchinimvc.Application.Services.Subscriptions;
 public class SubscriptionService : ISubscriptionService
 {
     private readonly ISubscriptionRepository _subscriptionRepository;
-    private readonly IPlanService _planService;
     private readonly ILogger<SubscriptionService> _logger;
     public SubscriptionService(ISubscriptionRepository subscriptionRepository, IPlanService planService, ILogger<SubscriptionService> logger)
     {
         _subscriptionRepository = subscriptionRepository;
-        _planService = planService;
         _logger = logger;
     }
 
