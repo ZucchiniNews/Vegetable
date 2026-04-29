@@ -17,17 +17,6 @@ public class SubscriptionService : ISubscriptionService
         _logger = logger;
     }
 
-    public async Task<PaymentSessionResult> CreatePaymentSessionAsync(string userId, int planId)
-    {
-        var plan = await _planService.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
-        var checkoutUrl = await _subscriptionRepository.CreatePaymentSessionAsync(userId, plan.ProviderPriceId);
-        return new PaymentSessionResult
-        {
-            CheckoutUrl = checkoutUrl,
-            SessionUrl = checkoutUrl
-        };
-    }
-
     public async Task<UserSubscription> CreateSubscriptionAsync(UserSubscription subscription)
     {
         await _subscriptionRepository.AddSubscriptionAsync(subscription);

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Articles;
+using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
@@ -63,6 +64,7 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
 });
 builder.Services.AddScoped<Zucchinimvc.Infrastructure.Repositories.PlanRepo.IPlanRepository, Zucchinimvc.Infrastructure.Repositories.PlanRepo.PlanRepository>();
+builder.Services.AddScoped<Zucchinimvc.Infrastructure.Repositories.BillingRepo.IBillingRepository, Zucchinimvc.Infrastructure.Repositories.BillingRepo.BillingRepository>();
 
 // Services
 builder.Services.AddScoped<IArticleService, ArticleService>();
@@ -71,6 +73,7 @@ builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<Zucchinimvc.Application.Services.Plans.IPlanService, Zucchinimvc.Application.Services.Plans.PlanService>();
+builder.Services.AddScoped<Zucchinimvc.Application.Services.Billing.IBillingService, Zucchinimvc.Application.Services.Billing.BillingService>();
 
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();

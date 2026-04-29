@@ -1,23 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Application.Services.Subscriptions;
 
 namespace Zucchinimvc.Controllers;
 
 public class SubscriptionController : Controller
 {
-    private readonly ISubscriptionService _subscriptionService;
     private readonly IPlanService _planService;
+    private readonly IBillingService _billingService;
     private readonly ILogger<SubscriptionController> _logger;
 
+
     public SubscriptionController(
-        ISubscriptionService subscriptionService,
         IPlanService planService,
+        IBillingService billingService,
         ILogger<SubscriptionController> logger)
     {
-        _subscriptionService = subscriptionService;
         _planService = planService;
+        _billingService = billingService;
         _logger = logger;
     }
 
@@ -40,7 +41,8 @@ public class SubscriptionController : Controller
         {
             return NotFound("Plan not found.");
         }
-        var session = await _subscriptionService.CreatePaymentSessionAsync(userId, planId);
+        var billing = await _billingService.GetOrCreateStripeCustomerAsync(userId);
+        var session = await _billingService.CreatePaymentSessionAsync(userId, planId);
         return Redirect(session.CheckoutUrl);
     }
 
