@@ -17,7 +17,6 @@ namespace Zucchinimvc.Infrastructure.Data
                     var newRole = new Roles();
                     newRole.Name = role;
                     newRole.NormalizedName = role.ToUpper();
-
                     await roleManager.CreateAsync(newRole);
                 }
             }
@@ -40,6 +39,20 @@ namespace Zucchinimvc.Infrastructure.Data
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(defaultUser, "Admin");
+            }
+        }
+        public static async Task SeedPlansAsync(ApplicationDbContext context)
+        {
+            if (!context.Plans.Any())
+            {
+                var types = new List<Plan>
+                {
+                    new Plan { Name = "Weekly", Description = "Breaking news access, Weekly recap newsletter", Price = 10, StripePriceId = "price_1TQo13Rz2wduS8uUnwlp5O8A"},
+                    new Plan { Name = "Monthly", Description = "Unlimited news access, Daily morning briefings, Ad-free experience", Price = 49, StripePriceId="price_1TQo13Rz2wduS8uUJEcnXnV2"},
+                    new Plan { Name = "Yearly", Description = "Save 15% annually, All Monthly benefits, Exclusive in-depth reports", Price = 500, StripePriceId ="price_1TQo13Rz2wduS8uULKNXjMuo"}
+                };
+                context.Plans.AddRange(types);
+                await context.SaveChangesAsync();
             }
         }
     }

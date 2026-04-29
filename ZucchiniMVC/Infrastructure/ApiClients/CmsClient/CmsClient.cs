@@ -49,21 +49,4 @@ public class CmsClient
 
         return JsonSerializer.Deserialize<T>(json, options)!;
     }
-
-    //public async Task<T> GetAsync<T>(string endpoint)
-    //{
-    //    var response = await _http.GetAsync(endpoint);
-    //    response.EnsureSuccessStatusCode();
-    //    var json = await response.Content.ReadAsStringAsync();
-
-    //    using var jsonDocument = JsonDocument.Parse(json);
-    //    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-    //    if (jsonDocument.RootElement.ValueKind == JsonValueKind.Object && jsonDocument.RootElement.TryGetProperty("data", out var dataElement))
-    //    {
-    //        return dataElement.Deserialize<T>(options)!;
-    //    }
-
-    //    return JsonSerializer.Deserialize<T>(json, options)!;
-    //}
 }
