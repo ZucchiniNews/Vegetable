@@ -1,7 +1,7 @@
-
 using Microsoft.Extensions.Options;
 using Stripe;
 using Zucchinimvc.Infrastructure.Config;
+
 
 namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
 {
@@ -16,7 +16,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
         }
 
 
-        public async Task<string> CreateCheckoutStripeSessionAsync(string userId, string stripePriceId)
+        public async Task<string> CreateCheckoutStripeSessionAsync(string userId, ZucchiniCore.Entities.Plan chosenPlan)
         {
             var options = new Stripe.Checkout.SessionCreateOptions
             {
@@ -26,13 +26,19 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
                 {
                     new Stripe.Checkout.SessionLineItemOptions
                     {
-                        Price = stripePriceId,
+                        Price = chosenPlan.StripePriceId,
                         Quantity = 1
                     }
                 },
                 SuccessUrl = $"{Settings.SuccessUrl}?session_id={{CHECKOUT_SESSION_ID}}",
                 CancelUrl = Settings.CancelUrl,
                 ClientReferenceId = userId,
+
+                Metadata = new Dictionary<string, string>
+                 {
+                        { "userId", userId },
+                        { "planId", chosenPlan.Id.ToString() }
+                    },
                 SubscriptionData = new Stripe.Checkout.SessionSubscriptionDataOptions
                 {
                     Metadata = new Dictionary<string, string>
@@ -46,6 +52,16 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
             var session = await service.CreateAsync(options);
 
             return session.Url;
+        }
+
+        public async Task<Customer> CreateStripeCustomerAsync(string userId)
+        {
+            var customerService = new CustomerService(Client);
+            var customer = await customerService.CreateAsync(new CustomerCreateOptions
+            {
+                Metadata = new Dictionary<string, string> { { "UserId", userId } }
+            });
+            return customer;
         }
     }
 }
