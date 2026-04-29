@@ -1,88 +1,93 @@
-﻿namespace Zucchinimvc.Infrastructure.Repositories;
-
+﻿
 using Azure.Data.Tables;
-public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITableEntity, new()
+using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
+namespace Zucchinimvc.Infrastructure.Repositories.HistoryRepository
 {
-    private readonly TableClient _tableClient;
-    private readonly ILogger<HistoryRepository<T>> _logger;
-    public HistoryRepository(TableClient tableClient, ILogger<HistoryRepository<T>> logger)
-    {
-        _logger = logger;
-        _tableClient = tableClient;
-    }
 
-    public async Task UpsertAsync(T entity)
+    public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITableEntity, new()
     {
-        try
+        private readonly TableClient _tableClient;
+        private readonly ILogger<HistoryRepository<T>> _logger;
+        public HistoryRepository(TableClient tableClient, ILogger<HistoryRepository<T>> logger)
         {
-            await _tableClient.UpsertEntityAsync(entity);
+            _logger = logger;
+            _tableClient = tableClient;
         }
-        catch (Exception ex)
-        {
-            _logger?.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
-            throw;
-        }
-    }
 
-    public async Task<IEnumerable<T>> GetDailyHistoryAsync(string partitionKey, int days)
-    {
-        try
+        public async Task UpsertAsync(T entity)
         {
-            var from = DateTime.UtcNow.AddDays(-days).ToString("yyyy-MM-dd");
-            var results = new List<T>();
-            await foreach (var entity in _tableClient.QueryAsync<T>(
-                e => e.PartitionKey == partitionKey && e.RowKey.CompareTo(from) >= 0))
+            try
             {
-                results.Add(entity);
+                await _tableClient.UpsertEntityAsync(entity);
             }
-            return results;
-        }
-        catch (Exception ex)
-        {
-            _logger?.LogError(ex.ToString());
-            throw;
-        }
-    }
-
-    public async Task<IEnumerable<T>> GetRecentByPartitionKeyAsync(string partitionKey, int take = 50)
-    {
-        try
-        {
-            var results = new List<T>();
-
-            await foreach (var entity in _tableClient.QueryAsync<T>(
-                e => e.PartitionKey == partitionKey))
+            catch (Exception ex)
             {
-                results.Add(entity);
+                _logger?.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
+                throw;
             }
-
-            return results
-                .OrderBy(x => x.RowKey)
-                .TakeLast(take);
         }
-        catch (Exception ex)
-        {
-            _logger?.LogError(ex.ToString());
-            throw;
-        }
-    }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
-    {
-        try
+        public async Task<IEnumerable<T>> GetDailyHistoryAsync(string partitionKey, int days)
         {
-            var results = new List<T>();
-
-            await foreach (var entity in _tableClient.QueryAsync<T>())
+            try
             {
-                results.Add(entity);
+                var from = DateTime.UtcNow.AddDays(-days).ToString("yyyy-MM-dd");
+                var results = new List<T>();
+                await foreach (var entity in _tableClient.QueryAsync<T>(
+                    e => e.PartitionKey == partitionKey && e.RowKey.CompareTo(from) >= 0))
+                {
+                    results.Add(entity);
+                }
+                return results;
             }
-            return results;
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex.ToString());
+                throw;
+            }
         }
-        catch (Exception ex)
+
+        public async Task<IEnumerable<T>> GetRecentByPartitionKeyAsync(string partitionKey, int take = 50)
         {
-            _logger?.LogError($"Error fetching all entities: {ex}");
-            throw;
+            try
+            {
+                var results = new List<T>();
+
+                await foreach (var entity in _tableClient.QueryAsync<T>(
+                    e => e.PartitionKey == partitionKey))
+                {
+                    results.Add(entity);
+                }
+
+                return results
+                    .OrderBy(x => x.RowKey)
+                    .TakeLast(take);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex.ToString());
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            try
+            {
+                var results = new List<T>();
+
+                await foreach (var entity in _tableClient.QueryAsync<T>())
+                {
+                    results.Add(entity);
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Error fetching all entities: {ex}");
+                throw;
+            }
         }
     }
+
 }

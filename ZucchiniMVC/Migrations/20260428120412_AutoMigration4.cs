@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Zucchinimvc.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class AutoMigration4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,19 +57,19 @@ namespace Zucchinimvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionTypes",
+                name: "Plans",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DurationInDays = table.Column<int>(type: "int", nullable: false)
+                    ProviderPriceId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionTypes", x => x.Id);
+                    table.PrimaryKey("PK_Plans", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,32 +179,44 @@ namespace Zucchinimvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subscriptions",
+                name: "UserLikedArticles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SubscriptionTypeId = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentComplete = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    ArticleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
+                    table.PrimaryKey("PK_UserLikedArticles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subscriptions_AspNetUsers_UserId",
+                        name: "FK_UserLikedArticles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserSubscriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderSubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSubscriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subscriptions_SubscriptionTypes_SubscriptionTypeId",
-                        column: x => x.SubscriptionTypeId,
-                        principalTable: "SubscriptionTypes",
+                        name: "FK_UserSubscriptions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -249,13 +261,13 @@ namespace Zucchinimvc.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_SubscriptionTypeId",
-                table: "Subscriptions",
-                column: "SubscriptionTypeId");
+                name: "IX_UserLikedArticles_UserId",
+                table: "UserLikedArticles",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_UserId",
-                table: "Subscriptions",
+                name: "IX_UserSubscriptions_UserId",
+                table: "UserSubscriptions",
                 column: "UserId");
         }
 
@@ -278,16 +290,19 @@ namespace Zucchinimvc.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "Plans");
+
+            migrationBuilder.DropTable(
+                name: "UserLikedArticles");
+
+            migrationBuilder.DropTable(
+                name: "UserSubscriptions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "SubscriptionTypes");
         }
     }
 }

@@ -12,15 +12,15 @@ using Zucchinimvc.Infrastructure.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260420114932_AddUserLikedArticles")]
-    partial class AddUserLikedArticles
+    [Migration("20260428120412_AutoMigration4")]
+    partial class AutoMigration4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.6")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -131,6 +131,34 @@ namespace Zucchinimvc.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ZucchiniCore.Entities.Plan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProviderPriceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Plans");
+                });
+
             modelBuilder.Entity("ZucchiniCore.Entities.Roles", b =>
                 {
                     b.Property<string>("Id")
@@ -160,72 +188,6 @@ namespace Zucchinimvc.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("ZucchiniCore.Entities.Subscription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PaymentComplete")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("SubscriptionTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubscriptionTypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("ZucchiniCore.Entities.SubscriptionType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DurationInDays")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SubscriptionTypes");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.User", b =>
@@ -332,6 +294,39 @@ namespace Zucchinimvc.Migrations
                     b.ToTable("UserLikedArticles");
                 });
 
+            modelBuilder.Entity("ZucchiniCore.Entities.UserSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProviderSubscriptionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviderUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserSubscriptions");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("ZucchiniCore.Entities.Roles", null)
@@ -383,25 +378,6 @@ namespace Zucchinimvc.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ZucchiniCore.Entities.Subscription", b =>
-                {
-                    b.HasOne("ZucchiniCore.Entities.SubscriptionType", "SubscriptionType")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("SubscriptionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ZucchiniCore.Entities.User", "User")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubscriptionType");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
                     b.HasOne("ZucchiniCore.Entities.User", "User")
@@ -413,9 +389,13 @@ namespace Zucchinimvc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ZucchiniCore.Entities.SubscriptionType", b =>
+            modelBuilder.Entity("ZucchiniCore.Entities.UserSubscription", b =>
                 {
-                    b.Navigation("Subscriptions");
+                    b.HasOne("ZucchiniCore.Entities.User", null)
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.User", b =>

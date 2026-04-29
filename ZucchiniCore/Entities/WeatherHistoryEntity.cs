@@ -11,7 +11,6 @@ namespace ZucchiniCore.Entities
         public DateTimeOffset? Timestamp { get; set; }
         public DateTime RecordedAt { get; set; } = DateTime.UtcNow;
         public ETag ETag { get; set; }
-
         // weather data
         public double Temperature { get; set; }
         public int Humidity { get; set; }

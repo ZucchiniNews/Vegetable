@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Models.ViewModels;
 using Zucchinimvc.Application.Services.Subscriptions;
+using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
 
@@ -11,13 +11,11 @@ public class HomeController : Controller
 {
     private readonly ICmsService _cmsService;
     private readonly UserManager<User> _userManager;
-    private readonly ISubscriptionService _subscriptionService;
 
     public HomeController(ICmsService cmsService, UserManager<User> userManager, ISubscriptionService subscriptionService)
     {
         _cmsService = cmsService;
         _userManager = userManager;
-        _subscriptionService = subscriptionService;
     }
 
     public async Task<IActionResult> Index()
@@ -38,15 +36,12 @@ public class HomeController : Controller
     {
         var categories = await _cmsService.GetCategories();
         var category = categories.FirstOrDefault(c => string.Equals(c.Slug, slug, StringComparison.OrdinalIgnoreCase));
-
         if (category == null)
             return NotFound();
 
         var allArticles = await _cmsService.GetArticles();
         var categoryArticleIds = category.Articles?.Select(a => a.Id).ToHashSet() ?? new HashSet<int>();
-
         var categoryArticles = allArticles.Where(a => categoryArticleIds.Contains(a.Id)).ToList();
-
         return View("Index", categoryArticles);
     }
 
@@ -59,15 +54,12 @@ public class HomeController : Controller
         if (article == null)
             return NotFound();
 
-
         var user = await _userManager.GetUserAsync(User);
-        var isSubscribed = user != null && await _subscriptionService.HasActiveSubscriptionAsync(user.Id);
-
-       
+        // var isSubscribed = user != null && await _subscriptionService.HasActiveSubscriptionAsync(user.Id);
         return View(new ArticleDetailViewModel
         {
             Article = article,
-            IsSubscribed = isSubscribed
+            // IsSubscribed = isSubscribed
         });
     }
 
@@ -81,4 +73,6 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
 }

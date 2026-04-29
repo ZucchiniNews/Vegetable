@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.ComponentModel.DataAnnotations;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Subscriptions;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {
@@ -18,17 +19,20 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<IndexModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ISubscriptionService _subscriptionService;
 
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<IndexModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ISubscriptionService subscriptionService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _subscriptionService = subscriptionService;
         }
 
 
@@ -57,12 +61,15 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             };
         }
 
+        public UserSubscription? UserSubscription { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound($"Unable to load user.");
 
             await LoadUserStateAsync(user);
+            UserSubscription = await _subscriptionService.GetLatestSubscriptionForUserAsync(user.Id);
             return Page();
         }
 

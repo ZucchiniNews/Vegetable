@@ -1,14 +1,12 @@
 using ZucchiniCore.Entities;
+
+
 namespace Zucchinimvc.Application.Services.Subscriptions;
 
 public interface ISubscriptionService
 {
-    Task<Subscription?> GetActiveSubscriptionByUserIdAsync(string userId);
-    Task<bool> HasActiveSubscriptionAsync(string userId);
-    Task<IEnumerable<SubscriptionType>> GetAllSubscriptionTypesAsync();
-    Task<SubscriptionType?> GetSubscriptionTypeByIdAsync(int id);
-    Task CreateSubscriptionAsync(string userId, int subscriptionTypeId);
-    Task CompletePaymentAsync(int subscriptionId);
-    Task RenewSubscriptionAsync(int subscriptionId);
-    Task UnsubscribeAsync(int subscriptionId);
+    Task<UserSubscription> CreateSubscriptionAsync(UserSubscription subscription);
+    Task UpdateSubscriptionAsync(UserSubscription subscription);
+    Task<UserSubscription?> FindByProviderSubscriptionIdAsync(string providerSubscriptionId);
+    Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId);
 }

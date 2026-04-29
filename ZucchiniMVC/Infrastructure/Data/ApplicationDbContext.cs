@@ -11,15 +11,10 @@ namespace Zucchinimvc.Infrastructure.Data
         {
         }
 
-        //    public DbSet<Article> Articles { get; set; }
-        //    public DbSet<Category> Categories { get; set; }
-        public DbSet<Subscription> Subscriptions { get; set; }
-        public DbSet<SubscriptionType> SubscriptionTypes { get; set; }
+        public DbSet<UserSubscription> UserSubscriptions { get; set; }
+        public DbSet<Plan> Plans { get; set; }
         public DbSet<UserLikedArticle> UserLikedArticles { get; set; }
+        public DbSet<BillingAccount> BillingAccounts { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }
