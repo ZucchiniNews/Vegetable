@@ -1,6 +1,7 @@
-using Infrastrcture.Repositories.SubscriptionRepo;
+
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Plans;
+using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
 
 namespace Zucchinimvc.Application.Services.Subscriptions;
 
