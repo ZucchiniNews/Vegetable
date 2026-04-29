@@ -22,7 +22,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
             var options = new Stripe.Checkout.SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
-                Mode = "subscription",
+                Mode = Settings.Mode,
                 LineItems = new List<Stripe.Checkout.SessionLineItemOptions>
                 {
                     new Stripe.Checkout.SessionLineItemOptions
@@ -39,12 +39,13 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
                  {
                         { "userId", userId },
                         { "planId", chosenPlan.Id.ToString() }
-                    },
+                 },
                 SubscriptionData = new Stripe.Checkout.SessionSubscriptionDataOptions
                 {
                     Metadata = new Dictionary<string, string>
                     {
-                        { "userId", userId }
+                        { "userId", userId },
+                        { "planId", chosenPlan.Id.ToString() }
                     }
                 }
             };
