@@ -11,7 +11,31 @@
                 <input asp-for="EmailForm.NewEmail" class="form-control" />
                 <span asp-validation-for="EmailForm.NewEmail" class="text-danger small"></span>
             </div>
-            <button type="submit" class="btn btn-dark">Update email</button>
+
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirmEmailModal">Update email</button>
+
+            <div class="modal fade" id="confirmEmailModal" tabindex="-1" aria-labelledby="confirmEmailModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmEmailModalLabel">Confirm email change</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Please enter your password to proceed updating email:</p>
+
+                            <div class="mb-3">
+                                <input asp-for="EmailForm.CurrentPassword" class="form-control" />
+                                <span asp-validation-for="EmailForm.CurrentPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>

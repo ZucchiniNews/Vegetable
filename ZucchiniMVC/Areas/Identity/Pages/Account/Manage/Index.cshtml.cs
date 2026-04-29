@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.ComponentModel.DataAnnotations;
-using ZucchiniCore.Entities; // Using your custom User entity
+using ZucchiniCore.Entities;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {
@@ -113,6 +113,13 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 return RedirectToPage();
             }
 
+            var passwordCorrect = await _userManager.CheckPasswordAsync(user, EmailForm.CurrentPassword);
+            if (!passwordCorrect)
+            {
+                SetStatus("Incorrect password. Email not changed.", "danger");
+                return RedirectToPage();
+            }
+
             var code = await _userManager.GenerateChangeEmailTokenAsync(user, EmailForm.NewEmail);
 
             await _signInManager.RefreshSignInAsync(user);
@@ -175,6 +182,9 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         {
             [Required, EmailAddress, Display(Name = "New Email")]
             public string NewEmail { get; set; }
+
+            [Required, DataType(DataType.Password), Display(Name = "Current Password")]
+            public string CurrentPassword { get; set; }
         }
 
         public class ChangePasswordInput
