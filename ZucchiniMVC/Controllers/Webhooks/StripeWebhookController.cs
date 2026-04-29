@@ -61,6 +61,11 @@ public class StripeWebhookController : ControllerBase
                         .TryGetValue("userId", out var uid) == true
                             ? uid
                             : null;
+                    string? planId = invoice?
+                        .Parent?.SubscriptionDetails?
+                        .Metadata?.TryGetValue("planId", out var pid) == true
+                            ? pid
+                            : null;
 
                     var customerStripeId = invoice?.CustomerId;
 
@@ -92,8 +97,9 @@ public class StripeWebhookController : ControllerBase
                         UserId = userId,
                         ProviderSubscriptionId = providerSubscriptionId,
                         ProviderUserId = customerStripeId,
-                        Created = DateTime.UtcNow,
-                        Status = SubscriptionStatus.Active
+                        Status = SubscriptionStatus.Active,
+                        ActivatedAt = DateTime.UtcNow,
+                        PlanId = planId
                     };
 
                     await _subscriptionService.CreateSubscriptionAsync(subscription);

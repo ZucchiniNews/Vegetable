@@ -41,7 +41,6 @@ public class SubscriptionController : Controller
         {
             return NotFound("Plan not found.");
         }
-        var billing = await _billingService.GetOrCreateStripeCustomerAsync(userId);
         var session = await _billingService.CreatePaymentSessionAsync(userId, planId);
         return Redirect(session.CheckoutUrl);
     }

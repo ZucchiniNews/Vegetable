@@ -10,6 +10,7 @@
         public SubscriptionStatus Status { get; set; }
         public DateTime? ActivatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public string? PlanId { get; set; }
     }
 }
 
