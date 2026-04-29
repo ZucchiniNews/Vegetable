@@ -3,16 +3,16 @@
 <div class="row">
     <div class="col-md-6">
         <h4 class="mb-3">Email address</h4>
-        <p class="text-muted">Current: <strong>@Model.CurrentEmail</strong></p>
+        <p class="text-muted">Current email: <strong>@Model.CurrentEmail</strong></p>
 
         <form method="post" asp-page-handler="ChangeEmail">
             <div class="mb-3">
-                <label asp-for="EmailForm.NewEmail" class="form-label"></label>
+                <label asp-for="EmailForm.NewEmail" class="form-label">Enter new email address</label>
                 <input asp-for="EmailForm.NewEmail" class="form-control" />
                 <span asp-validation-for="EmailForm.NewEmail" class="text-danger small"></span>
             </div>
 
-            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirmEmailModal">Update email</button>
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirmEmailModal">Send confirmation email</button>
 
             <div class="modal fade" id="confirmEmailModal" tabindex="-1" aria-labelledby="confirmEmailModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -22,7 +22,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Please enter your password to proceed updating email:</p>
+                            <p>Please enter your password to proceed:</p>
 
                             <div class="mb-3">
                                 <input asp-for="EmailForm.CurrentPassword" class="form-control" />

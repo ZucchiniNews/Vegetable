@@ -5,8 +5,8 @@
         <h4 class="mb-3">Phone Number</h4>
         <form id="profile-form" method="post" asp-page-handler="ChangePhone">
             <div class="mb-3">
-                <label asp-for="PhoneForm.NewPhoneNumber" class="form-label"></label>
-                <input asp-for="PhoneForm.NewPhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                <label asp-for="PhoneForm.NewPhoneNumber" class="form-label">Update phone number</label>
+                <input asp-for="PhoneForm.NewPhoneNumber" class="form-control" placeholder="070-123 45 67" />
                 <span asp-validation-for="PhoneForm.NewPhoneNumber" class="text-danger small"></span>
             </div>
             <button id="update-profile-button" type="submit" class="btn btn-dark">Update phone number</button>
