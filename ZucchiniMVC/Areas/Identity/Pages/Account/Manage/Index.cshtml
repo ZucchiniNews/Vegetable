@@ -1,44 +1,41 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Account";
-    ViewData["ActivePage"] = ManageNavPages.Index;
+    ViewData["Title"] = "Manage your account";
 }
 
-<div class="container py-4 manage-container">
-    
-    <partial name="_ManageNav" />
-    <partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
 
-    <div class="card card-settings mb-4">
-        <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-1">
-                <i class="bi bi-person-circle me-2 fs-5"></i>
-                <h5 class="card-title mb-0 fw-bold">Profile Settings</h5>
-            </div>
-            <p class="text-muted small mb-4">Update your account information and how we contact you.</p>
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="alert alert-@Model.StatusType alert-dismissible fade show" role="alert">
+        @Model.StatusMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
-            <form id="profile-form" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_ChangeEmailPartial" model="Model" />
+        </div>
+    </div>
 
-                <div class="mb-3">
-                    <label asp-for="Username" class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.05em;"></label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="bi bi-at"></i></span>
-                        <input asp-for="Username" class="form-control bg-light border-start-0 rounded-end-3" disabled />
-                    </div>
-                </div>
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_ChangePasswordPartial" model="Model" />
+        </div>
+    </div>
 
-                <div class="mb-4">
-                    <label asp-for="Input.PhoneNumber" class="form-label small fw-bold text-uppercase" style="letter-spacing: 0.05em;"></label>
-                    <input asp-for="Input.PhoneNumber" class="form-control rounded-3" placeholder="e.g. +1 (555) 000-0000" />
-                    <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
-                </div>
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_PhonePartial" model="Model" />
+        </div>
+    </div>
 
-                <button id="update-profile-button" type="submit" class="btn btn-dark w-100 fw-bold py-2 rounded-3">
-                    Save Changes
-                </button>
-            </form>
+    <div class="col-md-6">
+        <div class="p-4 border rounded-3 h-100 shadow-sm">
+            <partial name="_TwoFactorPartial" model="Model" />
         </div>
     </div>
 
@@ -86,6 +83,16 @@
             </div>
         </div>
     }
+  
+    <div class="col-12 mt-5">
+        <div class="p-4 border border-danger rounded-3 bg-light-subtle">
+            <h4 class="text-danger fw-bold">Danger Zone</h4>
+            <hr class="text-danger">
+            <partial name="_DeleteAccountPartial" model="Model" />
+        </div>
+    </div>
+
+  
 </div>
 
 @section Scripts {

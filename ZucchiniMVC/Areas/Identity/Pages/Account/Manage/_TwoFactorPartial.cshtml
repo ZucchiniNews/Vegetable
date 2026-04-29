@@ -1,0 +1,27 @@
+@model Zucchinimvc.Areas.Identity.Pages.Account.Manage.IndexModel
+
+<div class="row">
+    <div class="col-md-6">
+        <h4 class="mb-3">Two-factor authentication</h4>
+
+        @if (Model.TwoFactorEnabled)
+        {
+            <div class="alert alert-success">
+                Two-factor authentication is <strong>enabled</strong>.
+            </div>
+            <a asp-page="/Account/Manage/TwoFactorAuthentication" class="btn btn-outline-danger">
+                Manage / disable 2FA
+            </a>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                Two-factor authentication is <strong>not enabled</strong>.
+                Enabling it adds an extra layer of security to your account.
+            </div>
+            <a asp-page="/Account/Manage/EnableAuthenticator" class="btn btn-dark">
+                Set up authenticator app
+            </a>
+        }
+    </div>
+</div>

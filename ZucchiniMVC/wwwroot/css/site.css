@@ -2,209 +2,124 @@
 /* ZicchiniNews Global Styling   */
 /* ============================= */
 
-body {
-    margin-bottom: 60px;
-    background-color: #f8f9fa; /* old color:  #f7f7f7; */
-    font-family: Arial, Helvetica, sans-serif;
-    color: #111;
-}
-
 html, body {
     height: 100%;
     margin: 0;
 }
 
-/* ============================= */
-/* NAVBAR                        */
-/* ============================= */
-
-.news-header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.news-body {
+body {
+    background-color: #f8f9fb;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-.news-main {
-    flex: 1 0 auto;
+.btn-primary{
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff !important;
+    border-radius: 4px;
 }
 
-.news-footer {
-    padding: 20px 0;
-    background-color: #f8f9fa;
-    flex-shrink: 0;
+/* ============================= */
+/* NAVBAR & HEADER               */
+/* ============================= */
+
+.news-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    z-index: 1000;
 }
 
 .news-navbar {
-    padding: 1rem 0;
+    min-height: 70px; 
+    height: auto; 
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.news-navbar-container {
+    display: flex;
+    /* flex-wrap: nowrap; */
+    /* margin-left:10px; */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .news-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-weight: 700;
     color: #111 !important;
     text-decoration: none;
 }
 
+.news-brand .news-brand-icon img {
+    height: 3em;
+    width: auto;
+    display: block;
+}
+
 .news-brand-text {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 700;
+    line-height: 1;
 }
 
 .news-nav-wrapper {
-    flex: 1 1 auto;
-    overflow: visible;
+    flex: 1;
+    display: flex;
+    justify-content: center; 
+    /* overflow-x: auto;  */
+    min-width: 0;
+    /* scrollbar-width: none;  */
 }
 
-.news-navbar-container {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
+.news-nav-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .news-nav-links {
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
-    gap: 6px;
     list-style: none;
     margin: 0;
     padding: 0;
-    overflow: visible;
 }
-
-    .news-nav-links .dropdown-menu {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        padding: 1rem;
-        margin-top: 10px;
-        min-width: 220px;
-        border: 1px solid #eee;
-    }
-
-    .news-nav-links .dropdown-item {
-        padding: 10px 20px;
-        font-weight: 500;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-    }
-
-        .news-nav-links .dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: #000;
-            transform: translateX(5px);
-        }
-
-    .news-nav-links .dropdown-toggle::after {
-        vertical-align: middle;
-        margin-left: 8px;
-        transition: transform 0.3s ease;
-    }
-
-    .news-nav-links .show .dropdown-toggle::after {
-        transform: rotate(180deg);
-    }
-
-    .news-nav-links::-webkit-scrollbar {
-        display: none;
-    }
 
 .news-nav-links .nav-link {
     color: #111 !important;
     font-weight: 500;
-    margin: 0 4px; 
-    padding: 8px 16px !important;
-    flex: 0 0 auto;
+    padding: 8px 15px !important;
     border: 1px solid transparent;
     border-radius: 8px;
-    transition: all 0.25s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
 }
-    .news-nav-links .nav-link,
-    .news-nav-links .dropdown-item {
-        color: #111 !important;
-        font-weight: 500;
-        padding: 8px 16px !important;
-        border: 1px solid transparent;
-        border-radius: 8px;
-        transition: all 0.2s ease-in-out;
-        flex: 0 0 auto;
-    }
 
-        .news-nav-links .nav-link:hover,
-        .news-nav-links .dropdown-item:hover,
-        .news-nav-links .nav-link:focus,
-        .news-nav-links .show.dropdown-toggle {
-            color: #000 !important;
-            background-color: #f0f0f0;
-            border-color: #d1d1d1;
-            transform: translateY(-1px);
-        }
-
-        .news-nav-links .dropdown-item:hover {
-            transform: translateX(5px); /* Keeps that nice slide-in feel for flyouts */
-        }
-
-        .news-nav-links .nav-link.active {
-            background-color: #111 !important;
-            color: #fff !important;
-            border-color: #111;
-        }
-
-    .news-nav-links .dropdown-menu {
-        border: 1px solid #e5e5e5;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-        padding: 0.5rem;
-        margin-top: 10px;
-        min-width: 200px;
-        animation: fadeIn 0.2s ease-out;
-    }
-
-    .news-nav-links .dropdown-item {
-        margin-bottom: 2px;
-    }
-
-        .news-nav-links .dropdown-item:last-child {
-            margin-bottom: 0;
-        }
-
-    .news-nav-links .dropdown-toggle::after {
-        vertical-align: middle;
-        margin-left: 8px;
-        transition: transform 0.3s ease;
-    }
-
-    .news-nav-links .show.dropdown-toggle::after {
-        transform: rotate(180deg);
-    }
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.news-nav-links .nav-link:hover {
+    color: #777 !important;
+    transform: translateY(-1px);
 }
+
+.news-nav-links .nav-link.active {
+    color: #000 !important;
+    font-weight: 800;
+}
+
+/* Header Right (Weather & Login) */
 .news-header-right {
-    flex-shrink: 0; 
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-}
-
-.weather-header-box {
-    display: flex;
-    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
 }
 
 .login-header-box {
@@ -214,95 +129,225 @@ html, body {
     border-left: 1px solid #d9d9d9;
 }
 
-    .login-header-box ul,
-    .login-header-box .navbar-nav {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
+.login-header-box .navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
 
-    .login-header-box a,
-    .login-header-box .nav-link {
-        text-decoration: none;
-        color: #111 !important;
-        font-weight: 500;
-        padding: 0;
-    }
+.login-header-box .nav-link {
+    color: #111 !important;
+    font-weight: 500;
+}
 
 #login.btn-dark {
     background-color: #000000;
     border-color: #000000;
     color: #ffffff !important;
-    border-radius: 4px; 
-    transition: opacity 0.2s ease-in-out;
+    border-radius: 4px;
+    padding: 6px 12px;
 }
 
-    #login.btn-dark:hover {
-        background-color: #333333; 
-        color: #ffffff !important;
+/* Desktop Only (992px and up) */
+@media (min-width: 992px) {
+    .news-navbar-container {
+        flex-wrap: nowrap !important;
     }
 
-/* for register and login view */
-.card {
-    border: none;
-}
-
-.btn-dark {
-    background-color: #0b0b1f;
-    border: none;
-}
-
-    .btn-dark:hover {
-        background-color: #1a1a3d;
+    .news-nav-links {
+        flex-wrap: nowrap;
     }
 
-.form-control {
-    border-radius: 10px;
-    padding: 12px 14px;
+    .news-nav-wrapper {
+        flex: 1 1 auto;
+        overflow-x: auto;
+        /* Hide scrollbar but keep functionality */
+        scrollbar-width: none; 
+    }
+    .news-nav-wrapper::-webkit-scrollbar { display: none; }
 }
 
-    .form-control::placeholder {
-        font-size: 0.85rem;
-    }
-
-/* Mobile layout */
+/* Mobile Only (Below 992px) */
 @media (max-width: 991.98px) {
+    .news-navbar-container {
+        flex-wrap: wrap !important; /* Allow the menu to drop below the brand */
+    }
+
+    .news-nav-links {
+        flex-direction: column; /* Stack categories vertically */
+        flex-wrap: wrap; 
+    }
+
+    .news-nav-wrapper {
+        width: 100%;
+        min-width: 0;
+        overflow-x: auto; 
+    scrollbar-width: none;
+    }
+
+    /* Reset the border-left from your previous login box on mobile */
+    .login-header-box {
+        border-left: none;
+        padding-left: 0;
+    }
+
+    .news-header-right {
+        display: none;
+    }
+}
+
+/* ============================= */
+/* MAIN CONTENT & FOOTER         */
+/* ============================= */
+
+.news-main {
+    flex: 1 0 auto;
+    padding: 20px 0;
+}
+
+.news-footer {
+    background: #fff;
+    border-top: 1px solid #e5e5e5;
+    padding: 1.5rem 0;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.footer-link {
+    color: #666;
+    text-decoration: none;
+}
+
+/* ============================= */
+/* MOBILE RESPONSIVENESS         */
+/* ============================= */
+
+@media (max-width: 991.98px) {
+    .news-navbar-container {
+        flex-wrap: wrap;
+    }
+
+    .news-nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding: 1rem 0;
+    }
+
     .news-header-right {
         width: 100%;
         margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
         justify-content: space-between;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .weather-header-box {
-        flex: 1;
     }
 
     .login-header-box {
-        flex-shrink: 0;
-        padding-left: 12px;
-        margin-left: 12px;
-        border-left: 1px solid #d9d9d9;
-        align-self: flex-start;
+        border-left: none;
+        padding-left: 0;
     }
 
-        .login-header-box ul,
-        .login-header-box .navbar-nav {
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-        }
 
-        .login-header-box a,
-        .login-header-box .nav-link {
-            text-align: right;
-            white-space: nowrap;
-        }
+    /*  Mobile  */
+@media (max-width: 991.98px) {
+    .news-header-right {
+        display: flex; 
+        margin-left: auto;
+    }
+    
+    /* mobile view: hide weather keep only login: */
+    .weather-widget-class { 
+        display: none; 
+    }
 }
+}
+
+/* ============================= */
+/* DROPDOWN MENU                */
+/* ============================= */
+
+.dropdown-menu .dropdown-item:active, 
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item.active {
+    background-color: #f4f4f7 !important; 
+    color: #000 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown-item {
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-header-custom {
+    padding: 1rem 1.25rem !important;
+    max-width: 280px; /* Give it a bit more breathing room */
+}
+
+/* ============================= */
+/* LOGIN PILLS                */
+/* ============================= */
+
+.guest-trigger {
+    padding: 8px 12px;
+    border-radius: 50px;
+    transition: background 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.guest-trigger:hover {
+    background-color: #f0f0f0; 
+    color: #000 !important;
+}
+
+.guest-avatar {
+    background-color: #e9ecef; 
+    color: #6c757d; 
+    border: 1px solid #dee2e6;
+}
+
+.avatar-circle i {
+    font-size: 1.1rem;
+    display: flex;
+}
+
+.dropdown-header-custom {
+    padding: 1rem 1.25rem; 
+}
+
+.user-email {
+    display: block;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #777;
+    font-size: 0.85rem;
+}
+/* ============================= */
+/* LOG OUT PILLS                */
+/* ============================= */
+
+#logoutForm button.dropdown-item:active, 
+#logoutForm button.dropdown-item:focus {
+    background-color: #fff5f5 !important; 
+    color: #dc3545 !important; 
+    outline: none !important;
+    box-shadow: none !important; 
+}
+
+#logoutForm button.dropdown-item:hover {
+    background-color: #fff5f5;
+    color: #c5303f !important;
+}
+
+.dropdown-menu-modern {
+    padding: 0.5rem;
+    border: 1px solid rgba(0,0,0,.08);
+}
+
 /* ============================= */
 /* CATEGORY PILLS                */
 /* ============================= */
@@ -323,10 +368,10 @@ html, body {
     font-weight: 600;
 }
 
-    .category-pill.active {
-        background: #000;
-        color: #fff;
-    }
+.category-pill.active {
+    background: #000;
+    color: #fff;
+}
 
 
 .featured-section {
@@ -344,12 +389,12 @@ html, body {
     position: relative;
 }
 
-    .featured-image img {
-        width: 100%;
-        height: 350px;
-        object-fit: cover;
-        border-radius: 20px;
-    }
+.featured-image img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 20px;
+}
 
 .featured-badge {
     position: absolute;
@@ -383,10 +428,10 @@ html, body {
     font-size: 13px;
 }
 
-    .news-tag.light {
-        background: #ececec;
-        color: #111;
-    }
+.news-tag.light {
+    background: #ececec;
+    color: #111;
+}
 
 .news-meta {
     display: flex;
@@ -395,12 +440,9 @@ html, body {
     font-size: 14px;
 }
 
-.weather-section {
-    margin-bottom: 40px;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.form-floating>.form-control-plaintext:focus::placeholder,
+.form-floating>.form-control:focus::placeholder {
+    text-align: start;
 }
 
 .chart-card {
@@ -424,7 +466,7 @@ html, body {
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 8px;
-    height: 300px; 
+    height: 300px;
 }
 
 .current-weather {
@@ -439,16 +481,6 @@ html, body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-.weather-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-}
-
-    .weather-card h2 {
-        font-size: 24px;
-    }
 
 .weather-temp {
     font-size: 36px;
@@ -477,19 +509,19 @@ html, body {
     background: white;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease;
 }
 
-    .news-card:hover {
-        transform: translateY(-5px);
-    }
+.news-card:hover {
+    transform: translateY(-5px);
+}
 
-    .news-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
+.news-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
 
 .news-card-body {
     padding: 15px;
@@ -519,9 +551,7 @@ html, body {
     .featured-content h1 {
         font-size: 30px;
     }
-}
 
-@media (max-width: 768px) {
     .news-grid {
         grid-template-columns: 1fr;
     }
@@ -533,6 +563,27 @@ html, body {
     .featured-content p {
         font-size: 16px;
     }
+
+    .news-header-right {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100%;
+        margin-top: 1rem;
+        padding: 10px 0;
+        border-top: 1px solid #eee;
+    }
+
+    .login-header-box {
+        margin-left: auto;
+        padding-left: 0;
+        border-left: none;
+    }
+
+    .news-header-right .navbar-nav {
+        flex-direction: row !important;
+    }
 }
 
 
@@ -540,49 +591,63 @@ html, body {
 /* Identity & Management Pages   */
 /* ============================= */
 
-.manage-container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.settings-nav-pills {
+.settings-nav-container {
     display: flex;
-    justify-content: center;
-    background-color: #f1f3f5;
-    border-radius: 50rem;
-    padding: 0.4rem;
-    margin-bottom: 3rem;
-    border: 1px solid #dee2e6;
+    margin-bottom: 2rem;
+    overflow-x: auto; /* Allows scrolling on very small screens */
+    padding-bottom: 5px;
 }
 
-    .settings-nav-pills .nav-link {
-        border-radius: 50rem;
-        padding: 0.5rem 1.5rem;
-        color: #6c757d;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        border: 1px solid transparent;
-        background: transparent;
-    }
+.settings-nav-group-horizontal {
+    display: flex;
+    flex-direction: row;
+    background: #ffffff;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    gap: 4px;
+}
 
-        .settings-nav-pills .nav-link:hover {
-            color: #111;
-            background-color: rgba(0,0,0,0.05);
-        }
+.nav-pill-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    color: #555 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Keeps text on one line */
+}
 
-        .settings-nav-pills .nav-link.active {
-            background-color: #ffffff !important;
-            color: #111 !important;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.08);
-            border-color: #dee2e6 !important;
-            font-weight: 700;
-        }
+.nav-pill-item i {
+    margin-right: 8px;
+    font-size: 1.1rem;
+    color: #888;
+}
 
-.card-settings, .card-user-management {
-    background-color: #ffffff;
-    border-radius: 1rem;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+.nav-pill-item:hover {
+    background-color: #f4f4f4;
+    color: #000 !important;
+}
+
+.nav-pill-item.active {
+    background-color: #000 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.nav-pill-item.active i {
+    color: #fff;
+}
+
+.settings-nav-container::-webkit-scrollbar {
+    display: none;
+}
+.settings-nav-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 /* Danger Zone */
@@ -592,10 +657,10 @@ html, body {
     border-radius: 1rem;
 }
 
-    .danger-zone .btn-outline-danger:hover {
-        background-color: #dc3545 !important;
-        color: white !important;
-    }
+.danger-zone .btn-outline-danger:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
 
 .card-user-management {
     background-color: #fff;
