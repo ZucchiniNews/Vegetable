@@ -113,34 +113,39 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account
                     return Page();
                 }
 
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(
+                    user,
+                    Input.Password,
+                    Input.RememberMe,
+                    lockoutOnFailure: true); // Recommendation: Set to true to prevent brute force
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
+
                 if (result.IsNotAllowed)
                 {
-                    ModelState.AddModelError(string.Empty, "Login not allowed. Please confirm your account.");
+                    ModelState.AddModelError(string.Empty, "Login not allowed. Please confirm your email.");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Incorrect password. Please try again.");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt. Please check your credentials.");
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

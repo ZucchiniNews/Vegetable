@@ -3,6 +3,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.ComponentModel.DataAnnotations;
 using ZucchiniCore.Entities; // Using your custom User entity
 
@@ -13,15 +17,18 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<IndexModel> _logger;
+        private readonly IEmailSender _emailSender;
 
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ILogger<IndexModel> logger)
+            ILogger<IndexModel> logger,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _emailSender = emailSender;
         }
 
 
@@ -37,7 +44,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         [BindProperty] public ChangeEmailInput EmailForm { get; set; } = new ChangeEmailInput();
         [BindProperty] public ChangePasswordInput PasswordForm { get; set; }
         [BindProperty] public DeleteAccountInput DeleteForm { get; set; }
-        //[BindProperty] public ChangeNameInput NameForm { get; set; }
         [BindProperty] public ChangePhoneInput PhoneForm { get; set; }
 
         private async Task LoadUserStateAsync(User user)
@@ -107,23 +113,24 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 return RedirectToPage();
             }
 
-            var setEmailResult = await _userManager.SetEmailAsync(user, EmailForm.NewEmail);
-            var setUsernameResult = await _userManager.SetUserNameAsync(user, EmailForm.NewEmail);
+            var code = await _userManager.GenerateChangeEmailTokenAsync(user, EmailForm.NewEmail);
 
-            if (setEmailResult.Succeeded && setUsernameResult.Succeeded)
-            {
-                user.EmailConfirmed = true;
-                await _userManager.UpdateAsync(user);
+            await _signInManager.RefreshSignInAsync(user);
 
-                await _signInManager.RefreshSignInAsync(user);
-                SetStatus("Email updated successfully.", "success");
-            }
-            else
-            {
-                var error = setEmailResult.Errors.FirstOrDefault()?.Description ?? "Error updating email.";
-                SetStatus(error, "danger");
-            }
+            var codeBytes = Encoding.UTF8.GetBytes(code);
+            var encodedCode = WebEncoders.Base64UrlEncode(codeBytes);
 
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmailChange",
+                pageHandler: null,
+                values: new { area = "Identity", userId = user.Id, email = EmailForm.NewEmail, code = encodedCode },
+                protocol: Request.Scheme);
+
+            var message = $"Please confirm your email change by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
+
+            await _emailSender.SendEmailAsync(EmailForm.NewEmail, "Confirm your email", message);
+
+            SetStatus("Confirmation link sent. Please check your new email.", "info");
             return RedirectToPage();
         }
 
@@ -188,11 +195,6 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             [Required, DataType(DataType.Password)]
             public string Password { get; set; }
         }
-        //public class ChangeNameInput
-        //{
-        //    [Required, StringLength(100), Display(Name = "Display name")]
-        //    public string DisplayName { get; set; }
-        //}
         public class ChangePhoneInput
         {
             [Phone]
