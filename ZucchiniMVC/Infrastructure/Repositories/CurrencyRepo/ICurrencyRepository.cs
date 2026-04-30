@@ -4,9 +4,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CurrencyRepo
 {
     public class ICurrencyRepository
     {
-        Task<CurrencyRateDto> GetLatestRatesAsync();
-        Task<ExchangeRateDto> GetExchangeRatesAsync(string currencyCode);
-        Task UpdateRatesCacheAsync();
-        Task<decimal> GetExchangeRateAsync(string fromCurrency, string toCurrency);
+        Task<CurrencyRateResponse?> GetLatestRatesAsync(string baseCurrency);
+
     }
 }
