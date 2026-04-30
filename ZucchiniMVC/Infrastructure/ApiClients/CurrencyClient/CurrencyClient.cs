@@ -3,7 +3,7 @@ using Zucchinimvc.Models.DTOs.CurrencyDTOs;
 
 namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
 {
-    public interface CurrencyApiClient : ICurrencyApiClient
+    public interface CurrencyClient
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<CurrencyApiClient> _logger;
