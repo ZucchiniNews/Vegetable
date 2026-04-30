@@ -29,7 +29,9 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 BodyPreview = dto.BodyPreview,
                 BodyGated = dto.BodyGated,
                 EditorsChoice = dto.EditorsChoice,
-                Cover = dto.Cover != null ? new ArticleCover { OriginalUrl = dto.Cover.Url } : null
+                Cover = dto.Cover != null ? new ArticleCover {
+                    OriginalUrl = dto.Cover.Url,
+                    ThumbnailUrl = dto.Cover?.Formats?.Thumbnail?.Url } : null
             }).ToList();
         }
 

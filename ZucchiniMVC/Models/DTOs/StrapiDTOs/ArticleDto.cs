@@ -13,9 +13,23 @@ public class ArticleDto
     public DateTime UpdatedAt { get; set; }
     public DateTime PublishedAt { get; set; }
     public CoverDto? Cover { get; set; }
+    public CoverFormatsDto? Thumbnail { get; set; }
 }
 
 public class CoverDto
 {
     public string Url { get; set; } = string.Empty;
+    public CoverFormatsDto? Formats { get; set; }
+}
+
+public class CoverFormatsDto
+{
+    public CoverFormatDto? Thumbnail { get; set;}
+}
+
+public class CoverFormatDto
+{
+    public string Url { get; set; } = string.Empty;
+    public int Width { get; set; }
+    public int Height { get; set; }
 }
