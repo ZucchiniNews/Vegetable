@@ -5,7 +5,7 @@ namespace Zucchinimvc.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CurrencyController : ControllerBase // Use ControllerBase for APIs
+    public class CurrencyController : ControllerBase 
     {
         private readonly ICurrencyService _currencyService;
         private readonly ILogger<CurrencyController> _logger;

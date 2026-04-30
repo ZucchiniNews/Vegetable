@@ -1,5 +1,4 @@
-﻿// NOTICE: Microsoft.AspNetCore.Mvc is GONE. 
-// This service no longer cares if it's a website or a console app.
+﻿
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
 using Zucchinimvc.Models.ViewModels;
 using System.Globalization;
@@ -33,7 +32,7 @@ namespace Zucchinimvc.Application.Services.Currency
                     return viewModel;
                 }
 
-                // Filtering logic stays in the service (this is business logic!)
+                
                 var filtered = allRates
                     .Where(x => x.Key == "SEK" || x.Key == "EUR")
                     .ToDictionary(k => k.Key, v => v.Value);
