@@ -1,67 +1,50 @@
-﻿using System.Text.Json;
+﻿using Microsoft.Extensions.Options;
+using System.Net;
+using System.Text.Json;
+using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
+using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Models.DTOs.CurrencyDTOs;
 
 namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
 {
-    public interface CurrencyClient
+    public class CurrencyClient
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILogger<CurrencyApiClient> _logger;
-        private readonly string _apiKey;
 
-        public CurrencyApiClient(
-            HttpClient httpClient,
-            IConfiguration configuration,
-            ILogger<CurrencyApiClient> logger)
+        private readonly HttpClient _http;
+        private readonly CurrencySettings _settings;
+        private readonly ILogger<CurrencyClient> _logger;
+
+
+        public CurrencyClient(HttpClient http, IOptions<CurrencySettings> settings, ILogger<CurrencyClient> logger)
         {
-            _httpClient = httpClient;
+            _http = http;
+            _settings = settings.Value;
             _logger = logger;
-            _apiKey = configuration["CurrencyApi:ApiKey"] ?? "113a167a80dc42b09c2e14cdc008f2e3";
-            _httpClient.BaseAddress = new Uri(configuration["CurrencyApi:BaseUrl"] ?? "https://api.currencyfreaks.com/v2.0/");
+            _http.BaseAddress = new Uri(_settings.BaseUrl);
         }
 
-        public async Task<CurrencyRateDto> GetLatestRatesAsync()
+
+        public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.ApiKey);
+
+
+        public async Task<T?> GetAsync<T>(string endpoint)
         {
-            try
+            if (!IsConfigured)
             {
-                var response = await _httpClient.GetAsync($"rates/latest?apikey={_apiKey}");
-                response.EnsureSuccessStatusCode();
-
-                var content = await response.Content.ReadAsStringAsync();
-                var rates = JsonSerializer.Deserialize<CurrencyRateDto>(content, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-                return rates;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error fetching latest currency rates");
-                throw;
-            }
-        }
-
-        public async Task<decimal> GetExchangeRateAsync(string fromCurrency, string toCurrency)
-        {
-            var rates = await GetLatestRatesAsync();
-
-            if (rates.Rates.ContainsKey(fromCurrency) && rates.Rates.ContainsKey(toCurrency))
-            {
-                var fromRate = rates.Rates[fromCurrency];
-                var toRate = rates.Rates[toCurrency];
-                return toRate / fromRate;
+                _logger.LogWarning("CurrencyClient: API request to '{Endpoint}' was skipped because the ApiKey is not configured in settings.", endpoint);
+                _logger.LogWarning("CurrencyClient: Missing credentials for BaseAddress: {BaseAddress}. Check 'CurrencyApi:ApiKey' in appsettings.json.", _http.BaseAddress);
+                return default;
             }
 
-            throw new ArgumentException("Currency not found");
-        }
+            // Append the API key automatically to every request
+            var separator = endpoint.Contains("?") ? "&" : "?";
+            var url = $"{endpoint}{separator}apikey={_settings.ApiKey}";
 
-        public async Task<decimal> ConvertCurrencyAsync(decimal amount, string fromCurrency, string toCurrency)
-        {
-            var rate = await GetExchangeRateAsync(fromCurrency, toCurrency);
-            return amount * rate;
+            var response = await _http.GetAsync(url);
+            if (!response.IsSuccessStatusCode) return default;
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
-
-}
 }
