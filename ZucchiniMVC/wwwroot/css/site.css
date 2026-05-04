@@ -669,3 +669,14 @@ body {
 body {
     background-color: #f8f9fb;
 }
+
+.dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+@media (max-width: 991px) {
+    .news-nav-links {
+        gap: 0.5rem;
+    }
+}
