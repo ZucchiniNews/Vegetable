@@ -1,5 +1,4 @@
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 
 namespace Zucchinimvc.Application.Services.CMS;
@@ -7,11 +6,9 @@ namespace Zucchinimvc.Application.Services.CMS;
 public class CmsService : ICmsService
 {
     private readonly ICmsRepository _cmsRepository;
-    private readonly IArticleService _articleService;
-    public CmsService(ICmsRepository cmsRepository, IArticleService articleService)
+    public CmsService(ICmsRepository cmsRepository)
     {
         _cmsRepository = cmsRepository;
-        _articleService = articleService;
     }
 
     public async Task<IEnumerable<Article>> GetArticles()
@@ -21,7 +18,6 @@ public class CmsService : ICmsService
         foreach (var article in articles)
         {
             var totalContent = $"{article.BodyPreview} {article.BodyGated}";
-            article.ReadingTimeMinutes = _articleService.CalculateReadTime(totalContent);
         }
 
         return articles;

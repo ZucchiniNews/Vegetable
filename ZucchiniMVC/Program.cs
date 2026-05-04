@@ -68,7 +68,7 @@ builder.Services.AddScoped<Zucchinimvc.Infrastructure.Repositories.PlanRepo.IPla
 builder.Services.AddScoped<Zucchinimvc.Infrastructure.Repositories.BillingRepo.IBillingRepository, Zucchinimvc.Infrastructure.Repositories.BillingRepo.BillingRepository>();
 
 // Services
-builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IUtilsService, UtilsService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
