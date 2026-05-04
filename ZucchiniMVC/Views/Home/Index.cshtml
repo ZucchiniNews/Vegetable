@@ -3,32 +3,6 @@
 
 @{
     ViewData["Title"] = "Articles Index";
-    var isHome = ViewData["IsHome"] as bool? == true;
-}
-
-@if (isHome)
-{
-    <section class="featured-section">
-        <div class="featured-image">
-            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200&auto=format&fit=crop" alt="Featured news" />
-            <span class="featured-badge">Featured</span>
-        </div>
-
-        <div class="featured-content">
-            <span class="news-tag">Environment</span>
-            <h1>Global Climate Summit Reaches Historic Agreement</h1>
-            <p>
-                World leaders commit to stronger climate action and new emissions targets,
-                marking one of the most significant environmental agreements in recent years.
-            </p>
-
-            <div class="news-meta">
-                <span>March 25, 2026</span>
-                <span>5 min read</span>
-            </div>
-        </div>
-    </section>
-
 }
 
 <section class="latest-news-section">

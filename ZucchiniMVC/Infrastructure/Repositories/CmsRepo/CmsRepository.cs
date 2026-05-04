@@ -29,12 +29,39 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 BodyPreview = dto.BodyPreview,
                 BodyGated = dto.BodyGated,
                 EditorsChoice = dto.EditorsChoice,
-                Cover = dto.Cover != null ? new ArticleCover {
+                Cover = dto.Cover != null ? new ArticleCover
+                {
                     OriginalUrl = dto.Cover.Url,
-                    ThumbnailUrl = dto.Cover.Formats?.Thumbnail?.Url } : null
+                    ThumbnailUrl = dto.Cover.Formats?.Thumbnail?.Url
+                } : null
             }).ToList();
         }
 
+        public async Task<Article> GetArticleBySlugAsync(string slug)
+        {
+            var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>($"articles?filters[slug][$eq]={slug}&populate=*");
+            var articleDto = articleDtos.FirstOrDefault();
+            if (articleDto == null)
+                return null;
+            return new Article
+            {
+                Id = articleDto.Id,
+                Title = articleDto.Title,
+                ContentSummary = articleDto.ContentSummary,
+                Slug = articleDto.Slug,
+                CreatedAt = articleDto.CreatedAt,
+                UpdatedAt = articleDto.UpdatedAt,
+                PublishedAt = articleDto.PublishedAt,
+                BodyPreview = articleDto.BodyPreview,
+                BodyGated = articleDto.BodyGated,
+                EditorsChoice = articleDto.EditorsChoice,
+                Cover = articleDto.Cover != null ? new ArticleCover
+                {
+                    OriginalUrl = articleDto.Cover.Url,
+                    ThumbnailUrl = articleDto.Cover.Formats?.Thumbnail?.Url
+                } : null
+            };
+        }
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
             var categoryDtos = await _CmsClient.GetAsync<IEnumerable<CategoryDto>>("categories?populate=*");
