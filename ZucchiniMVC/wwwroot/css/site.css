@@ -23,6 +23,28 @@ body {
     border-radius: 4px;
 }
 
+
+.pricing-card {
+    transition: all 0.25s ease;
+    border-radius: 1rem;
+    position: relative;
+}
+
+    .pricing-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    .pricing-card .badge {
+        font-size: 0.75rem;
+        border-radius: 999px;
+    }
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
 /* ============================= */
 /* NAVBAR & HEADER               */
 /* ============================= */
