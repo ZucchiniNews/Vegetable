@@ -1,6 +1,6 @@
 ﻿namespace Zucchinimvc.Application.Services.Articles;
 
-public interface IArticleService
+public interface IUtilsService
 {
     public int CalculateReadTime(string content);
 }

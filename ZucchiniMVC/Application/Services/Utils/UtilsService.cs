@@ -2,7 +2,7 @@
 
 namespace Zucchinimvc.Application.Services.Articles;
 
-public class ArticleService : IArticleService
+public class UtilsService : IUtilsService
 {
     private const int WordsPerMinute = 225;
     public int CalculateReadTime(string content)
