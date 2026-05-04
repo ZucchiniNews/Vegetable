@@ -39,7 +39,8 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
 
         public async Task<Article> GetArticleBySlugAsync(string slug)
         {
-            var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>($"articles?filters[slug][$eq]={slug}&populate=*");
+            var encodedSlug = Uri.EscapeDataString(slug);
+            var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>($"articles?filters[slug][$eq]={encodedSlug}&populate=*");
             var articleDto = articleDtos.FirstOrDefault();
             if (articleDto == null)
                 return null;
