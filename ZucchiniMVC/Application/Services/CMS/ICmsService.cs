@@ -4,5 +4,6 @@ public interface ICmsService
 {
     Task<IEnumerable<Article>> GetArticles();
     Task<Article?> GetArticleBySlug(string slug);
-    Task<List<Category>> GetCategories();
+    Task<List<Category>> GetAllCategories();
+    Task<List<Article>> GetArticlesByCategory(string slug);
 }

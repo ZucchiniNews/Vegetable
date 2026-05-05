@@ -40,7 +40,6 @@ public class HomeController : Controller
         {
             isActiveSubscription = await _subscriptionService.UserHasActiveSubscription(userId);
         }
-
         return View(new ArticleViewModel
         {
             Article = article,
@@ -54,21 +53,18 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Categories()
     {
-        var categories = await _cmsService.GetCategories();
+        var categories = await _cmsService.GetAllCategories();
         return View(categories);
     }
 
     [HttpGet("/category/{slug}")]
     public async Task<IActionResult> Category(string slug)
     {
-        var categories = await _cmsService.GetCategories();
-        var category = categories.FirstOrDefault(c => string.Equals(c.Slug, slug, StringComparison.OrdinalIgnoreCase));
-        if (category == null)
-            return NotFound();
-        var allArticles = await _cmsService.GetArticles();
-        var categoryArticleIds = category.Articles?.Select(a => a.Id).ToHashSet() ?? new HashSet<int>();
-        var categoryArticles = allArticles.Where(a => categoryArticleIds.Contains(a.Id)).ToList();
-        return View("Index", categoryArticles);
+
+        Console.WriteLine($"Fetching articles for category slug: {slug}");
+        var articles = await _cmsService.GetArticlesByCategory(slug);
+
+        return View("Index", articles);
     }
 
 
