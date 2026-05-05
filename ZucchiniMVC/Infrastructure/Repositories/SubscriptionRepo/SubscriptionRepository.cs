@@ -73,6 +73,13 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
         }
 
+
+        public async Task<bool> UserHasActiveSubscription(string userId)
+        {
+            return await _context.UserSubscriptions
+                .AnyAsync(s => s.UserId == userId && s.Status == SubscriptionStatus.Active);
+        }
+
         public async Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId)
         {
             return await _context.UserSubscriptions

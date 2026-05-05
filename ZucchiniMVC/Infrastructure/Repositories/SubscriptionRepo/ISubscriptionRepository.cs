@@ -11,6 +11,8 @@ namespace Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo
         Task UpdateSubscriptionAsync(UserSubscription subscription);
 
         Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId);
+
+        Task<bool> UserHasActiveSubscription(string userId);
     }
 }
 
