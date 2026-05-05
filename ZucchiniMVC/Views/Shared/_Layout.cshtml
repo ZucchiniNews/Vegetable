@@ -20,7 +20,7 @@
 @inject ICmsService CmsService
 
 @{
-    var categories = await CmsService.GetCategories();
+    var categories = await CmsService.GetAllCategories();
     var city = Context.Request.Query["city"].ToString();
     var maxVisible = 4;
     var visibleCategories = categories?.Take(maxVisible).ToList() ?? new List<Category>();

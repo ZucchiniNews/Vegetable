@@ -23,15 +23,22 @@ public class CmsService : ICmsService
         return articles;
     }
 
-    public async Task<Article> GetArticleBySlug(string slug)
+    public async Task<Article?> GetArticleBySlug(string slug)
     {
         var article = await _cmsRepository.GetArticleBySlugAsync(slug);
-        return article;
+        return article!;
     }
 
-    public async Task<List<Category>> GetCategories()
+    public async Task<List<Category>> GetAllCategories()
     {
         var categories = await _cmsRepository.GetCategoriesAsync();
         return categories.ToList();
+    }
+
+    public async Task<List<Article>> GetArticlesByCategory(string categorySlug)
+    {
+        Console.WriteLine(categorySlug);
+        var articles = await _cmsRepository.GetArticlesByCategoryAsync(categorySlug);
+        return articles.ToList();
     }
 }
