@@ -41,6 +41,13 @@
                 }
             </div>
 
+            @* <div class="like-section" data-article-id="@Model.Article.Id">
+                <button id="like-btn" class="@(Model.IsLikedByCurrentUser ? "liked" : "")"
+                    @(User.Identity!.IsAuthenticated ? "" : "disabled")>
+                    ? <span id="like-count">@Model.LikeCount</span>
+                </button>
+            </div> *@
+
             <div class="article-content" style="font-size: 1.15rem; line-height: 1.8;">
                 <p class="lead fw-bold mb-4">@Model.Article.ContentSummary</p>
                 
@@ -89,3 +96,21 @@
         }
     }
 </script>
+
+
+@*         @section Scripts {
+<script>
+    document.getElementById('like-btn')?.addEventListener('click', async () => {
+        const articleId = document.querySelector('.like-section').dataset.articleId;
+        const res = await fetch('/Articles/ToggleLike', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value },
+            body: JSON.stringify({ articleId: parseInt(articleId) })
+        });
+        const data = await res.json();
+        document.getElementById('like-count').textContent = data.likeCount;
+        document.getElementById('like-btn').classList.toggle('liked');
+    });
+</script>
+} *@

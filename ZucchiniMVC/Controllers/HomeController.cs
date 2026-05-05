@@ -39,6 +39,8 @@ public class HomeController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         bool isActiveSubscription = false;
+        var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
+        var isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
 
         if (!string.IsNullOrEmpty(userId))
         {
@@ -46,12 +48,12 @@ public class HomeController : Controller
         }
 
         return View(new ArticleViewModel
-        {
-            Article = article,
+        {  Article = article,
+            LikeCount = likeCount,
+            IsLikedByCurrentUser = isLiked,
             IsSubscribed = isActiveSubscription
-        });
+        });       
     }
-
     public async Task<IActionResult> Categories()
     {
         var categories = await _cmsService.GetCategories();
@@ -89,7 +91,7 @@ public class HomeController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         await _utilsService.ToggleLikeAsync(articleId, userId);
 
-        var newCount = await _utilsService.GetLikeCountAsync(articleId);
-        return Json(new { success = true, count = newCount });
+        var likeCount = await _utilsService.GetLikeCountAsync(articleId);
+        return Json(new { success = true, count = likeCount });
     }
 }
