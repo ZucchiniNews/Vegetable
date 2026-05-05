@@ -26,7 +26,7 @@ public class CmsService : ICmsService
     public async Task<Article?> GetArticleBySlug(string slug)
     {
         var article = await _cmsRepository.GetArticleBySlugAsync(slug);
-        return article!;
+        return article;
     }
 
     public async Task<List<Category>> GetAllCategories()
