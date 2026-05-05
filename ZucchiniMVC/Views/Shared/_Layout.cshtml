@@ -57,6 +57,9 @@
                     <div class="weather-header-box text-nowrap">
                         @await Component.InvokeAsync("Weather", new { city })
                     </div>
+                    <div class="currency-header-box text-nowrap">
+                        @await Component.InvokeAsync("Currency")
+                    </div>
                     <div class="login-header-box">
                         @await Html.PartialAsync("_LoginPartial")
                     </div>

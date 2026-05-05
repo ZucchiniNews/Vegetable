@@ -20,6 +20,7 @@ using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
+using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.Repositories.HistoryRepository;
 using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;

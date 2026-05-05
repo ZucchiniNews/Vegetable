@@ -1,6 +1,10 @@
-﻿namespace Zucchinimvc.Application.Services.Currency
+﻿
+
+using Zucchinimvc.Models.ViewModels;
+
+namespace Zucchinimvc.Application.Services.Currency
 {
-    public class ICurrencyService
+    public interface ICurrencyService
     {
         Task<CurrencyWidgetViewModel> GetCurrencyWidgetDataAsync(string baseCurrency);
         Task<Dictionary<string, decimal>> GetLatestRatesAsync(string baseCurrency);

@@ -1,0 +1,36 @@
+﻿@model Zucchinimvc.Models.ViewModels.CurrencyWidgetViewModel
+
+<div class="currency-widget">
+    @if (Model.HasError)
+    {
+        <div class="currency-error">Rates unavailable</div>
+    }
+    else if (Model.Rates != null && Model.Rates.Any())
+    {
+        <div class="currency-rates d-flex gap-3 align-items-center">
+            <span class="currency-base-value" style="color: #ffd700; font-weight: bold;">[Base] USD </span>
+            @foreach (var rate in Model.Rates)
+            {
+                <div class="currency-item">
+                    <span class="currency-symbol">
+                        @if (rate.Key == "SEK")
+                        {
+                            <span> | </span>
+                        }
+                        else if (rate.Key == "EUR")
+                        {
+
+                            <span> | </span>
+                        }
+                        @rate.Key:
+                    </span>
+                    <span class="currency-value">@rate.Value.ToString("0.000")</span>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="currency-error">Rates unavailable</div>
+    }
+</div>
