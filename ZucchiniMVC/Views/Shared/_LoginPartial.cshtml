@@ -10,6 +10,8 @@
     {
         var user = await UserManager.GetUserAsync(User);
         var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+        var lastInitial = user?.LastName is { Length: > 0 } lastName ? lastName[..1] : string.Empty;
+        var lastInitialDisplay = string.IsNullOrEmpty(lastInitial) ? string.Empty : $"{lastInitial}.";
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center text-dark fw-semibold profile-trigger" href="#"
@@ -19,7 +21,7 @@
                     <div class="avatar-circle me-2">
                         @user?.FirstName
                     </div>
-                    <span class="d-none d-sm-inline">@user?.LastName.Substring(0, 1).</span>
+                    <span class="d-none d-sm-inline">@lastInitialDisplay</span>
                 }
                 else
                 {
