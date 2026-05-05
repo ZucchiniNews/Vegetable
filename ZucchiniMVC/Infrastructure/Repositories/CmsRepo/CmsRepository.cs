@@ -95,7 +95,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                     OriginalUrl = dto.Cover.Url,
                     ThumbnailUrl = dto.Cover.Formats?.Thumbnail?.Url
                 } : null
-            }).ToList()!;
+            }).ToList();
         }
     }
 }
