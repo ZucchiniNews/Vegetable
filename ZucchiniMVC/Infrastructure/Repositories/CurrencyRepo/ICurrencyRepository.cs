@@ -2,7 +2,7 @@
 
 namespace Zucchinimvc.Infrastructure.Repositories.CurrencyRepo
 {
-    public class ICurrencyRepository
+    public interface ICurrencyRepository
     {
         Task<CurrencyRateResponse?> GetLatestRatesAsync(string baseCurrency);
 
