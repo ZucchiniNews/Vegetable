@@ -7,5 +7,7 @@ namespace Zucchinimvc.Models.ViewModels
         public Article Article { get; set; } = new Article();
 
         public bool IsSubscribed { get; set; }
+        public int LikeCount { get; set; }
+        public bool IsLikedByCurrentUser { get; set; }
     }
 }
