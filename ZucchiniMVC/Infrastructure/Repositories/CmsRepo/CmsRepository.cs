@@ -36,7 +36,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 } : null
             }).ToList();
         }
-
         public async Task<Article> GetArticleBySlugAsync(string slug)
         {
             var encodedSlug = Uri.EscapeDataString(slug);
@@ -74,8 +73,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 Slug = dto.Slug,
             });
         }
-
-
         public async Task<IEnumerable<Article>> GetArticlesByCategoryAsync(string categorySlug)
         {
 
@@ -98,7 +95,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                     OriginalUrl = dto.Cover.Url,
                     ThumbnailUrl = dto.Cover.Formats?.Thumbnail?.Url
                 } : null
-            }).ToList();
+            }).ToList()!;
         }
     }
 }

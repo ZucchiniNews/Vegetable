@@ -37,7 +37,6 @@ public class CmsService : ICmsService
 
     public async Task<List<Article>> GetArticlesByCategory(string categorySlug)
     {
-        Console.WriteLine(categorySlug);
         var articles = await _cmsRepository.GetArticlesByCategoryAsync(categorySlug);
         return articles.ToList();
     }
