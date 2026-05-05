@@ -32,16 +32,21 @@ public class SubscriptionController : Controller
     public async Task<IActionResult> Subscribe(int planId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (string.IsNullOrEmpty(userId))
         {
-            return Unauthorized("User is not authenticated.");
+            var returnUrl = Url.Action("Index", "Subscription");
+            return Redirect($"/Identity/Account/Login?returnUrl={Uri.EscapeDataString(returnUrl)}");
         }
+
         var plan = await _planService.FindPlanByIdAsync(planId);
         if (plan == null)
         {
             return NotFound("Plan not found.");
         }
+
         var session = await _billingService.CreatePaymentSessionAsync(userId, planId);
+
         return Redirect(session.CheckoutUrl);
     }
 

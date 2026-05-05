@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ZucchiniNews</title>
-    <script type="importmap"></script>
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -15,76 +14,120 @@
 </head>
 
 <body class="news-body d-flex flex-column min-vh-100">
-    @using Zucchinimvc.Application.Services.CMS
+
+@using Zucchinimvc.Application.Services.CMS
+@using ZucchiniCore.Entities
 @inject ICmsService CmsService
+
 @{
-        var categories = await CmsService.GetCategories();
-        var city = Context.Request.Query["city"].ToString();
-    }
-    <header class="news-header">
-        <nav class="navbar navbar-expand-lg news-navbar">
-            <div class="container news-navbar-container">
-                <a class="navbar-brand news-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <span class="news-brand-icon">
-                        <img src="~/images/site_logo.png" />
-                    </span>
-                    <span class="news-brand-text">Zucchini <sub>News</sub></span>
-                </a>
+    var categories = await CmsService.GetCategories();
+    var city = Context.Request.Query["city"].ToString();
+    var maxVisible = 4;
+    var visibleCategories = categories?.Take(maxVisible).ToList() ?? new List<Category>();
+    var extraCategories = categories?.Skip(maxVisible).ToList() ?? new List<Category>();
+}
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<header class="news-header">
+    <nav class="navbar navbar-expand-lg news-navbar">
+        <div class="container news-navbar-container">
 
-                <div class="collapse navbar-collapse" id="mainNavbar">
-                    <div class="news-nav-wrapper">
-                        <ul class="navbar-nav news-nav-links">
-                            @if (categories != null)
-                                @foreach (var category in categories)
-                                {
-                                    var isActive = ViewContext.RouteData.Values["slug"]?.ToString() == category.Slug;
-                                    <li class="nav-item">
-                                        <a class="nav-link @(isActive ? "active" : "")" asp-controller="Home"
-                                               asp-action="Category" asp-route-slug="@category.Slug">
-                                            @category.Name
-                                        </a>
-                                    </li>
-                                }
-                        </ul>
-                    </div>
-                </div>
+            <!-- Brand -->
+            <a class="navbar-brand news-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <span class="news-brand-icon">
+                    <img src="~/images/site_logo.png" alt="Logo" />
+                </span>
+                <span class="news-brand-text">Zucchini <sub>News</sub></span>
+            </a>
 
-                <div class="d-none d-lg-flex align-items-center gap-3 news-header-right">
-                    <div class="weather-header-box text-nowrap">
-                        @await Component.InvokeAsync("Weather", new { city })
+            <!-- Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar content -->
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <div class="d-lg-flex w-100 justify-content-between align-items-center">
+
+                    <!-- Categories -->
+                    <ul class="navbar-nav news-nav-links">
+
+                        @foreach (var category in visibleCategories)
+                        {
+                            var isActive = ViewContext.RouteData.Values["slug"]?.ToString() == category.Slug;
+
+                            <li class="nav-item">
+                                <a class="nav-link @(isActive ? "active" : "")"
+                                   asp-controller="Home"
+                                   asp-action="Category"
+                                   asp-route-slug="@category.Slug">
+                                    @category.Name
+                                </a>
+                            </li>
+                        }
+
+                        @if (extraCategories.Any())
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown">
+                                    More
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    @foreach (var category in extraCategories)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Home"
+                                               asp-action="Category"
+                                               asp-route-slug="@category.Slug">
+                                                @category.Name
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+
+                    <!-- Right side (Weather + Login) -->
+                    <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 news-header-right">
+                        <div class="weather-header-box text-nowrap">
+                            @await Component.InvokeAsync("Weather", new { city })
+                        </div>
+                        <div class="login-header-box">
+                            @await Html.PartialAsync("_LoginPartial")
+                        </div>
                     </div>
-                    <div class="currency-header-box text-nowrap">
-                        @await Component.InvokeAsync("Currency")
-                    </div>
-                    <div class="login-header-box">
-                        @await Html.PartialAsync("_LoginPartial")
-                    </div>
+
                 </div>
             </div>
-        </nav>
-    </header>
 
-    <main class="news-main flex-grow-1">
-        <div class="container">
-            @RenderBody()
         </div>
-    </main>
+    </nav>
+</header>
 
-    <footer class="news-footer">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <span>&copy; 2026 - ZucchiniNews</span>
-            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy</a>
-        </div>
-    </footer>
+<main class="news-main flex-grow-1">
+    <div class="container">
+        @RenderBody()
+    </div>
+</main>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<footer class="news-footer">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <span>&copy; 2026 - ZucchiniNews</span>
+        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy</a>
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
 </body>
-
 </html>

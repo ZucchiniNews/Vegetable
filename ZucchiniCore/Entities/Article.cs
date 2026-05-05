@@ -13,6 +13,7 @@ public class Article
     public DateTime UpdatedAt { get; set; }
     public DateTime PublishedAt { get; set; }
     public ArticleCover? Cover { get; set; }
+    public ArticleCover? Thumbnail { get; set; }
     public int ReadingTimeMinutes { get; set; } = 1;
     public int ReaderLikes { get; set; } = 0;
 }

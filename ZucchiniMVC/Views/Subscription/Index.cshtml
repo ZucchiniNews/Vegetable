@@ -1,43 +1,81 @@
-﻿@{
+﻿
+@model List<ZucchiniCore.Entities.Plan>
+
+@{
     ViewData["Title"] = "Choose Plan";
 }
 
-<h1>Choose Plan</h1>
+<div class="container py-5">
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-8 text-center mb-4">
-        <p class="lead">Select the plan that works best for you and get unlimited access to ZicchiniNews.</p>
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-5">Choose Your Plan</h1>
+        <p class="lead text-muted">
+            Get unlimited access to ZucchiniNews and premium content.
+        </p>
     </div>
-</div>
 
-@model List<ZucchiniCore.Entities.Plan>
-<form method="post" action="/Subscription/Subscribe">
-    <div class="row mb-4">
-        <div class="col-12 text-center">
-            <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow">Complete Subscription</button>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        @foreach (ZucchiniCore.Entities.Plan plan in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-primary text-white text-center py-3">
-                        <h4 class="my-0 fw-normal">@plan.Name</h4>
-                    </div>
-                    <div class="card-body text-center d-flex flex-column">
-                        <h1 class="card-title pricing-card-title">@plan.Price SEK<small class="text-muted fw-light">/@plan.Name</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
-                            <li>@plan.Description</li>
-                        </ul>
-                        <div class="form-check d-flex justify-content-center mt-auto">
-                            <input class="form-check-input me-2" type="radio" id="plan_@plan.Id" name="planId" value="@plan.Id" required style="cursor: pointer;" />
-                            <label class="form-check-label fw-bold" for="plan_@plan.Id" style="cursor: pointer;">Select @plan.Name</label>
+    <form method="post" action="/Subscription/Subscribe">
+
+        <!-- Plans -->
+        <div class="row justify-content-center g-4 mb-5">
+
+            @foreach (var plan in Model)
+            {
+                var isPopular = plan.Name.ToLower().Contains("pro") || plan.Name.ToLower().Contains("premium");
+
+                <div class="col-md-4">
+                    <div class="card pricing-card h-100 shadow-sm border-0 @(isPopular ? "border border-primary border-2" : "")">
+
+                        @if (isPopular)
+                        {
+                            <div class="badge bg-primary position-absolute top-0 start-50 translate-middle px-3 py-2">
+                                Most Popular
+                            </div>
+                        }
+
+                        <div class="card-body text-center d-flex flex-column p-4">
+
+                            <h5 class="fw-bold text-uppercase text-muted mb-3">@plan.Name</h5>
+
+                            <h2 class="fw-bold mb-3">
+                                @plan.Price SEK
+                                <span class="fs-6 text-muted">/month</span>
+                            </h2>
+
+                            <p class="text-muted mb-4">@plan.Description</p>
+
+                            <div class="mt-auto">
+                                <div class="form-check d-flex justify-content-center">
+                                    <input class="form-check-input me-2"
+                                           type="radio"
+                                           id="plan_@plan.Id"
+                                           name="planId"
+                                           value="@plan.Id"
+                                           required />
+
+                                    <label class="form-check-label fw-semibold"
+                                           for="plan_@plan.Id">
+                                        Select
+                                    </label>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-</form>
+            }
+
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center">
+            <button type="submit"
+                    class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm">
+                Continue to Checkout →
+            </button>
+        </div>
+
+    </form>
+</div>
 

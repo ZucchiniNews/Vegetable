@@ -9,4 +9,6 @@ public interface ISubscriptionService
     Task UpdateSubscriptionAsync(UserSubscription subscription);
     Task<UserSubscription?> FindByProviderSubscriptionIdAsync(string providerSubscriptionId);
     Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId);
+
+    Task<bool> UserHasActiveSubscription(string userId);
 }
