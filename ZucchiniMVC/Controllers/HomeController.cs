@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Models.ViewModels;
 
@@ -10,11 +12,13 @@ public class HomeController : Controller
 {
     private readonly ICmsService _cmsService;
     private readonly ISubscriptionService _subscriptionService;
+    private readonly IUtilsService _utilsService;
 
-    public HomeController(ICmsService cmsService, ISubscriptionService subscriptionService)
+    public HomeController(ICmsService cmsService, ISubscriptionService subscriptionService, IUtilsService utilsService)
     {
         _cmsService = cmsService;
         _subscriptionService = subscriptionService;
+        _utilsService = utilsService;
     }
 
     public async Task<IActionResult> Index()
@@ -48,10 +52,6 @@ public class HomeController : Controller
         });
     }
 
-
-
-
-
     public async Task<IActionResult> Categories()
     {
         var categories = await _cmsService.GetCategories();
@@ -71,8 +71,6 @@ public class HomeController : Controller
         return View("Index", categoryArticles);
     }
 
-
-
     public IActionResult Privacy()
     {
         return View();
@@ -84,5 +82,14 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> ToggleLike(int articleId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        await _utilsService.ToggleLikeAsync(articleId, userId);
 
+        var newCount = await _utilsService.GetLikeCountAsync(articleId);
+        return Json(new { success = true, count = newCount });
+    }
 }
