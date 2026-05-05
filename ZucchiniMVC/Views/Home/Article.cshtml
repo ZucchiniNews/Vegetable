@@ -23,6 +23,24 @@
                 </div>
             }
 
+            <div class="article-interaction my-4">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button id="likeButton"
+                            class="btn @(Model.IsLikedByCurrentUser ? "btn-danger" : "btn-outline-danger")"
+                            onclick="toggleLike(@Model.Article.Id)">
+                        <i class="@(Model.IsLikedByCurrentUser ? "fas" : "far") fa-heart"></i>
+                        <span id="likeCount">@Model.LikeCount</span> Likes
+                    </button>
+                }
+                else
+                {
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-secondary">
+                        <i class="far fa-heart"></i> @Model.LikeCount Likes
+                    </a>
+                }
+            </div>
+
             <div class="article-content" style="font-size: 1.15rem; line-height: 1.8;">
                 <p class="lead fw-bold mb-4">@Model.Article.ContentSummary</p>
                 
@@ -48,3 +66,26 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    async function toggleLike(articleId) {
+        const response = await fetch(`/Articles/ToggleLike?articleId=${articleId}`, {
+            method: 'POST',
+            headers: { 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value }
+        });
+    
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById('likeCount').innerText = data.count;
+        
+            // Toggle UI styles
+            const btn = document.getElementById('likeButton');
+            btn.classList.toggle('btn-danger');
+            btn.classList.toggle('btn-outline-danger');
+            btn.querySelector('i').classList.toggle('fas');
+            btn.querySelector('i').classList.toggle('far');
+        }
+    }
+</script>
