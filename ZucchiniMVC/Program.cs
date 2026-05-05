@@ -5,24 +5,28 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Articles;
+using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Users;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
+using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
+using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
-using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.Repositories.HistoryRepository;
 using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
+using Zucchinimvc.Infrastructure.Repositories.PlanRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
@@ -68,8 +72,8 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     // (i.e. same namespace/assembly) you're referencing here.
     return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
 });
-builder.Services.AddScoped<Zucchinimvc.Infrastructure.Repositories.PlanRepo.IPlanRepository, Zucchinimvc.Infrastructure.Repositories.PlanRepo.PlanRepository>();
-builder.Services.AddScoped<Zucchinimvc.Infrastructure.Repositories.BillingRepo.IBillingRepository, Zucchinimvc.Infrastructure.Repositories.BillingRepo.BillingRepository>();
+builder.Services.AddScoped<IPlanRepository, PlanRepository>();
+builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 
 // Services
 builder.Services.AddScoped<IUtilsService, UtilsService>();
@@ -77,8 +81,8 @@ builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<ICmsService, CmsService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<Zucchinimvc.Application.Services.Plans.IPlanService, Zucchinimvc.Application.Services.Plans.PlanService>();
-builder.Services.AddScoped<Zucchinimvc.Application.Services.Billing.IBillingService, Zucchinimvc.Application.Services.Billing.BillingService>();
+builder.Services.AddScoped<IPlanService, PlanService>();
+builder.Services.AddScoped<IBillingService, BillingService>();
 builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
