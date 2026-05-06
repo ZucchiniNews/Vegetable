@@ -1,36 +1,79 @@
 ﻿@model Zucchinimvc.Models.ViewModels.CurrencyWidgetViewModel
 
-<div class="currency-widget">
-    @if (Model.HasError)
-    {
-        <div class="currency-error">Rates unavailable</div>
-    }
-    else if (Model.Rates != null && Model.Rates.Any())
-    {
-        <div class="currency-rates d-flex gap-3 align-items-center">
-            <span class="currency-base-value" style="color: #ffd700; font-weight: bold;">[Base] USD </span>
-            @foreach (var rate in Model.Rates)
-            {
-                <div class="currency-item">
-                    <span class="currency-symbol">
-                        @if (rate.Key == "SEK")
-                        {
-                            <span> | </span>
-                        }
-                        else if (rate.Key == "EUR")
-                        {
+@if (!Model.HasError && Model.Rates != null && Model.Rates.Any())
+{
+    var hasSek = Model.Rates.TryGetValue("SEK", out var sekRate);
+    var hasEur = Model.Rates.TryGetValue("EUR", out var eurRate);
 
-                            <span> | </span>
-                        }
-                        @rate.Key:
-                    </span>
-                    <span class="currency-value">@rate.Value.ToString("0.000")</span>
-                </div>
+    <div class="currency-bar">
+        <div class="currency-bar-content">
+            <span class="currency-label">RATES</span>
+            
+            @if (hasSek)
+            {
+                <span class="currency-pair">
+                    <span>USD/SEK</span>
+                    <strong>@sekRate.ToString("N3")</strong>
+                </span>
+            }
+            
+            @if (hasEur)
+            {
+                <span class="currency-pair">
+                    <span>USD/EUR</span>
+                    <strong>@eurRate.ToString("N3")</strong>
+                </span>
+            }
+            
+            @if (hasSek && hasEur)
+            {
+                <span class="currency-pair">
+                    <span>EUR/SEK</span>
+                    <strong>@((sekRate / eurRate).ToString("N3"))</strong>
+                </span>
             }
         </div>
+    </div>
+}
+
+<style>
+    .currency-bar {
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+        background: #f8f9fa;
+        padding: 6px 0;
     }
-    else
-    {
-        <div class="currency-error">Rates unavailable</div>
+    
+    .currency-bar-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        flex-wrap: wrap;
     }
-</div>
+    
+    .currency-label {
+        font-weight: 700;
+        color: #ffd700;
+        background: #2c3e50;
+        padding: 3px 8px;
+        border-radius: 3px;
+        font-size: 11px;
+    }
+    
+    .currency-pair {
+        font-size: 13px;
+        color: #555;
+    }
+    
+        .currency-pair span {
+            margin-right: 6px;
+        }
+    
+        .currency-pair strong {
+            color: #1a1a1a;
+            font-family: monospace;
+        }
+</style>

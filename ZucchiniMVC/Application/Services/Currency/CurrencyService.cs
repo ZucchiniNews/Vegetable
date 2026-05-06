@@ -4,7 +4,6 @@ using System.Text.Json;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
 using Zucchinimvc.Models.DTOs.CurrencyDTOs;
-using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Application.Services.Currency
 {
@@ -19,10 +18,9 @@ namespace Zucchinimvc.Application.Services.Currency
             _currencyRepo = currencyRepo;
         }
 
-        public async Task<CurrencyWidgetViewModel> GetCurrencyWidgetDataAsync(string baseCurrency)
+        // Service returns DTO, not ViewModel
+        public async Task<CurrencyWidgetDto> GetCurrencyWidgetDataAsync(string baseCurrency)
         {
-            var viewModel = new CurrencyWidgetViewModel();
-
             try
             {
                 var allRates = await GetLatestRatesAsync(baseCurrency);
@@ -30,24 +28,25 @@ namespace Zucchinimvc.Application.Services.Currency
                 if (allRates == null || !allRates.Any())
                 {
                     _logger.LogWarning("No rates found for {Base}", baseCurrency);
-                    viewModel.HasError = true;
-                    return viewModel;
+                    return new CurrencyWidgetDto { HasError = true };
                 }
 
-                // Filtering logic stays in the service (this is business logic!)
+                // Filtering logic (business logic stays here)
                 var filtered = allRates
                     .Where(x => x.Key == "SEK" || x.Key == "EUR")
                     .ToDictionary(k => k.Key, v => v.Value);
 
-                viewModel.Rates = filtered;
-                viewModel.HasError = filtered.Count == 0;
-                return viewModel;
+                return new CurrencyWidgetDto
+                {
+                    Rates = filtered,
+                    HasError = filtered.Count == 0,
+                    BaseCurrency = baseCurrency
+                };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to build currency widget");
-                viewModel.HasError = true;
-                return viewModel;
+                return new CurrencyWidgetDto { HasError = true };
             }
         }
 
@@ -73,7 +72,5 @@ namespace Zucchinimvc.Application.Services.Currency
 
             return results;
         }
-
-        
     }
 }
