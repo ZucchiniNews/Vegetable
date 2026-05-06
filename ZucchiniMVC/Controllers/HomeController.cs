@@ -51,7 +51,8 @@ public class HomeController : Controller
             Article = article,
             LikeCount = likeCount,
             IsLikedByCurrentUser = isLiked,
-            IsSubscribed = isActiveSubscription
+            IsSubscribed = isActiveSubscription,
+            Category = article.Category!
         });
     }
 
