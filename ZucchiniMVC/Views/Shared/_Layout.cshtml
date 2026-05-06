@@ -109,20 +109,27 @@
         </div>
     </nav>
 </header>
+    <div class="currency-widget-container">
+        <div class="container">
+            <div class="currency-wrapper">
+                @await Component.InvokeAsync("Currency")
+            </div>
+        </div>
+    </div>
 
 <main class="news-main flex-grow-1">
     <div class="container">
         @RenderBody()
     </div>
 </main>
-
+    
 <footer class="news-footer">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
         <span>&copy; 2026 - ZucchiniNews</span>
         <a asp-area="" asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy</a>
     </div>
 </footer>
-
+ 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,21 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Zucchinimvc.Application.Services.Currency;
+using Zucchinimvc.Models.ViewModels;
 
-namespace Zucchinimvc.ViewComponents
+namespace Zucchinimvc.ViewComponents;
+
+public class CurrencyViewComponent : ViewComponent
 {
-    public class CurrencyViewComponent : ViewComponent
+    private readonly ICurrencyService _service;
+
+    public CurrencyViewComponent(ICurrencyService service)
     {
-        private readonly ICurrencyService _currencyService;
+        _service = service;
+    }
 
-        public CurrencyViewComponent(ICurrencyService currencyService)
-        {
-            _currencyService = currencyService;
-        }
+    public async Task<IViewComponentResult> InvokeAsync(string baseCurrency = "USD")
+    {
+        var currencyData = await _service.GetCurrencyWidgetDataAsync(baseCurrency);
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        var viewModel = new CurrencyWidgetViewModel
         {
-            var viewModel = await _currencyService.GetCurrencyWidgetDataAsync("USD");
-            return View(viewModel);
-        }
+            Rates = currencyData.Rates,
+            HasError = currencyData.HasError,
+            LastUpdated = DateTime.UtcNow
+        };
+
+        return View(viewModel);
     }
 }
