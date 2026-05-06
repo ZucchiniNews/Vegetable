@@ -2,6 +2,8 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Azure.Identity;
+using Azure.Monitor.Query;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Articles;
@@ -56,6 +58,7 @@ builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("C
 builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
+builder.Services.AddSingleton(new LogsQueryClient(new DefaultAzureCredential()));
 builder.Services.AddScoped<CheckoutStripeClient>();
 
 // Repositories
@@ -94,6 +97,7 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
