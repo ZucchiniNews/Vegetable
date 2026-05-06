@@ -1,11 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Articles;
-using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
-using Zucchinimvc.Models.ViewModels;
-
 
 namespace Zucchinimvc.Application.Services.CMS;
 
