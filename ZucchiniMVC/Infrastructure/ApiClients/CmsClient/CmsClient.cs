@@ -19,7 +19,7 @@ public class CmsClient
         if (!string.IsNullOrWhiteSpace(_settings.Token))
         {
             _http.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _settings.Token);
+                new AuthenticationHeaderValue("Bearer", _settings.Token);
         }
     }
 

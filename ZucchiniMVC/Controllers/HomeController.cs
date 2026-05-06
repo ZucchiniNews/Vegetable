@@ -27,7 +27,6 @@ public class HomeController : Controller
         return View(articles);
     }
 
-
     [HttpGet("/article/{slug}")]
     public async Task<IActionResult> Article(string slug)
     {
@@ -54,34 +53,21 @@ public class HomeController : Controller
             IsSubscribed = isActiveSubscription
         });       
     }
-    public async Task<IActionResult> Categories()
-    {
-        var categories = await _cmsService.GetCategories();
-        return View(categories);
-    }
-
+    
     [HttpGet("/category/{slug}")]
     public async Task<IActionResult> Category(string slug)
     {
-        var categories = await _cmsService.GetCategories();
-        var category = categories.FirstOrDefault(c => string.Equals(c.Slug, slug, StringComparison.OrdinalIgnoreCase));
-        if (category == null)
-            return NotFound();
-        var allArticles = await _cmsService.GetArticles();
-        var categoryArticleIds = category.Articles?.Select(a => a.Id).ToHashSet() ?? new HashSet<int>();
-        var categoryArticles = allArticles.Where(a => categoryArticleIds.Contains(a.Id)).ToList();
-        return View("Index", categoryArticles);
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
+        var articles = await _cmsService.GetArticlesByCategory(slug);
+        return View("Index", articles);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(new ErrorViewModel
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+        });
     }
 
     public class LikeRequest { public int ArticleId { get; set; } }
@@ -110,4 +96,18 @@ public class HomeController : Controller
             return BadRequest(new { error = "Unable to process like request." });
         }
     }
+    
+     public IActionResult Privacy()
+     {
+         return View();
+     }
+     
+     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+     public IActionResult Error()
+     {
+        return View(new ErrorViewModel
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+        });
+     }
 }

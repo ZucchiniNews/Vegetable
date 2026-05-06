@@ -6,5 +6,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
         Task<IEnumerable<Article>> GetArticlesAsync();
         Task<Article?> GetArticleBySlugAsync(string slg);
         Task<IEnumerable<Category>> GetCategoriesAsync();
+        Task<IEnumerable<Article>> GetArticlesByCategoryAsync(string categorySlug);
     }
 }
