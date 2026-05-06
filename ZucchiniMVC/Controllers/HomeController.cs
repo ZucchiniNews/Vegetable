@@ -24,6 +24,8 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var articles = await _cmsService.GetArticles();
+
+
         return View(articles);
     }
 
