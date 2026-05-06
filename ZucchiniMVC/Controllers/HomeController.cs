@@ -101,10 +101,13 @@ public class HomeController : Controller
             var likeCount = await _utilsService.GetLikeCountAsync(request.ArticleId);
             return Json(new { success = true, likeCount });
         }
-        catch (Exception ex)
+        catch (ArgumentException)
         {
-            return StatusCode(500, new { error = ex.Message });
+            return BadRequest(new { error = "Invalid like request." });
         }
-
+        catch (InvalidOperationException)
+        {
+            return BadRequest(new { error = "Invalid like request." });
+        }
     }
 }
