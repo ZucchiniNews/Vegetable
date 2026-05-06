@@ -1,50 +1,51 @@
-@using Zucchinimvc.Models.ViewModels
-@model ArticleViewModel
+@using ZucchiniCore.Entities
+@model Article
 
 @{
-    ViewData["Title"] = Model.Article.Title;
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10">
+
             <div class="article-header mb-4">
-                <h1 class="fw-bold mb-3">@Model.Article.Title</h1>
+                <h1 class="fw-bold mb-3">@Model.Title</h1>
+
                 <div class="article-meta text-muted mb-4 d-flex align-items-center gap-3">
-                    <span>Published on @Model.Article.PublishedAt.ToString("MMMM dd, yyyy")</span>
-                    <span>@Model.Article.ReadingTimeMinutes min read</span>
+                    <span>Published on @Model.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                    <span>@Model.ReadingTimeMinutes min read</span>
                 </div>
             </div>
 
-            @if (Model.Article.Cover != null)
+            @if (Model.Cover != null)
             {
                 <div class="article-image mb-5">
-                    <img src="@Model.Article.Cover.OriginalUrl" alt="@Model.Article.Title" class="img-fluid rounded w-100 shadow-sm" style="max-height: 500px; object-fit: cover;" />
+                    <img src="@Model.Cover.OriginalUrl"
+                         alt="@Model.Title"
+                         class="img-fluid rounded w-100 shadow-sm"
+                         style="max-height: 500px; object-fit: cover;" />
                 </div>
             }
 
             <div class="article-content" style="font-size: 1.15rem; line-height: 1.8;">
-                <p class="lead fw-bold mb-4">@Model.Article.ContentSummary</p>
-                
-                <p>@Model.Article.BodyPreview</p>
+                <p class="lead fw-bold mb-4">@Model.ContentSummary</p>
 
-                @if (Model.IsSubscribed || User.IsInRole("Admin"))
+                <p>@Model.BodyPreview</p>
+
+                @await Component.InvokeAsync("SubscriptionGate", new
                 {
-                    <p>@Model.Article.BodyGated</p>
-                }
-                else
-                {
-                    <div class="border rounded p-5 text-center bg-light mt-4">
-                        <h4 class="fw-bold mb-2">This content is for subscribers only</h4>
-                        <p class="text-muted mb-4">Subscribe to get full access to this article and all premium content.</p>
-                        <a asp-controller="Subscription" asp-action="Index" class="btn btn-primary px-4">Subscribe Now</a>
-                    </div>
-                }
+                    body = Model.BodyGated,
+                    isAdmin = User.IsInRole("Admin")
+                })
             </div>
-            
+
             <div class="mt-5 pt-4 border-top">
-                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">&larr; Back to Home</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">
+                    &larr; Back to Home
+                </a>
             </div>
+
         </div>
     </div>
 </div>
