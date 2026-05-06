@@ -35,9 +35,9 @@
                 }
                 else
                 {
-                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-secondary">
+                    <button class="btn btn-outline-danger" onclick="showLoginPrompt()">
                         <i class="far fa-heart"></i> @Model.LikeCount Likes
-                    </a>
+                    </button>
                 }
             </div>
 
