@@ -1,14 +1,14 @@
 ﻿@using Zucchinimvc.Models.ViewModels
 @model CategoriesViewModel
 
-<ul class="navbar-nav news-nav-links">
+<ul class="navbar-nav news-nav-links flex-row flex-wrap align-items-center gap-2">
 
     @foreach (var category in Model.VisibleCategories)
     {
         var isActive = Model.CurrentSlug == category.Slug;
 
         <li class="nav-item">
-            <a class="nav-link @(isActive ? "active" : "")"
+            <a class="nav-link px-3 py-2 rounded-pill @(isActive ? "active bg-primary text-white shadow-sm" : "text-body-secondary bg-light")"
                asp-controller="Home"
                asp-action="Category"
                asp-route-slug="@category.Slug">
@@ -20,18 +20,19 @@
     @if (Model.ExtraCategories.Any())
     {
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle"
+            <a class="nav-link dropdown-toggle px-3 py-2 rounded-pill text-body-secondary bg-light"
                href="#"
                role="button"
-               data-bs-toggle="dropdown">
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
                 More
             </a>
 
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-4 p-2">
                 @foreach (var category in Model.ExtraCategories)
                 {
                     <li>
-                        <a class="dropdown-item"
+                        <a class="dropdown-item rounded-3 py-2"
                            asp-controller="Home"
                            asp-action="Category"
                            asp-route-slug="@category.Slug">
