@@ -1,5 +1,4 @@
-﻿
-@model List<ZucchiniCore.Entities.Plan>
+﻿@model Zucchinimvc.Models.ViewModels.SubscriptionPlansViewModel
 
 @{
     ViewData["Title"] = "Choose Plan";
@@ -20,7 +19,7 @@
         <!-- Plans -->
         <div class="row justify-content-center g-4 mb-5">
 
-            @foreach (var plan in Model)
+            @foreach (var plan in Model.Plans)
             {
                 var isPopular = plan.Name.ToLower().Contains("pro") || plan.Name.ToLower().Contains("premium");
 

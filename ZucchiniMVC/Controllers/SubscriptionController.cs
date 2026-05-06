@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Application.Services.Subscriptions;
+using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
 
@@ -10,9 +12,8 @@ public class SubscriptionController : Controller
 {
     private readonly IPlanService _planService;
     private readonly IBillingService _billingService;
-    private readonly ILogger<SubscriptionController> _logger;
     private readonly ISubscriptionService _subscriptionService;
-
+    private readonly ILogger<SubscriptionController> _logger;
 
     public SubscriptionController(
         IPlanService planService,
@@ -22,47 +23,40 @@ public class SubscriptionController : Controller
     {
         _planService = planService;
         _billingService = billingService;
-        _logger = logger;
         _subscriptionService = subscriptionService;
+        _logger = logger;
     }
 
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (string.IsNullOrEmpty(userId))
-        {
-            var returnUrl = Url.Action("Index", "Subscription");
-            return Redirect($"/Identity/Account/Login?returnUrl={Uri.EscapeDataString(returnUrl)}");
-        }
-
-        var hasSubscription = await _subscriptionService.UserHasActiveSubscription(userId);
+        var hasSubscription = await _subscriptionService
+            .UserHasActiveSubscription(userId);
 
         if (hasSubscription)
         {
-            return RedirectToAction("Index", "Home");
+            return View("AlreadySubscribed");
         }
 
         var plans = await _planService.GetAllPlansAsync();
-        return View(plans);
+
+        return View(new SubscriptionPlansViewModel
+        {
+            Plans = plans
+        });
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Subscribe(int planId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (string.IsNullOrEmpty(userId))
-        {
-            var returnUrl = Url.Action("Index", "Subscription");
-            return Redirect($"/Identity/Account/Login?returnUrl={Uri.EscapeDataString(returnUrl)}");
-        }
-
         var plan = await _planService.FindPlanByIdAsync(planId);
         if (plan == null)
-        {
             return NotFound("Plan not found.");
-        }
 
         var session = await _billingService.CreatePaymentSessionAsync(userId, planId);
 

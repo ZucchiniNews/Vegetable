@@ -1,0 +1,45 @@
+﻿
+@model Zucchinimvc.Models.ViewModels.SubscriptionStatusViewModel
+
+@if (!Model.HasSubscription)
+{
+    <div class="p-3 border rounded-4 bg-light">
+        <div class="text-muted small fw-bold mb-1">
+            Subscription
+        </div>
+
+        <div class="text-muted">
+            No active subscription
+        </div>
+
+        <a asp-controller="Subscription"
+           asp-action="Index"
+           class="btn btn-dark rounded-pill px-4 mt-3">
+            View Plans
+        </a>
+    </div>
+}
+else
+{
+    <div class="p-3 border rounded-4 bg-light d-flex justify-content-between align-items-center">
+
+        <div>
+            <div class="text-uppercase text-muted small fw-bold mb-2">
+                Subscription
+            </div>
+
+            <div class="fs-5 fw-bold">
+                @Model.PlanName
+            </div>
+
+            <span class="badge bg-success mt-1">
+                @Model.Status
+            </span>
+
+            <div class="text-muted small mt-2">
+                Started @Model.ActivatedAt?.ToString("yyyy-MM-dd")
+            </div>
+        </div>
+
+    </div>
+}
