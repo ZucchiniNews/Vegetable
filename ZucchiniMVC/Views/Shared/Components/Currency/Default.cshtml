@@ -2,31 +2,34 @@
 
 @if (!Model.HasError && Model.Rates != null && Model.Rates.Any())
 {
+    var hasSek = Model.Rates.TryGetValue("SEK", out var sekRate);
+    var hasEur = Model.Rates.TryGetValue("EUR", out var eurRate);
+
     <div class="currency-bar">
         <div class="currency-bar-content">
             <span class="currency-label">RATES</span>
             
-            @if (Model.Rates.ContainsKey("SEK"))
+            @if (hasSek)
             {
                 <span class="currency-pair">
                     <span>USD/SEK</span>
-                    <strong>@Model.Rates["SEK"].ToString("N3")</strong>
+                    <strong>@sekRate.ToString("N3")</strong>
                 </span>
             }
             
-            @if (Model.Rates.ContainsKey("EUR"))
+            @if (hasEur)
             {
                 <span class="currency-pair">
                     <span>USD/EUR</span>
-                    <strong>@Model.Rates["EUR"].ToString("N3")</strong>
+                    <strong>@eurRate.ToString("N3")</strong>
                 </span>
             }
             
-            @if (Model.Rates.ContainsKey("SEK") && Model.Rates.ContainsKey("EUR"))
+            @if (hasSek && hasEur)
             {
                 <span class="currency-pair">
                     <span>EUR/SEK</span>
-                    <strong>@((Model.Rates["SEK"] / Model.Rates["EUR"]).ToString("N3"))</strong>
+                    <strong>@((sekRate / eurRate).ToString("N3"))</strong>
                 </span>
             }
         </div>
