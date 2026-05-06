@@ -29,6 +29,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 BodyPreview = dto.BodyPreview,
                 BodyGated = dto.BodyGated,
                 EditorsChoice = dto.EditorsChoice,
+                CategoryId = dto.Category,
                 Cover = dto.Cover != null ? new ArticleCover
                 {
                     OriginalUrl = dto.Cover.Url,
@@ -55,6 +56,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
                 BodyPreview = articleDto.BodyPreview,
                 BodyGated = articleDto.BodyGated,
                 EditorsChoice = articleDto.EditorsChoice,
+                CategoryId=articleDto.Category,
                 Cover = articleDto.Cover != null ? new ArticleCover
                 {
                     OriginalUrl = articleDto.Cover.Url,
