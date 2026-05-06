@@ -107,7 +107,7 @@ public class HomeController : Controller
         }
         catch (InvalidOperationException)
         {
-            return BadRequest(new { error = "Invalid like request." });
+            return BadRequest(new { error = "Unable to process like request." });
         }
     }
 }
