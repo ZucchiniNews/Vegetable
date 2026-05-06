@@ -41,6 +41,23 @@
                 }
             </div>
 
+            <div class="modal fade" id="loginPromptModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center pb-4">
+                            <i class="far fa-heart fa-3x text-danger mb-3"></i>
+                            <h5 class="fw-bold">Enjoying this article?</h5>
+                            <p class="text-muted">Sign in to like and save your favourite articles.</p>
+                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary px-4 me-2">Sign in</a>
+                            <button class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Maybe later</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="article-content" style="font-size: 1.15rem; line-height: 1.8;">
                 <p class="lead fw-bold mb-4">@Model.Article.ContentSummary</p>
                 
@@ -71,6 +88,12 @@
 @section Scripts {
     @Html.AntiForgeryToken()
     <script>
+        function showLoginPrompt() {
+            new bootstrap.Model(document.getElementById('loginPromptModal')).show();
+        }
+
+
+
         async function toggleLike(articleId) {
             const res = await fetch('/article/toggle-like', {
                 method: 'POST',
