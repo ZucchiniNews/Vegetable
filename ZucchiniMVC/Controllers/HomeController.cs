@@ -47,27 +47,19 @@ public class HomeController : Controller
         }
 
         return View(new ArticleViewModel
-        {  Article = article,
+        {
+            Article = article,
             LikeCount = likeCount,
             IsLikedByCurrentUser = isLiked,
             IsSubscribed = isActiveSubscription
-        });       
+        });
     }
-    
+
     [HttpGet("/category/{slug}")]
     public async Task<IActionResult> Category(string slug)
     {
         var articles = await _cmsService.GetArticlesByCategory(slug);
         return View("Index", articles);
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel
-        {
-            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-        });
     }
 
     public class LikeRequest { public int ArticleId { get; set; } }
@@ -77,7 +69,7 @@ public class HomeController : Controller
     public async Task<IActionResult> ToggleLike([FromBody] LikeRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        
+
         if (string.IsNullOrEmpty(userId))
             return Unauthorized();
 
@@ -96,18 +88,18 @@ public class HomeController : Controller
             return BadRequest(new { error = "Unable to process like request." });
         }
     }
-    
-     public IActionResult Privacy()
-     {
-         return View();
-     }
-     
-     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-     public IActionResult Error()
-     {
+
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
         return View(new ErrorViewModel
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
         });
-     }
+    }
 }
