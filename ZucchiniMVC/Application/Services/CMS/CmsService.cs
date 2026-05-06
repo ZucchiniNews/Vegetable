@@ -1,10 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 
 namespace Zucchinimvc.Application.Services.CMS;
 
 public class CmsService : ICmsService
 {
+    private readonly ApplicationDbContext _context;
     private readonly ICmsRepository _cmsRepository;
     public CmsService(ICmsRepository cmsRepository)
     {
@@ -40,4 +43,20 @@ public class CmsService : ICmsService
         var articles = await _cmsRepository.GetArticlesByCategoryAsync(categorySlug);
         return articles.ToList();
     }
+
+    public async Task<Article> GetFeaturedArticle()
+    {
+        var articles = await _cmsRepository.GetArticlesAsync();
+
+        var topLikedArticleId = await _context.UserLikedArticles
+       .GroupBy(ul => ul.ArticleId)
+       .OrderByDescending(g => g.Count())
+       .Select(g => g.Key)
+       .FirstOrDefaultAsync();
+
+        var featured = articles.FirstOrDefault(a => a.Id == topLikedArticleId);
+
+        return featured ?? articles.FirstOrDefault(a => a.EditorsChoice) ?? articles.First();
+    }
+
 }
