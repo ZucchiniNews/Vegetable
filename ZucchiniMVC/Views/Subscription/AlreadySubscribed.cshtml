@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Already Subscribed";
+}
+
+<div class="container my-5 text-center">
+
+    <h2 class="fw-bold mb-3">You're already subscribed 🎉</h2>
+
+    <p class="text-muted mb-4">
+        You already have an active subscription.
+    </p>
+
+    <div class="d-flex justify-content-center mb-4">
+        @await Component.InvokeAsync("SubscriptionStatus")
+    </div>
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-outline-primary">
+        Go to Home
+    </a>
+
+</div>

@@ -9,8 +9,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Application.Services.Subscriptions;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {
@@ -20,26 +18,22 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<IndexModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly ISubscriptionService _subscriptionService;
-        private readonly IPlanService _planService;
+
 
         public IndexModel(
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         ILogger<IndexModel> logger,
-        IEmailSender emailSender,
-        ISubscriptionService subscriptionService,
-        IPlanService planService)
+        IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _subscriptionService = subscriptionService;
-            _planService = planService;
+
         }
 
-        public string PlanName { get; set; }
+
         public string CurrentEmail { get; set; }
         public string CurrentDisplayName { get; set; }
         public bool HasPassword { get; set; }
@@ -75,19 +69,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 
             await LoadUserStateAsync(user);
 
-            // 1. Load subscription
-            UserSubscription = await _subscriptionService
-                .GetLatestSubscriptionForUserAsync(user.Id);
 
-            if (UserSubscription?.PlanId != null && int.TryParse(UserSubscription.PlanId, out var planId))
-            {
-                var plan = await _planService.FindPlanByIdAsync(planId);
-                PlanName = plan?.Name ?? "Unknown Plan";
-            }
-            else
-            {
-                PlanName = "Unknown Plan";
-            }
 
             return Page();
         }
