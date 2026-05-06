@@ -12,8 +12,8 @@ using Zucchinimvc.Infrastructure.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260506073828_FixUserLikedArticleKey")]
-    partial class FixUserLikedArticleKey
+    [Migration("20260506103426_UpdateApplicationDbContext")]
+    partial class UpdateApplicationDbContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,9 +159,6 @@ namespace Zucchinimvc.Migrations
 
                     b.Property<DateTime>("PublishedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ReaderLikes")
-                        .HasColumnType("int");
 
                     b.Property<int>("ReadingTimeMinutes")
                         .HasColumnType("int");
@@ -457,21 +454,11 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ZucchiniCore.Entities.User", "User")
+                    b.HasOne("ZucchiniCore.Entities.User", null)
                         .WithMany("LikedArticles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserSubscription", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Zucchinimvc.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class UpdateApplicationDbContext : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,8 +26,7 @@ namespace Zucchinimvc.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PublishedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReadingTimeMinutes = table.Column<int>(type: "int", nullable: false),
-                    ReaderLikes = table.Column<int>(type: "int", nullable: false)
+                    ReadingTimeMinutes = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -220,20 +219,12 @@ namespace Zucchinimvc.Migrations
                 name: "UserLikedArticles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ArticleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLikedArticles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserLikedArticles_Article_ArticleId",
-                        column: x => x.ArticleId,
-                        principalTable: "Article",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_UserLikedArticles", x => new { x.ArticleId, x.UserId });
                     table.ForeignKey(
                         name: "FK_UserLikedArticles_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -308,11 +299,6 @@ namespace Zucchinimvc.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLikedArticles_ArticleId",
-                table: "UserLikedArticles",
-                column: "ArticleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserLikedArticles_UserId",
                 table: "UserLikedArticles",
                 column: "UserId");
@@ -326,6 +312,9 @@ namespace Zucchinimvc.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Article");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -355,9 +344,6 @@ namespace Zucchinimvc.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Article");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

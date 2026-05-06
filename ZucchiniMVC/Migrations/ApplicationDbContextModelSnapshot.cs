@@ -157,9 +157,6 @@ namespace Zucchinimvc.Migrations
                     b.Property<DateTime>("PublishedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReaderLikes")
-                        .HasColumnType("int");
-
                     b.Property<int>("ReadingTimeMinutes")
                         .HasColumnType("int");
 
@@ -352,14 +349,9 @@ namespace Zucchinimvc.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ArticleId", "UserId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("UserLikedArticles");
                 });
@@ -459,17 +451,11 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", "User")
-                        .WithMany()
+                    b.HasOne("ZucchiniCore.Entities.User", null)
+                        .WithMany("LikedArticles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ZucchiniCore.Entities.User", null)
-                        .WithMany("LikedArticles")
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserSubscription", b =>

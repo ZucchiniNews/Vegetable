@@ -27,13 +27,7 @@ namespace Zucchinimvc.Infrastructure.Data
                 });
 
             modelBuilder.Entity<UserLikedArticle>()
-                .HasKey(ul => new { ul.ArticleId, ul.UserId });
-
-            modelBuilder.Entity<UserLikedArticle>()
-                .HasOne(ul => ul.User)
-                .WithMany()
-                .HasForeignKey(ul => ul.UserId);
-
+              .HasKey(ul => new { ul.ArticleId, ul.UserId });
 
         }
     }

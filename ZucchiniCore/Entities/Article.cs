@@ -15,7 +15,6 @@ public class Article
     public ArticleCover? Cover { get; set; }
     public ArticleCover? Thumbnail { get; set; }
     public int ReadingTimeMinutes { get; set; } = 1;
-    public int ReaderLikes { get; set; } = 0;
 }
 
 public class ArticleCover
