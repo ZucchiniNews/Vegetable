@@ -24,9 +24,12 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var articles = await _cmsService.GetArticles();
+        var featured = await _cmsService.GetFeaturedArticle();
 
+        return View(new HomeIndexViewModel
+        {
 
-        return View(articles);
+        });
     }
 
     [HttpGet("/article/{slug}")]

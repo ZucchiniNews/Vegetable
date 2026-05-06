@@ -59,4 +59,13 @@ public class CmsService : ICmsService
         return featured ?? articles.FirstOrDefault(a => a.EditorsChoice) ?? articles.First();
     }
 
+    public Task<List<Article>> GetEditorsChoice()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<Article>> GetLatest()
+    {
+        throw new NotImplementedException();
+    }
 }
