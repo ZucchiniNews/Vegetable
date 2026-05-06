@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
+using Zucchinimvc.Application.Services.Articles;
+using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
@@ -7,10 +11,14 @@ namespace Zucchinimvc.Controllers;
 public class HomeController : Controller
 {
     private readonly ICmsService _cmsService;
+    private readonly ISubscriptionService _subscriptionService;
+    private readonly IUtilsService _utilsService;
 
-    public HomeController(ICmsService cmsService)
+    public HomeController(ICmsService cmsService, ISubscriptionService subscriptionService, IUtilsService utilsService)
     {
         _cmsService = cmsService;
+        _subscriptionService = subscriptionService;
+        _utilsService = utilsService;
     }
 
     public async Task<IActionResult> Index()
@@ -26,9 +34,26 @@ public class HomeController : Controller
 
         if (article == null)
             return NotFound();
-        return View(article);
-    }
 
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        bool isActiveSubscription = false;
+        var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
+        var isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+            isActiveSubscription = await _subscriptionService.UserHasActiveSubscription(userId);
+        }
+
+        return View(new ArticleViewModel
+        {  Article = article,
+            LikeCount = likeCount,
+            IsLikedByCurrentUser = isLiked,
+            IsSubscribed = isActiveSubscription
+        });       
+    }
+    
     [HttpGet("/category/{slug}")]
     public async Task<IActionResult> Category(string slug)
     {
@@ -44,4 +69,45 @@ public class HomeController : Controller
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
         });
     }
+
+    public class LikeRequest { public int ArticleId { get; set; } }
+
+    [HttpPost("/article/toggle-like")]
+    [Authorize]
+    public async Task<IActionResult> ToggleLike([FromBody] LikeRequest request)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        try
+        {
+            await _utilsService.ToggleLikeAsync(request.ArticleId, userId);
+            var likeCount = await _utilsService.GetLikeCountAsync(request.ArticleId);
+            return Json(new { success = true, likeCount });
+        }
+        catch (ArgumentException)
+        {
+            return BadRequest(new { error = "Invalid like request." });
+        }
+        catch (InvalidOperationException)
+        {
+            return BadRequest(new { error = "Unable to process like request." });
+        }
+    }
+    
+     public IActionResult Privacy()
+     {
+         return View();
+     }
+     
+     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+     public IActionResult Error()
+     {
+        return View(new ErrorViewModel
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+        });
+     }
 }

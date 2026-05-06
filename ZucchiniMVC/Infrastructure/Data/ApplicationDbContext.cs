@@ -16,5 +16,25 @@ namespace Zucchinimvc.Infrastructure.Data
         public DbSet<UserLikedArticle> UserLikedArticles { get; set; }
         public DbSet<BillingAccount> BillingAccounts { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Article>(entity =>
+                {
+                    entity.Ignore(e => e.Cover);
+                    entity.Ignore(e => e.Thumbnail);
+                });
+
+            modelBuilder.Entity<UserLikedArticle>()
+                .HasKey(ul => new { ul.ArticleId, ul.UserId });
+
+            modelBuilder.Entity<UserLikedArticle>()
+                .HasOne(ul => ul.User)
+                .WithMany()
+                .HasForeignKey(ul => ul.UserId);
+
+
+        }
     }
 }

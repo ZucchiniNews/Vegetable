@@ -12,8 +12,8 @@ using Zucchinimvc.Infrastructure.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260429084842_AddBillingAccountsAndPaymentSession")]
-    partial class AddBillingAccountsAndPaymentSession
+    [Migration("20260506075458_FixUserLikedArticle_RemoveArticle")]
+    partial class FixUserLikedArticle_RemoveArticle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,57 @@ namespace Zucchinimvc.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ZucchiniCore.Entities.Article", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BodyGated")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BodyPreview")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContentSummary")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("EditorsChoice")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PublishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReaderLikes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReadingTimeMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Article");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.BillingAccount", b =>
@@ -298,22 +349,20 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ArticleId", "UserId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("UserLikedArticles");
                 });
@@ -331,6 +380,9 @@ namespace Zucchinimvc.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PlanId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProviderSubscriptionId")
                         .IsRequired()
@@ -411,10 +463,14 @@ namespace Zucchinimvc.Migrations
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
                     b.HasOne("ZucchiniCore.Entities.User", "User")
-                        .WithMany("LikedArticles")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ZucchiniCore.Entities.User", null)
+                        .WithMany("LikedArticles")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });

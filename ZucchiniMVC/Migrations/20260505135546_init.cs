@@ -6,11 +6,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Zucchinimvc.Migrations
 {
     /// <inheritdoc />
-    public partial class AutoMigration4 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Article",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContentSummary = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BodyPreview = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BodyGated = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EditorsChoice = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PublishedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReadingTimeMinutes = table.Column<int>(type: "int", nullable: false),
+                    ReaderLikes = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Article", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -57,6 +80,21 @@ namespace Zucchinimvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BillingAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StripeCustomerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BillingAccounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Plans",
                 columns: table => new
                 {
@@ -65,7 +103,7 @@ namespace Zucchinimvc.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProviderPriceId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StripePriceId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -191,6 +229,12 @@ namespace Zucchinimvc.Migrations
                 {
                     table.PrimaryKey("PK_UserLikedArticles", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_UserLikedArticles_Article_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Article",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_UserLikedArticles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
@@ -205,10 +249,13 @@ namespace Zucchinimvc.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderSubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProviderUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderSubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ActivatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PlanId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -261,6 +308,11 @@ namespace Zucchinimvc.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserLikedArticles_ArticleId",
+                table: "UserLikedArticles",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserLikedArticles_UserId",
                 table: "UserLikedArticles",
                 column: "UserId");
@@ -290,6 +342,9 @@ namespace Zucchinimvc.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BillingAccounts");
+
+            migrationBuilder.DropTable(
                 name: "Plans");
 
             migrationBuilder.DropTable(
@@ -300,6 +355,9 @@ namespace Zucchinimvc.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Article");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
