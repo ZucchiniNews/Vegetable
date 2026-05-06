@@ -55,9 +55,12 @@ public class UtilsService : IUtilsService
                 ArticleId = articleId,
                 UserId = userId
             };
+
+        Console.WriteLine($"Saving like: ArticleId={articleId}, UserId={userId}");
             _context.UserLikedArticles.Add(like);
         }
 
         await _context.SaveChangesAsync();
+        
     }
 }

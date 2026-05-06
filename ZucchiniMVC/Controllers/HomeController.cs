@@ -84,14 +84,27 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    [HttpPost]
+    public class LikeRequest { public int ArticleId { get; set; } }
+
+    [HttpPost("/article/toggle-like")]
     [Authorize]
-    public async Task<IActionResult> ToggleLike(int articleId)
+    public async Task<IActionResult> ToggleLike([FromBody] LikeRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        await _utilsService.ToggleLikeAsync(articleId, userId);
+        
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
 
-        var likeCount = await _utilsService.GetLikeCountAsync(articleId);
-        return Json(new { success = true, count = likeCount });
+        try
+        {
+            await _utilsService.ToggleLikeAsync(request.ArticleId, userId);
+            var likeCount = await _utilsService.GetLikeCountAsync(request.ArticleId);
+            return Json(new { success = true, likeCount });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+
     }
 }
