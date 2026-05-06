@@ -7,9 +7,9 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SearchClient
     public class SearchClient
     {
         private readonly HttpClient _http;
-        private readonly CmsSettings _settings;
+        private readonly SearchSettings _settings;
 
-        public SearchClient(HttpClient http, IOptions<CmsSettings> settings)
+        public SearchClient(HttpClient http, IOptions<SearchSettings> settings)
         {
             _http = http;
             _settings = settings.Value;
