@@ -3,15 +3,15 @@ using Azure.Search.Documents;
 using Microsoft.Extensions.Options;
 using Zucchinimvc.Infrastructure.Config;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient
+namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniSearchClient
 {
-    public class ZucchininSearchClient
+    public class ZucchiniSearchClient
     {
         private readonly SearchSettings _settings;
 
         public SearchClient Client { get; }
 
-        public ZucchininSearchClient(IOptions<SearchSettings> settings)
+        public ZucchiniSearchClient(IOptions<SearchSettings> settings)
         {
             _settings = settings.Value;
 
