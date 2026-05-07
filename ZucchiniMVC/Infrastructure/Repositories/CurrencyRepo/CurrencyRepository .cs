@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
+﻿using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Models.DTOs.CurrencyDTOs;
 
 
