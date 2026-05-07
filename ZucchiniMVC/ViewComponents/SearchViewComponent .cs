@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Zucchinimvc.Infrastructure.Services;
+using Zucchinimvc.Models.DTOs.SearchDTOs;
 
 namespace Zucchinimvc.ViewComponents
 {
@@ -12,9 +13,12 @@ namespace Zucchinimvc.ViewComponents
             _searchService = searchService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string query)
+        public async Task<IViewComponentResult> InvokeAsync(string? query)
         {
-            var results = await _searchService.GetSearchResult(query);
+            var results = string.IsNullOrWhiteSpace(query)
+                ? Enumerable.Empty<ArticlesSearchResultDTO>()
+                : await _searchService.GetSearchResult(query);
+
             return View(results);
         }
     }

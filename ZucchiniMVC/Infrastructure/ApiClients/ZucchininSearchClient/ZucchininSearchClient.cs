@@ -18,7 +18,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient
             Client = new SearchClient(
                 new Uri(_settings.BaseUrl),
                 _settings.IndexName,
-                new AzureKeyCredential(_settings.Token)
+                new AzureKeyCredential(_settings.ApiKey)
             );
         }
     }

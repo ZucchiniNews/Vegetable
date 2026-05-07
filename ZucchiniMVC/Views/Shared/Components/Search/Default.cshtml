@@ -1,0 +1,17 @@
+@model IEnumerable<Zucchinimvc.Models.DTOs.SearchDTOs.ArticlesSearchResultDTO>
+
+<div class="dropdown-menu show w-100 shadow-sm mt-2" style="min-width: 320px; z-index: 1050;">
+    @if (Model.Any())
+    {
+        @foreach (var article in Model.Take(5))
+        {
+            <a class="dropdown-item py-2" asp-controller="Home" asp-action="Article" asp-route-slug="@article.Slug">
+                @article.Title
+            </a>
+        }
+    }
+    else
+    {
+        <span class="dropdown-item-text text-muted py-2">No matching articles found.</span>
+    }
+</div>

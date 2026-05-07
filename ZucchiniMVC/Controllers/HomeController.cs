@@ -89,6 +89,13 @@ public class HomeController : Controller
         }
     }
 
+    [HttpGet("/Home/SearchSuggestions")]
+    [AllowAnonymous]
+    public IActionResult SearchSuggestions(string? query)
+    {
+        return ViewComponent("Search", new { query });
+    }
+
     public IActionResult Privacy()
     {
         return View();
