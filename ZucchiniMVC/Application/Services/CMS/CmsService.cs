@@ -61,7 +61,7 @@ public class CmsService : ICmsService
             if (topLikedArticleId != 0)
                 featured = articles.FirstOrDefault(a => a.Id == topLikedArticleId);
         }
-        catch
+        catch (DbUpdateException)
         {
 
         }
