@@ -9,9 +9,10 @@ public class CmsService : ICmsService
 {
     private readonly ApplicationDbContext _context;
     private readonly ICmsRepository _cmsRepository;
-    public CmsService(ICmsRepository cmsRepository)
+    public CmsService(ICmsRepository cmsRepository, ApplicationDbContext context)
     {
         _cmsRepository = cmsRepository;
+        _context = context;
     }
 
     public async Task<IEnumerable<Article>> GetArticles()
@@ -47,16 +48,27 @@ public class CmsService : ICmsService
     public async Task<Article> GetFeaturedArticle()
     {
         var articles = await _cmsRepository.GetArticlesAsync();
+        Article? featured = null;
 
-        var topLikedArticleId = await _context.UserLikedArticles
-       .GroupBy(ul => ul.ArticleId)
-       .OrderByDescending(g => g.Count())
-       .Select(g => g.Key)
-       .FirstOrDefaultAsync();
+        try
+        {
+            var topLikedArticleId = await _context.UserLikedArticles
+                .GroupBy(ul => ul.ArticleId)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefaultAsync();
 
-        var featured = articles.FirstOrDefault(a => a.Id == topLikedArticleId);
+            if (topLikedArticleId != 0)
+                featured = articles.FirstOrDefault(a => a.Id == topLikedArticleId);
+        }
+        catch
+        {
 
-        return featured ?? articles.FirstOrDefault(a => a.EditorsChoice) ?? articles.First();
+        }
+
+        return featured
+            ?? articles.FirstOrDefault(a => a.EditorsChoice)
+            ?? articles.OrderByDescending(a => a.PublishedAt).First();
     }
 
     public async Task<List<Article>> GetEditorsChoice()
@@ -65,8 +77,9 @@ public class CmsService : ICmsService
         return articles.Where(a => a.EditorsChoice).ToList();
     }
 
-    public async Task<List<Article>> GetLatest(int take = 6)
+    public async Task<List<Article>> GetLatest()
     {
+        int take = 6;
         var articles = await _cmsRepository.GetArticlesAsync();
         return articles
             .OrderByDescending(a => a.PublishedAt)
