@@ -12,13 +12,13 @@ namespace Zucchinimvc.Infrastructure.Services
             _searchRepository = searchRepository;
         }
 
-        public async Task<string> SearchArticlesByTitleAsync(string searchTerm)
+        public async Task<string> GetSearchResult(string searchTerm)
         {
            
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return "[]";
 
-            return await _searchRepository.SearchArticlesByTitleAsync(searchTerm);
+            return await _searchRepository.SearchGetResultAsync(searchTerm);
         }
     }
 }

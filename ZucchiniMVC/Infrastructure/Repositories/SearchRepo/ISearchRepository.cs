@@ -2,6 +2,6 @@
 {
     public interface ISearchRepository
     {
-        Task<string> SearchArticlesByTitleAsync(string searchTerm);
+        Task<string> SearchGetResultAsync(string searchTerm);
     }
 }

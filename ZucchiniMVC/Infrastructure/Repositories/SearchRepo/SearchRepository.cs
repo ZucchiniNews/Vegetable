@@ -14,7 +14,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
             _searchClient = searchClient;
         }
 
-        public async Task<string> SearchArticlesByTitleAsync(string searchTerm)
+        public async Task<string> SearchGetResultAsync(string searchTerm)
         {
             return await _searchClient.SearchAsync(searchTerm);
         }
