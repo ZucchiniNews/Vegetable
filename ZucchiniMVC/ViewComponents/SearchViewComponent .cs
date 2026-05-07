@@ -14,7 +14,7 @@ namespace Zucchinimvc.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(string query)
         {
-            var results = await _searchService.SearchArticlesByTitleAsync(query);
+            var results = await _searchService.GetSearchResult(query);
             return View(results);
         }
     }
