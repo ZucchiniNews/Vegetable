@@ -59,7 +59,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             };
         }
 
-        public UserSubscription? UserSubscription { get; set; }
+        public UserSubscription UserSubscription { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {

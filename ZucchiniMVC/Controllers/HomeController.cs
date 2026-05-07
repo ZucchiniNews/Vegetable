@@ -35,7 +35,7 @@ public class HomeController : Controller
         if (article == null)
             return NotFound();
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         bool isActiveSubscription = false;
         var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
