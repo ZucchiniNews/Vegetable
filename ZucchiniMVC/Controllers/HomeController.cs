@@ -52,6 +52,7 @@ public class HomeController : Controller
         bool isActiveSubscription = false;
         var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
         var isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
+        var viewCount = await _analyticsService.GetArticleViewCountAsync(article.Id);
 
         if (!string.IsNullOrEmpty(userId))
         {
@@ -66,7 +67,8 @@ public class HomeController : Controller
             LikeCount = likeCount,
             IsLikedByCurrentUser = isLiked,
             IsSubscribed = isActiveSubscription,
-            Category = article.Category!
+            Category = article.Category!,
+            ViewCount = viewCount
         });
     }
 

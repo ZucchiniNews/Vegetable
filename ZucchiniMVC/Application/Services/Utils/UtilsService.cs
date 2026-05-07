@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Infrastructure.Data;
 
 namespace Zucchinimvc.Application.Services.Articles;
@@ -8,11 +9,13 @@ namespace Zucchinimvc.Application.Services.Articles;
 public class UtilsService : IUtilsService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IAnalyticsService _analyticsService;
     private const int WordsPerMinute = 225;
 
-    public UtilsService(ApplicationDbContext context)
+    public UtilsService(ApplicationDbContext context, IAnalyticsService analyticsService)
     {
         _context = context;
+        _analyticsService = analyticsService;
     }
     public int CalculateReadTime(string content)
     {
@@ -63,4 +66,10 @@ public class UtilsService : IUtilsService
         await _context.SaveChangesAsync();
         
     }
+
+    public async Task<int> GetViewCountAsync(int articleId)
+    {
+        return await _analyticsService.GetArticleViewCountAsync(articleId);
+    }
+
 }

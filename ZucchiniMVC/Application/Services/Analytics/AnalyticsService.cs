@@ -77,4 +77,22 @@ public class AnalyticsService : IAnalyticsService
             TopArticles = topArticles
         };
     }
+
+    public async Task<int> GetArticleViewCountAsync(int articleId)
+    {
+        var query = $@"
+        customEvents
+        | where name == 'ArticleView'
+        | where tostring(customDimensions['ResourceId']) == '{articleId}'
+        | summarize ViewCount = count()";
+
+        var response = await _logsQueryClient.QueryResourceAsync(
+            new ResourceIdentifier(_resourceId),
+            query,
+            QueryTimeRange.All
+        );
+
+        var row = response.Value.Table.Rows.FirstOrDefault();
+        return row != null ? (int)(long)row["ViewCount"] : 0;
+    }
 }

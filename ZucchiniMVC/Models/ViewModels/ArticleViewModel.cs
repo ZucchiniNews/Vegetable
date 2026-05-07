@@ -9,5 +9,7 @@ namespace Zucchinimvc.Models.ViewModels
         public int LikeCount { get; set; }
         public bool IsLikedByCurrentUser { get; set; }
         public Category Category { get; set; } = new Category();
+        public int ViewCount { get; set; }
+
     }
 }
