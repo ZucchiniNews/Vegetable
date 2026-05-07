@@ -68,7 +68,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Category(string slug)
     {
         var articles = await _cmsService.GetArticlesByCategory(slug);
-        return View("Index", articles);
+        return View("Category", articles);
     }
 
     public class LikeRequest { public int ArticleId { get; set; } }

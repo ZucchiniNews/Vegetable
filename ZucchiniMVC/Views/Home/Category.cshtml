@@ -1,1 +1,20 @@
-﻿
+﻿@using ZucchiniCore.Entities
+@model IEnumerable<Article>
+
+@{
+    ViewData["Title"] = "Articles Index";
+}
+
+<section class="latest-news-section">
+    <div class="section-header" style="margin-bottom: 24px;">
+        <span class="section-icon">📰</span>
+        <h2 class="section-title">@Model.First()!.Category!.Name</h2>
+    </div>
+
+    <div class="news-grid">
+        @foreach (var article in Model)
+        {
+            <partial name="_NewscardPartial" model="article" />
+        }
+    </div>
+</section>
