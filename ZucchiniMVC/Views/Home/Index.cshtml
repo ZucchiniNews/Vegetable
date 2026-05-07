@@ -9,6 +9,8 @@
 @if (Model.FeaturedArticle != null)
 {
     var featured = Model.FeaturedArticle;
+
+     <a href="/article/@featured.Slug">
     <section class="featured-hero" style="background-image: url('@featured.Cover?.OriginalUrl')">
         <div class="featured-overlay">
             <div class="featured-content">
@@ -25,7 +27,8 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
+    </a>
 }
 
 
