@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using Zucchinimvc.Application.Services.Articles;
+using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Models.ViewModels;
+using ZucchiniCore.Entities;
 
 namespace Zucchinimvc.Controllers;
 
@@ -13,12 +15,14 @@ public class HomeController : Controller
     private readonly ICmsService _cmsService;
     private readonly ISubscriptionService _subscriptionService;
     private readonly IUtilsService _utilsService;
+    private readonly IAnalyticsService _analyticsService;
 
-    public HomeController(ICmsService cmsService, ISubscriptionService subscriptionService, IUtilsService utilsService)
+    public HomeController(ICmsService cmsService, ISubscriptionService subscriptionService, IUtilsService utilsService, IAnalyticsService analyticsService)
     {
         _cmsService = cmsService;
         _subscriptionService = subscriptionService;
         _utilsService = utilsService;
+        _analyticsService = analyticsService;
     }
 
     public async Task<IActionResult> Index()
@@ -53,6 +57,8 @@ public class HomeController : Controller
         {
             isActiveSubscription = await _subscriptionService.UserHasActiveSubscription(userId);
         }
+
+        await _analyticsService.TrackAsync(EventType.ArticleView, slug, userId);
 
         return View(new ArticleViewModel
         {
