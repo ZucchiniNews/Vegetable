@@ -15,13 +15,20 @@ namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
 
         public async Task<IEnumerable<ArticlesSearchResultDTO>> SearchGetResultAsync(string query)
         {
-            var response = await _zucchininSearchClient.Client.SearchAsync<ArticlesSearchResultDTO>(query);
+            var response = await _zucchininSearchClient.Client
+                .SearchAsync<ArticlesSearchResultDTO>(query);
 
             var results = new List<ArticlesSearchResultDTO>();
+
             await foreach (var result in response.Value.GetResultsAsync())
             {
+                Console.WriteLine($"Id: {result.Document.Id}");
+                Console.WriteLine($"Title: {result.Document.Title}");
+                Console.WriteLine($"Slug: {result.Document.Slug}");
+
                 results.Add(result.Document);
             }
+
             return results;
         }
     }
