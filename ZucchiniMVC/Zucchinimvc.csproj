@@ -50,8 +50,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Infrastructure\Repositories\SearchRepo\" />
     <Folder Include="Migrations\" />
-    <Folder Include="ViewComponents\" />
   </ItemGroup>
 
 </Project>
