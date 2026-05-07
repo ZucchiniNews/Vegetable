@@ -2,12 +2,16 @@
 @model IEnumerable<Article>
 
 @{
-    ViewData["Title"] = "Articles Index";
+    ViewData["Title"] = Model.FirstOrDefault()?.Category?.Name ?? "Articles";
 }
 
 <section class="latest-news-section">
     <div class="section-header" style="margin-bottom: 24px;">
-        <h2 class="section-title">Latest @Model.First()!.Category!.Name News</h2>
+        <h2 class="section-title">
+            @(Model.FirstOrDefault()?.Category?.Name != null
+        ? $"Latest {Model.First().Category!.Name} News"
+        : "Oops!")
+        </h2>
     </div>
 
 
