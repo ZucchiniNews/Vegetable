@@ -7,14 +7,21 @@
 
 <section class="latest-news-section">
     <div class="section-header" style="margin-bottom: 24px;">
-        <span class="section-icon">📰</span>
-        <h2 class="section-title">@Model.First()!.Category!.Name</h2>
+        <h2 class="section-title">Latest @Model.First()!.Category!.Name News</h2>
     </div>
 
+
+    @if (!Model.Any())
+{
+    <p style="color: #888; margin-top: 20px;">No articles found in this category.</p>
+}
+else
+{
     <div class="news-grid">
         @foreach (var article in Model)
         {
             <partial name="_NewscardPartial" model="article" />
         }
     </div>
+}
 </section>
