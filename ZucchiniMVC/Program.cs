@@ -59,7 +59,7 @@ builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
-builder.Services.AddScoped<ZucchininSearchClient>();
+builder.Services.AddSingleton<ZucchininSearchClient>();
 
 // Repositories
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
