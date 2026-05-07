@@ -42,7 +42,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
             var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>($"articles?filters[slug][$eq]={encodedSlug}&populate=*");
             var articleDto = articleDtos.FirstOrDefault();
             if (articleDto == null)
-                return null;
+                return null!;
             return new Article
             {
                 Id = articleDto.Id,

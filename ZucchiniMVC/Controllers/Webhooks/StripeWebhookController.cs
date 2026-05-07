@@ -96,7 +96,7 @@ public class StripeWebhookController : ControllerBase
                     {
                         UserId = userId,
                         ProviderSubscriptionId = providerSubscriptionId,
-                        ProviderUserId = customerStripeId,
+                        ProviderUserId = customerStripeId!,
                         Status = SubscriptionStatus.Active,
                         ActivatedAt = DateTime.UtcNow,
                         PlanId = planId

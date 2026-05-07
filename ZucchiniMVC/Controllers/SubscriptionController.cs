@@ -30,7 +30,7 @@ public class SubscriptionController : Controller
     [Authorize]
     public async Task<IActionResult> Index()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         var hasSubscription = await _subscriptionService
             .UserHasActiveSubscription(userId);
@@ -52,7 +52,7 @@ public class SubscriptionController : Controller
     [HttpPost]
     public async Task<IActionResult> Subscribe(int planId)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         var plan = await _planService.FindPlanByIdAsync(planId);
         if (plan == null)
