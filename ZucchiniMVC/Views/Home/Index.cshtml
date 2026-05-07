@@ -9,7 +9,7 @@
 @if (Model.FeaturedArticle != null)
 {
     var featured = Model.FeaturedArticle;
-    <section class="featured-hero" style="background-image: url('@featured.Cover')">
+    <section class="featured-hero" style="background-image: url('@featured.Cover?.DisplayUrl')">
         <div class="featured-overlay">
             <div class="featured-content">
                 <span class="badge badge-featured">Featured</span>
@@ -41,7 +41,7 @@
             {
                 <a href="/article/@article.Slug" class="editor-card">
                     <div class="editor-card-image">
-                        <img src="@article.Cover" alt="@article.Title" />
+                        <img src="@article.Cover?.DisplayUrl" alt="@article.Title" />
                         <span class="badge badge-editors-pick">Editor's Pick</span>
                     </div>
                     <div class="editor-card-body">
