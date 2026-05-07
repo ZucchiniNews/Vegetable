@@ -1,7 +1,7 @@
 using Zucchinimvc.Models.DTOs.Analytic;
 using Microsoft.ApplicationInsights;
 
-namespace ZucchiniMVC.Infrastructure.ApiClients.AzureInsightClient
+namespace Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient
 {
     public class AzureInsightClient : IAzureInsightClient
     {
