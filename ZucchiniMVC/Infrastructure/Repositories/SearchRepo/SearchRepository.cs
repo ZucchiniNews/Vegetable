@@ -1,4 +1,5 @@
 ﻿
+using Azure.Search.Documents;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
 using Zucchinimvc.Models.DTOs.SearchDTOs;
 
@@ -16,7 +17,10 @@ namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
         public async Task<IEnumerable<ArticlesSearchResultDTO>> SearchGetResultAsync(string query)
         {
             var response = await _zucchininSearchClient.Client
-                .SearchAsync<ArticlesSearchResultDTO>(query);
+                .SearchAsync<ArticlesSearchResultDTO>(query, new SearchOptions
+                {
+                    Size = 5
+                });
 
             var results = new List<ArticlesSearchResultDTO>();
 
