@@ -23,12 +23,15 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var articles = await _cmsService.GetArticles();
+        var editorsChoice = await _cmsService.GetEditorsChoice();
         var featured = await _cmsService.GetFeaturedArticle();
+        var latest = await _cmsService.GetLatest();
 
         return View(new HomeIndexViewModel
         {
-
+            EditorsChoiceArticles = editorsChoice,
+            FeaturedArticle = featured,
+            LatestArticles = latest
         });
     }
 

@@ -59,13 +59,18 @@ public class CmsService : ICmsService
         return featured ?? articles.FirstOrDefault(a => a.EditorsChoice) ?? articles.First();
     }
 
-    public Task<List<Article>> GetEditorsChoice()
+    public async Task<List<Article>> GetEditorsChoice()
     {
-        throw new NotImplementedException();
+        var articles = await _cmsRepository.GetArticlesAsync();
+        return articles.Where(a => a.EditorsChoice).ToList();
     }
 
-    public Task<List<Article>> GetLatest()
+    public async Task<List<Article>> GetLatest(int take = 6)
     {
-        throw new NotImplementedException();
+        var articles = await _cmsRepository.GetArticlesAsync();
+        return articles
+            .OrderByDescending(a => a.PublishedAt)
+            .Take(take)
+            .ToList();
     }
 }
