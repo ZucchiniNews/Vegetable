@@ -7,16 +7,16 @@ namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
 {
     public class SearchRepository : ISearchRepository
     {
-        private readonly ZucchiniSearchClient _zucchininSearchClient;
+        private readonly ZucchiniSearchClient _zucchiniSearchClient;
 
-        public SearchRepository(ZucchiniSearchClient zucchininSearchClient)
+        public SearchRepository(ZucchiniSearchClient zucchiniSearchClient)
         {
-            _zucchininSearchClient = zucchininSearchClient;
+            _zucchiniSearchClient = zucchiniSearchClient;
         }
 
         public async Task<IEnumerable<ArticlesSearchResultDTO>> SearchGetResultAsync(string query)
         {
-            var response = await _zucchininSearchClient.Client
+            var response = await _zucchiniSearchClient.Client
                 .SearchAsync<ArticlesSearchResultDTO>(query, new SearchOptions
                 {
                     Size = 5
