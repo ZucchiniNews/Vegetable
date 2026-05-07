@@ -120,40 +120,73 @@
         const input = document.getElementById('searchInput');
         const button = document.getElementById('searchButton');
         const results = document.getElementById('searchResultsDropdown');
+        const debounceDelayMs = 250;
+        let debounceTimer;
+        let currentSearchController;
 
         if (!input || !results) return;
 
         const renderResults = async () => {
             const query = input.value.trim();
             if (!query) {
+                if (currentSearchController) {
+                    currentSearchController.abort();
+                    currentSearchController = null;
+                }
                 results.innerHTML = '';
                 return;
             }
 
+            if (currentSearchController) {
+                currentSearchController.abort();
+            }
+
+            currentSearchController = new AbortController();
+            const { signal } = currentSearchController;
+
             results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Searching...</span></div>';
 
             try {
-                const response = await fetch(`/Home/SearchSuggestions?query=${encodeURIComponent(query)}`);
+                const response = await fetch(`/Home/SearchSuggestions?query=${encodeURIComponent(query)}`, { signal });
                 if (!response.ok) {
                     results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
                     return;
                 }
 
                 results.innerHTML = await response.text();
-            } catch {
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    return;
+                }
+
                 results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
+            } finally {
+                if (currentSearchController?.signal === signal) {
+                    currentSearchController = null;
+                }
             }
         };
 
-        input.addEventListener('input', renderResults);
+        const scheduleRenderResults = () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                renderResults();
+            }, debounceDelayMs);
+        };
+
+        input.addEventListener('input', scheduleRenderResults);
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
+                clearTimeout(debounceTimer);
                 renderResults();
             }
         });
 
-        button?.addEventListener('click', renderResults);
+        button?.addEventListener('click', () => {
+            clearTimeout(debounceTimer);
+            renderResults();
+        });
     })();
 </script>
 
