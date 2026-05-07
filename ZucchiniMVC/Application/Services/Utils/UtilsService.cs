@@ -67,9 +67,9 @@ public class UtilsService : IUtilsService
         
     }
 
-    public async Task<int> GetViewCountAsync(int articleId)
+    public async Task<int> GetViewCountAsync(string slug)
     {
-        return await _analyticsService.GetArticleViewCountAsync(articleId);
+        return await _analyticsService.GetArticleViewCountAsync(slug);
     }
 
 }

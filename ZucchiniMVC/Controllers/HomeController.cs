@@ -52,7 +52,7 @@ public class HomeController : Controller
         bool isActiveSubscription = false;
         var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
         var isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
-        var viewCount = await _analyticsService.GetArticleViewCountAsync(article.Id);
+        var viewCount = await _analyticsService.GetArticleViewCountAsync(article.Slug);
 
         if (!string.IsNullOrEmpty(userId))
         {

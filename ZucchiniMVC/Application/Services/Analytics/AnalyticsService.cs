@@ -78,12 +78,12 @@ public class AnalyticsService : IAnalyticsService
         };
     }
 
-    public async Task<int> GetArticleViewCountAsync(int articleId)
+    public async Task<int> GetArticleViewCountAsync(string slug)
     {
         var query = $@"
         customEvents
         | where name == 'ArticleView'
-        | where tostring(customDimensions['ResourceId']) == '{articleId}'
+        | where tostring(customDimensions['ResourceId']) == '{slug}'
         | summarize ViewCount = count()";
 
         var response = await _logsQueryClient.QueryResourceAsync(
