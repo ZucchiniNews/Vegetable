@@ -120,6 +120,7 @@
         const input = document.getElementById('searchInput');
         const button = document.getElementById('searchButton');
         const results = document.getElementById('searchResultsDropdown');
+        const searchSuggestionsUrl = '@Url.Action("SearchSuggestions", "Home")';
         const debounceDelayMs = 250;
         let debounceTimer;
         let currentSearchController;
@@ -147,7 +148,7 @@
             results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Searching...</span></div>';
 
             try {
-                const response = await fetch(`/Home/SearchSuggestions?query=${encodeURIComponent(query)}`, { signal });
+                const response = await fetch(`${searchSuggestionsUrl}?query=${encodeURIComponent(query)}`, { signal });
                 if (!response.ok) {
                     results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
                     return;

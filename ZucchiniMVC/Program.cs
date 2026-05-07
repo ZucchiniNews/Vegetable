@@ -17,7 +17,7 @@ using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
-using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniSearchClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
@@ -59,7 +59,7 @@ builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
-builder.Services.AddSingleton<ZucchininSearchClient>();
+builder.Services.AddSingleton<ZucchiniSearchClient>();
 
 // Repositories
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
