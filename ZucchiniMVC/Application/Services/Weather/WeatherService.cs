@@ -1,5 +1,5 @@
 ﻿using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
+using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
