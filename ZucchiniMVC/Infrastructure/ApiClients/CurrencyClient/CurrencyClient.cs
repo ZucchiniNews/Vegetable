@@ -27,7 +27,8 @@ namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
         public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.ApiKey);
 
 
-        public async Task<T?> GetAsync<T>(string endpoint)
+        public async Task<T?> GetAsync<T>(string endpoint,
+    CancellationToken cancellationToken = default)
         {
             if (!IsConfigured)
             {
