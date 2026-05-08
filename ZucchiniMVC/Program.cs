@@ -1,9 +1,10 @@
 extern alias azid;
+using Azure.Monitor.Query;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Azure.Monitor.Query;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.CMS;
@@ -14,10 +15,9 @@ using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Users;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
-using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
+using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
@@ -59,12 +59,12 @@ builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("C
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
 // Http Clients (Typed)
-builder.Services.AddHttpClient<WeatherClient>();
-builder.Services.AddHttpClient<CmsClient>();
+builder.Services.AddSingleton<WeatherClient>();
+builder.Services.AddSingleton<CmsClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
-builder.Services.AddHttpClient<CurrencyClient>();
+builder.Services.AddSingleton<CurrencyClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
 
