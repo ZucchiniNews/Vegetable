@@ -1,5 +1,3 @@
-
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Azure.Identity;
@@ -23,6 +21,7 @@ using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniSearchClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
@@ -31,8 +30,10 @@ using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
 using Zucchinimvc.Infrastructure.Repositories.HistoryRepository;
 using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
 using Zucchinimvc.Infrastructure.Repositories.PlanRepo;
+using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
+using Zucchinimvc.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,7 @@ builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("We
 builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("StrapiSettings"));
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
+builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<WeatherClient>();
@@ -62,24 +64,26 @@ builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddSingleton(new LogsQueryClient(new DefaultAzureCredential()));
+builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
+builder.Services.AddSingleton<ZucchiniSearchClient>();
 
 // Repositories
+builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddScoped<IPlanRepository, PlanRepository>();
+builder.Services.AddScoped<IBillingRepository, BillingRepository>();
+builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+builder.Services.AddTransient<ISearchRepository, SearchRepository>();
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 {
     var provider = sp.GetRequiredService<IAzureTableClient>();
     var client = provider.GetClient("ExternalApiHistory");
     var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
-    // Explicit cast to the interface to resolve CS0266. 
-    // If this still fails, ensure the HistoryRepository<T> type actually implements the exact IHistoryRepository<T>
-    // (i.e. same namespace/assembly) you're referencing here.
     return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
 });
-builder.Services.AddScoped<IPlanRepository, PlanRepository>();
-builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 
 // Services
 builder.Services.AddScoped<IUtilsService, UtilsService>();
@@ -89,10 +93,10 @@ builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
 builder.Services.AddScoped<IBillingService, BillingService>();
-builder.Services.AddHttpClient<CurrencyClient>();
-builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();

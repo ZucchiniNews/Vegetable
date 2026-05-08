@@ -27,6 +27,7 @@
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageReference Include="Azure.Monitor.Query" Version="1.7.1" />
     <PackageReference Include="Azure.ResourceManager" Version="1.14.0" />
+    <PackageReference Include="Azure.Search.Documents" Version="12.0.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.27.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.7" />
@@ -54,8 +55,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Infrastructure\Repositories\SearchRepo\" />
     <Folder Include="Migrations\" />
-    <Folder Include="ViewComponents\" />
   </ItemGroup>
 
 </Project>

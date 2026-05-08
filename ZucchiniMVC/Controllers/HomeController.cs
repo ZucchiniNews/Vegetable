@@ -47,7 +47,7 @@ public class HomeController : Controller
         if (article == null)
             return NotFound();
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         bool isActiveSubscription = false;
         var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
@@ -104,6 +104,13 @@ public class HomeController : Controller
         {
             return BadRequest(new { error = "Unable to process like request." });
         }
+    }
+
+    [HttpGet("/Home/SearchSuggestions")]
+    [AllowAnonymous]
+    public IActionResult SearchSuggestions(string? query)
+    {
+        return ViewComponent("Search", new { query });
     }
 
     public IActionResult Privacy()

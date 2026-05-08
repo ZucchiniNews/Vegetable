@@ -15,12 +15,12 @@ public class CurrencyViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync(string baseCurrency = "USD")
     {
-        var currencyData = await _service.GetCurrencyWidgetDataAsync(baseCurrency);
+        var currencyData = await _service.GetLatestRatesAsync(baseCurrency);
 
         var viewModel = new CurrencyWidgetViewModel
         {
-            Rates = currencyData.Rates,
-            HasError = currencyData.HasError,
+            Rates = currencyData,
+            HasError = currencyData == null || !currencyData.Any(),
             LastUpdated = DateTime.UtcNow
         };
 
