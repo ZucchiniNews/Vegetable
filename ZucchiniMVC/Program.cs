@@ -69,7 +69,6 @@ builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
 
 // Repositories
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
@@ -96,7 +95,6 @@ builder.Services.AddScoped<IBillingService, BillingService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
-builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 
 // Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();
