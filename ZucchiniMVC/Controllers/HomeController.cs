@@ -67,7 +67,7 @@ public class HomeController : Controller
             LikeCount = likeCount,
             IsLikedByCurrentUser = isLiked,
             IsSubscribed = isActiveSubscription,
-            Category = article.Category!,
+            Category = article.Category ?? throw new InvalidOperationException($"Article '{slug}' has no category assigned."),
             ViewCount = viewCount
         });
     }
