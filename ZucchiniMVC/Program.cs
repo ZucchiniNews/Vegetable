@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Azure.Monitor.Query;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.CMS;
@@ -41,8 +42,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Register filter
+builder.Services.AddScoped<LayoutDataFilter>();
+
+// MVC
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.AddService<LayoutDataFilter>();
+}); 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddRazorPages();
