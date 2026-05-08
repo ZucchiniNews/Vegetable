@@ -1,5 +1,6 @@
 
 using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
+using Zucchinimvc.Models.DTOs.SearchDTOs;
 
 namespace Zucchinimvc.Infrastructure.Services
 {
@@ -12,13 +13,13 @@ namespace Zucchinimvc.Infrastructure.Services
             _searchRepository = searchRepository;
         }
 
-        public async Task<string> GetSearchResult(string searchTerm)
+        public async Task<IEnumerable<ArticlesSearchResultDTO>> GetSearchResult(string query)
         {
-           
-            if (string.IsNullOrWhiteSpace(searchTerm))
-                return "[]";
 
-            return await _searchRepository.SearchGetResultAsync(searchTerm);
+            if (string.IsNullOrWhiteSpace(query))
+                return Enumerable.Empty<ArticlesSearchResultDTO>();
+
+            return await _searchRepository.SearchGetResultAsync(query);
         }
     }
 }

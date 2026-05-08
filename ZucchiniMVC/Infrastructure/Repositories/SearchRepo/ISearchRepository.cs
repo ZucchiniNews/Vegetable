@@ -1,7 +1,9 @@
-﻿namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
+﻿using Zucchinimvc.Models.DTOs.SearchDTOs;
+
+namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
 {
     public interface ISearchRepository
     {
-        Task<string> SearchGetResultAsync(string searchTerm);
+        Task<IEnumerable<ArticlesSearchResultDTO>> SearchGetResultAsync(string query);
     }
 }

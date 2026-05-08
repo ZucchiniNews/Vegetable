@@ -1,7 +1,9 @@
+using Zucchinimvc.Models.DTOs.SearchDTOs;
+
 namespace Zucchinimvc.Infrastructure.Services
 {
     public interface ISearchService
     {
-        Task<string> GetSearchResult(string searchTerm);
+        Task<IEnumerable<ArticlesSearchResultDTO>> GetSearchResult(string query);
     }
 }
