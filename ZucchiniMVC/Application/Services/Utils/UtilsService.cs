@@ -1,20 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
-using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Infrastructure.Data;
+using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 
 namespace Zucchinimvc.Application.Services.Articles;
 
 public class UtilsService : IUtilsService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ICmsRepository _cmsRepository;
     private readonly IAnalyticsService _analyticsService;
     private const int WordsPerMinute = 225;
 
-    public UtilsService(ApplicationDbContext context, IAnalyticsService analyticsService)
+    public UtilsService(ICmsRepository cmsRepository, IAnalyticsService analyticsService)
     {
-        _context = context;
+        _cmsRepository = cmsRepository;
         _analyticsService = analyticsService;
     }
     public int CalculateReadTime(string content)
@@ -30,41 +30,18 @@ public class UtilsService : IUtilsService
 
     public async Task<int> GetLikeCountAsync(int articleId)
     {
-        return await _context.UserLikedArticles
-            .CountAsync(ul => ul.ArticleId == articleId);
+        return await _cmsRepository.GetLikeCountAsync(articleId);
     }
 
     public async Task<bool> IsLikedByUserAsync(int articleId, string userId)
     {
         if (string.IsNullOrEmpty(userId)) return false;
 
-        return await _context.UserLikedArticles
-            .AnyAsync(ul => ul.ArticleId == articleId && ul.UserId == userId);
+        return await _cmsRepository.IsLikedByUserAsync(articleId, userId);
     }
-
     public async Task ToggleLikeAsync(int articleId, string userId)
     {
-        var existingLike = await _context.UserLikedArticles
-            .FirstOrDefaultAsync(ul => ul.ArticleId == articleId && ul.UserId == userId);
-
-        if (existingLike != null)
-        {
-            _context.UserLikedArticles.Remove(existingLike);
-        }
-        else
-        {
-            var like = new UserLikedArticle
-            {
-                ArticleId = articleId,
-                UserId = userId
-            };
-
-        Console.WriteLine($"Saving like: ArticleId={articleId}, UserId={userId}");
-            _context.UserLikedArticles.Add(like);
-        }
-
-        await _context.SaveChangesAsync();
-        
+        await _cmsRepository.ToggleLikeAsync(articleId, userId);
     }
 
     public async Task<int> GetViewCountAsync(string slug)

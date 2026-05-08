@@ -8,6 +8,9 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
         Task<IEnumerable<Category>> GetCategoriesAsync();
         Task<IEnumerable<Article>> GetArticlesByCategoryAsync(string categorySlug);
         IQueryable<UserLikedArticle> GetUserLikedArticles();
+        Task ToggleLikeAsync(int articleId, string userId);
+        Task<int> GetLikeCountAsync(int articleId);
+        Task<bool> IsLikedByUserAsync(int articleId, string userId);
 
     }
 }

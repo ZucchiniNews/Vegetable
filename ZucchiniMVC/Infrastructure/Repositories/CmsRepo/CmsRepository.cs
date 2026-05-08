@@ -78,6 +78,29 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
         {
             return _context.UserLikedArticles;
         }
+
+        public async Task<int> GetLikeCountAsync(int articleId)
+        {
+            return await _context.UserLikedArticles
+                .CountAsync(ul => ul.ArticleId == articleId);
+        }
+        public async Task<bool> IsLikedByUserAsync(int articleId, string userId)
+        {
+            return await _context.UserLikedArticles
+                .AnyAsync(ul => ul.ArticleId == articleId && ul.UserId == userId);
+        }
+        public async Task ToggleLikeAsync(int articleId, string userId)
+        {
+            var existingLike = await _context.UserLikedArticles
+                .FirstOrDefaultAsync(ul => ul.ArticleId == articleId && ul.UserId == userId);
+
+            if (existingLike != null)
+                _context.UserLikedArticles.Remove(existingLike);
+            else
+                _context.UserLikedArticles.Add(new UserLikedArticle { ArticleId = articleId, UserId = userId });
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
 
