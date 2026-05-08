@@ -14,6 +14,7 @@ public class ArticleDto
     public DateTime PublishedAt { get; set; }
     public CoverDto? Cover { get; set; }
     public CoverFormatsDto? Thumbnail { get; set; }
+    public CategoryDto? Category { get; set; }
 }
 
 public class CoverDto

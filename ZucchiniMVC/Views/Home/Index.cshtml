@@ -1,17 +1,79 @@
-﻿@using ZucchiniCore.Entities
-@model IEnumerable<Article>
+﻿@using Zucchinimvc.Models.ViewModels;
+@model HomeIndexViewModel
 
 @{
-    ViewData["Title"] = "Articles Index";
+    ViewData["Title"] = "Home";
 }
 
-<section class="latest-news-section">
-    <h2>Latest News</h2>
 
-    <div class="news-grid">
-        @foreach (var article in Model)
-        {
-            <partial name="_NewscardPartial" model="article" />
-        }
-    </div>
-</section>
+@if (Model.FeaturedArticle != null)
+{
+    var featured = Model.FeaturedArticle;
+
+     <a href="/article/@featured.Slug">
+    <section class="featured-hero" style="background-image: url('@featured.Cover?.OriginalUrl')">
+        <div class="featured-overlay">
+            <div class="featured-content">
+                <span class="badge badge-featured">Featured</span>
+                @if (featured.Category != null)
+                {
+                    <span class="badge badge-category">@featured.Category.Name.ToUpper()</span>
+                }
+                <h1 class="featured-title">@featured.Title</h1>
+                <p class="featured-excerpt">@featured.ContentSummary</p>
+                <div class="featured-meta">
+                    <span>📅 @featured.PublishedAt.ToString("MMM d, yyyy")</span>
+                    <span>🕐 @featured.ReadingTimeMinutes min read</span>
+                </div>
+            </div>
+        </div>
+        </section>
+    </a>
+}
+
+
+@if (Model.EditorsChoiceArticles.Any())
+{
+    <section class="section editors-choice-section">
+        <div class="section-header">
+            <span class="section-icon">⭐</span>
+            <h2 class="section-title">Editor's Choice</h2>
+        </div>
+        <div class="editors-grid">
+            @foreach (var article in Model.EditorsChoiceArticles)
+            {
+                <a href="/article/@article.Slug" class="editor-card">
+                    <div class="editor-card-image">
+                        <img src="@article.Cover?.DisplayUrl" alt="@article.Title" />
+                        <span class="badge badge-editors-pick">Editor's Pick</span>
+                    </div>
+                    <div class="editor-card-body">
+                        <span class="card-category">@article.Category?.Name.ToUpper()</span>
+                        <h3 class="card-title">@article.Title</h3>
+                        <p class="card-excerpt">@(article.ContentSummary.Length > 80 ? (article.ContentSummary[..80] + "..." ) : article.ContentSummary)</p>
+                        <div class="card-meta">
+                            <span>📅 @article.PublishedAt.ToString("MMM d, yyyy")</span>
+                            <span>🕐 @article.ReadingTimeMinutes min read</span>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </section>
+}
+
+@if (Model.LatestArticles?.Any() == true)
+{
+    <section class="section latest-news-section">
+        <div class="section-header">
+            <span class="section-icon">↗</span>
+            <h2 class="section-title">Latest News</h2>
+        </div>
+        <div class="news-grid">
+            @foreach (var article in Model.LatestArticles)
+            {
+                <partial name="_NewscardPartial" model="article" />
+            }
+        </div>
+    </section>
+}

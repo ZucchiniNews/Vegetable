@@ -6,4 +6,8 @@ public interface ICmsService
     Task<Article?> GetArticleBySlug(string slug);
     Task<List<Category>> GetAllCategories();
     Task<List<Article>> GetArticlesByCategory(string slug);
+    Task<Article> GetFeaturedArticle();
+    Task<List<Article>> GetEditorsChoice();
+    Task<List<Article>> GetLatestArticles();
+
 }

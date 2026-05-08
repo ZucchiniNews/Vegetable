@@ -1,4 +1,6 @@
-﻿using ZucchiniCore.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Models.DTOs.StrapiDTOs;
 
 
@@ -7,60 +9,51 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
     public class CmsRepository : ICmsRepository
     {
         private readonly CmsClient _CmsClient;
+        private readonly ApplicationDbContext _context;
 
-        public CmsRepository(CmsClient CmsClient)
+        public CmsRepository(CmsClient CmsClient, ApplicationDbContext context)
         {
             _CmsClient = CmsClient;
+            _context = context;
         }
 
+        private static Article MapToArticle(ArticleDto dto) => new Article
+        {
+            Id = dto.Id,
+            Title = dto.Title,
+            ContentSummary = dto.ContentSummary,
+            Slug = dto.Slug,
+            CreatedAt = dto.CreatedAt,
+            UpdatedAt = dto.UpdatedAt,
+            PublishedAt = dto.PublishedAt,
+            BodyPreview = dto.BodyPreview,
+            BodyGated = dto.BodyGated,
+            EditorsChoice = dto.EditorsChoice,
+            Cover = dto.Cover != null ? new ArticleCover
+            {
+                OriginalUrl = dto.Cover.Url,
+                ThumbnailUrl = dto.Cover.Formats?.Thumbnail?.Url
+            } : null,
+            Category = dto.Category != null ? new Category
+            {
+                Id = dto.Category.Id,
+                Name = dto.Category.Name,
+                Slug = dto.Category.Slug,
+                Description = dto.Category.Description
+            } : null
+        };
         public async Task<IEnumerable<Article>> GetArticlesAsync()
         {
             var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>("articles?populate=*");
 
-            return articleDtos.Select(dto => new Article
-            {
-                Id = dto.Id,
-                Title = dto.Title,
-                ContentSummary = dto.ContentSummary,
-                Slug = dto.Slug,
-                CreatedAt = dto.CreatedAt,
-                UpdatedAt = dto.UpdatedAt,
-                PublishedAt = dto.PublishedAt,
-                BodyPreview = dto.BodyPreview,
-                BodyGated = dto.BodyGated,
-                EditorsChoice = dto.EditorsChoice,
-                Cover = dto.Cover != null ? new ArticleCover
-                {
-                    OriginalUrl = dto.Cover.Url,
-                    ThumbnailUrl = dto.Cover.Formats?.Thumbnail?.Url
-                } : null
-            }).ToList();
+            return articleDtos.Select(MapToArticle).ToList();
         }
         public async Task<Article> GetArticleBySlugAsync(string slug)
         {
             var encodedSlug = Uri.EscapeDataString(slug);
             var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>($"articles?filters[slug][$eq]={encodedSlug}&populate=*");
-            var articleDto = articleDtos.FirstOrDefault();
-            if (articleDto == null)
-                return null!;
-            return new Article
-            {
-                Id = articleDto.Id,
-                Title = articleDto.Title,
-                ContentSummary = articleDto.ContentSummary,
-                Slug = articleDto.Slug,
-                CreatedAt = articleDto.CreatedAt,
-                UpdatedAt = articleDto.UpdatedAt,
-                PublishedAt = articleDto.PublishedAt,
-                BodyPreview = articleDto.BodyPreview,
-                BodyGated = articleDto.BodyGated,
-                EditorsChoice = articleDto.EditorsChoice,
-                Cover = articleDto.Cover != null ? new ArticleCover
-                {
-                    OriginalUrl = articleDto.Cover.Url,
-                    ThumbnailUrl = articleDto.Cover.Formats?.Thumbnail?.Url
-                } : null
-            };
+            var dto = articleDtos.FirstOrDefault();
+            return dto == null ? null : MapToArticle(dto);
         }
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
@@ -69,8 +62,8 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
             {
                 Id = dto.Id,
                 Name = dto.Name,
-                Description = dto.Description,
                 Slug = dto.Slug,
+                Description = dto.Description
             });
         }
         public async Task<IEnumerable<Article>> GetArticlesByCategoryAsync(string categorySlug)
@@ -78,24 +71,35 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
 
             var encodedCategory = Uri.EscapeDataString(categorySlug);
             var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>($"articles?filters[category][slug][$eq]={encodedCategory}&populate=*");
-            return articleDtos.Select(dto => new Article
-            {
-                Id = dto.Id,
-                Title = dto.Title,
-                ContentSummary = dto.ContentSummary,
-                Slug = dto.Slug,
-                CreatedAt = dto.CreatedAt,
-                UpdatedAt = dto.UpdatedAt,
-                PublishedAt = dto.PublishedAt,
-                BodyPreview = dto.BodyPreview,
-                BodyGated = dto.BodyGated,
-                EditorsChoice = dto.EditorsChoice,
-                Cover = dto.Cover != null ? new ArticleCover
-                {
-                    OriginalUrl = dto.Cover.Url,
-                    ThumbnailUrl = dto.Cover.Formats?.Thumbnail?.Url
-                } : null
-            }).ToList();
+            return articleDtos.Select(MapToArticle).ToList();
+        }
+
+        public IQueryable<UserLikedArticle> GetUserLikedArticles()
+        {
+            return _context.UserLikedArticles;
+        }
+
+        public async Task<int> GetLikeCountAsync(int articleId)
+        {
+            return await _context.UserLikedArticles
+                .CountAsync(ul => ul.ArticleId == articleId);
+        }
+        public async Task<bool> IsLikedByUserAsync(int articleId, string userId)
+        {
+            return await _context.UserLikedArticles
+                .AnyAsync(ul => ul.ArticleId == articleId && ul.UserId == userId);
+        }
+        public async Task ToggleLikeAsync(int articleId, string userId)
+        {
+            var existingLike = await _context.UserLikedArticles
+                .FirstOrDefaultAsync(ul => ul.ArticleId == articleId && ul.UserId == userId);
+
+            if (existingLike != null)
+                _context.UserLikedArticles.Remove(existingLike);
+            else
+                _context.UserLikedArticles.Add(new UserLikedArticle { ArticleId = articleId, UserId = userId });
+
+            await _context.SaveChangesAsync();
         }
     }
 }

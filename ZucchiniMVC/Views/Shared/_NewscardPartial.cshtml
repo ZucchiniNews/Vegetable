@@ -6,7 +6,7 @@
         <img src="@Model.Cover?.DisplayUrl" alt="@Model.Title" />
 
         <div class="news-card-body">
-            <span class="news-tag light">News</span>
+            <span class="news-tag light">@Model.Category?.Name</span>
 
             <h3>@Model.Title</h3>
 

@@ -6,4 +6,5 @@ public interface IUtilsService
     Task<int> GetLikeCountAsync(int articleId);
     Task<bool> IsLikedByUserAsync(int articleId, string userId);
     Task ToggleLikeAsync(int articleId, string userId);
+    Task<int> GetViewCountAsync(string slug);
 }

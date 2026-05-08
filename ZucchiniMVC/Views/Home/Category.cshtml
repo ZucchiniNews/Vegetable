@@ -1,0 +1,31 @@
+﻿@using ZucchiniCore.Entities
+@model IEnumerable<Article>
+
+@{
+    ViewData["Title"] = Model.FirstOrDefault()?.Category?.Name ?? "Articles";
+}
+
+<section class="latest-news-section">
+    <div class="section-header" style="margin-bottom: 24px;">
+        <h2 class="section-title">
+            @(Model.FirstOrDefault()?.Category?.Name != null
+        ? $"Latest {Model.First().Category!.Name} News"
+        : "Oops!")
+        </h2>
+    </div>
+
+
+    @if (!Model.Any())
+{
+    <p style="color: #888; margin-top: 20px;">No articles found in this category.</p>
+}
+else
+{
+    <div class="news-grid">
+        @foreach (var article in Model)
+        {
+            <partial name="_NewscardPartial" model="article" />
+        }
+    </div>
+}
+</section>
