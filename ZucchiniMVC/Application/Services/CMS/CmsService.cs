@@ -7,12 +7,12 @@ namespace Zucchinimvc.Application.Services.CMS;
 
 public class CmsService : ICmsService
 {
-    private readonly ApplicationDbContext _context;
+
     private readonly ICmsRepository _cmsRepository;
-    public CmsService(ICmsRepository cmsRepository, ApplicationDbContext context)
+    public CmsService(ICmsRepository cmsRepository)
     {
         _cmsRepository = cmsRepository;
-        _context = context;
+
     }
 
     public async Task<IEnumerable<Article>> GetArticles()
@@ -52,11 +52,11 @@ public class CmsService : ICmsService
 
         try
         {
-            var topLikedArticleId = await _context.UserLikedArticles
-                .GroupBy(ul => ul.ArticleId)
-                .OrderByDescending(g => g.Count())
-                .Select(g => g.Key)
-                .FirstOrDefaultAsync();
+            var topLikedArticleId = await _cmsRepository.GetUserLikedArticles()
+                                      .GroupBy(ul => ul.ArticleId)
+                                      .OrderByDescending(g => g.Count())
+                                      .Select(g => g.Key)
+                                      .FirstOrDefaultAsync();
 
             if (topLikedArticleId != 0)
                 featured = articles.FirstOrDefault(a => a.Id == topLikedArticleId);

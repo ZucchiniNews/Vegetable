@@ -1,4 +1,6 @@
-﻿using ZucchiniCore.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Models.DTOs.StrapiDTOs;
 
 
@@ -7,10 +9,12 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
     public class CmsRepository : ICmsRepository
     {
         private readonly CmsClient _CmsClient;
+        private readonly ApplicationDbContext _context;
 
-        public CmsRepository(CmsClient CmsClient)
+        public CmsRepository(CmsClient CmsClient, ApplicationDbContext context)
         {
             _CmsClient = CmsClient;
+            _context = context;
         }
 
         private static Article MapToArticle(ArticleDto dto) => new Article
@@ -68,6 +72,11 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
             var encodedCategory = Uri.EscapeDataString(categorySlug);
             var articleDtos = await _CmsClient.GetAsync<IEnumerable<ArticleDto>>($"articles?filters[category][slug][$eq]={encodedCategory}&populate=*");
             return articleDtos.Select(MapToArticle).ToList();
+        }
+
+        public IQueryable<UserLikedArticle> GetUserLikedArticles()
+        {
+            return _context.UserLikedArticles;
         }
     }
 }

@@ -7,5 +7,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
         Task<Article?> GetArticleBySlugAsync(string slg);
         Task<IEnumerable<Category>> GetCategoriesAsync();
         Task<IEnumerable<Article>> GetArticlesByCategoryAsync(string categorySlug);
+        IQueryable<UserLikedArticle> GetUserLikedArticles();
+
     }
 }
