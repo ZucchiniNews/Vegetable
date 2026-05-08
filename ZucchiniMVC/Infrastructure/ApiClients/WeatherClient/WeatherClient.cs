@@ -32,7 +32,7 @@ public class WeatherClient
         var separator = endpoint.Contains("?") ? "&" : "?";
         var url = $"{endpoint}{separator}appid={_settings.ApiKey}";
 
-        var response = await _http.GetAsync(url);
+        var response = await _http.GetAsync(url, cancellationToken);
         if (!response.IsSuccessStatusCode) return default;
 
         var content = await response.Content.ReadAsStringAsync();

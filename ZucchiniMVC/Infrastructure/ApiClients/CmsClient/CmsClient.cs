@@ -23,8 +23,7 @@ public class CmsClient
         }
     }
 
-    public async Task<T> GetAsync<T>(string endpoint,
-    CancellationToken cancellationToken = default)
+    public async Task<T> GetAsync<T>(string endpoint)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
 

@@ -66,12 +66,18 @@ builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("C
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
 // Http Clients (Typed)
-builder.Services.AddHttpClient<WeatherClient>();
+builder.Services.AddHttpClient<WeatherClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
-builder.Services.AddHttpClient<CurrencyClient>();
+builder.Services.AddHttpClient<CurrencyClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
 
