@@ -8,6 +8,6 @@ public interface ICmsService
     Task<List<Article>> GetArticlesByCategory(string slug);
     Task<Article> GetFeaturedArticle();
     Task<List<Article>> GetEditorsChoice();
-    Task<List<Article>> GetLatest();
+    Task<List<Article>> GetLatestArticles();
 
 }

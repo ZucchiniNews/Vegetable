@@ -77,7 +77,7 @@ public class CmsService : ICmsService
         return articles.Where(a => a.EditorsChoice).ToList();
     }
 
-    public async Task<List<Article>> GetLatest()
+    public async Task<List<Article>> GetLatestArticles()
     {
         int take = 6;
         var articles = await _cmsRepository.GetArticlesAsync();
