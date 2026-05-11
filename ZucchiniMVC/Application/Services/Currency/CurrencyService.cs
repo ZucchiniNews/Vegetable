@@ -17,9 +17,6 @@ namespace Zucchinimvc.Application.Services.Currency
             _cache = cache;
         }
 
-        // Service returns DTO, not ViewModel
-
-
         public async Task<Dictionary<string, decimal>> GetLatestRatesAsync(string baseCurrency)
         {
             var cacheKey = $"currency_rates_{baseCurrency}";
