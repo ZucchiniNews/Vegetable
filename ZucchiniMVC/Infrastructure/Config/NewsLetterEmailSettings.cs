@@ -2,8 +2,8 @@
 {
     public class NewsLetterSettings
     {
-        public string? ApiKey { get; set; }
-        public string? FromEmail { get; set; }
-        public string? FromName { get; set; }
+        public string ApiKey { get; set; } = string.Empty;
+        public string FromEmail { get; set; } = string.Empty;
+        public string FromName { get; set; } = string.Empty;
     }
 }
