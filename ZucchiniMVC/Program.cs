@@ -41,6 +41,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
+// Framework services
+builder.Services.AddMemoryCache();
+
 // Register filter
 builder.Services.AddScoped<LayoutDataFilter>();
 
@@ -49,6 +52,7 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.AddService<LayoutDataFilter>();
 }); 
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddRazorPages();
