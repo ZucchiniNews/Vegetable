@@ -4,7 +4,6 @@ using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
 using Microsoft.Extensions.Caching.Memory;
-using NuGet.Protocol;
 
 namespace Zucchinimvc.Application.Services.Weather;
 
@@ -93,8 +92,10 @@ public class WeatherService : IWeatherService
         var cacheKey = $"weather_analytics_{targetCity.Trim().ToLowerInvariant()}";
 
         if (_cache.TryGetValue(cacheKey, out WeatherViewModel? cached))
+        {
+            _logger.LogInformation("Cache hit analytics for {City}", targetCity);
             return cached;
-
+        }
         var weather = await GetWeatherByCityAsync(targetCity);
 
         if (weather == null) return null;
@@ -119,6 +120,7 @@ public class WeatherService : IWeatherService
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
         });
 
+        _logger.LogInformation("Cache set analytics for {City}", targetCity); 
         return weather;
     }
 
