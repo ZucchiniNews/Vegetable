@@ -53,9 +53,13 @@ public class LayoutDataFilter : IAsyncActionFilter
         {
             await Task.WhenAll(cmsTask, weatherTask, currencyTask);
         }
-        catch (Exception ex)
+        catch (OperationCanceledException ex)
         {
-            _logger.LogError(ex, "Error loading layout data");
+            _logger.LogWarning(ex, "Loading layout data was canceled");
+        }
+        catch (AggregateException ex)
+        {
+            _logger.LogError(ex.Flatten(), "One or more errors occurred while loading layout data");
         }
 
         context.HttpContext.Items["LayoutCms"] =
