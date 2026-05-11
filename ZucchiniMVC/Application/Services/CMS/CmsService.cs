@@ -9,7 +9,7 @@ public class CmsService : ICmsService
 {
 
     private readonly ICmsRepository _cmsRepository;
-        private readonly IMemoryCache _cache;
+    private readonly IMemoryCache _cache;
     public CmsService(ICmsRepository cmsRepository, IMemoryCache cache)
     {
         _cmsRepository = cmsRepository;
