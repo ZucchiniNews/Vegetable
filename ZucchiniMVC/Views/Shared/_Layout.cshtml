@@ -192,6 +192,6 @@
 </script>
 
 @await RenderSectionAsync("Scripts", required: false)
-
+@await Component.InvokeAsync("CookieConsent")
 </body>
 </html>

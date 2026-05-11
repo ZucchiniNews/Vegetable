@@ -1,0 +1,25 @@
+﻿
+<div id="cookie-banner" class="cookie-banner">  
+    <div class="cookie-container">
+        <div class="cookie-message">
+            <span class="cookie-icon">🍪</span>
+            <p>
+                <strong>We use cookies</strong> to improve your experience on our site.
+                By continuing to browse, you accept our use of cookies.
+            </p>
+        </div>
+        <div class="cookie-buttons">
+            <button onclick="acceptCookies()" class="cookie-btn-accept">Got it! 👍</button>
+            <a href="/home/privacy" class="cookie-btn-learn">Learn more</a>
+    </div>   
+</div>
+
+<script>
+    function acceptCookies() {
+    var expireDate = new Date();
+    expireDate.setFullYear(expireDate.getFullYear() + 1); // Set cookie to expire in 1 year
+    document.cookie = "cookie_consent=true; expires=" + expireDate.toUTCString() + "; path=/";
+            //hide the banner
+    document.getElementById("cookie-banner").style.display = "none";
+    }
+</script>
