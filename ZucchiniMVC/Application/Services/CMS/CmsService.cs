@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Zucchinimvc.Application.Services.CMS;
 
@@ -9,22 +9,24 @@ public class CmsService : ICmsService
 {
 
     private readonly ICmsRepository _cmsRepository;
-    public CmsService(ICmsRepository cmsRepository)
+        private readonly IMemoryCache _cache;
+    public CmsService(ICmsRepository cmsRepository, IMemoryCache cache)
     {
         _cmsRepository = cmsRepository;
-
+        _cache = cache;
     }
 
     public async Task<IEnumerable<Article>> GetArticles()
     {
-        var articles = await _cmsRepository.GetArticlesAsync();
+        return await _cache.GetOrCreateAsync(
+            "cms-articles",
+            async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow =
+                    TimeSpan.FromMinutes(15);
 
-        foreach (var article in articles)
-        {
-            var totalContent = $"{article.BodyPreview} {article.BodyGated}";
-        }
-
-        return articles;
+                return await _cmsRepository.GetArticlesAsync();
+            }) ?? Enumerable.Empty<Article>();
     }
 
     public async Task<Article?> GetArticleBySlug(string slug)
@@ -47,7 +49,7 @@ public class CmsService : ICmsService
 
     public async Task<Article> GetFeaturedArticle()
     {
-        var articles = await _cmsRepository.GetArticlesAsync();
+        var articles = await GetArticles();
         Article? featured = null;
 
         try
@@ -73,14 +75,14 @@ public class CmsService : ICmsService
 
     public async Task<List<Article>> GetEditorsChoice()
     {
-        var articles = await _cmsRepository.GetArticlesAsync();
+        var articles = await GetArticles();
         return articles.Where(a => a.EditorsChoice).ToList();
     }
 
     public async Task<List<Article>> GetLatestArticles()
     {
         int take = 6;
-        var articles = await _cmsRepository.GetArticlesAsync();
+        var articles = await GetArticles();
         return articles
             .OrderByDescending(a => a.PublishedAt)
             .Take(take)
