@@ -12,8 +12,7 @@ using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
-using Zucchinimvc.Infrastructure.Repositories.HistoryRepository;
-using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
+using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 var builder = FunctionsApplication.CreateBuilder(args);

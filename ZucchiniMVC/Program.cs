@@ -1,7 +1,7 @@
 extern alias azid;
+using Azure.Monitor.Query;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Azure.Monitor.Query;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.ApiFilter;
@@ -17,8 +17,8 @@ using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Users;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
-using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
+using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
@@ -28,8 +28,7 @@ using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
-using Zucchinimvc.Infrastructure.Repositories.HistoryRepository;
-using Zucchinimvc.Infrastructure.Repositories.IHistoryRepository;
+using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.PlanRepo;
 using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
@@ -88,7 +87,7 @@ builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 builder.Services.AddScoped<IPlanRepository, PlanRepository>();
 builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
-builder.Services.AddTransient<ISearchRepository, SearchRepository>();
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
 builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 {
     var provider = sp.GetRequiredService<IAzureTableClient>();
@@ -105,7 +104,7 @@ builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
 builder.Services.AddScoped<IBillingService, BillingService>();
-builder.Services.AddTransient<ISearchService, SearchService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 

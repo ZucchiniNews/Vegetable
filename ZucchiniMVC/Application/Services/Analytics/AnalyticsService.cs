@@ -15,7 +15,9 @@ public class AnalyticsService : IAnalyticsService
     {
         _InsightClient = InsightClient;
         _logsQueryClient = logsQueryClient;
-        _resourceId = configuration["ApplicationInsights:ResourceId"]!;
+        _resourceId = configuration["ApplicationInsights:ResourceId"]
+            ?? throw new InvalidOperationException(
+                "ApplicationInsights:ResourceId configuration is missing.");
     }
 
     public async Task TrackAsync(EventType eventType, string resourceId, string? userId = null)
