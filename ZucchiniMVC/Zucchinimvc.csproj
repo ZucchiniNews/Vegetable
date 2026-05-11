@@ -47,6 +47,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="NuGet.Packaging" Version="7.3.1" />
     <PackageReference Include="NuGet.Protocol" Version="7.3.1" />
+    <PackageReference Include="Resend" Version="0.5.0" />
     <PackageReference Include="Stripe.net" Version="51.1.0" />
     <!-- Explicit Azure packages to avoid duplicate-type conflicts -->
     <PackageReference Include="Azure.Core" Version="1.54.0" />
