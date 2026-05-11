@@ -37,8 +37,18 @@ public class CmsService : ICmsService
 
     public async Task<List<Category>> GetAllCategories()
     {
-        var categories = await _cmsRepository.GetCategoriesAsync();
-        return categories.ToList();
+        return await _cache.GetOrCreateAsync(
+        "cms-categories",
+        async entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow =
+                TimeSpan.FromHours(1);
+
+            var categories =
+                await _cmsRepository.GetCategoriesAsync();
+
+            return categories.ToList();
+        }) ?? new List<Category>();
     }
 
     public async Task<List<Article>> GetArticlesByCategory(string categorySlug)
