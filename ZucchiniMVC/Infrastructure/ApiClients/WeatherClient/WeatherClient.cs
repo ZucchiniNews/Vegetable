@@ -18,7 +18,8 @@ public class WeatherClient
         _http.BaseAddress = new Uri(_settings.BaseUrl);
     }
     public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.ApiKey);
-    public async Task<T?> GetAsync<T>(string endpoint)
+    public async Task<T?> GetAsync<T>(string endpoint,
+    CancellationToken cancellationToken = default)
     {
         if (!IsConfigured)
         {
@@ -31,7 +32,7 @@ public class WeatherClient
         var separator = endpoint.Contains("?") ? "&" : "?";
         var url = $"{endpoint}{separator}appid={_settings.ApiKey}";
 
-        var response = await _http.GetAsync(url);
+        var response = await _http.GetAsync(url, cancellationToken);
         if (!response.IsSuccessStatusCode) return default;
 
         var content = await response.Content.ReadAsStringAsync();

@@ -61,7 +61,6 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\Repositories\SearchRepo\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

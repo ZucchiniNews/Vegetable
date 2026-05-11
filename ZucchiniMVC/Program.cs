@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Application.Services.Billing;
@@ -40,8 +41,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Register filter
+builder.Services.AddScoped<LayoutDataFilter>();
+
+// MVC
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.AddService<LayoutDataFilter>();
+}); 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddRazorPages();
@@ -58,17 +65,22 @@ builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("C
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
 // Http Clients (Typed)
-builder.Services.AddHttpClient<WeatherClient>();
+builder.Services.AddHttpClient<WeatherClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
-builder.Services.AddHttpClient<CurrencyClient>();
+builder.Services.AddHttpClient<CurrencyClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
 
 // Repositories
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();

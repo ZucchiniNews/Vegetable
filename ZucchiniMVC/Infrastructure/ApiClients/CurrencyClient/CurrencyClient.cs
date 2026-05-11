@@ -27,7 +27,8 @@ namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
         public bool IsConfigured => !string.IsNullOrWhiteSpace(_settings.ApiKey);
 
 
-        public async Task<T?> GetAsync<T>(string endpoint)
+        public async Task<T?> GetAsync<T>(string endpoint,
+    CancellationToken cancellationToken = default)
         {
             if (!IsConfigured)
             {
@@ -40,7 +41,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
             var separator = endpoint.Contains("?") ? "&" : "?";
             var url = $"{endpoint}{separator}apikey={_settings.ApiKey}";
 
-            var response = await _http.GetAsync(url);
+            var response = await _http.GetAsync(url, cancellationToken);
             if (!response.IsSuccessStatusCode) return default;
 
             var content = await response.Content.ReadAsStringAsync();
