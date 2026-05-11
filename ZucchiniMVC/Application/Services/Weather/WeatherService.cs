@@ -12,13 +12,14 @@ public class WeatherService : IWeatherService
 {
     private readonly IWeatherRepository _weatherRepo;
     private readonly IHistoryRepository<WeatherHistoryEntity> _historyRepo;
-    private readonly IMemoryCache _cache;
-
-    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo, IMemoryCache cache)
+    private readonly IMemoryCache _cache; 
+    private readonly ILogger<WeatherService> _logger;
+    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo, IMemoryCache cache, ILogger<WeatherService> logger)
     {
         _weatherRepo = weatherRepo;
         _historyRepo = historyRepo;
         _cache = cache;
+        _logger = logger;
     }
 
     public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
@@ -29,6 +30,7 @@ public class WeatherService : IWeatherService
 
         if (_cache.TryGetValue(cacheKey, out WeatherViewModel? cached))
         {
+            _logger.LogInformation("Cache hit for {City}", city); 
             return cached;
         }
 
@@ -46,6 +48,7 @@ public class WeatherService : IWeatherService
             SlidingExpiration = TimeSpan.FromMinutes(3)
         });
 
+        _logger.LogInformation("Cache set for {City}", city);
         return viewModel;
     }
 
