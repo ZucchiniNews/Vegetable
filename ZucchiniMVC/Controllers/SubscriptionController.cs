@@ -80,7 +80,8 @@ public class SubscriptionController : Controller
         if (user == null)
             return NotFound();
 
-        if (user.NewsletterSubscribed == subscribe)
+        var currentState = user.NewsletterSubscribed;
+        if (currentState == subscribe)
         {
             TempData["StatusMessage"] = subscribe
                 ? "You are already subscribed to the newsletter."
