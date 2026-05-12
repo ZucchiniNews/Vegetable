@@ -76,7 +76,6 @@ public class StripeWebhookController : ControllerBase
                         _logger.LogWarning(
                             "invoice.paid missing required data. SubId: {SubId}, UserId: {UserId}",
                             providerSubscriptionId, userId);
-
                         return Ok();
                     }
 

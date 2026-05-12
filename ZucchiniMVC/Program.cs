@@ -19,7 +19,6 @@ using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
-using Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchiniSearchClient;
@@ -57,7 +56,6 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
-builder.Services.Configure<NewsLetterSettings>(builder.Configuration.GetSection("NewsLetterSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<WeatherClient>();
@@ -68,7 +66,6 @@ builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.Defau
 builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
-builder.Services.AddHttpClient<NewsLetterEmailClient>();
 
 // Repositories
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
