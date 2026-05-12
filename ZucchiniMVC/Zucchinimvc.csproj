@@ -8,12 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
     <Compile Remove="Models\Currency\**" />
     <Compile Remove="Repositories\**" />
+    <Content Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
     <Content Remove="Models\Currency\**" />
     <Content Remove="Repositories\**" />
+    <EmbeddedResource Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
     <EmbeddedResource Remove="Models\Currency\**" />
     <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
     <None Remove="Models\Currency\**" />
     <None Remove="Repositories\**" />
   </ItemGroup>
@@ -62,7 +66,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\Repositories\EmailNewsLetterRepo\" />
     <Folder Include="Infrastructure\Repositories\SearchRepo\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
