@@ -1,6 +1,4 @@
 
-
-
 using Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient;
 using ZucchiniMVC.Application.Services.NewsLetter;
 
@@ -13,7 +11,6 @@ namespace Application.Services.NewsLetter
         {
             _newsLetterEmailClient = newsLetterEmailClient;
         }
-
 
         public async Task SendNewsLetterEmailAsync(string email, string subject, string content, CancellationToken cancellationToken)
         {
