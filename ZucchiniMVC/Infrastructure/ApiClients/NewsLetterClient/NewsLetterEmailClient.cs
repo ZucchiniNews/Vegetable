@@ -6,27 +6,17 @@ namespace Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient
 {
     public class NewsLetterEmailClient
     {
-        private readonly NewsLetterSettings _settings;
         private readonly IResend _resend;
+        private readonly NewsLetterEmailSettings _settings;
 
-        public NewsLetterEmailClient(
-            IOptions<NewsLetterSettings> settings,
-            IResend resend
-            )
+        public NewsLetterEmailClient(IResend resend, IOptions<NewsLetterEmailSettings> settings)
         {
-            _settings = settings.Value;
             _resend = resend;
+            _settings = settings.Value;
         }
-
-        public bool IsConfigured =>
-            !string.IsNullOrWhiteSpace(_settings.ApiKey);
 
         public async Task SendEmailAsync(string toEmail, string subject, string content, CancellationToken cancellationToken)
         {
-            if (!IsConfigured)
-            {
-                throw new InvalidOperationException("NewsLetterEmailClient is not configured properly.");
-            }
             var emailMessage = new EmailMessage
             {
                 From = _settings.FromEmail,
@@ -34,6 +24,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient
                 Subject = subject,
                 HtmlBody = content
             };
+
             await _resend.EmailSendAsync(emailMessage);
         }
     }
