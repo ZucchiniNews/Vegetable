@@ -1,8 +1,10 @@
 extern alias azid;
 using Azure.Monitor.Query;
+using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Articles;
@@ -12,6 +14,7 @@ using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Plans;
+using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Users;
 using Zucchinimvc.Application.Services.Weather;
@@ -19,6 +22,7 @@ using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
+using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchiniSearchClient;
@@ -56,6 +60,7 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<WeatherClient>();
@@ -66,6 +71,12 @@ builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.Defau
 builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
+builder.Services.AddSingleton(sp =>
+{
+    var queueSettings = sp.GetRequiredService<IOptions<QueueSettings>>().Value;
+    return new QueueClient(queueSettings.ConnectionString, "newsletterqueue");
+});
+builder.Services.AddSingleton<AzureStorageQueue>();
 
 // Repositories
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
@@ -95,11 +106,10 @@ builder.Services.AddScoped<IBillingService, BillingService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
-
-// Email Services
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<INewsLetterQueuePublisher, AzureStorageQueueNewLetterPublisher>();
 // Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddApplicationInsightsTelemetry();
