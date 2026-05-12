@@ -43,8 +43,16 @@ builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Queu
 builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddSingleton(sp =>
 {
-    var queueSettings = sp.GetRequiredService<IOptions<QueueSettings>>().Value;
-    return new QueueClient(queueSettings.ConnectionString, "newsletterqueue");
+    var queueSettings =
+        sp.GetRequiredService<IOptions<QueueSettings>>().Value;
+
+    var client = new QueueClient(
+        queueSettings.ConnectionString,
+        "newsletterqueue");
+
+    client.CreateIfNotExists();
+
+    return client;
 });
 
 builder.Services.AddSingleton<AzureStorageQueue>();

@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="local.settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.25.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="3.1.1" />

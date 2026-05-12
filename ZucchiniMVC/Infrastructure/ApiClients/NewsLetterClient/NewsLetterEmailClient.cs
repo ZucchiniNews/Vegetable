@@ -17,6 +17,11 @@ namespace Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient
 
         public async Task SendEmailAsync(string toEmail, string subject, string content, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(_settings.FromEmail))
+            {
+                throw new InvalidOperationException("NewsLetterEmailSettings:FromEmail is not configured.");
+            }
+
             var emailMessage = new EmailMessage
             {
                 From = _settings.FromEmail,
@@ -25,7 +30,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient
                 HtmlBody = content
             };
 
-            await _resend.EmailSendAsync(emailMessage);
+            await _resend.EmailSendAsync(emailMessage, cancellationToken).ConfigureAwait(false);
         }
     }
 }
