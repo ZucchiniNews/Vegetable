@@ -21,7 +21,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient
         public bool IsConfigured =>
             !string.IsNullOrWhiteSpace(_settings.ApiKey);
 
-        public async Task SendEmailAsync(string toEmail, string subject, string content)
+        public async Task SendEmailAsync(string toEmail, string subject, string content, CancellationToken cancellationToken)
         {
             if (!IsConfigured)
             {
