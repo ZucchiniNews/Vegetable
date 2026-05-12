@@ -17,22 +17,24 @@ namespace ZucchiniBackgroundJobs.Functions
 
         [Function("NewsletterWorker")]
         public async Task Run(
-            [ServiceBusTrigger(
-            "newsletterqueue",
-            Connection = "ServiceBus")]
-        string messageJson,
+            [QueueTrigger("newsletterqueue", Connection = "AzureStorage")]
+            string messageJson,
             CancellationToken cancellationToken)
         {
             var message =
                 JsonSerializer.Deserialize<
                     NewsLetterQueueMessage>(messageJson);
 
+            if (message is null)
+            {
+                throw new InvalidOperationException("Newsletter queue message payload was invalid.");
+            }
+
             await _sender.SendNewsLetterEmailAsync(
-                message!.Email,
+                message.Email,
                 message.Subject,
                 message.HtmlBody,
-                cancellationToken
-                );
+                cancellationToken).ConfigureAwait(false);
         }
     }
 }
