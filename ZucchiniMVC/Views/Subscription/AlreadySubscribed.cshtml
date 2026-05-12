@@ -1,23 +1,36 @@
-﻿@{
+﻿@using Zucchinimvc.Models.ViewModels
+@{
     ViewData["Title"] = "Already Subscribed";
 }
 
-<div class="container my-5 text-center">
+<div class="container my-5">
 
-    <h2 class="fw-bold mb-3">You're already subscribed 🎉</h2>
+    <div class="mx-auto" style="max-width: 900px;">
+        <h2 class="fw-bold mb-3 text-center">You're already subscribed 🎉</h2>
 
-    <p class="text-muted mb-4">
-        You already have an active subscription.
-    </p>
+        <p class="text-muted mb-4 text-center">
+            You already have an active subscription.
+        </p>
 
-    <div class="d-flex justify-content-center mb-4">
-        @await Component.InvokeAsync("SubscriptionStatus")
+        <div class="d-flex justify-content-center mb-4">
+            @await Component.InvokeAsync("SubscriptionStatus")
+        </div>
+
+        <div class="p-4 border rounded-4 bg-light">
+            <div class="text-uppercase text-muted small fw-bold mb-2">
+                Newsletter
+            </div>
+
+            @await Component.InvokeAsync("NewsletterSubscriptionToggle")
+        </div>
+
+        <div class="text-center mt-4">
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                Go to Home
+            </a>
+        </div>
     </div>
-
-    <a asp-controller="Home"
-       asp-action="Index"
-       class="btn btn-outline-primary">
-        Go to Home
-    </a>
 
 </div>

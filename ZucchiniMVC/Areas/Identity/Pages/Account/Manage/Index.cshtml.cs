@@ -1,5 +1,6 @@
 #nullable disable
 
+using Application.Services.NewsLetter;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
+using Zucchinimvc.Application.Services.Users;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {
@@ -18,18 +21,24 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<IndexModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUserService _userService;
+        private readonly INewsLetterQueuePublisher _newsLetterQueuePublisher;
 
 
         public IndexModel(
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         ILogger<IndexModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        IUserService userService,
+        INewsLetterQueuePublisher newsLetterQueuePublisher)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _userService = userService;
+            _newsLetterQueuePublisher = newsLetterQueuePublisher;
 
         }
 
@@ -38,6 +47,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         public string CurrentDisplayName { get; set; }
         public bool HasPassword { get; set; }
         public bool TwoFactorEnabled { get; set; }
+        public bool NewsletterSubscribed { get; set; }
         [TempData] public string StatusMessage { get; set; }
         [TempData] public string StatusType { get; set; }
 
@@ -47,12 +57,18 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         [BindProperty] public ChangePasswordInput PasswordForm { get; set; }
         [BindProperty] public DeleteAccountInput DeleteForm { get; set; }
         [BindProperty] public ChangePhoneInput PhoneForm { get; set; }
+        [BindProperty] public NewsletterInput NewsletterForm { get; set; } = new NewsletterInput();
 
         private async Task LoadUserStateAsync(User user)
         {
             CurrentEmail = await _userManager.GetEmailAsync(user);
             HasPassword = await _userManager.HasPasswordAsync(user);
             TwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+            NewsletterSubscribed = user.NewsletterSubscribed;
+            NewsletterForm = new NewsletterInput
+            {
+                Subscribe = user.NewsletterSubscribed
+            };
             PhoneForm = new ChangePhoneInput
             {
                 NewPhoneNumber = await _userManager.GetPhoneNumberAsync(user)
@@ -168,6 +184,53 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+        public async Task<IActionResult> OnPostChangeNewsletterAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return NotFound();
+
+            ModelState.Clear();
+
+            if (!TryValidateModel(NewsletterForm, nameof(NewsletterForm)))
+            {
+                await LoadUserStateAsync(user);
+                return Page();
+            }
+
+            var wasSubscribed = user.NewsletterSubscribed;
+            var subscribe = NewsletterForm.Subscribe;
+
+            if (wasSubscribed == subscribe)
+            {
+                SetStatus(subscribe ? "You are already subscribed to the newsletter." : "You are already unsubscribed from the newsletter.", "info");
+                return RedirectToPage();
+            }
+
+            await _userService.UpdateNewsletterPreferenceAsync(user.Id, subscribe);
+
+            if (subscribe)
+            {
+                var email = await _userManager.GetEmailAsync(user);
+                var message = new NewsLetterQueueMessage
+                {
+                    Email = email,
+                    Subject = "Welcome to our Newsletter!",
+                    HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
+                };
+
+                await _newsLetterQueuePublisher.PublishAsync(message, HttpContext.RequestAborted);
+                SetStatus("Newsletter subscription enabled. A welcome email has been queued.", "success");
+            }
+            else
+            {
+                SetStatus("Newsletter subscription disabled.", "success");
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            return RedirectToPage();
+        }
+
         public async Task<IActionResult> OnPostDeleteAccountAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -220,6 +283,11 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string NewPhoneNumber { get; set; }
+        }
+        public class NewsletterInput
+        {
+            [Display(Name = "Subscribe to newsletter")]
+            public bool Subscribe { get; set; }
         }
         private void SetStatus(string message, string type)
         {
