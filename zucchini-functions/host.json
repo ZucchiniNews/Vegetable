@@ -7,12 +7,6 @@
         "excludedTypes": "Request"
       },
       "enableLiveMetricsFilters": true
-    },
-    "logLevel": {
-      "default": "Information",
-      "Function": "Information",
-      "Host.Results": "Information",
-      "Microsoft": "Warning"
     }
   },
   "extensions": {

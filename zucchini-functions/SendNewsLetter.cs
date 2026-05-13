@@ -1,9 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Resend;
 using System.Text.Json;
-using zucchini_functions.Config;
 using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 
 
@@ -13,12 +11,10 @@ public class SendNewsLetter
 {
     private readonly ILogger<SendNewsLetter> _logger;
     private readonly IResend _resend;
-    private readonly NewsLetterSettings _settings;
-    public SendNewsLetter(ILogger<SendNewsLetter> logger, IResend resend, IOptions<NewsLetterSettings> settings)
+    public SendNewsLetter(ILogger<SendNewsLetter> logger, IResend resend)
     {
         _logger = logger;
         _resend = resend;
-        _settings = settings.Value;
     }
 
     [Function(nameof(SendNewsLetter))]
@@ -29,7 +25,7 @@ public class SendNewsLetter
         try
         {
             _logger.LogInformation("Processing queue message: {message}", message);
-
+            var EmailFrom = Environment.GetEnvironmentVariable("FROM_EMAIL") ?? throw new InvalidOperationException("FROM_EMAIL environment variable is not set");
 
             var newsletterMessage =
                 JsonSerializer.Deserialize<NewsLetterQueueMessage>(
@@ -42,12 +38,12 @@ public class SendNewsLetter
             if (newsletterMessage is null)
                 throw new InvalidOperationException("Invalid queue payload");
 
-            _logger.LogInformation("FROM EMAIL: {from}", _settings.FromEmail);
+
             _logger.LogInformation("TO EMAIL: {to}", newsletterMessage.Email);
 
             var emailMessage = new EmailMessage
             {
-                From = _settings.FromEmail,
+                From = EmailFrom,
                 To = newsletterMessage.Email,
                 Subject = newsletterMessage.Subject,
                 HtmlBody = newsletterMessage.HtmlBody
