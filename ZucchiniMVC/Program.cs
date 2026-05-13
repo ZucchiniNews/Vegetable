@@ -66,10 +66,12 @@ builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
+builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
 builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
+
 builder.Services.AddSingleton(sp =>
 {
     var queueSettings = sp.GetRequiredService<IOptions<QueueSettings>>().Value;
@@ -77,22 +79,7 @@ builder.Services.AddSingleton(sp =>
 });
 builder.Services.AddSingleton<AzureStorageQueue>();
 
-// Repositories
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
-builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-builder.Services.AddScoped<ICmsRepository, CmsRepository>();
-builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
-builder.Services.AddScoped<IPlanRepository, PlanRepository>();
-builder.Services.AddScoped<IBillingRepository, BillingRepository>();
-builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
-builder.Services.AddScoped<ISearchRepository, SearchRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
-{
-    var provider = sp.GetRequiredService<IAzureTableClient>();
-    var client = provider.GetClient("ExternalApiHistory");
-    var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
-    return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
-});
+
 
 // Services
 builder.Services.AddScoped<IUtilsService, UtilsService>();
@@ -109,6 +96,25 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<INewsLetterQueuePublisher, AzureStorageQueueNewLetterPublisher>();
+
+
+
+// Repositories
+
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddScoped<ICmsRepository, CmsRepository>();
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddScoped<IPlanRepository, PlanRepository>();
+builder.Services.AddScoped<IBillingRepository, BillingRepository>();
+builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
+builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
+{
+    var provider = sp.GetRequiredService<IAzureTableClient>();
+    var client = provider.GetClient("ExternalApiHistory");
+    var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
+    return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
+});
 // Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddApplicationInsightsTelemetry();
