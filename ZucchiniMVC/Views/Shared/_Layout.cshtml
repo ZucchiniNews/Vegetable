@@ -41,6 +41,26 @@
         <!-- Categories -->
         @await Component.InvokeAsync("Categories")
 
+        <!-- SEARCH BANNER -->
+        <div class="news-search-box mx-lg-4 flex-grow-1">
+            <div class="input-group">
+                <input type="text"
+                       id="searchInput"
+                       class="form-control"
+                       placeholder="Search articles..." />
+        
+                <button type="button"
+                        id="searchButton"
+                        class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        
+            <div id="searchResultsDropdown"
+                 class="position-absolute w-100"></div>
+        </div>
+
+
         <!-- Right side -->
         <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 news-header-right">
             
@@ -59,35 +79,6 @@
     </nav>
 </header>
 
-<!-- SEARCH BANNER -->
-<div class="search-banner" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-bottom: 1px solid #e9ecef; padding: 16px 0;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="search-banner-content">
-                    <div class="search-header-box position-relative w-100">
-                        <div class="d-flex justify-content-center gap-2">
-                            <div class="flex-grow-1" style="max-width: 500px;">
-                                <div class="input-group">
-                                    <input type="text"
-                                           id="searchInput"
-                                           class="form-control"
-                                           placeholder="Search articles..."
-                                           autocomplete="off"
-                                           style="border-radius: 6px 0 0 6px; border: 1px solid #ddd; padding: 10px 14px;" />
-                                    <button type="button" id="searchButton" class="btn btn-primary" style="border-radius: 0 6px 6px 0;">
-                                        <i class="bi bi-search"></i> Search
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="searchResultsDropdown" class="position-absolute w-100" style="left: 50%; transform: translateX(-50%); max-width: 500px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="currency-widget-container">
         <div class="container">
