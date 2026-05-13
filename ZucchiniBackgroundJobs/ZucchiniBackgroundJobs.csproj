@@ -12,8 +12,6 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <None Include="Properties\serviceDependencies.local.json.user" />
-    <None Include="Properties\serviceDependencies.ZucchiniBackgroundJobs - Zip Deploy.json.user" />
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.5.1" />
     <PackageReference Include="Azure.Identity" Version="1.21.0" />

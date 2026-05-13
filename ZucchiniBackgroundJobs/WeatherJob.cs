@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Zucchinimvc.Application.Services.Weather;
 
 
-namespace ZucchiniBackgroundJobs.Functions;
+namespace ZucchiniBackgroundJobs;
 
 public class WeatherJob
 {

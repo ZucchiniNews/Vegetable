@@ -2,7 +2,7 @@ using Azure.Storage.Queues.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace ZucchiniBackgroundJobs.Functions;
+namespace ZucchiniBackgroundJobs;
 
 public class NewsLetter
 {
