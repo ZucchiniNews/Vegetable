@@ -40,4 +40,4 @@ jobs:
           app-name: 'ZucchiniBackgroundJobs'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_66954435874E451199A6639AB1AAE4D0 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2BFF91BD3C624A90BE848FC4207FD1E1 }}
