@@ -54,6 +54,11 @@ public class ZucchiniPageTest : PageTest
             .ContainsKey("Category") && 
             TestContext.CurrentContext.Test.Properties["Category"]
                 .Contains("WriteOnly");
+
+        if (isProduction && isWriteTest)
+        {
+            Assert.Ignore("Write tests are skipped in production (azure) environment.");
+        }
     }
 
     [OneTimeTearDown]
