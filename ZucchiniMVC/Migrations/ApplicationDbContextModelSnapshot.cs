@@ -144,6 +144,9 @@ namespace Zucchinimvc.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ContentSummary")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,6 +176,8 @@ namespace Zucchinimvc.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Article");
                 });
 
@@ -198,6 +203,31 @@ namespace Zucchinimvc.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BillingAccounts");
+                });
+
+            modelBuilder.Entity("ZucchiniCore.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.Plan", b =>
@@ -449,6 +479,15 @@ namespace Zucchinimvc.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ZucchiniCore.Entities.Article", b =>
+                {
+                    b.HasOne("ZucchiniCore.Entities.Category", "Category")
+                        .WithMany("Articles")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
                     b.HasOne("ZucchiniCore.Entities.User", null)
@@ -465,6 +504,11 @@ namespace Zucchinimvc.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ZucchiniCore.Entities.Category", b =>
+                {
+                    b.Navigation("Articles");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.User", b =>
