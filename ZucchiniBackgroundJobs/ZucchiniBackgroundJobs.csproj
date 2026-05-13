@@ -7,14 +7,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>d0da441f-ae67-4d2e-817e-f595a4f54b5b</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/f6c79cfc-dcff-4cec-8cc0-8cbbd35495fa/resourceGroups/Gr25-17RG/providers/microsoft.insights/components/ZucchiniNews</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="local.settings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Include="Properties\serviceDependencies.local.json.user" />
+    <None Include="Properties\serviceDependencies.ZucchiniBackgroundJobs - Zip Deploy.json.user" />
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.5.1" />
     <PackageReference Include="Azure.Identity" Version="1.21.0" />
