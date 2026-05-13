@@ -14,8 +14,10 @@ public class NewsLetter
     }
 
     [Function("NewsLetter")]
-    public void Run([QueueTrigger("newsletterqueue", Connection = "AzureStorage")] QueueMessage message)
+    public async Task Run([QueueTrigger("newsletterqueue", Connection = "AzureStorage")] QueueMessage message)
     {
         _logger.LogInformation("C# Queue trigger function processed: {messageText}", message.MessageText);
+        Console.WriteLine("hello the function is triggered locally");
+        await Task.CompletedTask;
     }
 }
