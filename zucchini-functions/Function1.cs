@@ -8,18 +8,18 @@ using ZucchiniMVC.Application.Services.NewsLetter;
 
 namespace zucchini_functions;
 
-public class NewsletterWorkerFunction
+public class Function1
 {
-    private readonly ILogger<NewsletterWorkerFunction> _logger;
+    private readonly ILogger<Function1> _logger;
     private readonly INewsLetterService _sender;
 
-    public NewsletterWorkerFunction(ILogger<NewsletterWorkerFunction> logger, INewsLetterService sender)
+    public Function1(ILogger<Function1> logger, INewsLetterService sender)
     {
         _logger = logger;
         _sender = sender;
     }
 
-    [Function(nameof(NewsletterWorkerFunction))]
+    [Function(nameof(Function1))]
     public async Task Run([QueueTrigger("newsletterqueue", Connection = "DefaultEndpointsProtocol=https;AccountName=zucchinibag;AccountKey=xwYp4c5ZhlGo+G+m29aHrgjmIYLhhDrKIrMKPZJaGcRTPM6ZZXoiFBdeco:vzhfANY4YzMtAOfMj+AStpXm1IA==;EndpointSuffix=core.windows.net")] QueueMessage message, CancellationToken cancellationToken)
     {
         _logger.LogInformation("C# Queue trigger function processed: {messageText}", message.MessageText, cancellationToken);
