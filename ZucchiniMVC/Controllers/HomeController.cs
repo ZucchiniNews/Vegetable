@@ -65,7 +65,7 @@ public class HomeController : Controller
         var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
         var isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
         var viewCount = await _analyticsService.GetArticleViewCountAsync(article.Slug);
-        int readTime = _utilsService.CalculateReadTime(article.ContentSummary + article.BodyPreview + article.BodyGated);
+        int readTime = _utilsService.CalculateReadTime(article.BodyPreview + article.BodyGated);
 
         if (!string.IsNullOrEmpty(userId))
         {
