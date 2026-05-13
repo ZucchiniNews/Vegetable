@@ -10,20 +10,20 @@
 {
     var featured = Model.FeaturedArticle;
 
-     <a href="/article/@featured.Slug">
-    <section class="featured-hero" style="background-image: url('@featured.Cover?.OriginalUrl')">
+     <a href="/article/@featured.Article.Slug">
+        <section class="featured-hero" style="background-image: url('@featured.Article.Cover?.OriginalUrl')">
         <div class="featured-overlay">
             <div class="featured-content">
                 <span class="badge badge-featured">Featured</span>
-                @if (featured.Category != null)
+                    @if (featured.Article.Category != null)
                 {
-                    <span class="badge badge-category">@featured.Category.Name.ToUpper()</span>
+                        <span class="badge badge-category">@featured.Article.Category.Name.ToUpper()</span>
                 }
-                <h1 class="featured-title">@featured.Title</h1>
-                <p class="featured-excerpt">@featured.ContentSummary</p>
+                    <h1 class="featured-title">@featured.Article.Title</h1>
+                    <p class="featured-excerpt">@featured.Article.ContentSummary</p>
                 <div class="featured-meta">
-                    <span>📅 @featured.PublishedAt.ToString("MMM d, yyyy")</span>
-                    <span>🕐 @featured.ReadingTimeMinutes min read</span>
+                        <span>📅 @featured.Article.PublishedAt.ToString("MMM d, yyyy")</span>
+                        <span>🕐 @featured.ReadTimeMin min read</span>
                 </div>
             </div>
         </div>
@@ -42,18 +42,18 @@
         <div class="editors-grid">
             @foreach (var article in Model.EditorsChoiceArticles)
             {
-                <a href="/article/@article.Slug" class="editor-card">
+                <a href="/article/@article.Article.Slug" class="editor-card">
                     <div class="editor-card-image">
-                        <img src="@article.Cover?.DisplayUrl" alt="@article.Title" />
+                        <img src="@article.Article.Cover?.DisplayUrl" alt="@article.Article.Title" />
                         <span class="badge badge-editors-pick">Editor's Pick</span>
                     </div>
                     <div class="editor-card-body">
-                        <span class="card-category">@article.Category?.Name.ToUpper()</span>
-                        <h3 class="card-title">@article.Title</h3>
-                        <p class="card-excerpt">@(article.ContentSummary.Length > 80 ? (article.ContentSummary[..80] + "..." ) : article.ContentSummary)</p>
+                        <span class="card-category">@article.Article.Category?.Name.ToUpper()</span>
+                        <h3 class="card-title">@article.Article.Title</h3>
+                        <p class="card-excerpt">@(article.Article.ContentSummary.Length > 80 ? (article.Article.ContentSummary[..80] + "...") : article.Article.ContentSummary)</p>
                         <div class="card-meta">
-                            <span>📅 @article.PublishedAt.ToString("MMM d, yyyy")</span>
-                            <span>🕐 @article.ReadingTimeMinutes min read</span>
+                            <span>📅 @article.Article.PublishedAt.ToString("MMM d, yyyy")</span>
+                            <span>🕐 @article.ReadTimeMin min read</span>
                         </div>
                     </div>
                 </a>

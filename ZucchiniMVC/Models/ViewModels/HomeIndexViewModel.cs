@@ -4,7 +4,7 @@ namespace Zucchinimvc.Models.ViewModels;
 
 public class HomeIndexViewModel
 {
-    public Article? FeaturedArticle { get; set; }
-    public IEnumerable<Article> LatestArticles { get; set; } = [];
-    public IEnumerable<Article> EditorsChoiceArticles { get; set; } = [];
+    public ArticleCardViewModel? FeaturedArticle { get; set; }
+    public IEnumerable<ArticleCardViewModel> LatestArticles { get; set; } = [];
+    public IEnumerable<ArticleCardViewModel> EditorsChoiceArticles { get; set; } = [];
 }
