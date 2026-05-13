@@ -20,20 +20,20 @@ public class SendNewsLetter
     }
 
     [Function(nameof(SendNewsLetter))]
-    public async Task Run([QueueTrigger("newsletterqueue", Connection = "AzureWebJobsStorage")] QueueMessage message, CancellationToken cancellationToken)
+    public async Task Run([QueueTrigger("newsletterqueue", Connection = "AzureWebJobsStorage")] QueueMessage message)
     {
-        _logger.LogInformation("C# Queue trigger function processed: {messageText}", message.MessageText, cancellationToken);
+        _logger.LogInformation("C# Queue trigger function processed: {messageText}", message.MessageText);
         var newsletterMessage = JsonSerializer.Deserialize<NewsLetterQueueMessage>(message.MessageText);
         if (newsletterMessage is null)
         {
             _logger.LogError("Newsletter queue message payload was invalid.");
             throw new InvalidOperationException("Newsletter queue message payload was invalid.");
         }
-        await _sender.SendNewsLetterEmailAsync(
-             newsletterMessage.Email,
-             newsletterMessage.Subject,
-             newsletterMessage.HtmlBody,
-             cancellationToken).ConfigureAwait(false);
+        //await _sender.SendNewsLetterEmailAsync(
+        //     newsletterMessage.Email,
+        //     newsletterMessage.Subject,
+        //     newsletterMessage.HtmlBody,
+        //     cancellationToken).ConfigureAwait(false);
 
 
     }

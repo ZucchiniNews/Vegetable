@@ -11,6 +11,11 @@
       "type": "appInsights",
       "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING",
       "dynamicId": null
+    },
+    "storage2": {
+      "type": "storage",
+      "connectionId": "QueueStorage",
+      "dynamicId": null
     }
   }
 }
