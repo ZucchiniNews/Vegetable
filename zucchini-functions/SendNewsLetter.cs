@@ -20,7 +20,7 @@ public class SendNewsLetter
     }
 
     [Function(nameof(SendNewsLetter))]
-    public async Task Run([QueueTrigger("newsletterqueue", Connection = "AzureWebJobsStorage")] QueueMessage message)
+    public async Task Run([QueueTrigger("newsletterqueue", Connection = "StorageConnection")] QueueMessage message)
     {
         _logger.LogInformation("C# Queue trigger function processed: {messageText}", message.MessageText);
         var newsletterMessage = JsonSerializer.Deserialize<NewsLetterQueueMessage>(message.MessageText);

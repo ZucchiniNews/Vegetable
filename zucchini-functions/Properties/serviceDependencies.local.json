@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "storage1": {
-      "type": "storage.emulator",
-      "connectionId": "AzureWebJobsStorage"
-    },
-    "secrets1": {
-      "type": "secrets.user"
-    },
     "appInsights1": {
       "secretStore": "LocalSecretsFile",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/microsoft.insights/components/newsletter-insights",
@@ -14,10 +7,13 @@
       "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING",
       "dynamicId": null
     },
-    "storage2": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "storage1": {
       "secretStore": "LocalSecretsFile",
       "type": "storage.emulator",
-      "connectionId": "QueueStorage",
+      "connectionId": "StorageConnection",
       "dynamicId": null
     }
   }
