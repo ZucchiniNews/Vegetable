@@ -7,11 +7,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>zucchini_functions</RootNamespace>
+    <ApplicationInsightsResourceId>/subscriptions/f6c79cfc-dcff-4cec-8cc0-8cbbd35495fa/resourceGroups/Gr25-17RG/providers/microsoft.insights/components/newsletter-insights</ApplicationInsightsResourceId>
+    <UserSecretsId>50bdca4f-e41b-40f4-bd9b-61d1c9c1fa85</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Azure.Identity" Version="1.17.1" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.26.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.52.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.1.0" />
