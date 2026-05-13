@@ -21,4 +21,9 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+    <ItemGroup>
+    <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
+    <ProjectReference Include="..\ZucchiniMVC\Zucchinimvc.csproj" />
+  </ItemGroup>
+
 </Project>

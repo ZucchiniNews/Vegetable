@@ -6,6 +6,7 @@ namespace ZucchiniMVC.E2ETests;
 public class ArticleTests : ZucchiniPageTest
 {
     [Test]
+    [Category("ReadOnly")]
     public async Task FreeArticle_IsAccessibleToGuest()
     {
         await Page.GotoAsync($"{BaseUrl}/Article/free-article");
@@ -13,6 +14,7 @@ public class ArticleTests : ZucchiniPageTest
     }
 
     [Test]
+    [Category("ReadOnly")]
     public async Task PremiumArticle_IsNotAccessibleToGuest()
     {
         await Page.GotoAsync($"{BaseUrl}/Article/Nicotine-Promise-Cognitive-ADHD-informational-neurodevelopmental");
@@ -21,11 +23,12 @@ public class ArticleTests : ZucchiniPageTest
     }
 
     [Test]
+    [Category("ReadOnly")]
     public async Task PremiumArticle_ShowsPaywall_ForAuthenticatedUserWithoutSubscription()
     {
         await Page.GotoAsync($"{BaseUrl}/Identity/Account/Login");
-        await Page.GetByLabel("Email").FillAsync("testuser@zucchinews.com");
-        await Page.GetByLabel("Password").FillAsync("TestPassword123!");
+        await Page.Locator("#Input_Email").FillAsync("testuser@zucchinews.com");
+        await Page.Locator("#Input_Password").FillAsync("TestPassword123!");
         await Page.ClickAsync("button[type='submit']");
         await Page.GotoAsync($"{BaseUrl}/Article/Nicotine-Promise-Cognitive-ADHD-informational-neurodevelopmental");
         await Expect(Page).ToHaveTitleAsync(new Regex("ZucchiniNews"));
@@ -33,11 +36,12 @@ public class ArticleTests : ZucchiniPageTest
     }
 
     [Test]
+    [Category("ReadOnly")]
     public async Task PremiumArticle_IsAccessibleToAuthenticatedUserWithSubscription()
     {
         await Page.GotoAsync($"{BaseUrl}/Identity/Account/Login");
-        await Page.GetByLabel("Email").FillAsync("testuser1@zucchinews.com");
-        await Page.GetByLabel("Password").FillAsync("TestPassword123!");
+        await Page.Locator("#Input_Email").FillAsync("testuser1@zucchinews.com");
+        await Page.Locator("#Input_Password").FillAsync("TestPassword123!");
         await Page.ClickAsync("button[type='submit']");
         await Page.GotoAsync($"{BaseUrl}/Article/Nicotine-Promise-Cognitive-ADHD-informational-neurodevelopmental");
         await Expect(Page).ToHaveTitleAsync(new Regex("ZucchiniNews"));
@@ -45,6 +49,7 @@ public class ArticleTests : ZucchiniPageTest
     }
 
     [Test]
+    [Category("ReadOnly")]
     public async Task ArticleView_DisplaysViewCount()
     {
         await Page.GotoAsync($"{BaseUrl}/Article/free-article");
@@ -55,6 +60,7 @@ public class ArticleTests : ZucchiniPageTest
     }
 
     [Test]
+    [Category("ReadOnly")]
     public async Task InvalidArticleSlug_ShowsNotFound()
     {
         // will break if we either add slug or add custom 404 page
