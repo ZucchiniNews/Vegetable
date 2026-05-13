@@ -20,7 +20,7 @@ public class SendNewsLetter
     }
 
     [Function(nameof(SendNewsLetter))]
-    public async Task Run([QueueTrigger("newsletterqueue", Connection = "DefaultEndpointsProtocol=https;AccountName=zucchinibag;AccountKey=xwYp4c5ZhlGo+G+m29aHrgjmIYLhhDrKIrMKPZJaGcRTPM6ZZXoiFBdeco:vzhfANY4YzMtAOfMj+AStpXm1IA==;EndpointSuffix=core.windows.net")] QueueMessage message, CancellationToken cancellationToken)
+    public async Task Run([QueueTrigger("newsletterqueue", Connection = "")] QueueMessage message, CancellationToken cancellationToken)
     {
         _logger.LogInformation("C# Queue trigger function processed: {messageText}", message.MessageText, cancellationToken);
         var newsletterMessage = JsonSerializer.Deserialize<NewsLetterQueueMessage>(message.MessageText);
