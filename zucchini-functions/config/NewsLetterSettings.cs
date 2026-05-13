@@ -1,6 +1,6 @@
-﻿namespace Zucchinimvc.Infrastructure.Config
+﻿namespace zucchini_functions.Config
 {
-    public class NewsLetterEmailSettings
+    public class NewsLetterSettings
     {
         public string ApiKey { get; set; } = string.Empty;
         public string FromEmail { get; set; } = string.Empty;
