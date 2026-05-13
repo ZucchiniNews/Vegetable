@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZucchiniBackgroundJobs", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZucchiniCore", "..\ZucchiniCore\ZucchiniCore.csproj", "{C4096242-DBA1-9244-6F81-0F17FA63A975}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zucchini-functions", "..\zucchini-functions\zucchini-functions.csproj", "{617D5CF4-D654-F8F1-1D54-E8F6522FDB37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C4096242-DBA1-9244-6F81-0F17FA63A975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4096242-DBA1-9244-6F81-0F17FA63A975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4096242-DBA1-9244-6F81-0F17FA63A975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{617D5CF4-D654-F8F1-1D54-E8F6522FDB37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{617D5CF4-D654-F8F1-1D54-E8F6522FDB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{617D5CF4-D654-F8F1-1D54-E8F6522FDB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{617D5CF4-D654-F8F1-1D54-E8F6522FDB37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
