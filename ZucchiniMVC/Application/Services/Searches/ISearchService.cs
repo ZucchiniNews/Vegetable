@@ -1,6 +1,6 @@
 using Zucchinimvc.Models.DTOs.SearchDTOs;
 
-namespace Zucchinimvc.Infrastructure.Services
+namespace Zucchinimvc.Application.Services.Searches
 {
     public interface ISearchService
     {

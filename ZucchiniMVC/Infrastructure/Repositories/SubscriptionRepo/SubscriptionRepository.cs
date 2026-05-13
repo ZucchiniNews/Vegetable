@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.Data;
 

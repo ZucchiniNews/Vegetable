@@ -1,4 +1,4 @@
-using ZucchiniCore.Entities;
+using ZucchiniCore.enums;
 namespace Zucchinimvc.Models.DTOs.Analytic;
 
 public class AnalyticsEventDto

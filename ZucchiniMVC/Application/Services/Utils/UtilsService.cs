@@ -4,7 +4,7 @@ using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 
-namespace Zucchinimvc.Application.Services.Articles;
+namespace Zucchinimvc.Application.Services.Utils;
 
 public class UtilsService : IUtilsService
 {

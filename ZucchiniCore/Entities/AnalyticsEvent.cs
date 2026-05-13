@@ -1,3 +1,5 @@
+using ZucchiniCore.enums;
+
 namespace ZucchiniCore.Entities;
 
 public class AnalyticsEvent

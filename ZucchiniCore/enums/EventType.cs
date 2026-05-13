@@ -1,4 +1,4 @@
-namespace ZucchiniCore.Entities;
+namespace ZucchiniCore.enums;
 
 public enum EventType
 {

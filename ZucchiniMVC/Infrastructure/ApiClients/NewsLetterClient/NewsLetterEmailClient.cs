@@ -2,7 +2,7 @@
 using Resend;
 using Zucchinimvc.Infrastructure.Config;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient
+namespace Zucchinimvc.Infrastructure.ApiClients.NewsLetterClient
 {
     public class NewsLetterEmailClient
     {

@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Application.Services.Articles;
+﻿namespace Zucchinimvc.Application.Services.Utils;
 
 public interface IUtilsService
 {

@@ -1,6 +1,6 @@
 using ZucchiniCore.Entities;
 
-namespace Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo
+namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
 {
     public interface ISubscriptionRepository
     {

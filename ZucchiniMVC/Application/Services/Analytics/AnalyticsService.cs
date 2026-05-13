@@ -1,8 +1,8 @@
 using Azure.Monitor.Query;
 using Azure.Core;
-using ZucchiniCore.Entities;
 using Zucchinimvc.Models.DTOs.Analytic;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
+using ZucchiniCore.enums;
 
 namespace Zucchinimvc.Application.Services.Analytics;
 

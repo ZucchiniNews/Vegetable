@@ -5,7 +5,7 @@ using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.Subscriptions;
-using Zucchinimvc.Application.Services.Users;
+using Zucchinimvc.Application.Services.UsersService;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;

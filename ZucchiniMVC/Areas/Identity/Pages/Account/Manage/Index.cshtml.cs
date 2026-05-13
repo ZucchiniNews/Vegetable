@@ -1,6 +1,5 @@
 #nullable disable
 
-using Application.Services.NewsLetter;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
-using Zucchinimvc.Application.Services.Users;
+using Zucchinimvc.Application.Services.UsersService;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
 {

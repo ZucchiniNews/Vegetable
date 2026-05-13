@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Zucchinimvc.Application.Services.Users;
+using Zucchinimvc.Application.Services.UsersService;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.ViewComponents;

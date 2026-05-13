@@ -1,8 +1,7 @@
-
-using Zucchinimvc.Infrastructure.ApiClients.NewsLetterEmailClient;
+using Zucchinimvc.Infrastructure.ApiClients.NewsLetterClient;
 using ZucchiniMVC.Application.Services.NewsLetter;
 
-namespace Application.Services.NewsLetter
+namespace Zucchinimvc.Application.Services.NewsLetter
 {
     public class NewsLetterService : INewsLetterService
     {

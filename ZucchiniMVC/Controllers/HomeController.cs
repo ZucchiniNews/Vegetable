@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
-using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Models.ViewModels;
-using ZucchiniCore.Entities;
+using ZucchiniCore.enums;
+using Zucchinimvc.Application.Services.Utils;
 
 namespace Zucchinimvc.Controllers;
 
