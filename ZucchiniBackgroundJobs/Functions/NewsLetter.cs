@@ -13,7 +13,7 @@ public class NewsLetter
         _logger = logger;
     }
 
-    [Function(nameof(NewsLetter))]
+    [Function("NewsLetter")]
     public void Run([QueueTrigger("newsletterqueue", Connection = "AzureStorage")] QueueMessage message)
     {
         _logger.LogInformation("C# Queue trigger function processed: {messageText}", message.MessageText);
