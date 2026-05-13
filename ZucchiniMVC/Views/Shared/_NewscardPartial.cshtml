@@ -1,18 +1,18 @@
-﻿@using ZucchiniCore.Entities
-@model Article
+﻿@using Zucchinimvc.Models.ViewModels
+@model ArticleCardViewModel
 
 <article class="news-card">
-    <a asp-controller="Home" asp-action="Article" asp-route-slug="@Model.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
-        <img src="@Model.Cover?.DisplayUrl" alt="@Model.Title" />
+    <a asp-controller="Home" asp-action="Article" asp-route-slug="@Model.Article.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
+        <img src="@Model.Article.Cover?.DisplayUrl" alt="@Model.Article.Title" />
 
         <div class="news-card-body">
-            <span class="news-tag light">@Model.Category?.Name</span>
+            <span class="news-tag light">@Model.Article.Category?.Name</span>
 
-            <h3>@Model.Title</h3>
+            <h3>@Model.Article.Title</h3>
 
             <div class="news-meta">
-                <span>@Model.PublishedAt.ToString("MMMM dd, yyyy")</span>
-                <span>@Model.ReadingTimeMinutes min read</span>
+                <span>@Model.Article.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                <span>@Model.ReadTimeMin min read</span>
             </div>
         </div>
     </a>
