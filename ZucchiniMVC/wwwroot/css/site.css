@@ -50,10 +50,13 @@ body {
 /* ============================= */
 
 .news-header {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(12px);
+    z-index: 1030;
     background-color: #ffffff;
     border-bottom: 1px solid #e5e5e5;
     width: 100%;
-    z-index: 1000;
 }
 
 .news-navbar {
@@ -115,15 +118,16 @@ body {
     padding: 0;
 }
 
-.news-nav-links .nav-link {
-    color: #111 !important;
-    font-weight: 500;
-    padding: 8px 15px !important;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s ease-in-out;
-    white-space: nowrap;
-}
+    .news-nav-links .nav-link {
+        color: #111 !important;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 0.45rem 0.9rem !important;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        transition: all 0.2s ease-in-out;
+        white-space: nowrap;
+    }
 
 .news-nav-links .nav-link:hover {
     color: #777 !important;
