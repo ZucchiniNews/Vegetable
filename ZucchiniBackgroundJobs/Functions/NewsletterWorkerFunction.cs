@@ -3,6 +3,7 @@ using System.Text.Json;
 using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using ZucchiniMVC.Application.Services.NewsLetter;
 
+
 namespace ZucchiniBackgroundJobs.Functions
 {
     public class NewsletterWorkerFunction
@@ -15,7 +16,7 @@ namespace ZucchiniBackgroundJobs.Functions
             _sender = sender;
         }
 
-        [Function("NewsletterWorker")]
+        [Function(nameof(NewsletterWorkerFunction))]
         public async Task Run(
             [QueueTrigger("newsletterqueue", Connection = "AzureStorage")]
             string messageJson,

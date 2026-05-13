@@ -1,4 +1,3 @@
-using Application.Services.NewsLetter;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Resend;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Application.Services.NewsLetter;
 using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
