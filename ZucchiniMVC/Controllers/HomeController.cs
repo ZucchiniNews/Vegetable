@@ -68,7 +68,8 @@ public class HomeController : Controller
             IsLikedByCurrentUser = isLiked,
             IsSubscribed = isActiveSubscription,
             Category = article.Category ?? throw new InvalidOperationException($"Article '{slug}' has no category assigned."),
-            ViewCount = viewCount
+            ViewCount = viewCount,
+            ReadTimeMin = _utilsService.CalculateReadTime(article.ContentSummary + article.BodyPreview + article.BodyGated)
         });
     }
 
