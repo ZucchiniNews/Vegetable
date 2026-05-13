@@ -50,10 +50,9 @@ public class ZucchiniPageTest : PageTest
     public void SkipwriteTestsOnProd()
     {
         var isProduction = Environment.GetEnvironmentVariable("TEST_ENV") == "azure";
-        var isWriteTest = TestContext.CurrentContext.Test.Properties
-            .ContainsKey("Category") && 
-            TestContext.CurrentContext.Test.Properties["Category"]
-                .Contains("WriteOnly");
+        var properties = TestContext.CurrentContext.Test.Properties;
+        var isWriteTest = properties.TryGet("Category", out var categories) &&
+            categories.Contains("WriteOnly");
 
         if (isProduction && isWriteTest)
         {
