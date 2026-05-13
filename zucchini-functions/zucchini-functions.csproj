@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>zucchini_functions</RootNamespace>
-    <ApplicationInsightsResourceId>/subscriptions/f6c79cfc-dcff-4cec-8cc0-8cbbd35495fa/resourceGroups/Gr25-17RG/providers/microsoft.insights/components/newsletter-insights</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/f6c79cfc-dcff-4cec-8cc0-8cbbd35495fa/resourceGroups/gr25-17rg/providers/microsoft.insights/components/newsletter</ApplicationInsightsResourceId>
     <UserSecretsId>50bdca4f-e41b-40f4-bd9b-61d1c9c1fa85</UserSecretsId>
   </PropertyGroup>
 
@@ -26,7 +26,6 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.7" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="5.2.1" />
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.13.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
