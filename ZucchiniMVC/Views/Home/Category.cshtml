@@ -1,15 +1,15 @@
-﻿@using ZucchiniCore.Entities
-@model IEnumerable<Article>
+﻿@using Zucchinimvc.Models.ViewModels
+@model IEnumerable<ArticleCardViewModel>
 
 @{
-    ViewData["Title"] = Model.FirstOrDefault()?.Category?.Name ?? "Articles";
+    ViewData["Title"] = Model.FirstOrDefault()?.Article.Category?.Name ?? "Articles";
 }
 
 <section class="latest-news-section">
     <div class="section-header" style="margin-bottom: 24px;">
         <h2 class="section-title">
-            @(Model.FirstOrDefault()?.Category?.Name != null
-        ? $"Latest {Model.First().Category!.Name} News"
+            @(Model.FirstOrDefault()?.Article.Category?.Name != null
+        ? $"Latest {Model.First().Article.Category!.Name} News"
         : "Oops!")
         </h2>
     </div>

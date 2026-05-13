@@ -90,7 +90,13 @@ public class HomeController : Controller
     public async Task<IActionResult> Category(string slug)
     {
         var articles = await _cmsService.GetArticlesByCategory(slug);
-        return View("Category", articles);
+        var viewModels = articles.Select(a => new ArticleCardViewModel
+        {
+            Article = a,
+            ReadTimeMin = _utilsService.CalculateReadTime(a.BodyPreview + a.BodyGated)
+        }).ToList();
+
+        return View("Category", viewModels);
     }
 
     public class LikeRequest { public int ArticleId { get; set; } }
