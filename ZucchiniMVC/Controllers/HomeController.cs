@@ -33,9 +33,21 @@ public class HomeController : Controller
 
         return View(new HomeIndexViewModel
         {
-            EditorsChoiceArticles = editorsChoice,
-            FeaturedArticle = featured,
-            LatestArticles = latest
+            FeaturedArticle = featured == null ? null : new ArticleCardViewModel
+            {
+                Article = featured,
+                ReadTimeMin = _utilsService.CalculateReadTime(featured.BodyPreview + featured.BodyGated)
+            },
+            EditorsChoiceArticles = editorsChoice.Select(a => new ArticleCardViewModel
+            {
+                Article = a,
+                ReadTimeMin = _utilsService.CalculateReadTime(a.BodyPreview + a.BodyGated)
+            }).ToList(),
+            LatestArticles = latest.Select(a => new ArticleCardViewModel
+            {
+                Article = a,
+                ReadTimeMin = _utilsService.CalculateReadTime(a.BodyPreview + a.BodyGated)
+            }).ToList()
         });
     }
 
@@ -53,6 +65,7 @@ public class HomeController : Controller
         var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
         var isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
         var viewCount = await _analyticsService.GetArticleViewCountAsync(article.Slug);
+        int readTime = _utilsService.CalculateReadTime(article.BodyPreview + article.BodyGated);
 
         if (!string.IsNullOrEmpty(userId))
         {
@@ -68,7 +81,8 @@ public class HomeController : Controller
             IsLikedByCurrentUser = isLiked,
             IsSubscribed = isActiveSubscription,
             Category = article.Category ?? throw new InvalidOperationException($"Article '{slug}' has no category assigned."),
-            ViewCount = viewCount
+            ViewCount = viewCount,
+            ReadTimeMin = readTime
         });
     }
 
