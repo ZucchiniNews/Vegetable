@@ -3,6 +3,7 @@ using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Zucchinimvc.Application.Services.Weather;
 
@@ -10,16 +11,27 @@ public class WeatherService : IWeatherService
 {
     private readonly IWeatherRepository _weatherRepo;
     private readonly IHistoryRepository<WeatherHistoryEntity> _historyRepo;
-
-    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo)
+    private readonly IMemoryCache _cache; 
+    private readonly ILogger<WeatherService> _logger;
+    public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo, IMemoryCache cache, ILogger<WeatherService> logger)
     {
         _weatherRepo = weatherRepo;
         _historyRepo = historyRepo;
+        _cache = cache;
+        _logger = logger;
     }
 
     public async Task<WeatherViewModel?> GetWeatherByCityAsync(string city)
     {
         if (string.IsNullOrWhiteSpace(city)) return null;
+
+        var cacheKey = $"Weather_{city.Trim().ToLowerInvariant()}";
+
+        if (_cache.TryGetValue(cacheKey, out WeatherViewModel? cached))
+        {
+            _logger.LogInformation("Cache hit for {City}", city); 
+            return cached;
+        }
 
         var location = await _weatherRepo.GetCoordinatesAsync(city);
         if (location == null) return null;
@@ -27,7 +39,16 @@ public class WeatherService : IWeatherService
         var weather = await _weatherRepo.GetWeatherAsync(location.Lat, location.Lon);
         if (weather?.Main == null) return null;
 
-        return MapToViewModel(city, weather);
+        var viewModel = MapToViewModel(city, weather);
+
+        _cache.Set(cacheKey, viewModel, new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+            SlidingExpiration = TimeSpan.FromMinutes(3)
+        });
+
+        _logger.LogInformation("Cache set for {City}", city);
+        return viewModel;
     }
 
     public async Task SaveWeatherHistoryAsync(WeatherViewModel model)
@@ -67,6 +88,14 @@ public class WeatherService : IWeatherService
     public async Task<WeatherViewModel?> GetWeatherAnalyticsAsync(string city)
     {
         var targetCity = string.IsNullOrWhiteSpace(city) ? "Linköping" : city;
+
+        var cacheKey = $"weather_analytics_{targetCity.Trim().ToLowerInvariant()}";
+
+        if (_cache.TryGetValue(cacheKey, out WeatherViewModel? cached))
+        {
+            _logger.LogInformation("Cache hit analytics for {City}", targetCity);
+            return cached;
+        }
         var weather = await GetWeatherByCityAsync(targetCity);
 
         if (weather == null) return null;
@@ -86,6 +115,12 @@ public class WeatherService : IWeatherService
             });
         }
 
+        _cache.Set(cacheKey, weather, new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+        });
+
+        _logger.LogInformation("Cache set analytics for {City}", targetCity); 
         return weather;
     }
 
