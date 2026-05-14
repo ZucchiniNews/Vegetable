@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Stripe;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Infrastructure.Config;
 
@@ -17,7 +16,6 @@ public class StripeWebhookController : ControllerBase
     public StripeWebhookController(
         ILogger<StripeWebhookController> logger,
         ISubscriptionService subscriptionService,
-        IAnalyticsService analyticsService,
         IOptions<StripeSettings> stripeOptions)
     {
         _logger = logger;
