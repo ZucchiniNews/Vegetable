@@ -1,8 +1,8 @@
-using Azure.Monitor.Query;
 using Azure.Core;
-using Zucchinimvc.Models.DTOs.Analytic;
-using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
+using Azure.Monitor.Query;
 using ZucchiniCore.enums;
+using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
+using Zucchinimvc.Models.DTOs.Analytic;
 
 namespace Zucchinimvc.Application.Services.Analytics;
 
@@ -22,7 +22,7 @@ public class AnalyticsService : IAnalyticsService
 
     public async Task TrackAsync(EventType eventType, string resourceId, string? userId = null)
     {
-         var dto = new AnalyticsEventDto
+        var dto = new AnalyticsEventDto
         {
             EventType = eventType,
             ResourceId = resourceId,
@@ -48,7 +48,7 @@ public class AnalyticsService : IAnalyticsService
             QueryTimeRange.All
         );
 
-         var topArticlesQuery = $@"
+        var topArticlesQuery = $@"
             customEvents
             | where timestamp >= ago(30d)
             | where name == 'ArticleView'
@@ -66,12 +66,12 @@ public class AnalyticsService : IAnalyticsService
         var row = table.Rows.FirstOrDefault();
         var topArticles = topArticlesResponse.Value.Table.Rows
             .Select(row => new TopArticleDto
-        {
-            ResourceId = (string)row["ResourceId"],
-            ViewCount = (int)(long)row["ViewCount"]
-        })
+            {
+                ResourceId = (string)row["ResourceId"],
+                ViewCount = (int)(long)row["ViewCount"]
+            })
         .ToList();
-        
+
         return new AnalyticsSummaryDto
         {
             Views = row != null ? (int)(long)row["TotalRequests"] : 0,

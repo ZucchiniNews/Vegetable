@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using System.Net;
 using System.Text.Json;
-using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.Config;
-using Zucchinimvc.Models.DTOs.CurrencyDTOs;
 
 namespace Zucchinimvc.Infrastructure.ApiClients.CurrencyClient
 {

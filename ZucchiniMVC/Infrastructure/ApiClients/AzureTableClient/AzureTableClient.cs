@@ -1,5 +1,4 @@
 ﻿using Azure.Data.Tables;
-using Microsoft.Extensions.Configuration;
 
 namespace Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 

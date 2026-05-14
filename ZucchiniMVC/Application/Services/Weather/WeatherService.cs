@@ -1,9 +1,9 @@
-﻿using ZucchiniCore.Entities;
+﻿using Microsoft.Extensions.Caching.Memory;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Zucchinimvc.Application.Services.Weather;
 
@@ -11,7 +11,7 @@ public class WeatherService : IWeatherService
 {
     private readonly IWeatherRepository _weatherRepo;
     private readonly IHistoryRepository<WeatherHistoryEntity> _historyRepo;
-    private readonly IMemoryCache _cache; 
+    private readonly IMemoryCache _cache;
     private readonly ILogger<WeatherService> _logger;
     public WeatherService(IWeatherRepository weatherRepo, IHistoryRepository<WeatherHistoryEntity> historyRepo, IMemoryCache cache, ILogger<WeatherService> logger)
     {
@@ -29,7 +29,7 @@ public class WeatherService : IWeatherService
 
         if (_cache.TryGetValue(cacheKey, out WeatherViewModel? cached))
         {
-            _logger.LogInformation("Cache hit for {City}", city); 
+            _logger.LogInformation("Cache hit for {City}", city);
             return cached;
         }
 
@@ -120,7 +120,7 @@ public class WeatherService : IWeatherService
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
         });
 
-        _logger.LogInformation("Cache set analytics for {City}", targetCity); 
+        _logger.LogInformation("Cache set analytics for {City}", targetCity);
         return weather;
     }
 

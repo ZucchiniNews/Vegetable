@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Zucchinimvc.Application.Services.UsersService;
+﻿using Zucchinimvc.Application.Services.UsersService;
 
 namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
 {

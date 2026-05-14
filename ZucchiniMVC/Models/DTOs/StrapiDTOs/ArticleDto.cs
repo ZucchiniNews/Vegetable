@@ -25,7 +25,7 @@ public class CoverDto
 
 public class CoverFormatsDto
 {
-    public CoverFormatDto? Thumbnail { get; set;}
+    public CoverFormatDto? Thumbnail { get; set; }
 }
 
 public class CoverFormatDto

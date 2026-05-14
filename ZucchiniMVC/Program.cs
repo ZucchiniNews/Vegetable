@@ -1,5 +1,3 @@
-extern alias azid;
-using Azure.Monitor.Query;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +18,7 @@ using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
+using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
@@ -87,7 +86,7 @@ builder.Services.AddHttpClient<CurrencyClient>(client =>
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
-builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
+builder.Services.AddSingleton<LogQueryClient>();
 
 
 
