@@ -7,9 +7,7 @@ using Resend;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
 var builder = FunctionsApplication.CreateBuilder(args);
-
 builder.ConfigureFunctionsWebApplication();
-
 builder.Services.AddTransient<AzureStorageQueue>();
 
 
@@ -17,7 +15,8 @@ builder.Services.AddTransient(sp =>
 {
     var connectionString =
         builder.Configuration["AzureWebJobsStorage"];
-    return new QueueClient(connectionString, "newsletterqueue");
+    var QueueName = builder.Configuration["QueueName"]!;
+    return new QueueClient(connectionString, QueueName);
 });
 
 
