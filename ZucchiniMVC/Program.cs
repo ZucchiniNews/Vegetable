@@ -85,8 +85,12 @@ builder.Services.AddHttpClient<CurrencyClient>(client =>
 
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<LogQueryClient>();
+builder.Services.AddSingleton(sp =>
+{
+    var logQueryClient = sp.GetRequiredService<LogQueryClient>();
+    return logQueryClient.GetClient();
+});
 
 
 
