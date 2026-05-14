@@ -3,11 +3,11 @@ using Azure.Monitor.Query;
 
 namespace Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient
 {
-    public class LogQueryClient
+    public class ZuccLogQueryClient
     {
         private readonly LogsQueryClient _client;
 
-        public LogQueryClient()
+        public ZuccLogQueryClient()
         {
             _client = new LogsQueryClient(new DefaultAzureCredential());
         }

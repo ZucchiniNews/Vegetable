@@ -74,24 +74,11 @@ builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
 builder.Services.AddSingleton<AzureStorageQueue>();
-builder.Services.AddHttpClient<WeatherClient>(client =>
-{
-    client.Timeout = TimeSpan.FromSeconds(10);
-});
-builder.Services.AddHttpClient<CurrencyClient>(client =>
-{
-    client.Timeout = TimeSpan.FromSeconds(10);
-});
-
+builder.Services.AddHttpClient<WeatherClient>();
+builder.Services.AddHttpClient<CurrencyClient>();
 builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
 builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
-builder.Services.AddSingleton<LogQueryClient>();
-builder.Services.AddSingleton(sp =>
-{
-    var logQueryClient = sp.GetRequiredService<LogQueryClient>();
-    return logQueryClient.GetClient();
-});
-
+builder.Services.AddSingleton<ZuccLogQueryClient>();
 
 
 

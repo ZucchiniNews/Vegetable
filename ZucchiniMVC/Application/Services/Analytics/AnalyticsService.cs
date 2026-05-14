@@ -2,6 +2,7 @@ using Azure.Core;
 using Azure.Monitor.Query;
 using ZucchiniCore.enums;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
+using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
 using Zucchinimvc.Models.DTOs.Analytic;
 
 namespace Zucchinimvc.Application.Services.Analytics;
@@ -11,10 +12,10 @@ public class AnalyticsService : IAnalyticsService
     private readonly IAzureInsightClient _InsightClient;
     private readonly LogsQueryClient _logsQueryClient;
     private readonly string _resourceId;
-    public AnalyticsService(IAzureInsightClient InsightClient, LogsQueryClient logsQueryClient, IConfiguration configuration)
+    public AnalyticsService(IAzureInsightClient InsightClient, ZuccLogQueryClient logsQueryClient, IConfiguration configuration)
     {
         _InsightClient = InsightClient;
-        _logsQueryClient = logsQueryClient;
+        _logsQueryClient = logsQueryClient.GetClient();
         _resourceId = configuration["ApplicationInsights:ResourceId"]
             ?? throw new InvalidOperationException(
                 "ApplicationInsights:ResourceId configuration is missing.");
