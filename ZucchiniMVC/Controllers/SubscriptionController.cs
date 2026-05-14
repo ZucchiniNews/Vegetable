@@ -95,15 +95,22 @@ public class SubscriptionController : Controller
 
         if (subscribe)
         {
-            var message = new NewsLetterQueueMessage
+            if (string.IsNullOrWhiteSpace(user.Email))
             {
-                Email = user.Email!,
-                Subject = "Welcome to our Newsletter!",
-                HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
-            };
+                TempData["StatusMessage"] = "Newsletter subscription enabled, but no welcome email was queued because your account does not have an email address.";
+            }
+            else
+            {
+                var message = new NewsLetterQueueMessage
+                {
+                    Email = user.Email,
+                    Subject = "Welcome to our Newsletter!",
+                    HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
+                };
 
-            await _newsLetterQueuePublisher.PublishAsync(message, HttpContext.RequestAborted);
-            TempData["StatusMessage"] = "Newsletter subscription enabled. A welcome email has been queued.";
+                await _newsLetterQueuePublisher.PublishAsync(message, HttpContext.RequestAborted);
+                TempData["StatusMessage"] = "Newsletter subscription enabled. A welcome email has been queued.";
+            }
         }
         else
         {
