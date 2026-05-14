@@ -72,6 +72,7 @@ public class SubscriptionController : Controller
 
     [Authorize]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangeNewsletter(bool subscribe)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
