@@ -1,4 +1,6 @@
 ﻿using Azure.Storage.Queues;
+using Microsoft.Extensions.Options;
+using Zucchinimvc.Infrastructure.Config;
 
 namespace Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
@@ -6,20 +8,30 @@ public class AzureStorageQueue
 {
     private readonly QueueClient _queueClient;
 
-    public AzureStorageQueue(QueueClient queueClient)
+    public AzureStorageQueue(IOptions<QueueSettings> options)
     {
-        _queueClient = queueClient;
+        var settings = options.Value;
+
+        ArgumentException.ThrowIfNullOrWhiteSpace(settings.ConnectionString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(settings.QueueName);
+
+        _queueClient = new QueueClient(
+            settings.ConnectionString,
+            settings.QueueName);
     }
 
-    public async Task SendMessageAsync(string message, CancellationToken cancellationToken)
+    public async Task SendMessageAsync(
+        string message,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        if (!await _queueClient.ExistsAsync(cancellationToken).ConfigureAwait(false))
-        {
-            await _queueClient.CreateIfNotExistsAsync().ConfigureAwait(false);
-        }
+        await _queueClient.CreateIfNotExistsAsync(
+            cancellationToken: cancellationToken);
 
-        await _queueClient.SendMessageAsync(message, cancellationToken).ConfigureAwait(false);
+        await _queueClient.SendMessageAsync(
+            message,
+            cancellationToken);
+
     }
 }

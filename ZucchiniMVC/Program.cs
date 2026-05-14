@@ -1,12 +1,9 @@
 extern alias azid;
 using Azure.Monitor.Query;
-using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.CMS;
@@ -27,6 +24,7 @@ using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
+using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
@@ -54,7 +52,7 @@ builder.Services.AddScoped<LayoutDataFilter>();
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.AddService<LayoutDataFilter>();
-}); 
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -73,36 +71,26 @@ builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("Sea
 builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueSettings"));
 
 // Http Clients (Typed)
+builder.Services.AddHttpClient<CmsClient>();
+builder.Services.AddScoped<CheckoutStripeClient>();
+builder.Services.AddSingleton<ZucchiniSearchClient>();
+builder.Services.AddSingleton<AzureStorageQueue>();
 builder.Services.AddHttpClient<WeatherClient>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(10);
 });
-builder.Services.AddHttpClient<CmsClient>();
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
-builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
-builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
 builder.Services.AddHttpClient<CurrencyClient>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(10);
 });
-builder.Services.AddScoped<CheckoutStripeClient>();
-builder.Services.AddSingleton<ZucchiniSearchClient>();
 
-// Repositories
-builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-builder.Services.AddScoped<ICmsRepository, CmsRepository>();
-builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
-builder.Services.AddScoped<IPlanRepository, PlanRepository>();
-builder.Services.AddScoped<IBillingRepository, BillingRepository>();
-builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
-builder.Services.AddScoped<ISearchRepository, SearchRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
-{
-    var queueSettings = sp.GetRequiredService<IOptions<QueueSettings>>().Value;
-    return new QueueClient(queueSettings.ConnectionString, "newsletterqueue");
-});
-builder.Services.AddSingleton<AzureStorageQueue>();
+builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
+builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
+builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
+builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
+
+
+
 
 
 
@@ -125,7 +113,6 @@ builder.Services.AddTransient<INewsLetterQueuePublisher, AzureStorageQueueNewLet
 
 
 // Repositories
-
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
@@ -143,7 +130,6 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
 // Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddApplicationInsightsTelemetry();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -157,7 +143,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapStaticAssets();
 app.MapRazorPages();
 app.MapControllerRoute(
