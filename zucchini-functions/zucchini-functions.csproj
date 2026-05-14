@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>zucchini_functions</RootNamespace>
+    <ApplicationInsightsResourceId>/subscriptions/f6c79cfc-dcff-4cec-8cc0-8cbbd35495fa/resourceGroups/gr25-17rg/providers/microsoft.insights/components/newsletter</ApplicationInsightsResourceId>
+    <UserSecretsId>50bdca4f-e41b-40f4-bd9b-61d1c9c1fa85</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.52.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" Version="6.8.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.13.1" />
+    <PackageReference Include="Resend" Version="0.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
+    <ProjectReference Include="..\ZucchiniMVC\Zucchinimvc.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,66 +1,58 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <NoWarn>$(NoWarn);NU1902</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<NoWarn>$(NoWarn);NU1902</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Models\Currency\**" />
-    <Compile Remove="Repositories\**" />
-    <Content Remove="Models\Currency\**" />
-    <Content Remove="Repositories\**" />
-    <EmbeddedResource Remove="Models\Currency\**" />
-    <EmbeddedResource Remove="Repositories\**" />
-    <None Remove="Models\Currency\**" />
-    <None Remove="Repositories\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
+		<Compile Remove="Models\Currency\**" />
+		<Compile Remove="Repositories\**" />
 
-  <ItemGroup>
-    <Compile Remove="Controllers\CmsController.cs" />
-    <Compile Remove="Models\DTOs\StrapiDTOs\ArticleRawDto.cs" />
-  </ItemGroup>
+		<Content Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
+		<Content Remove="Models\Currency\**" />
+		<Content Remove="Repositories\**" />
 
-  <ItemGroup>
-    <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
-    <PackageReference Include="Azure.Monitor.Query" Version="1.7.1" />
-    <PackageReference Include="Azure.ResourceManager" Version="1.14.0" />
-    <PackageReference Include="Azure.Search.Documents" Version="12.0.0" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.27.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="NuGet.Packaging" Version="7.3.1" />
-    <PackageReference Include="NuGet.Protocol" Version="7.3.1" />
-    <PackageReference Include="Stripe.net" Version="51.1.0" />
-    <!-- Explicit Azure packages to avoid duplicate-type conflicts -->
-    <PackageReference Include="Azure.Core" Version="1.54.0" />
-    <PackageReference Include="Azure.Identity" Version="1.14.2">
-      <Aliases>azid</Aliases>
-    </PackageReference>
-  </ItemGroup>
+		<EmbeddedResource Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
+		<EmbeddedResource Remove="Models\Currency\**" />
+		<EmbeddedResource Remove="Repositories\**" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
-  </ItemGroup>
+		<None Remove="Infrastructure\Repositories\EmailNewsLetterRepo\**" />
+		<None Remove="Models\Currency\**" />
+		<None Remove="Repositories\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\Repositories\SearchRepo\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Controllers\CmsController.cs" />
+		<Compile Remove="Models\DTOs\StrapiDTOs\ArticleRawDto.cs" />
+	</ItemGroup>
+
+	<!-- Main dependencies -->
+	<ItemGroup>
+		<PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
+		<PackageReference Include="Azure.Search.Documents" Version="12.0.0" />
+		<PackageReference Include="Azure.Storage.Queues" Version="12.25.0" />
+
+		<!-- FIXED Azure SDK alignment -->
+		<PackageReference Include="Azure.Core" Version="1.54.0" />
+		<PackageReference Include="Azure.Identity" Version="1.21.0" />
+		<PackageReference Include="Azure.Monitor.Query" Version="1.7.1" />
+
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
+		<PackageReference Include="Stripe.net" Version="51.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Infrastructure\Repositories\SearchRepo\" />
+	</ItemGroup>
 
 </Project>

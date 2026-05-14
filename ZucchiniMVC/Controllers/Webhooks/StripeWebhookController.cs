@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Stripe;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Infrastructure.Config;
 
@@ -12,18 +11,15 @@ public class StripeWebhookController : ControllerBase
 {
     private readonly ILogger<StripeWebhookController> _logger;
     private readonly ISubscriptionService _subscriptionService;
-    private readonly IAnalyticsService _analyticsService;
     private readonly string _webhookSecret;
 
     public StripeWebhookController(
         ILogger<StripeWebhookController> logger,
         ISubscriptionService subscriptionService,
-        IAnalyticsService analyticsService,
         IOptions<StripeSettings> stripeOptions)
     {
         _logger = logger;
         _subscriptionService = subscriptionService;
-        _analyticsService = analyticsService;
         _webhookSecret = stripeOptions.Value.WebhookSecret;
     }
     public async Task<IActionResult> StripeWebhook()
@@ -78,7 +74,6 @@ public class StripeWebhookController : ControllerBase
                         _logger.LogWarning(
                             "invoice.paid missing required data. SubId: {SubId}, UserId: {UserId}",
                             providerSubscriptionId, userId);
-
                         return Ok();
                     }
 
@@ -91,7 +86,6 @@ public class StripeWebhookController : ControllerBase
                         {
                             existing.Status = SubscriptionStatus.Active;
                             await _subscriptionService.UpdateSubscriptionAsync(existing);
-                            await _analyticsService.TrackAsync(EventType.SubscriptionStarted, existing!.PlanId ?? "unknown", existing.UserId);
                         }
 
                         return Ok();
@@ -108,8 +102,7 @@ public class StripeWebhookController : ControllerBase
                     };
 
                     await _subscriptionService.CreateSubscriptionAsync(subscription);
-                    await _analyticsService.TrackAsync(EventType.SubscriptionStarted, planId ?? "unknown", userId);
-                    
+
                     break;
                 }
         }

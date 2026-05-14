@@ -36,7 +36,6 @@ builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
 // 5. Services
-builder.Services.AddHttpClient<WeatherService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 

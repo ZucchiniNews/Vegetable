@@ -1,8 +1,9 @@
-using Azure.Monitor.Query;
 using Azure.Core;
-using ZucchiniCore.Entities;
-using Zucchinimvc.Models.DTOs.Analytic;
+using Azure.Monitor.Query;
+using ZucchiniCore.enums;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
+using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
+using Zucchinimvc.Models.DTOs.Analytic;
 
 namespace Zucchinimvc.Application.Services.Analytics;
 
@@ -11,10 +12,10 @@ public class AnalyticsService : IAnalyticsService
     private readonly IAzureInsightClient _InsightClient;
     private readonly LogsQueryClient _logsQueryClient;
     private readonly string _resourceId;
-    public AnalyticsService(IAzureInsightClient InsightClient, LogsQueryClient logsQueryClient, IConfiguration configuration)
+    public AnalyticsService(IAzureInsightClient InsightClient, ZuccLogQueryClient logsQueryClient, IConfiguration configuration)
     {
         _InsightClient = InsightClient;
-        _logsQueryClient = logsQueryClient;
+        _logsQueryClient = logsQueryClient.GetClient();
         _resourceId = configuration["ApplicationInsights:ResourceId"]
             ?? throw new InvalidOperationException(
                 "ApplicationInsights:ResourceId configuration is missing.");
@@ -22,7 +23,7 @@ public class AnalyticsService : IAnalyticsService
 
     public async Task TrackAsync(EventType eventType, string resourceId, string? userId = null)
     {
-         var dto = new AnalyticsEventDto
+        var dto = new AnalyticsEventDto
         {
             EventType = eventType,
             ResourceId = resourceId,
@@ -48,7 +49,7 @@ public class AnalyticsService : IAnalyticsService
             QueryTimeRange.All
         );
 
-         var topArticlesQuery = $@"
+        var topArticlesQuery = $@"
             customEvents
             | where timestamp >= ago(30d)
             | where name == 'ArticleView'
@@ -66,12 +67,12 @@ public class AnalyticsService : IAnalyticsService
         var row = table.Rows.FirstOrDefault();
         var topArticles = topArticlesResponse.Value.Table.Rows
             .Select(row => new TopArticleDto
-        {
-            ResourceId = (string)row["ResourceId"],
-            ViewCount = (int)(long)row["ViewCount"]
-        })
+            {
+                ResourceId = (string)row["ResourceId"],
+                ViewCount = (int)(long)row["ViewCount"]
+            })
         .ToList();
-        
+
         return new AnalyticsSummaryDto
         {
             Views = row != null ? (int)(long)row["TotalRequests"] : 0,

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Zucchinimvc.Application.Services.CMS;
 

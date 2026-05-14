@@ -1,4 +1,4 @@
-using ZucchiniCore.Entities;
+using ZucchiniCore.enums;
 using Zucchinimvc.Models.DTOs.Analytic;
 
 namespace Zucchinimvc.Application.Services.Analytics;

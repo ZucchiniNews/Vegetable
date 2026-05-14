@@ -1,6 +1,6 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System.Globalization;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Zucchinimvc.Application.Services.Currency
 {

@@ -1,5 +1,5 @@
-using Zucchinimvc.Models.DTOs.Analytic;
 using Microsoft.ApplicationInsights;
+using Zucchinimvc.Models.DTOs.Analytic;
 
 namespace Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient
 {

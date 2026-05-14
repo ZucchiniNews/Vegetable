@@ -1,6 +1,4 @@
-﻿using ZucchiniCore.Entities;
-
-namespace Zucchinimvc.Models.ViewModels;
+﻿namespace Zucchinimvc.Models.ViewModels;
 
 public class HomeIndexViewModel
 {

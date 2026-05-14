@@ -1,28 +1,29 @@
-extern alias azid;
-using Azure.Monitor.Query;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Application.Services.Analytics;
-using Zucchinimvc.Application.Services.Articles;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.CMS;
 using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Plans;
+using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
+using Zucchinimvc.Application.Services.Searches;
 using Zucchinimvc.Application.Services.Subscriptions;
-using Zucchinimvc.Application.Services.Users;
+using Zucchinimvc.Application.Services.UsersService;
+using Zucchinimvc.Application.Services.Utils;
 using Zucchinimvc.Application.Services.Weather;
-using Zucchinimvc.Infrastrcture.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
+using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
+using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
-using Zucchinimvc.Infrastructure.ApiClients.ZucchiniSearchClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
+using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
@@ -33,7 +34,6 @@ using Zucchinimvc.Infrastructure.Repositories.PlanRepo;
 using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
-using Zucchinimvc.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +51,7 @@ builder.Services.AddScoped<LayoutDataFilter>();
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.AddService<LayoutDataFilter>();
-}); 
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -67,22 +67,40 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueSettings"));
 
 // Http Clients (Typed)
-builder.Services.AddHttpClient<WeatherClient>(client =>
-{
-    client.Timeout = TimeSpan.FromSeconds(10);
-});
 builder.Services.AddHttpClient<CmsClient>();
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
-builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
-builder.Services.AddSingleton(new LogsQueryClient(new azid::Azure.Identity.DefaultAzureCredential()));
-builder.Services.AddHttpClient<CurrencyClient>(client =>
-{
-    client.Timeout = TimeSpan.FromSeconds(10);
-});
 builder.Services.AddScoped<CheckoutStripeClient>();
 builder.Services.AddSingleton<ZucchiniSearchClient>();
+builder.Services.AddSingleton<AzureStorageQueue>();
+builder.Services.AddHttpClient<WeatherClient>();
+builder.Services.AddHttpClient<CurrencyClient>();
+builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
+builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
+builder.Services.AddSingleton<ZuccLogQueryClient>();
+
+
+
+
+
+// Services
+builder.Services.AddScoped<IUtilsService, UtilsService>();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddScoped<ICmsService, CmsService>();
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPlanService, PlanService>();
+builder.Services.AddScoped<IBillingService, BillingService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<INewsLetterQueuePublisher, AzureStorageQueueNewLetterPublisher>();
+
+
 
 // Repositories
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
@@ -99,28 +117,9 @@ builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
     var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
     return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
 });
-
-// Services
-builder.Services.AddScoped<IUtilsService, UtilsService>();
-builder.Services.AddScoped<IWeatherService, WeatherService>();
-builder.Services.AddScoped<ICmsService, CmsService>();
-builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPlanService, PlanService>();
-builder.Services.AddScoped<IBillingService, BillingService>();
-builder.Services.AddScoped<ISearchService, SearchService>();
-builder.Services.AddScoped<ICurrencyService, CurrencyService>();
-builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
-
-// Email Services
-builder.Services.AddTransient<IEmailService, EmailService>();
-builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
-builder.Services.AddTransient<IEmailSender, EmailSender>();
-
 // Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddApplicationInsightsTelemetry();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -134,7 +133,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapStaticAssets();
 app.MapRazorPages();
 app.MapControllerRoute(

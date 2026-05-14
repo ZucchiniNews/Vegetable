@@ -1,9 +1,9 @@
-using ZucchiniCore.Entities;
-using Zucchinimvc.Models.DTOs.Analytic;
-using Zucchinimvc.Application.Services.Analytics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ZucchiniCore.Entities;
+using ZucchiniCore.enums;
+using Zucchinimvc.Application.Services.Analytics;
 
 namespace Zucchinimvc.Controllers;
 
@@ -28,7 +28,7 @@ public class AnalyticsController : Controller
 
         return View(summary);
     }
-    
+
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> TrackEvent(string eventType, string resourceId)
     {

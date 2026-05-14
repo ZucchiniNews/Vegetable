@@ -2,7 +2,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Zucchinimvc.Application.Services.Weather;
 
-namespace ZucchiniBackgroundJobs.Functions;
+
+namespace ZucchiniBackgroundJobs;
 
 public class WeatherJob
 {
@@ -32,9 +33,17 @@ public class WeatherJob
                     _logger.LogInformation("Saved history for {City}", city);
                 }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-                _logger.LogError(ex, "Error processing weather for {City}", city);
+                _logger.LogError(ex, "HTTP error processing weather for {City}", city);
+            }
+            catch (TaskCanceledException) when (myTimer.ScheduleStatus is null)
+            {
+                throw;
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "Operation error processing weather for {City}", city);
             }
         }
     }

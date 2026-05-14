@@ -1,9 +1,6 @@
 ﻿using global::Zucchinimvc.Application.Services.Currency;
 using global::Zucchinimvc.Application.Services.Weather;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Zucchinimvc.Application.Services.CMS;
-using Zucchinimvc.Application.Services.Currency;
-using Zucchinimvc.Application.Services.Weather;
 
 namespace Zucchinimvc.Infrastructure.ApiFilter;
 

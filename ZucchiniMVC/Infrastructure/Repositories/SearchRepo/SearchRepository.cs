@@ -1,6 +1,6 @@
 ﻿
 using Azure.Search.Documents;
-using Zucchinimvc.Infrastructure.ApiClients.ZucchiniSearchClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
 using Zucchinimvc.Models.DTOs.SearchDTOs;
 
 namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
