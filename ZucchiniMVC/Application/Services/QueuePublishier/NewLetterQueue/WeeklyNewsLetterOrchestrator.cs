@@ -1,4 +1,5 @@
-﻿using Zucchinimvc.Application.Services.UsersService;
+﻿using System.Linq;
+using Zucchinimvc.Application.Services.UsersService;
 
 namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
 {
@@ -16,14 +17,15 @@ namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
         public async Task PublishWeeklyNewsLetterAsync(CancellationToken cancellationToken)
         {
             var users = await _userService.GetNewsletterSubscribersAsync().ConfigureAwait(false);
-            foreach (var user in users)
+            var messages = users.Select(user => new NewsLetterQueueMessage
             {
-                var message = new NewsLetterQueueMessage
-                {
-                    Email = user.Email,
-                    Subject = "Weekly Newsletter",
-                    HtmlBody = "<h1>Welcome to our Weekly Newsletter!</h1><p>Here are the latest updates...</p>"
-                };
+                Email = user.Email,
+                Subject = "Weekly Newsletter",
+                HtmlBody = "<h1>Welcome to our Weekly Newsletter!</h1><p>Here are the latest updates...</p>"
+            });
+
+            foreach (var message in messages)
+            {
                 await _newsLetterQueuePublisher.PublishAsync(message, cancellationToken).ConfigureAwait(false);
             }
         }
