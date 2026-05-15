@@ -53,8 +53,4 @@ builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddScoped(typeof(IHistoryRepository<>), typeof(HistoryRepository<>));
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
-
-
-
-
 builder.Build().Run();
