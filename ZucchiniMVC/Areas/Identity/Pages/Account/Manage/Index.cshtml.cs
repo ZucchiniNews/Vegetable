@@ -21,7 +21,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         private readonly ILogger<IndexModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IUserService _userService;
-        private readonly INewsLetterQueuePublisher _newsLetterQueuePublisher;
+        private readonly IAzureStorageQueueNewLetterPublisher _newsLetterQueuePublisher;
 
 
         public IndexModel(
@@ -30,7 +30,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         ILogger<IndexModel> logger,
         IEmailSender emailSender,
         IUserService userService,
-        INewsLetterQueuePublisher newsLetterQueuePublisher)
+        IAzureStorageQueueNewLetterPublisher newsLetterQueuePublisher)
         {
             _userManager = userManager;
             _signInManager = signInManager;

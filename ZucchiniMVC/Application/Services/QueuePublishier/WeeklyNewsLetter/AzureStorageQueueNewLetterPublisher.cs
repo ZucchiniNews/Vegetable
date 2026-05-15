@@ -6,7 +6,7 @@ using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
 namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
 {
-    public class AzureStorageQueueNewLetterPublisher : INewsLetterQueuePublisher
+    public class AzureStorageQueueNewLetterPublisher : IAzureStorageQueueNewLetterPublisher
     {
         private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web);
         private readonly ZucchiniQueueClient _zucchiniQueueClient;

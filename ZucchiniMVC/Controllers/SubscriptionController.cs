@@ -17,7 +17,7 @@ public class SubscriptionController : Controller
     private readonly IBillingService _billingService;
     private readonly ISubscriptionService _subscriptionService;
     private readonly IUserService _userService;
-    private readonly INewsLetterQueuePublisher _newsLetterQueuePublisher;
+    private readonly IAzureStorageQueueNewLetterPublisher _newsLetterQueuePublisher;
 
 
     public SubscriptionController(
@@ -25,7 +25,7 @@ public class SubscriptionController : Controller
         IBillingService billingService,
         ISubscriptionService subscriptionService,
         IUserService userService,
-        INewsLetterQueuePublisher newsLetterQueuePublisher)
+        IAzureStorageQueueNewLetterPublisher newsLetterQueuePublisher)
     {
         _planService = planService;
         _billingService = billingService;

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Resend;
 using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.UsersService;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
@@ -37,6 +38,7 @@ builder.Services.AddOptions<ResendClientOptions>()
 builder.Services.AddTransient<IResend, ResendClient>();
 builder.Services.AddTransient<QueueClient>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAzureStorageQueueNewLetterPublisher, AzureStorageQueueNewLetterPublisher>();
 
 
 

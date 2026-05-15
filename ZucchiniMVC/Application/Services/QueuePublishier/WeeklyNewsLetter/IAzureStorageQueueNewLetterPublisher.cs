@@ -2,7 +2,7 @@
 
 namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
 {
-    public interface INewsLetterQueuePublisher
+    public interface IAzureStorageQueueNewLetterPublisher
     {
         Task PublishAsync(NewsLetterQueueMessage message, CancellationToken cancellationToken);
     }

@@ -1,24 +1,24 @@
-using Azure.Storage.Queues;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.UsersService;
 
 public class WeeklyNewsLetterQueuePublisher
 {
     private readonly ILogger _logger;
-    private readonly QueueClient _queueClient;
+    private readonly AzureStorageQueueNewLetterPublisher _azureStorageQueueNewLetterPublisher;
     private readonly IUserService _userService;
 
 
     public WeeklyNewsLetterQueuePublisher(
         ILoggerFactory loggerFactory,
-        QueueClient queueClient,
+        AzureStorageQueueNewLetterPublisher azureStorageQueueNewLetterPublisher,
         IUserService userService)
     {
         _logger = loggerFactory.CreateLogger<WeeklyNewsLetterQueuePublisher>();
-        _queueClient = queueClient;
+        _azureStorageQueueNewLetterPublisher = azureStorageQueueNewLetterPublisher;
         _userService = userService;
     }
 
@@ -43,10 +43,10 @@ public class WeeklyNewsLetterQueuePublisher
 
             var json = JsonSerializer.Serialize(message);
 
-            await _queueClient.SendMessageAsync(json);
+            await _azureStorageQueueNewLetterPublisher.PublishAsync(message, CancellationToken.None);
 
             _logger.LogInformation(
-                "Queued newsletter for {email}",
+                "Queued weekly newsletter for {email}",
                 user.Email);
         }
     }
