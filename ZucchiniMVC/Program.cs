@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Billing;
@@ -30,6 +29,7 @@ using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
+using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.PlanRepo;
 using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
@@ -112,7 +112,7 @@ builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<ISearchRepository, SearchRepository>();
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+builder.Services.AddScoped(typeof(IHistoryRepository<>), typeof(HistoryRepository<>));
 // Logger
 
 var app = builder.Build();

@@ -1,7 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +10,7 @@ using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
+using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 var builder = FunctionsApplication.CreateBuilder(args);
@@ -43,7 +43,7 @@ builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 // 6. Repository Registration
 
 
-builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+builder.Services.AddScoped(typeof(IHistoryRepository<>), typeof(HistoryRepository<>));
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
 builder.Build().Run();
