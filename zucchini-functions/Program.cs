@@ -8,28 +8,31 @@ using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.UsersService;
 
 var builder = FunctionsApplication.CreateBuilder(args);
+
 builder.ConfigureFunctionsWebApplication();
 
 builder.Services.AddTransient(sp =>
 {
     var connectionString =
         builder.Configuration["AzureWebJobsStorage"];
-    var QueueName = builder.Configuration["QueueName"]!;
-    return new QueueClient(connectionString, QueueName);
+
+    var queueName =
+        builder.Configuration["QueueName"]!;
+
+    return new QueueClient(connectionString, queueName);
 });
+
 builder.Services.AddHttpClient();
+
 builder.Services.AddOptions<ResendClientOptions>()
     .Configure<IConfiguration>((options, configuration) =>
     {
-        options.ApiToken =
-            configuration["ApiToken"]!;
+        options.ApiToken = configuration["ApiToken"]!;
     });
 
-
 builder.Services.AddTransient<IResend, ResendClient>();
-builder.Services.AddTransient<QueueClient>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IWeeklyNewsLetterPublisher, WeeklyNewsLetterPublisher>();
-
 
 builder.Build().Run();
