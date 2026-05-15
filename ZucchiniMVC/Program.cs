@@ -10,6 +10,7 @@ using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Plans;
+using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.QueuePublishier.WelcomeQueue;
 using Zucchinimvc.Application.Services.Searches;
 using Zucchinimvc.Application.Services.Subscriptions;
@@ -69,6 +70,7 @@ builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Str
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeQueueSettings"));
+builder.Services.Configure<NewLetterQueueSettings>(builder.Configuration.GetSection("NewLetterQueueSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
@@ -81,19 +83,24 @@ builder.Services.AddScoped<IAzureTableClient, AzureTableClient>();
 builder.Services.AddScoped<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddScoped<ZuccLogQueryClient>();
 
-
-
-builder.Services.AddScoped(sp =>
+builder.Services.AddScoped<IWelcomeToNewsLetterPublisher>(sp =>
 {
     var options = sp.GetRequiredService<IOptions<WelcomeQueueSettings>>();
-
     var settings = options.Value;
+    var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
+    return new WelcomeToNewsLetterPublisher(queueClient);
+}
 
-    return new ZucchiniQueueClient(
-        settings.ConnectionString,
-        settings.QueueName);
+    );
+
+builder.Services.AddScoped<IWeeklyNewsLetterPublisher>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<NewLetterQueueSettings>>();
+    var settings = options.Value;
+    var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
+    return new WeeklyNewsLetterPublisher(queueClient);
 });
-builder.Services.AddScoped<IWelcomeQueuePublisher, AzureStorageQueueWelcomePublisher>();
+
 
 
 // Services

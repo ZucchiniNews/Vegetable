@@ -4,15 +4,15 @@ using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
 namespace Zucchinimvc.Application.Services.QueuePublishier.WelcomeQueue;
 
-public class AzureStorageQueueWelcomePublisher
-    : IWelcomeQueuePublisher
+public class WelcomeToNewsLetterPublisher
+    : IWelcomeToNewsLetterPublisher
 {
     private readonly ZucchiniQueueClient _queue;
 
     private static readonly JsonSerializerOptions SerializerOptions =
         new(JsonSerializerDefaults.Web);
 
-    public AzureStorageQueueWelcomePublisher(
+    public WelcomeToNewsLetterPublisher(
         ZucchiniQueueClient queue)
     {
         _queue = queue;

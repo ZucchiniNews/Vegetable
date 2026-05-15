@@ -38,7 +38,7 @@ builder.Services.AddOptions<ResendClientOptions>()
 builder.Services.AddTransient<IResend, ResendClient>();
 builder.Services.AddTransient<QueueClient>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAzureStorageQueueNewLetterPublisher, AzureStorageQueueNewLetterPublisher>();
+builder.Services.AddScoped<IWeeklyNewsLetterPublisher, WeeklyNewsLetterPublisher>();
 
 
 

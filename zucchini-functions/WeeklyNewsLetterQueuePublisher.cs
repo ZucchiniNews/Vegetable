@@ -8,13 +8,13 @@ using Zucchinimvc.Application.Services.UsersService;
 public class WeeklyNewsLetterQueuePublisher
 {
     private readonly ILogger _logger;
-    private readonly AzureStorageQueueNewLetterPublisher _azureStorageQueueNewLetterPublisher;
+    private readonly WeeklyNewsLetterPublisher _azureStorageQueueNewLetterPublisher;
     private readonly IUserService _userService;
 
 
     public WeeklyNewsLetterQueuePublisher(
         ILoggerFactory loggerFactory,
-        AzureStorageQueueNewLetterPublisher azureStorageQueueNewLetterPublisher,
+        WeeklyNewsLetterPublisher azureStorageQueueNewLetterPublisher,
         IUserService userService)
     {
         _logger = loggerFactory.CreateLogger<WeeklyNewsLetterQueuePublisher>();
