@@ -4,7 +4,7 @@ using System.Security.Claims;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
+using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.UsersService;
 using Zucchinimvc.Models.ViewModels;
@@ -17,7 +17,7 @@ public class SubscriptionController : Controller
     private readonly IBillingService _billingService;
     private readonly ISubscriptionService _subscriptionService;
     private readonly IUserService _userService;
-    private readonly IWeeklyNewsLetterPublisher _newsLetterQueuePublisher;
+    private readonly IWelcomeToNewsLetterPublisher _welcomeToNewsLetterPublisher;
 
 
     public SubscriptionController(
@@ -25,13 +25,13 @@ public class SubscriptionController : Controller
         IBillingService billingService,
         ISubscriptionService subscriptionService,
         IUserService userService,
-        IWeeklyNewsLetterPublisher newsLetterQueuePublisher)
+        IWelcomeToNewsLetterPublisher welcomeToNewsLetterPublisher)
     {
         _planService = planService;
         _billingService = billingService;
         _subscriptionService = subscriptionService;
         _userService = userService;
-        _newsLetterQueuePublisher = newsLetterQueuePublisher;
+        _welcomeToNewsLetterPublisher = welcomeToNewsLetterPublisher;
 
     }
 
@@ -109,7 +109,7 @@ public class SubscriptionController : Controller
                     HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
                 };
 
-                await _newsLetterQueuePublisher.PublishAsync(message, HttpContext.RequestAborted);
+                await _welcomeToNewsLetterPublisher.PublishAsync(message, HttpContext.RequestAborted);
                 TempData["StatusMessage"] = "Newsletter subscription enabled. A welcome email has been queued.";
             }
         }

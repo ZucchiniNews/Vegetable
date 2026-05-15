@@ -1,6 +1,6 @@
 ﻿using ZucchiniCore.Entities;
 
-namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
+namespace Zucchinimvc.Application.Services.QueuePublishie.WelcomeToNewsLetterEmail
 {
     public interface IWeeklyNewsLetterPublisher
     {

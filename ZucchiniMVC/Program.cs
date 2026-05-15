@@ -10,8 +10,10 @@ using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
-using Zucchinimvc.Application.Services.QueuePublishier.WelcomeQueue;
+using Zucchinimvc.Application.Services.QueuePublishie.WelcomeToNewsLetterEmail;
+using Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail;
+using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterEmail;
+using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher;
 using Zucchinimvc.Application.Services.Searches;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.UsersService;
@@ -69,8 +71,8 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
-builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeQueueSettings"));
-builder.Services.Configure<NewLetterQueueSettings>(builder.Configuration.GetSection("NewLetterQueueSettings"));
+builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeEmailQueueSettings"));
+builder.Services.Configure<WeeklyNewsLetterQueueSettings>(builder.Configuration.GetSection("WeeklyNewsLetterQueueSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
@@ -83,19 +85,17 @@ builder.Services.AddScoped<IAzureTableClient, AzureTableClient>();
 builder.Services.AddScoped<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddScoped<ZuccLogQueryClient>();
 
-builder.Services.AddScoped<IWelcomeToNewsLetterPublisher>(sp =>
+builder.Services.AddTransient<IWelcomeToNewsLetterPublisher>(sp =>
 {
     var options = sp.GetRequiredService<IOptions<WelcomeQueueSettings>>();
     var settings = options.Value;
     var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
     return new WelcomeToNewsLetterPublisher(queueClient);
-}
+});
 
-    );
-
-builder.Services.AddScoped<IWeeklyNewsLetterPublisher>(sp =>
+builder.Services.AddTransient<IWeeklyNewsLetterPublisher>(sp =>
 {
-    var options = sp.GetRequiredService<IOptions<NewLetterQueueSettings>>();
+    var options = sp.GetRequiredService<IOptions<WeeklyNewsLetterQueueSettings>>();
     var settings = options.Value;
     var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
     return new WeeklyNewsLetterPublisher(queueClient);

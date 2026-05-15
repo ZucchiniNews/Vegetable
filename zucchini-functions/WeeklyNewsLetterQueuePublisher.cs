@@ -2,7 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
+using Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail;
 using Zucchinimvc.Application.Services.UsersService;
 
 public class WeeklyNewsLetterQueuePublisher

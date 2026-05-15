@@ -1,8 +1,9 @@
 ﻿using System.Text.Json;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
-namespace Zucchinimvc.Application.Services.QueuePublishier.WelcomeQueue;
+namespace Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterEmail;
 
 public class WelcomeToNewsLetterPublisher
     : IWelcomeToNewsLetterPublisher

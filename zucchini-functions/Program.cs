@@ -4,7 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Resend;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
+using Zucchinimvc.Application.Services.QueuePublishie.WelcomeToNewsLetterEmail;
+using Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail;
 using Zucchinimvc.Application.Services.UsersService;
 
 var builder = FunctionsApplication.CreateBuilder(args);

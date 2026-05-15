@@ -1,10 +1,11 @@
 ﻿
 using System.Text.Json;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.QueuePublishie.WelcomeToNewsLetterEmail;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
 
-namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
+namespace Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail
 {
     public class WeeklyNewsLetterPublisher : IWeeklyNewsLetterPublisher
     {
