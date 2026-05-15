@@ -9,7 +9,6 @@ using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.UsersService;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
-using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
@@ -18,8 +17,6 @@ using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 builder.ConfigureFunctionsWebApplication();
-builder.Services.AddTransient<AzureStorageQueue>();
-
 
 builder.Services.AddTransient(sp =>
 {
@@ -35,7 +32,10 @@ builder.Services.AddOptions<ResendClientOptions>()
         options.ApiToken =
             configuration["ApiToken"]!;
     });
+
+
 builder.Services.AddTransient<IResend, ResendClient>();
+builder.Services.AddTransient<QueueClient>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 

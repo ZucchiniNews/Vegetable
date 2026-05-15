@@ -18,7 +18,7 @@ public class SendWelcomForSubscribers
 
     [Function(nameof(SendWelcomForSubscribers))]
     public async Task Run(
-    [QueueTrigger("newsletterqueue", Connection = "AzureWebJobsStorage")]
+    [QueueTrigger("wellcome-newsletterqueue", Connection = "AzureWebJobsStorage")]
     string message)
     {
         try
