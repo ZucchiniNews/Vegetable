@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Resend;
 using Zucchinimvc.Application.Services.Logger;
+using Zucchinimvc.Application.Services.UsersService;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
@@ -35,6 +36,7 @@ builder.Services.AddOptions<ResendClientOptions>()
             configuration["ApiToken"]!;
     });
 builder.Services.AddTransient<IResend, ResendClient>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 
