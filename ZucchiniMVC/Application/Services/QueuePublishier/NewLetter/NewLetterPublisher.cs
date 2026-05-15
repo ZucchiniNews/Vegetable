@@ -1,5 +1,6 @@
 ﻿
 using System.Text.Json;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
 

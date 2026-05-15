@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
+﻿namespace ZucchiniCore.Entities
 {
     public class NewsLetterQueueMessage
     {

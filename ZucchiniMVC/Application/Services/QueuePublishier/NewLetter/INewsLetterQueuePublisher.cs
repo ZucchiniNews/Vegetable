@@ -1,4 +1,6 @@
-﻿namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
+﻿using ZucchiniCore.Entities;
+
+namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
 {
     public interface INewsLetterQueuePublisher
     {
