@@ -39,7 +39,6 @@ builder.Services.AddTransient<IResend, ResendClient>();
 
 
 // Weather Related services and repositories would be registered here, similar to the previous example
-// 2. Database Connection (If WeatherRepository uses DB)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("WeatherApi"));

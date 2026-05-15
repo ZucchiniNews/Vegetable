@@ -7,17 +7,17 @@ using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 
 namespace zucchini_functions;
 
-public class SendNewsLetter
+public class SendWelcomForSubscribing
 {
-    private readonly ILogger<SendNewsLetter> _logger;
+    private readonly ILogger<SendWelcomForSubscribing> _logger;
     private readonly IResend _resend;
-    public SendNewsLetter(ILogger<SendNewsLetter> logger, IResend resend)
+    public SendWelcomForSubscribing(ILogger<SendWelcomForSubscribing> logger, IResend resend)
     {
         _logger = logger;
         _resend = resend;
     }
 
-    [Function(nameof(SendNewsLetter))]
+    [Function(nameof(SendWelcomForSubscribing))]
     public async Task Run(
     [QueueTrigger("newsletterqueue", Connection = "AzureWebJobsStorage")]
     string message)
