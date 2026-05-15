@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Billing;
@@ -10,6 +11,7 @@ using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
+using Zucchinimvc.Application.Services.QueuePublishier.WelcomeQueue;
 using Zucchinimvc.Application.Services.Searches;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.UsersService;
@@ -67,20 +69,37 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
-builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueSettings"));
+builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeQueueSettings"));
+builder.Services.Configure<NewLetterQueueSettings>(builder.Configuration.GetSection("NewLetterQueueSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddScoped<CheckoutStripeClient>();
-builder.Services.AddSingleton<ZucchiniSearchClient>();
-builder.Services.AddSingleton<AzureStorageQueue>();
+builder.Services.AddScoped<ZucchiniSearchClient>();
+
 builder.Services.AddHttpClient<WeatherClient>();
 builder.Services.AddHttpClient<CurrencyClient>();
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
-builder.Services.AddSingleton<IAzureInsightClient, AzureInsightClient>();
-builder.Services.AddSingleton<ZuccLogQueryClient>();
+builder.Services.AddScoped<IAzureTableClient, AzureTableClient>();
+builder.Services.AddScoped<IAzureInsightClient, AzureInsightClient>();
+builder.Services.AddScoped<ZuccLogQueryClient>();
 
+builder.Services.AddScoped<IWelcomeToNewsLetterPublisher>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<WelcomeQueueSettings>>();
+    var settings = options.Value;
+    var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
+    return new WelcomeToNewsLetterPublisher(queueClient);
+}
 
+    );
+
+builder.Services.AddScoped<IWeeklyNewsLetterPublisher>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<NewLetterQueueSettings>>();
+    var settings = options.Value;
+    var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
+    return new WeeklyNewsLetterPublisher(queueClient);
+});
 
 
 
@@ -98,7 +117,7 @@ builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IEmailSender<User>, EmailSender>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-builder.Services.AddTransient<INewsLetterQueuePublisher, AzureStorageQueueNewLetterPublisher>();
+
 
 
 
@@ -110,16 +129,11 @@ builder.Services.AddScoped<IPlanRepository, PlanRepository>();
 builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<ISearchRepository, SearchRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
-{
-    var provider = sp.GetRequiredService<IAzureTableClient>();
-    var client = provider.GetClient("ExternalApiHistory");
-    var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
-    return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
-});
-// Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddScoped(typeof(IHistoryRepository<>), typeof(HistoryRepository<>));
+// Logger
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

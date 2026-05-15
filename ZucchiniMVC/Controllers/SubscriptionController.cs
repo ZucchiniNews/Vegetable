@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
@@ -16,7 +17,7 @@ public class SubscriptionController : Controller
     private readonly IBillingService _billingService;
     private readonly ISubscriptionService _subscriptionService;
     private readonly IUserService _userService;
-    private readonly INewsLetterQueuePublisher _newsLetterQueuePublisher;
+    private readonly IWeeklyNewsLetterPublisher _newsLetterQueuePublisher;
 
 
     public SubscriptionController(
@@ -24,7 +25,7 @@ public class SubscriptionController : Controller
         IBillingService billingService,
         ISubscriptionService subscriptionService,
         IUserService userService,
-        INewsLetterQueuePublisher newsLetterQueuePublisher)
+        IWeeklyNewsLetterPublisher newsLetterQueuePublisher)
     {
         _planService = planService;
         _billingService = billingService;

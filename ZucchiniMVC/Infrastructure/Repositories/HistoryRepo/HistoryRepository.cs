@@ -1,16 +1,20 @@
-﻿
-using Azure.Data.Tables;
+﻿using Azure.Data.Tables;
+using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
+
 namespace Zucchinimvc.Infrastructure.Repositories.HistoryRepo
 {
-
-    public class HistoryRepository<T> : IHistoryRepository<T> where T : class, ITableEntity, new()
+    public class HistoryRepository<T> : IHistoryRepository<T>
+        where T : class, ITableEntity, new()
     {
         private readonly TableClient _tableClient;
         private readonly ILogger<HistoryRepository<T>> _logger;
-        public HistoryRepository(TableClient tableClient, ILogger<HistoryRepository<T>> logger)
+
+        public HistoryRepository(
+            IAzureTableClient azureTableClient,
+            ILogger<HistoryRepository<T>> logger)
         {
             _logger = logger;
-            _tableClient = tableClient;
+            _tableClient = azureTableClient.GetClient("ExternalApiHistory");
         }
 
         public async Task UpsertAsync(T entity)
@@ -21,7 +25,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.HistoryRepo
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
+                _logger.LogError(ex, $"Error upserting entity to {_tableClient.Name}");
                 throw;
             }
         }
@@ -30,23 +34,31 @@ namespace Zucchinimvc.Infrastructure.Repositories.HistoryRepo
         {
             try
             {
-                var from = DateTime.UtcNow.AddDays(-days).ToString("yyyy-MM-dd");
+                var from = DateTime.UtcNow
+                    .AddDays(-days)
+                    .ToString("yyyy-MM-dd");
+
                 var results = new List<T>();
+
                 await foreach (var entity in _tableClient.QueryAsync<T>(
-                    e => e.PartitionKey == partitionKey && e.RowKey.CompareTo(from) >= 0))
+                    e => e.PartitionKey == partitionKey &&
+                         e.RowKey.CompareTo(from) >= 0))
                 {
                     results.Add(entity);
                 }
+
                 return results;
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex.ToString());
+                _logger.LogError(ex, "Error getting daily history");
                 throw;
             }
         }
 
-        public async Task<IEnumerable<T>> GetRecentByPartitionKeyAsync(string partitionKey, int take = 50)
+        public async Task<IEnumerable<T>> GetRecentByPartitionKeyAsync(
+            string partitionKey,
+            int take = 50)
         {
             try
             {
@@ -64,7 +76,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.HistoryRepo
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex.ToString());
+                _logger.LogError(ex, "Error getting recent history");
                 throw;
             }
         }
@@ -79,14 +91,14 @@ namespace Zucchinimvc.Infrastructure.Repositories.HistoryRepo
                 {
                     results.Add(entity);
                 }
+
                 return results;
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Error fetching all entities: {ex}");
+                _logger.LogError(ex, "Error fetching all entities");
                 throw;
             }
         }
     }
-
 }

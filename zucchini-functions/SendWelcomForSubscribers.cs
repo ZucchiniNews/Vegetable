@@ -2,24 +2,23 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Resend;
 using System.Text.Json;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
-
+using ZucchiniCore.Entities;
 
 namespace zucchini_functions;
 
-public class SendNewsLetter
+public class SendWelcomForSubscribers
 {
-    private readonly ILogger<SendNewsLetter> _logger;
+    private readonly ILogger<SendWelcomForSubscribers> _logger;
     private readonly IResend _resend;
-    public SendNewsLetter(ILogger<SendNewsLetter> logger, IResend resend)
+    public SendWelcomForSubscribers(ILogger<SendWelcomForSubscribers> logger, IResend resend)
     {
         _logger = logger;
         _resend = resend;
     }
 
-    [Function(nameof(SendNewsLetter))]
+    [Function(nameof(SendWelcomForSubscribers))]
     public async Task Run(
-    [QueueTrigger("newsletterqueue", Connection = "AzureWebJobsStorage")]
+    [QueueTrigger("wellcome-newsletterqueue", Connection = "AzureWebJobsStorage")]
     string message)
     {
         try

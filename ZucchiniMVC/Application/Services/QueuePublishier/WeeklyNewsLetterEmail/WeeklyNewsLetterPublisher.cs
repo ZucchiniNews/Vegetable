@@ -1,18 +1,19 @@
 ﻿
 using System.Text.Json;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
 
 namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
 {
-    public class AzureStorageQueueNewLetterPublisher : INewsLetterQueuePublisher
+    public class WeeklyNewsLetterPublisher : IWeeklyNewsLetterPublisher
     {
         private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web);
-        private readonly AzureStorageQueue _queueClient;
+        private readonly ZucchiniQueueClient _zucchiniQueueClient;
 
-        public AzureStorageQueueNewLetterPublisher(AzureStorageQueue queueClient)
+        public WeeklyNewsLetterPublisher(ZucchiniQueueClient zucchiniQueueClient)
         {
-            _queueClient = queueClient;
+            _zucchiniQueueClient = zucchiniQueueClient;
         }
 
         public async Task PublishAsync(NewsLetterQueueMessage message, CancellationToken cancellationToken)
@@ -28,7 +29,7 @@ namespace Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue
             };
 
             var payload = JsonSerializer.Serialize(queueMessage, SerializerOptions);
-            await _queueClient.SendMessageAsync(payload, cancellationToken).ConfigureAwait(false);
+            await _zucchiniQueueClient.SendMessageAsync(payload, cancellationToken).ConfigureAwait(false);
         }
     }
 }
