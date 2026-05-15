@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Billing;
@@ -29,7 +30,6 @@ using Zucchinimvc.Infrastructure.Data;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
-using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.PlanRepo;
 using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
@@ -110,16 +110,11 @@ builder.Services.AddScoped<IPlanRepository, PlanRepository>();
 builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<ISearchRepository, SearchRepository>();
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
-{
-    var provider = sp.GetRequiredService<IAzureTableClient>();
-    var client = provider.GetClient("ExternalApiHistory");
-    var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
-    return (IHistoryRepository<WeatherHistoryEntity>)new HistoryRepository<WeatherHistoryEntity>(client, logger);
-});
-// Logger
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+// Logger
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

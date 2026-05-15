@@ -1,18 +1,16 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
-using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
 
 var builder = FunctionsApplication.CreateBuilder(args);
@@ -33,21 +31,19 @@ builder.Services.Configure<WeatherSettings>(builder.Configuration.GetSection("We
 
 // 4. Clients and Repositories
 builder.Services.AddHttpClient<WeatherClient>();
-builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
+
+
+
 
 // 5. Services
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IApiLoggerService, ApiLoggerService>();
 
-// 6. History Repository Registration
-builder.Services.AddSingleton<IAzureTableClient, AzureTableClient>();
+// 6. Repository Registration
 
-builder.Services.AddScoped<IHistoryRepository<WeatherHistoryEntity>>(sp =>
-{
-    var provider = sp.GetRequiredService<IAzureTableClient>();
-    var client = provider.GetClient("ExternalApiHistory");
-    var logger = sp.GetRequiredService<ILogger<HistoryRepository<WeatherHistoryEntity>>>();
-    return new HistoryRepository<WeatherHistoryEntity>(client, logger);
-});
+
+builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
 
 builder.Build().Run();
