@@ -6,12 +6,12 @@ using System.Net.Http.Json;
 namespace zucchini_functions.Clients.ZucchiniApiClient
 {
 
-    public class InternalUserClient : IInternalUserClient
+    public class ZucchiniClient : IZucchiniClient
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
 
-        public InternalUserClient(
+        public ZucchiniClient(
         HttpClient httpClient,
         IConfiguration configuration)
         {
@@ -21,11 +21,10 @@ namespace zucchini_functions.Clients.ZucchiniApiClient
 
         public async Task<List<NewsletterSubscriberDto>> GetSubscribedUsersAsync()
         {
-            var apiKey = _configuration["InternalApiKey"];
-
+            var apiKey = _configuration["ZucchiniInternal:ApiKey"];
             var request = new HttpRequestMessage(
             HttpMethod.Get,
-            "internal/users/subscribed");
+            "api/internal/users/subscribed");
 
             request.Headers.Add("X-API-Key", apiKey);
 

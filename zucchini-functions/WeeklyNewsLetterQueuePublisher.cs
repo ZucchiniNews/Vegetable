@@ -10,17 +10,17 @@ public class WeeklyNewsLetterQueuePublisher
 {
     private readonly ILogger _logger;
     private readonly IQueuePublisher _queuePublisher;
-    private readonly IInternalUserClient _internalUserClient;
+    private readonly IZucchiniClient _zucchiniClient;
 
     public WeeklyNewsLetterQueuePublisher(
         ILoggerFactory loggerFactory,
         IQueuePublisher queuePublisher,
-        IInternalUserClient internalUserClient
+        IZucchiniClient zucchiniClient
         )
     {
         _logger = loggerFactory.CreateLogger<WeeklyNewsLetterQueuePublisher>();
         _queuePublisher = queuePublisher;
-        _internalUserClient = internalUserClient;
+        _zucchiniClient = zucchiniClient;
     }
 
     [Function("WeeklyNewsLetterQueuePublisher")]
@@ -31,7 +31,7 @@ public class WeeklyNewsLetterQueuePublisher
             "Weekly newsletter started at: {time}",
             DateTime.UtcNow);
 
-        List<NewsletterSubscriberDto> subscribers = await _internalUserClient.GetSubscribedUsersAsync();
+        List<NewsletterSubscriberDto> subscribers = await _zucchiniClient.GetSubscribedUsersAsync();
 
         foreach (NewsletterSubscriberDto user in subscribers)
         {
