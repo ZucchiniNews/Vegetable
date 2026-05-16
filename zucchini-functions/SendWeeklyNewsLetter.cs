@@ -2,7 +2,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Resend;
 using System.Text.Json;
-using ZucchiniCore.Entities;
+using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
 
 namespace zucchini_functions;
 
@@ -27,7 +27,7 @@ public class SendWeeklyNewsLetter
             var EmailFrom = Environment.GetEnvironmentVariable("Resend:FROM_EMAIL") ?? throw new InvalidOperationException("FROM_EMAIL environment variable is not set");
 
             var newsletterMessage =
-                JsonSerializer.Deserialize<NewsLetterQueueMessage>(
+                JsonSerializer.Deserialize<NewsLetterQueueDto>(
                     message,
                     new JsonSerializerOptions
                     {

@@ -4,7 +4,7 @@ using System.Text.Json;
 using zucchini_functions.Clients.ZucchiniApiClient;
 using zucchini_functions.WeeklyNewsLetterEmail;
 using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
-using ZucchiniCore.Entities;
+
 
 public class WeeklyNewsLetterQueuePublisher
 {
@@ -35,7 +35,7 @@ public class WeeklyNewsLetterQueuePublisher
 
         foreach (NewsletterSubscriberDto user in subscribers)
         {
-            var message = new NewsLetterQueueMessage
+            var message = new NewsLetterQueueDto
             {
                 Email = user.Email!,
                 Subject = "Weekly Newsletter",

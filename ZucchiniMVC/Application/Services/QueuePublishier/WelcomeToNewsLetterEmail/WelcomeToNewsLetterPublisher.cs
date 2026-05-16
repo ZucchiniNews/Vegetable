@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using ZucchiniCore.Entities;
+using zucchiniMVC.Models.DTOs.QueuePublisherDOTs;
 using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher;
 using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
@@ -20,12 +20,12 @@ public class WelcomeToNewsLetterPublisher
     }
 
     public async Task PublishAsync(
-        NewsLetterQueueMessage message,
+        NewsLetterQueueDto message,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        var queueMessage = new NewsLetterQueueMessage
+        var queueMessage = new NewsLetterQueueDto
         {
             DeliveryId = Guid.NewGuid(),
             Email = message.Email,

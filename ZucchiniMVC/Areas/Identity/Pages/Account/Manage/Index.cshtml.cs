@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using ZucchiniCore.Entities;
+using zucchiniMVC.Models.DTOs.QueuePublisherDOTs;
 using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher;
 using Zucchinimvc.Application.Services.UsersService;
 
@@ -211,7 +212,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             if (subscribe)
             {
                 var email = await _userManager.GetEmailAsync(user);
-                var message = new NewsLetterQueueMessage
+                var message = new NewsLetterQueueDto
                 {
                     Email = email,
                     Subject = "Welcome to our Newsletter!",

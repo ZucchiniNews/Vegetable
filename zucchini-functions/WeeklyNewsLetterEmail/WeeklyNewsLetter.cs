@@ -1,7 +1,8 @@
 ﻿
 using System.Text.Json;
 using zucchini_functions.Clients.QueueClients;
-using ZucchiniCore.Entities;
+using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
+
 
 namespace zucchini_functions.WeeklyNewsLetterEmail
 {
@@ -15,11 +16,11 @@ namespace zucchini_functions.WeeklyNewsLetterEmail
             _weeklyNewsLetterQueueClient = weeklyNewsLetterQueueClient;
         }
 
-        public async Task PublishAsync(NewsLetterQueueMessage message, CancellationToken cancellationToken)
+        public async Task PublishAsync(NewsLetterQueueDto message, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(message);
 
-            var queueMessage = new NewsLetterQueueMessage
+            var queueMessage = new NewsLetterQueueDto
             {
                 DeliveryId = Guid.NewGuid(),
                 Email = message.Email,

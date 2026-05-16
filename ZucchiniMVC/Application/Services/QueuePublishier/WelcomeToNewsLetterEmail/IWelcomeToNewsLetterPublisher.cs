@@ -1,9 +1,9 @@
-﻿using ZucchiniCore.Entities;
+﻿using zucchiniMVC.Models.DTOs.QueuePublisherDOTs;
 
 namespace Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher
 {
     public interface IWelcomeToNewsLetterPublisher
     {
-        Task PublishAsync(NewsLetterQueueMessage message, CancellationToken cancellationToken);
+        Task PublishAsync(NewsLetterQueueDto message, CancellationToken cancellationToken);
     }
 }

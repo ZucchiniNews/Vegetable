@@ -1,10 +1,10 @@
-﻿using ZucchiniCore.Entities;
+﻿using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
 
 namespace zucchini_functions.WeeklyNewsLetterEmail
 {
     public interface IWeeklyNewsLetter
     {
-        Task PublishAsync(NewsLetterQueueMessage message, CancellationToken cancellationToken);
+        Task PublishAsync(NewsLetterQueueDto message, CancellationToken cancellationToken);
     }
 
 }
