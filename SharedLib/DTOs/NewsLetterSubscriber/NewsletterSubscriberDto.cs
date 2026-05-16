@@ -1,4 +1,4 @@
-﻿namespace zucchini_functions.WeeklyNewsLetterEmail.DTOs
+﻿namespace SharedLib.DTOs.NewsLetterSubscriber
 {
     public class NewsletterSubscriberDto
     {
@@ -6,7 +6,6 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-
         public bool NewsletterSubscribed { get; set; }
         public bool IsActive { get; set; }
 

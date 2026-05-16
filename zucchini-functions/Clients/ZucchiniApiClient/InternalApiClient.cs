@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using SharedLib.DTOs.NewsLetterSubscriber;
 using System.Net.Http.Json;
-using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
+
 
 namespace zucchini_functions.Clients.ZucchiniApiClient
 {

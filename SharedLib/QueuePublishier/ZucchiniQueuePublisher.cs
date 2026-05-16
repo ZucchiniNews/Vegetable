@@ -1,19 +1,18 @@
-﻿using System.Text.Json;
-using zucchiniMVC.Models.DTOs.QueuePublisherDOTs;
-using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher;
-using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
+﻿using SharedLib.Clients.QueuePublisherClient;
+using SharedLib.DTOs.QueuePublisherDOTs;
+using System.Text.Json;
 
-namespace Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterEmail;
+namespace SharedLib.QueuePublishier;
 
-public class WelcomeToNewsLetterPublisher
-    : IWelcomeToNewsLetterPublisher
+public class ZucchiniQueuePublisher
+    : IQueuePublisher
 {
     private readonly ZucchiniQueueClient _queue;
 
     private static readonly JsonSerializerOptions SerializerOptions =
         new(JsonSerializerDefaults.Web);
 
-    public WelcomeToNewsLetterPublisher(
+    public ZucchiniQueuePublisher(
         ZucchiniQueueClient queue)
     {
         _queue = queue;

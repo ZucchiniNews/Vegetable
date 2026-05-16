@@ -1,29 +1,29 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
+using SharedLib.DTOs.NewsLetterSubscriber;
+using SharedLib.DTOs.QueuePublisherDOTs;
+using SharedLib.QueuePublishier;
 using zucchini_functions.Clients.ZucchiniApiClient;
-using zucchini_functions.WeeklyNewsLetterEmail;
-using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
 
 
 public class WeeklyNewsLetterQueuePublisher
 {
     private readonly ILogger _logger;
-    private readonly WeeklyNewsLetter _azureStorageQueueNewLetterPublisher;
+    private readonly IQueuePublisher _queuePublisher;
     private readonly IInternalUserClient _internalUserClient;
 
     public WeeklyNewsLetterQueuePublisher(
         ILoggerFactory loggerFactory,
-        WeeklyNewsLetter azureStorageQueueNewLetterPublisher,
+        IQueuePublisher queuePublisher,
         IInternalUserClient internalUserClient
         )
     {
         _logger = loggerFactory.CreateLogger<WeeklyNewsLetterQueuePublisher>();
-        _azureStorageQueueNewLetterPublisher = azureStorageQueueNewLetterPublisher;
+        _queuePublisher = queuePublisher;
         _internalUserClient = internalUserClient;
     }
 
-    [Function("SendWeeklyNewsLetter")]
+    [Function("WeeklyNewsLetterQueuePublisher")]
     public async Task Run(
         [TimerTrigger("0 0 18 * * 5")] TimerInfo myTimer)
     {
@@ -42,9 +42,7 @@ public class WeeklyNewsLetterQueuePublisher
                 HtmlBody = "<h1>Hello!</h1>"
             };
 
-            var json = JsonSerializer.Serialize(message);
-
-            await _azureStorageQueueNewLetterPublisher.PublishAsync(message, CancellationToken.None);
+            await _queuePublisher.PublishAsync(message, CancellationToken.None);
 
             _logger.LogInformation(
                 "Queued weekly newsletter for {email}",

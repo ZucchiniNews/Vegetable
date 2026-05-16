@@ -22,4 +22,8 @@
     <PackageReference Include="Resend" Version="0.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SharedLib\SharedLib.csproj" />
+  </ItemGroup>
+
 </Project>

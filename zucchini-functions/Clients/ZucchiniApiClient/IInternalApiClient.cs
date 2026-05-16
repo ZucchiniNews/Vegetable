@@ -1,4 +1,5 @@
-﻿using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
+﻿
+using SharedLib.DTOs.NewsLetterSubscriber;
 
 namespace zucchini_functions.Clients.ZucchiniApiClient
 {

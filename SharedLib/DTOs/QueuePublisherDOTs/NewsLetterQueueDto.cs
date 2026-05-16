@@ -1,4 +1,4 @@
-﻿namespace zucchini_functions.WeeklyNewsLetterEmail.DTOs
+﻿namespace SharedLib.DTOs.QueuePublisherDOTs
 {
     public class NewsLetterQueueDto
     {
