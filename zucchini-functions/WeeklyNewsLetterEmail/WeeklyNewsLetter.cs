@@ -1,20 +1,18 @@
 ﻿
 using System.Text.Json;
+using zucchini_functions.Clients.QueueClients;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.QueuePublishie.WelcomeToNewsLetterEmail;
-using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 
-
-namespace Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail
+namespace zucchini_functions.WeeklyNewsLetterEmail
 {
-    public class WeeklyNewsLetterPublisher : IWeeklyNewsLetterPublisher
+    public class WeeklyNewsLetter : IWeeklyNewsLetter
     {
         private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web);
-        private readonly ZucchiniQueueClient _zucchiniQueueClient;
+        private readonly ZucchiniQueueClient _weeklyNewsLetterQueueClient;
 
-        public WeeklyNewsLetterPublisher(ZucchiniQueueClient zucchiniQueueClient)
+        public WeeklyNewsLetter(ZucchiniQueueClient weeklyNewsLetterQueueClient)
         {
-            _zucchiniQueueClient = zucchiniQueueClient;
+            _weeklyNewsLetterQueueClient = weeklyNewsLetterQueueClient;
         }
 
         public async Task PublishAsync(NewsLetterQueueMessage message, CancellationToken cancellationToken)
@@ -30,7 +28,7 @@ namespace Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail
             };
 
             var payload = JsonSerializer.Serialize(queueMessage, SerializerOptions);
-            await _zucchiniQueueClient.SendMessageAsync(payload, cancellationToken).ConfigureAwait(false);
+            await _weeklyNewsLetterQueueClient.SendMessageAsync(payload, cancellationToken).ConfigureAwait(false);
         }
     }
 }

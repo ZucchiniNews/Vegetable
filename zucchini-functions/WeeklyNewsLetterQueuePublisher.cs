@@ -1,25 +1,26 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using zucchini_functions.Clients.ZucchiniApiClient;
+using zucchini_functions.WeeklyNewsLetterEmail;
+using zucchini_functions.WeeklyNewsLetterEmail.DTOs;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail;
-using Zucchinimvc.Application.Services.UsersService;
 
 public class WeeklyNewsLetterQueuePublisher
 {
     private readonly ILogger _logger;
-    private readonly WeeklyNewsLetterPublisher _azureStorageQueueNewLetterPublisher;
-    private readonly IUserService _userService;
-
+    private readonly WeeklyNewsLetter _azureStorageQueueNewLetterPublisher;
+    private readonly IInternalUserClient _internalUserClient;
 
     public WeeklyNewsLetterQueuePublisher(
         ILoggerFactory loggerFactory,
-        WeeklyNewsLetterPublisher azureStorageQueueNewLetterPublisher,
-        IUserService userService)
+        WeeklyNewsLetter azureStorageQueueNewLetterPublisher,
+        IInternalUserClient internalUserClient
+        )
     {
         _logger = loggerFactory.CreateLogger<WeeklyNewsLetterQueuePublisher>();
         _azureStorageQueueNewLetterPublisher = azureStorageQueueNewLetterPublisher;
-        _userService = userService;
+        _internalUserClient = internalUserClient;
     }
 
     [Function("SendWeeklyNewsLetter")]
@@ -30,9 +31,9 @@ public class WeeklyNewsLetterQueuePublisher
             "Weekly newsletter started at: {time}",
             DateTime.UtcNow);
 
-        var subscribers = await _userService.GetNewsletterSubscribersAsync();
+        List<NewsletterSubscriberDto> subscribers = await _internalUserClient.GetSubscribedUsersAsync();
 
-        foreach (var user in subscribers)
+        foreach (NewsletterSubscriberDto user in subscribers)
         {
             var message = new NewsLetterQueueMessage
             {

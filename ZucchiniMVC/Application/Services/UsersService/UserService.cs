@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Models.DTOs.UserDTOs;
 namespace Zucchinimvc.Application.Services.UsersService;
 
 public class UserService : IUserService
@@ -277,12 +278,21 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<List<User>> GetNewsletterSubscribersAsync()
+    public async Task<List<NewsletterSubscriberDto>> GetNewsletterSubscribersAsync()
     {
         try
         {
             return await _userManager.Users
                 .Where(u => u.NewsletterSubscribed)
+                .Select(u => new NewsletterSubscriberDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    NewsletterSubscribed = u.NewsletterSubscribed,
+                    IsActive = u.IsActive
+                })
                 .ToListAsync();
         }
         catch (Exception ex)

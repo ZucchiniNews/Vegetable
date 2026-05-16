@@ -10,8 +10,6 @@ using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Application.Services.QueuePublishie.WelcomeToNewsLetterEmail;
-using Zucchinimvc.Application.Services.QueuePublishier.WeeklyNewsLetterEmail;
 using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterEmail;
 using Zucchinimvc.Application.Services.QueuePublishier.WelcomeToNewsLetterPublisher;
 using Zucchinimvc.Application.Services.Searches;
@@ -93,13 +91,6 @@ builder.Services.AddTransient<IWelcomeToNewsLetterPublisher>(sp =>
     return new WelcomeToNewsLetterPublisher(queueClient);
 });
 
-builder.Services.AddTransient<IWeeklyNewsLetterPublisher>(sp =>
-{
-    var options = sp.GetRequiredService<IOptions<WeeklyNewsLetterQueueSettings>>();
-    var settings = options.Value;
-    var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
-    return new WeeklyNewsLetterPublisher(queueClient);
-});
 
 
 

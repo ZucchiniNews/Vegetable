@@ -24,7 +24,7 @@ public class SendWeeklyNewsLetter
         try
         {
             _logger.LogInformation("Processing queue message: {message}", message);
-            var EmailFrom = Environment.GetEnvironmentVariable("FROM_EMAIL") ?? throw new InvalidOperationException("FROM_EMAIL environment variable is not set");
+            var EmailFrom = Environment.GetEnvironmentVariable("Resend:FROM_EMAIL") ?? throw new InvalidOperationException("FROM_EMAIL environment variable is not set");
 
             var newsletterMessage =
                 JsonSerializer.Deserialize<NewsLetterQueueMessage>(

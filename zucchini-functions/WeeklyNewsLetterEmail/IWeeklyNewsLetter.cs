@@ -1,10 +1,11 @@
 ﻿using ZucchiniCore.Entities;
 
-namespace Zucchinimvc.Application.Services.QueuePublishie.WelcomeToNewsLetterEmail
+namespace zucchini_functions.WeeklyNewsLetterEmail
 {
-    public interface IWeeklyNewsLetterPublisher
+    public interface IWeeklyNewsLetter
     {
         Task PublishAsync(NewsLetterQueueMessage message, CancellationToken cancellationToken);
     }
+
 }
 
