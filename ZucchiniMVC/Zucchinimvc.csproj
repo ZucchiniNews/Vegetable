@@ -27,7 +27,7 @@
 
 	<ItemGroup>
 		<Compile Remove="Controllers\CmsController.cs" />
-		<Compile Remove="Models\DTOs\StrapiDTOs\ArticleRawDto.cs" />
+		<Compile Remove="Application\Services\CMS\DTOs\ArticleRawDto.cs" />
 	</ItemGroup>
 
 	<!-- Main dependencies -->

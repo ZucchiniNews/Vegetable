@@ -1,5 +1,5 @@
 ﻿using ZucchiniCore.Entities;
-using Zucchinimvc.Models.DTOs.WeatherDTOs;
+using Zucchinimvc.Application.Services.Weather.DTOs;
 
 namespace Zucchinimvc.Infrastructure.Repositories.WeatherRepo
 {

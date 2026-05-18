@@ -1,5 +1,5 @@
 using ZucchiniCore.enums;
-namespace Zucchinimvc.Models.DTOs.Analytic;
+namespace Zucchinimvc.Application.Services.Analytics.DTOs;
 
 public class AnalyticsEventDto
 

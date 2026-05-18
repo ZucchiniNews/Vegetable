@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Models.DTOs.WeatherDTOs;
+﻿namespace Zucchinimvc.Application.Services.Weather.DTOs;
 
 public class WeatherResponse
 {

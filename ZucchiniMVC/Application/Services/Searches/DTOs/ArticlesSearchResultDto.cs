@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Zucchinimvc.Models.DTOs.SearchDTOs
+namespace Zucchinimvc.Application.Services.Searches.DTOs
 {
     public class ArticlesSearchResultDTO
     {

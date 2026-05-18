@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Zucchinimvc.Application.Services.Searches;
-using Zucchinimvc.Models.DTOs.SearchDTOs;
+using Zucchinimvc.Application.Services.Searches.DTOs;
 
 namespace Zucchinimvc.ViewComponents
 {
