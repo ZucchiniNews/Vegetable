@@ -77,48 +77,14 @@ public class SubscriptionController : Controller
     public async Task<IActionResult> ChangeNewsletter(bool subscribe)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        var user = await _userService.GetUserByIdAsync(userId);
+        
+        var result = await _userService.ChangeNewsletterPreferenceAsync(userId, subscribe);
 
-        if (user == null)
+        if (!result.Success && result.StatusType == "error")
             return NotFound();
 
-        var currentState = user.NewsletterSubscribed;
-        if (currentState == subscribe)
-        {
-            TempData["StatusMessage"] = subscribe
-                ? "You are already subscribed to the newsletter."
-                : "You are already unsubscribed from the newsletter.";
-            TempData["StatusType"] = "info";
-            return RedirectToAction(nameof(Index));
-        }
-
-        await _userService.UpdateNewsletterPreferenceAsync(userId, subscribe);
-
-        if (subscribe)
-        {
-            if (string.IsNullOrWhiteSpace(user.Email))
-            {
-                TempData["StatusMessage"] = "Newsletter subscription enabled, but no welcome email was queued because your account does not have an email address.";
-            }
-            else
-            {
-                var message = new NewsLetterQueueDto
-                {
-                    Email = user.Email,
-                    Subject = "Welcome to our Newsletter!",
-                    HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
-                };
-
-                await _welcomeToNewsLetterPublisher.PublishAsync(message, HttpContext.RequestAborted);
-                TempData["StatusMessage"] = "Newsletter subscription enabled. A welcome email has been queued.";
-            }
-        }
-        else
-        {
-            TempData["StatusMessage"] = "Newsletter subscription disabled.";
-        }
-
-        TempData["StatusType"] = "success";
+        TempData["StatusMessage"] = result.StatusMessage;
+        TempData["StatusType"] = result.StatusType;
         return RedirectToAction(nameof(Index));
     }
 

@@ -207,7 +207,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 return RedirectToPage();
             }
 
-            await _userService.UpdateNewsletterPreferenceAsync(user.Id, subscribe);
+            await _userService.ChangeNewsletterPreferenceAsync(user.Id, subscribe);
 
             if (subscribe)
             {
