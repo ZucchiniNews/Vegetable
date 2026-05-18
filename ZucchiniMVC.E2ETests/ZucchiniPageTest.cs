@@ -13,6 +13,7 @@ public class ZucchiniPageTest : PageTest
     private Process? _appProcess;
     private bool _appStarted = false;
 
+    
     public override BrowserNewContextOptions ContextOptions()
     {
         return new BrowserNewContextOptions
@@ -29,6 +30,10 @@ public class ZucchiniPageTest : PageTest
     [OneTimeSetUp]
     public async Task StartApp()
     {
+        var projectPath = Path.GetFullPath(
+        Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "ZucchiniMVC", "ZucchiniMVC.csproj")
+        );
+
         if (Environment.GetEnvironmentVariable("TEST_ENV") == "azure")
             return;
 
@@ -40,7 +45,7 @@ public class ZucchiniPageTest : PageTest
             StartInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "run --project C:\\Users\\Student\\Vegetable\\Vegetable\\ZucchiniMVC\\Zucchinimvc.csproj",
+                Arguments = $"run --project {projectPath}",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
