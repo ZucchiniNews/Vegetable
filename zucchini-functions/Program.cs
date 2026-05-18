@@ -5,7 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Resend;
 using SharedLib.Clients.QueuePublisherClient;
-using SharedLib.QueuePublisher;
 using SharedLib.QueuePublishier;
 using zucchini_functions.Clients.ZucchiniApiClient;
 using zucchini_functions.NewsLetter;

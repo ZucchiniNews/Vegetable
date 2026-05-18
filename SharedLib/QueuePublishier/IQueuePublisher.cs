@@ -1,7 +1,6 @@
-﻿
-using SharedLib.DTOs.QueuePublisherDOTs;
+﻿using SharedLib.DTOs.QueuePublisherDTOs;
 
-namespace SharedLib.QueuePublisher
+namespace SharedLib.QueuePublishier
 {
     public interface IQueuePublisher
     {

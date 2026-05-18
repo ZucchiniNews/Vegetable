@@ -1,4 +1,4 @@
-﻿namespace SharedLib.DTOs.QueuePublisherDOTs
+﻿namespace SharedLib.DTOs.QueuePublisherDTOs
 {
     public class NewsLetterQueueDto
     {

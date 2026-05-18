@@ -1,6 +1,5 @@
 ﻿using SharedLib.Clients.QueuePublisherClient;
-using SharedLib.DTOs.QueuePublisherDOTs;
-using SharedLib.QueuePublisher;
+using SharedLib.DTOs.QueuePublisherDTOs;
 using System.Text.Json;
 
 namespace SharedLib.QueuePublishier;
