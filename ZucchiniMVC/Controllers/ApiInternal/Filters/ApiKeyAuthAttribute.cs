@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Zucchinimvc.Controllers.ApiInternal.Filters
 
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class ApiKeyAuthAttribute : Attribute, IAsyncActionFilter
     {
         private const string HeaderName = "x-api-key";
