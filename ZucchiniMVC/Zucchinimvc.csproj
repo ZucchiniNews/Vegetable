@@ -48,6 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SharedLib\SharedLib.csproj" />
 		<ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
 	</ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Queues;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
+namespace SharedLib.Clients.QueuePublisherClient;
 
 public class ZucchiniQueueClient
 {

@@ -1,6 +1,6 @@
-﻿namespace ZucchiniCore.Entities
+﻿namespace SharedLib.DTOs.QueuePublisherDTOs
 {
-    public class NewsLetterQueueMessage
+    public class NewsLetterQueueDto
     {
         public Guid DeliveryId { get; set; } = default!;
         public string Email { get; set; } = default!;

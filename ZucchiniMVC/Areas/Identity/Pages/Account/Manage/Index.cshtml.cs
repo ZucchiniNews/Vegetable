@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using SharedLib.DTOs.QueuePublisherDTOs;
+using SharedLib.QueuePublishier;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.UsersService;
 
 namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
@@ -21,7 +22,7 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         private readonly ILogger<IndexModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IUserService _userService;
-        private readonly IWeeklyNewsLetterPublisher _newsLetterQueuePublisher;
+        private readonly IQueuePublisher _welcomeToNewsLetterPublisher;
 
 
         public IndexModel(
@@ -30,14 +31,14 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         ILogger<IndexModel> logger,
         IEmailSender emailSender,
         IUserService userService,
-        IWeeklyNewsLetterPublisher newsLetterQueuePublisher)
+        IQueuePublisher welcomeToNewsLetterPublisher)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _userService = userService;
-            _newsLetterQueuePublisher = newsLetterQueuePublisher;
+            _welcomeToNewsLetterPublisher = welcomeToNewsLetterPublisher;
 
         }
 
@@ -211,14 +212,14 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
             if (subscribe)
             {
                 var email = await _userManager.GetEmailAsync(user);
-                var message = new NewsLetterQueueMessage
+                var message = new NewsLetterQueueDto
                 {
                     Email = email,
                     Subject = "Welcome to our Newsletter!",
                     HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
                 };
 
-                await _newsLetterQueuePublisher.PublishAsync(message, HttpContext.RequestAborted);
+                await _welcomeToNewsLetterPublisher.PublishAsync(message, HttpContext.RequestAborted);
                 SetStatus("Newsletter subscription enabled. A welcome email has been queued.", "success");
             }
             else

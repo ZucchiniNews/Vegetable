@@ -1,28 +1,29 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
-using Zucchinimvc.Application.Services.UsersService;
+using SharedLib.DTOs.NewsLetterSubscriber;
+using SharedLib.DTOs.QueuePublisherDTOs;
+using SharedLib.QueuePublishier;
+using zucchini_functions.Clients.ZucchiniApiClient;
+
 
 public class WeeklyNewsLetterQueuePublisher
 {
     private readonly ILogger _logger;
-    private readonly WeeklyNewsLetterPublisher _azureStorageQueueNewLetterPublisher;
-    private readonly IUserService _userService;
-
+    private readonly IQueuePublisher _queuePublisher;
+    private readonly IZucchiniClient _zucchiniClient;
 
     public WeeklyNewsLetterQueuePublisher(
         ILoggerFactory loggerFactory,
-        WeeklyNewsLetterPublisher azureStorageQueueNewLetterPublisher,
-        IUserService userService)
+        IQueuePublisher queuePublisher,
+        IZucchiniClient zucchiniClient
+        )
     {
         _logger = loggerFactory.CreateLogger<WeeklyNewsLetterQueuePublisher>();
-        _azureStorageQueueNewLetterPublisher = azureStorageQueueNewLetterPublisher;
-        _userService = userService;
+        _queuePublisher = queuePublisher;
+        _zucchiniClient = zucchiniClient;
     }
 
-    [Function("SendWeeklyNewsLetter")]
+    [Function("WeeklyNewsLetterQueuePublisher")]
     public async Task Run(
         [TimerTrigger("0 0 18 * * 5")] TimerInfo myTimer)
     {
@@ -30,20 +31,18 @@ public class WeeklyNewsLetterQueuePublisher
             "Weekly newsletter started at: {time}",
             DateTime.UtcNow);
 
-        var subscribers = await _userService.GetNewsletterSubscribersAsync();
+        List<NewsletterSubscriberDto> subscribers = await _zucchiniClient.GetSubscribedUsersAsync();
 
-        foreach (var user in subscribers)
+        foreach (NewsletterSubscriberDto user in subscribers)
         {
-            var message = new NewsLetterQueueMessage
+            var message = new NewsLetterQueueDto
             {
                 Email = user.Email!,
                 Subject = "Weekly Newsletter",
                 HtmlBody = "<h1>Hello!</h1>"
             };
 
-            var json = JsonSerializer.Serialize(message);
-
-            await _azureStorageQueueNewLetterPublisher.PublishAsync(message, CancellationToken.None);
+            await _queuePublisher.PublishAsync(message, CancellationToken.None);
 
             _logger.LogInformation(
                 "Queued weekly newsletter for {email}",
