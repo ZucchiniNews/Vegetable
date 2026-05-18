@@ -29,6 +29,8 @@ namespace Zucchinimvc.Infrastructure.Data
             modelBuilder.Entity<UserLikedArticle>()
               .HasKey(ul => new { ul.ArticleId, ul.UserId });
 
+            modelBuilder.Entity<User>()
+              .HasQueryFilter(u => !u.IsDeleted);
         }
     }
 }
