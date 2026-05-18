@@ -10,8 +10,8 @@ namespace ZucchiniMVC.E2ETests;
 
 public class ZucchiniPageTest : PageTest
 {
-    private static Process? _appProcess;
-    private static bool _appStarted = false;
+    private Process? _appProcess;
+    private bool _appStarted = false;
 
     public override BrowserNewContextOptions ContextOptions()
     {
