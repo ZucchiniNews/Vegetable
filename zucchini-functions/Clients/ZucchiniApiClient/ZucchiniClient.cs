@@ -22,7 +22,7 @@ namespace zucchini_functions.Clients.ZucchiniApiClient
         public async Task<List<NewsletterSubscriberDto>> GetSubscribedUsersAsync()
         {
             var apiKey = _configuration["ZucchiniInternal:ApiKey"];
-            var request = new HttpRequestMessage(
+            using var request = new HttpRequestMessage(
             HttpMethod.Get,
             "api/internal/users/subscribed");
 
