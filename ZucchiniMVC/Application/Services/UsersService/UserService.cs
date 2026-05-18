@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SharedLib.DTOs.NewsLetterSubscriber;
-using SharedLib.DTOs.QueuePublisherDTOs;
 using SharedLib.QueuePublishier;
+using SharedLib.QueuePublishier.DTOs;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.UsersService.DTOs;
 namespace Zucchinimvc.Application.Services.UsersService;

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedLib.DTOs.QueuePublisherDTOs;
-using SharedLib.QueuePublishier;
 using System.Security.Claims;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
@@ -17,21 +15,19 @@ public class SubscriptionController : Controller
     private readonly IBillingService _billingService;
     private readonly ISubscriptionService _subscriptionService;
     private readonly IUserService _userService;
-    private readonly IQueuePublisher _welcomeToNewsLetterPublisher;
 
 
     public SubscriptionController(
         IPlanService planService,
         IBillingService billingService,
         ISubscriptionService subscriptionService,
-        IUserService userService,
-        IQueuePublisher welcomeToNewsLetterPublisher)
+        IUserService userService
+       )
     {
         _planService = planService;
         _billingService = billingService;
         _subscriptionService = subscriptionService;
         _userService = userService;
-        _welcomeToNewsLetterPublisher = welcomeToNewsLetterPublisher;
 
     }
 
@@ -77,7 +73,7 @@ public class SubscriptionController : Controller
     public async Task<IActionResult> ChangeNewsletter(bool subscribe)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        
+
         var result = await _userService.ChangeNewsletterPreferenceAsync(userId, subscribe);
 
         if (!result.Success && result.StatusType == "error")

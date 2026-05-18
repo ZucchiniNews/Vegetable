@@ -1,8 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using SharedLib.DTOs.NewsLetterSubscriber;
-using SharedLib.DTOs.QueuePublisherDTOs;
 using SharedLib.QueuePublishier;
+using SharedLib.QueuePublishier.DTOs;
 using zucchini_functions.Clients.ZucchiniApiClient;
 
 

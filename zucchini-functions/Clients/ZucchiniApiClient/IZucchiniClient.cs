@@ -1,5 +1,4 @@
-﻿
-using SharedLib.DTOs.NewsLetterSubscriber;
+﻿using SharedLib.QueuePublishier.DTOs;
 
 namespace zucchini_functions.Clients.ZucchiniApiClient
 {

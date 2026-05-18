@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using SharedLib.DTOs.NewsLetterSubscriber;
+using SharedLib.QueuePublishier.DTOs;
 using System.Net.Http.Json;
 
 
