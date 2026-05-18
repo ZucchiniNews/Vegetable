@@ -15,12 +15,12 @@ builder.ConfigureFunctionsWebApplication();
 
 
 
-builder.Services.Configure<NewsLetterQueueSettings>(
+builder.Services.Configure<QueueSettings>(
     builder.Configuration.GetSection("NewsLetterQueueSettings"));
 
 builder.Services.AddTransient<IQueuePublisher>(sp =>
 {
-    var options = sp.GetRequiredService<IOptions<NewsLetterQueueSettings>>();
+    var options = sp.GetRequiredService<IOptions<QueueSettings>>();
     var settings = options.Value;
     var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
     return new ZucchiniQueuePublisher(queueClient);
