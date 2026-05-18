@@ -1,38 +1,51 @@
-using Azure.Storage.Queues;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Resend;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
-using Zucchinimvc.Application.Services.UsersService;
+using SharedLib.Clients.QueuePublisherClient;
+using SharedLib.Clients.ZucchiniApiClient;
+using SharedLib.QueuePublishier;
+using zucchini_functions.NewsLetter;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
 
-builder.Services.AddTransient(sp =>
+
+
+builder.Services.Configure<QueueSettings>(
+    builder.Configuration.GetSection("NewsLetterQueueSettings"));
+
+builder.Services.AddTransient<IQueuePublisher>(sp =>
 {
-    var connectionString =
-        builder.Configuration["AzureWebJobsStorage"];
-
-    var queueName =
-        builder.Configuration["QueueName"]!;
-
-    return new QueueClient(connectionString, queueName);
+    var options = sp.GetRequiredService<IOptions<QueueSettings>>();
+    var settings = options.Value;
+    var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
+    return new ZucchiniQueuePublisher(queueClient);
 });
 
+// Resend 
 builder.Services.AddHttpClient();
 
 builder.Services.AddOptions<ResendClientOptions>()
     .Configure<IConfiguration>((options, configuration) =>
     {
-        options.ApiToken = configuration["ApiToken"]!;
+        options.ApiToken = configuration["ResendApiKey"]!;
     });
 
 builder.Services.AddTransient<IResend, ResendClient>();
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IWeeklyNewsLetterPublisher, WeeklyNewsLetterPublisher>();
+//  Internal Zucchini API Client
+builder.Services.AddHttpClient<IZucchiniClient, ZucchiniClient>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["ZucchiniInternal:BaseUrl"]!);
+});
+
+// Nesletter Service
+builder.Services.AddTransient<INewsLetter, NewsLetter>();
+
 
 builder.Build().Run();

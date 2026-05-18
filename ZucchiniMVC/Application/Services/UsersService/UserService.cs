@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SharedLib.QueuePublishier;
+using SharedLib.QueuePublishier.DTOs;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.UsersService.DTOs;
 namespace Zucchinimvc.Application.Services.UsersService;
 
 public class UserService : IUserService
@@ -8,15 +11,18 @@ public class UserService : IUserService
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Roles> _roleManager;
     private readonly ILogger<UserService> _logger;
+    private readonly IQueuePublisher _welcomeToNewsLetterPublisher;
 
     public UserService(
         UserManager<User> userManager,
         RoleManager<Roles> roleManager,
-        ILogger<UserService> logger)
+        ILogger<UserService> logger,
+        IQueuePublisher welcomeToNewsLetterPublisher)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _logger = logger;
+        _welcomeToNewsLetterPublisher = welcomeToNewsLetterPublisher;
     }
 
     public async Task<User?> GetUserByIdAsync(string userId)
@@ -257,38 +263,129 @@ public class UserService : IUserService
         }
     }
 
-    public async Task UpdateNewsletterPreferenceAsync(string userId, bool subscribe)
-    {
-        try
-        {
-            var user = await _userManager.FindByIdAsync(userId)
-                ?? throw new ArgumentException($"User {userId} not found.");
 
-            user.NewsletterSubscribed = subscribe;
-
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-                throw new InvalidOperationException($"Failed to update newsletter preference: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to update newsletter preference for user {UserId}", userId);
-            throw;
-        }
-    }
-
-    public async Task<List<User>> GetNewsletterSubscribersAsync()
+    public async Task<List<NewsletterSubscriberDto>> GetNewsletterSubscribersAsync()
     {
         try
         {
             return await _userManager.Users
                 .Where(u => u.NewsletterSubscribed)
+                .Select(u => new NewsletterSubscriberDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    NewsletterSubscribed = u.NewsletterSubscribed,
+                    IsActive = u.IsActive
+                })
                 .ToListAsync();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to get newsletter subscribers");
             throw;
+        }
+    }
+
+    public async Task<NewsletterChangeResultDto> ChangeNewsletterPreferenceAsync(string userId, bool subscribe)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return new NewsletterChangeResultDto
+                {
+                    Success = false,
+                    StatusMessage = "User not found.",
+                    StatusType = "error",
+                    WasSubscriptionStateChanged = false
+                };
+            }
+
+            var currentState = user.NewsletterSubscribed;
+            if (currentState == subscribe)
+            {
+                return new NewsletterChangeResultDto
+                {
+                    Success = true,
+                    StatusMessage = subscribe
+                        ? "You are already subscribed to the newsletter."
+                        : "You are already unsubscribed from the newsletter.",
+                    StatusType = "info",
+                    WasSubscriptionStateChanged = false,
+                    NewSubscriptionState = currentState
+                };
+            }
+
+            // Update the preference
+            user.NewsletterSubscribed = subscribe;
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                _logger.LogError("Failed to update newsletter preference for user {UserId}", userId);
+                return new NewsletterChangeResultDto
+                {
+                    Success = false,
+                    StatusMessage = "Failed to update newsletter preference.",
+                    StatusType = "error",
+                    WasSubscriptionStateChanged = false
+                };
+            }
+
+            // Handle welcome email if subscribing
+            if (subscribe)
+            {
+                if (string.IsNullOrWhiteSpace(user.Email))
+                {
+                    return new NewsletterChangeResultDto
+                    {
+                        Success = true,
+                        StatusMessage = "Newsletter subscription enabled, but no welcome email was queued because your account does not have an email address.",
+                        StatusType = "success",
+                        WasSubscriptionStateChanged = true,
+                        NewSubscriptionState = true
+                    };
+                }
+
+                var message = new NewsLetterQueueDto
+                {
+                    Email = user.Email,
+                    Subject = "Welcome to our Newsletter!",
+                    HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
+                };
+
+                await _welcomeToNewsLetterPublisher.PublishAsync(message, CancellationToken.None);
+                return new NewsletterChangeResultDto
+                {
+                    Success = true,
+                    StatusMessage = "Newsletter subscription enabled. A welcome email has been queued.",
+                    StatusType = "success",
+                    WasSubscriptionStateChanged = true,
+                    NewSubscriptionState = true
+                };
+            }
+
+            return new NewsletterChangeResultDto
+            {
+                Success = true,
+                StatusMessage = "Newsletter subscription disabled.",
+                StatusType = "success",
+                WasSubscriptionStateChanged = true,
+                NewSubscriptionState = false
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to change newsletter preference for user {UserId}", userId);
+            return new NewsletterChangeResultDto
+            {
+                Success = false,
+                StatusMessage = "An error occurred while updating your newsletter preference.",
+                StatusType = "error",
+                WasSubscriptionStateChanged = false
+            };
         }
     }
 }

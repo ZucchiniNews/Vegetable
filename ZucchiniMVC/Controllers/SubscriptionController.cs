@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.UsersService;
 using Zucchinimvc.Models.ViewModels;
@@ -17,21 +15,19 @@ public class SubscriptionController : Controller
     private readonly IBillingService _billingService;
     private readonly ISubscriptionService _subscriptionService;
     private readonly IUserService _userService;
-    private readonly IWeeklyNewsLetterPublisher _newsLetterQueuePublisher;
 
 
     public SubscriptionController(
         IPlanService planService,
         IBillingService billingService,
         ISubscriptionService subscriptionService,
-        IUserService userService,
-        IWeeklyNewsLetterPublisher newsLetterQueuePublisher)
+        IUserService userService
+       )
     {
         _planService = planService;
         _billingService = billingService;
         _subscriptionService = subscriptionService;
         _userService = userService;
-        _newsLetterQueuePublisher = newsLetterQueuePublisher;
 
     }
 
@@ -77,48 +73,14 @@ public class SubscriptionController : Controller
     public async Task<IActionResult> ChangeNewsletter(bool subscribe)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        var user = await _userService.GetUserByIdAsync(userId);
 
-        if (user == null)
+        var result = await _userService.ChangeNewsletterPreferenceAsync(userId, subscribe);
+
+        if (!result.Success && result.StatusType == "error")
             return NotFound();
 
-        var currentState = user.NewsletterSubscribed;
-        if (currentState == subscribe)
-        {
-            TempData["StatusMessage"] = subscribe
-                ? "You are already subscribed to the newsletter."
-                : "You are already unsubscribed from the newsletter.";
-            TempData["StatusType"] = "info";
-            return RedirectToAction(nameof(Index));
-        }
-
-        await _userService.UpdateNewsletterPreferenceAsync(userId, subscribe);
-
-        if (subscribe)
-        {
-            if (string.IsNullOrWhiteSpace(user.Email))
-            {
-                TempData["StatusMessage"] = "Newsletter subscription enabled, but no welcome email was queued because your account does not have an email address.";
-            }
-            else
-            {
-                var message = new NewsLetterQueueMessage
-                {
-                    Email = user.Email,
-                    Subject = "Welcome to our Newsletter!",
-                    HtmlBody = "<h1>Welcome to our Newsletter!</h1><p>Thank you for subscribing.</p>"
-                };
-
-                await _newsLetterQueuePublisher.PublishAsync(message, HttpContext.RequestAborted);
-                TempData["StatusMessage"] = "Newsletter subscription enabled. A welcome email has been queued.";
-            }
-        }
-        else
-        {
-            TempData["StatusMessage"] = "Newsletter subscription disabled.";
-        }
-
-        TempData["StatusType"] = "success";
+        TempData["StatusMessage"] = result.StatusMessage;
+        TempData["StatusType"] = result.StatusType;
         return RedirectToAction(nameof(Index));
     }
 

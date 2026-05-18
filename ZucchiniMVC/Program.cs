@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using SharedLib.Clients.QueuePublisherClient;
+using SharedLib.QueuePublishier;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Billing;
@@ -10,8 +12,6 @@ using Zucchinimvc.Application.Services.Currency;
 using Zucchinimvc.Application.Services.Emails;
 using Zucchinimvc.Application.Services.Logger;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Application.Services.QueuePublishier.NewLetterQueue;
-using Zucchinimvc.Application.Services.QueuePublishier.WelcomeQueue;
 using Zucchinimvc.Application.Services.Searches;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.UsersService;
@@ -21,7 +21,6 @@ using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
-using Zucchinimvc.Infrastructure.ApiClients.QueuePublisher;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
@@ -69,8 +68,8 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
-builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeQueueSettings"));
-builder.Services.Configure<NewLetterQueueSettings>(builder.Configuration.GetSection("NewLetterQueueSettings"));
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("WelcomeEmailQueueSettings"));
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("WeeklyNewsLetterQueueSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
@@ -83,23 +82,14 @@ builder.Services.AddScoped<IAzureTableClient, AzureTableClient>();
 builder.Services.AddScoped<IAzureInsightClient, AzureInsightClient>();
 builder.Services.AddScoped<ZuccLogQueryClient>();
 
-builder.Services.AddScoped<IWelcomeToNewsLetterPublisher>(sp =>
+builder.Services.AddTransient<IQueuePublisher>(sp =>
 {
-    var options = sp.GetRequiredService<IOptions<WelcomeQueueSettings>>();
+    var options = sp.GetRequiredService<IOptions<QueueSettings>>();
     var settings = options.Value;
     var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
-    return new WelcomeToNewsLetterPublisher(queueClient);
-}
-
-    );
-
-builder.Services.AddScoped<IWeeklyNewsLetterPublisher>(sp =>
-{
-    var options = sp.GetRequiredService<IOptions<NewLetterQueueSettings>>();
-    var settings = options.Value;
-    var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
-    return new WeeklyNewsLetterPublisher(queueClient);
+    return new ZucchiniQueuePublisher(queueClient);
 });
+
 
 
 

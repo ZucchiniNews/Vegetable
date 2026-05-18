@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Weather.DTOs;
 using Zucchinimvc.Infrastructure.Repositories.HistoryRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
-using Zucchinimvc.Models.DTOs.WeatherDTOs;
 using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Application.Services.Weather;

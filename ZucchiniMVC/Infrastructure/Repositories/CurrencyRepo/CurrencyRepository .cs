@@ -1,5 +1,5 @@
-﻿using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
-using Zucchinimvc.Models.DTOs.CurrencyDTOs;
+﻿using Zucchinimvc.Application.Services.Currency.DTOs;
+using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 
 
 namespace Zucchinimvc.Infrastructure.Repositories.CurrencyRepo
