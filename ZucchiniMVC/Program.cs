@@ -68,8 +68,8 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
-builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeEmailQueueSettings"));
-builder.Services.Configure<NewLetterQueueSettings>(builder.Configuration.GetSection("WeeklyNewsLetterQueueSettings"));
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("WelcomeEmailQueueSettings"));
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("WeeklyNewsLetterQueueSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
@@ -84,7 +84,7 @@ builder.Services.AddScoped<ZuccLogQueryClient>();
 
 builder.Services.AddTransient<IQueuePublisher>(sp =>
 {
-    var options = sp.GetRequiredService<IOptions<WelcomeQueueSettings>>();
+    var options = sp.GetRequiredService<IOptions<QueueSettings>>();
     var settings = options.Value;
     var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
     return new ZucchiniQueuePublisher(queueClient);
