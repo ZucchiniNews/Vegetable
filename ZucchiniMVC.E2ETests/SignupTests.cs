@@ -1,4 +1,3 @@
-using System.Formats.Tar;
 using System.Text.RegularExpressions;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
