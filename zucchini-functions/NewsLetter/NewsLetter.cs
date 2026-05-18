@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Extensions.Logging;
 using Resend;
-using SharedLib.DTOs.QueuePublisherDTOs;
+using SharedLib.QueuePublishier.DTOs;
 using System.Text.Json;
 
 

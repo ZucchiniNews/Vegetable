@@ -1,4 +1,4 @@
-namespace Zucchinimvc.Models.DTOs.StrapiDTOs;
+namespace Zucchinimvc.Application.Services.CMS.DTOs;
 
 public class ArticleDto
 {

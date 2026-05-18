@@ -1,4 +1,4 @@
-﻿using Zucchinimvc.Models.DTOs.CurrencyDTOs;
+﻿using Zucchinimvc.Application.Services.Currency.DTOs;
 
 namespace Zucchinimvc.Infrastructure.Repositories.CurrencyRepo
 {

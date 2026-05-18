@@ -1,4 +1,4 @@
-﻿using SharedLib.DTOs.QueuePublisherDTOs;
+﻿using SharedLib.QueuePublishier.DTOs;
 
 namespace SharedLib.QueuePublishier
 {

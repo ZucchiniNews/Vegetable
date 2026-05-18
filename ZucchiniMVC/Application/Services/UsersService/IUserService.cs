@@ -1,4 +1,4 @@
-using SharedLib.DTOs.NewsLetterSubscriber;
+using SharedLib.QueuePublishier.DTOs;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.UsersService.DTOs;
 

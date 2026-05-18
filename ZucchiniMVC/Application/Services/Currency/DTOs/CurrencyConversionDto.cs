@@ -1,4 +1,4 @@
-﻿namespace Zucchinimvc.Models.DTOs.CurrencyDTOs
+﻿namespace Zucchinimvc.Application.Services.Currency.DTOs
 {
     public class CurrencyConversionDto
     {

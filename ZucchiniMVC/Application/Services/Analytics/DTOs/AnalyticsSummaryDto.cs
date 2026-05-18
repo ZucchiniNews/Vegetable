@@ -1,4 +1,4 @@
-namespace Zucchinimvc.Models.DTOs.Analytic;
+namespace Zucchinimvc.Application.Services.Analytics.DTOs;
 
 public class AnalyticsSummaryDto
 {
