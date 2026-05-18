@@ -54,7 +54,6 @@
 
 	<ItemGroup>
 		<Folder Include="Infrastructure\Repositories\SearchRepo\" />
-		<Folder Include="Models\DTOs\NewFolder\" />
 	</ItemGroup>
 
 </Project>
