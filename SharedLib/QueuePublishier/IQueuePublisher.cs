@@ -1,7 +1,7 @@
 ﻿
 using SharedLib.DTOs.QueuePublisherDOTs;
 
-namespace SharedLib.QueuePublishier
+namespace SharedLib.QueuePublisher
 {
     public interface IQueuePublisher
     {
