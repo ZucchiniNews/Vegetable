@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SharedLib.DTOs.NewsLetterSubscriber;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Models.DTOs.UserDTOs;
 namespace Zucchinimvc.Application.Services.UsersService;
 
 public class UserService : IUserService

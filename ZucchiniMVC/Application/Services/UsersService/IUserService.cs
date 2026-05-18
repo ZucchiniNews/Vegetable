@@ -1,5 +1,6 @@
+using SharedLib.DTOs.NewsLetterSubscriber;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Models.DTOs.UserDTOs;
+
 
 namespace Zucchinimvc.Application.Services.UsersService;
 
