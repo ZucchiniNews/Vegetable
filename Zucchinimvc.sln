@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zucchini-functions", "zucch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLib", "SharedLib\SharedLib.csproj", "{BF244C1D-5388-4EC9-9056-92EEBB4C9A6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZucchiniBackgroundJobs", "ZucchiniBackgroundJobs\ZucchiniBackgroundJobs.csproj", "{ECD69236-6CDE-D7B5-6346-E0C9854FAB32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,12 +34,16 @@ Global
 		{BF244C1D-5388-4EC9-9056-92EEBB4C9A6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF244C1D-5388-4EC9-9056-92EEBB4C9A6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF244C1D-5388-4EC9-9056-92EEBB4C9A6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECD69236-6CDE-D7B5-6346-E0C9854FAB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECD69236-6CDE-D7B5-6346-E0C9854FAB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECD69236-6CDE-D7B5-6346-E0C9854FAB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECD69236-6CDE-D7B5-6346-E0C9854FAB32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		        SolutionGuid = {640EF054-A30D-4338-8D60-14723B5CA1A5}
 		SolutionGuid = {6799ABAD-D693-4CFB-ABA7-B46EC2C2B2AE}
+		        SolutionGuid = {640EF054-A30D-4338-8D60-14723B5CA1A5}
 	EndGlobalSection
 EndGlobal
