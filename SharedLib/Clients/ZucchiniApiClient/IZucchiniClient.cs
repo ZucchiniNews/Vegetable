@@ -1,6 +1,6 @@
 ﻿using SharedLib.QueuePublishier.DTOs;
 
-namespace zucchini_functions.Clients.ZucchiniApiClient
+namespace SharedLib.Clients.ZucchiniApiClient
 {
     public interface IZucchiniClient
     {
