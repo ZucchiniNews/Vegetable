@@ -32,7 +32,7 @@
                 </a>
 
                 <!-- MOBILE SEARCH -->
-                <div class="news-search-mobile d-lg-none flex-grow-1 mx-2">
+                <div class="news-search-mobile d-lg-none flex-grow-1 mx-2 position-relative">
                     <div class="input-group">
                         <input type="text"
                                id="mobileSearchInput"
@@ -44,6 +44,15 @@
                                 class="btn btn-primary">
                             <i class="bi bi-search"></i>
                         </button>
+                    </div>
+                    <div id="mobileSearchResultsDropdown"
+                         class="position-absolute bg-white shadow-sm rounded"
+                         style="
+                        top: calc(100% + 4px);
+                        left: 0;
+                        width: 100%;
+                        z-index: 9999;
+                        ">
                     </div>
                 </div>
 
@@ -64,7 +73,7 @@
                         @await Component.InvokeAsync("Categories")
 
                         <!-- DESKTOP SEARCH -->
-                        <div class="news-search-box mx-lg-4 flex-grow-1 d-none d-lg-block">
+                        <div class="news-search-box mx-lg-4 flex-grow-1 d-none d-lg-block position-relative">
                             <div class="input-group">
                                 <input type="text"
                                        id="searchInput"
@@ -79,8 +88,13 @@
                               
                             </div>
                             <div id="searchResultsDropdown"
-                                 class="position-absolute w-100"
-                                 style="z-index: 9999;">
+                                 class="position-absolute bg-white shadow-sm rounded"
+                                 style="
+                                top: calc(100% + 4px);
+                                left: 0;
+                                width: 100%;
+                                z-index: 9999;
+                                ">
                             </div>
 
                         </div>
