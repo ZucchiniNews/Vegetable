@@ -17,205 +17,215 @@
 
 
 
-<header class="news-header">
-    <nav class="navbar navbar-expand-lg news-navbar">
-        <div class="container news-navbar-container">
+    <header class="news-header">
+        <nav class="navbar navbar-expand-lg news-navbar">
+            <div class="container news-navbar-container">
 
-            <!-- Brand -->
-            <a class="navbar-brand news-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <span class="news-brand-icon">
-                    <img src="~/images/site_logo.png" alt="Logo" />
-                </span>
-            </a>
+                <!-- Logo -->
+                <a class="navbar-brand news-brand"
+                       asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index">
+                    <span class="news-brand-icon">
+                        <img src="~/images/site_logo.png" alt="Logo" />
+                    </span>
+                </a>
 
-            <!-- Toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <!-- MOBILE SEARCH -->
+                <div class="news-search-mobile d-lg-none flex-grow-1 mx-2">
+                    <div class="input-group">
+                        <input type="text"
+                               id="searchInput"
+                               class="form-control"
+                               placeholder="Search..." />
 
-            <!-- Navbar content -->
-   <!-- Navbar content -->
-<div class="collapse navbar-collapse" id="mainNavbar">
-    <div class="d-lg-flex w-100 justify-content-between align-items-center">
+                        <button type="button"
+                                id="searchButton"
+                                class="btn btn-primary">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
 
-        <!-- Categories -->
-        @await Component.InvokeAsync("Categories")
+                <!-- Burger -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        <!-- Right side -->
-        <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 news-header-right">
-            
-            <div class="weather-header-box text-nowrap">
-                @await Component.InvokeAsync("Weather", new { city = Context.Request.Query["city"].ToString() })
-            </div>
-            <div class="login-header-box">
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
-        </div>
+                <!-- Desktop + collapsed content -->
+                <div class="collapse navbar-collapse" id="mainNavbar">
 
-    </div>
-</div>
+                    <div class="d-flex flex-column flex-lg-row w-100 align-items-lg-center justify-content-between">
 
-        </div>
-    </nav>
-</header>
+                        <!-- Categories -->
+                        @await Component.InvokeAsync("Categories")
 
-<!-- SEARCH BANNER -->
-<div class="search-banner" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-bottom: 1px solid #e9ecef; padding: 16px 0;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="search-banner-content">
-                    <div class="search-header-box position-relative w-100">
-                        <div class="d-flex justify-content-center gap-2">
-                            <div class="flex-grow-1" style="max-width: 500px;">
-                                <div class="input-group">
-                                    <input type="text"
-                                           id="searchInput"
-                                           class="form-control"
-                                           placeholder="Search articles..."
-                                           autocomplete="off"
-                                           style="border-radius: 6px 0 0 6px; border: 1px solid #ddd; padding: 10px 14px;" />
-                                    <button type="button" id="searchButton" class="btn btn-primary" style="border-radius: 0 6px 6px 0;">
-                                        <i class="bi bi-search"></i> Search
-                                    </button>
-                                </div>
+                        <!-- DESKTOP SEARCH -->
+                        <div class="news-search-box mx-lg-4 flex-grow-1 d-none d-lg-block">
+                            <div class="input-group">
+                                <input type="text"
+                                       id="desktopSearchInput"
+                                       class="form-control"
+                                       placeholder="Search articles..." />
+
+                                <button type="button"
+                                        id="desktopSearchButton"
+                                        class="btn btn-primary">
+                                    <i class="bi bi-search"></i>
+                                </button>
                             </div>
                         </div>
-                        <div id="searchResultsDropdown" class="position-absolute w-100" style="left: 50%; transform: translateX(-50%); max-width: 500px;"></div>
+
+                        <!-- Right side -->
+                        <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 news-header-right">
+
+                            <div class="weather-header-box text-nowrap">
+                                @await Component.InvokeAsync("Weather", new { city = Context.Request.Query["city"].ToString() })
+                            </div>
+
+                            <div class="login-header-box">
+                                @await Html.PartialAsync("_LoginPartial")
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        </nav>
+    </header>
 
-<div class="currency-widget-container">
-        <div class="container">
-            <div class="currency-wrapper">
-                @await Component.InvokeAsync("Currency")
+
+        <div class="currency-widget-container">
+            <div class="container">
+                <div class="currency-wrapper">
+                    @await Component.InvokeAsync("Currency")
+                </div>
             </div>
         </div>
-    </div>
 
-<main class="news-main flex-grow-1">
-    <div class="container">
+        <main class="news-main flex-grow-1">
+            <div class="container">
 
-        @RenderBody()
+                @RenderBody()
 
-    </div>
-</main>
+            </div>
+        </main>
     
-<footer class="news-footer">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <span>&copy; 2026 - ZucchiniNews</span>
-        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy</a>
-    </div>
-</footer>
+        <footer class="news-footer">
+            <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <span>&copy; 2026 - ZucchiniNews</span>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="footer-link">Privacy</a>
+            </div>
+        </footer>
  
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<script>
-    (() => {
-        const input = document.getElementById('searchInput');
-        const button = document.getElementById('searchButton');
-        const results = document.getElementById('searchResultsDropdown');
-        const searchSuggestionsUrl = '@Url.Action("SearchSuggestions", "Home")';
-        const debounceDelayMs = 250;
-        let debounceTimer;
-        let currentSearchController;
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script>
+                (() => {
+                    const input = document.getElementById('searchInput');
+                    const button = document.getElementById('searchButton');
+                    const results = document.getElementById('searchResultsDropdown');
+                    const searchSuggestionsUrl = '@Url.Action("SearchSuggestions", "Home")';
+                    const debounceDelayMs = 250;
+                    let debounceTimer;
+                    let currentSearchController;
 
-        if (!input || !results) return;
+                    if (!input || !results) return;
 
-        const renderResults = async () => {
-            const query = input.value.trim();
-            if (!query) {
-                if (currentSearchController) {
-                    currentSearchController.abort();
-                    currentSearchController = null;
-                }
-                results.innerHTML = '';
-                return;
-            }
+                    const renderResults = async () => {
+                        const query = input.value.trim();
+                        if (!query) {
+                            if (currentSearchController) {
+                                currentSearchController.abort();
+                                currentSearchController = null;
+                            }
+                            results.innerHTML = '';
+                            return;
+                        }
 
-            if (currentSearchController) {
-                currentSearchController.abort();
-            }
+                        if (currentSearchController) {
+                            currentSearchController.abort();
+                        }
 
-            currentSearchController = new AbortController();
-            const { signal } = currentSearchController;
+                        currentSearchController = new AbortController();
+                        const { signal } = currentSearchController;
 
-            results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Searching...</span></div>';
+                        results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Searching...</span></div>';
 
-            try {
-                const response = await fetch(`${searchSuggestionsUrl}?query=${encodeURIComponent(query)}`, { signal });
-                if (!response.ok) {
-                    results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
-                    return;
-                }
+                        try {
+                            const response = await fetch(`${searchSuggestionsUrl}?query=${encodeURIComponent(query)}`, { signal });
+                            if (!response.ok) {
+                                results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
+                                return;
+                            }
 
-                results.innerHTML = await response.text();
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    return;
-                }
+                            results.innerHTML = await response.text();
+                        } catch (error) {
+                            if (error.name === 'AbortError') {
+                                return;
+                            }
 
-                results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
-            } finally {
-                if (currentSearchController?.signal === signal) {
-                    currentSearchController = null;
-                }
-            }
-        };
+                            results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
+                        } finally {
+                            if (currentSearchController?.signal === signal) {
+                                currentSearchController = null;
+                            }
+                        }
+                    };
 
-        const scheduleRenderResults = () => {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                renderResults();
-            }, debounceDelayMs);
-        };
+                    const scheduleRenderResults = () => {
+                        clearTimeout(debounceTimer);
+                        debounceTimer = setTimeout(() => {
+                            renderResults();
+                        }, debounceDelayMs);
+                    };
 
-        input.addEventListener('input', scheduleRenderResults);
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                clearTimeout(debounceTimer);
-                renderResults();
-            }
-        });
+                    input.addEventListener('input', scheduleRenderResults);
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            clearTimeout(debounceTimer);
+                            renderResults();
+                        }
+                    });
 
-        button?.addEventListener('click', () => {
-            clearTimeout(debounceTimer);
-            renderResults();
-        });
-    })();
-</script>
+                    button?.addEventListener('click', () => {
+                        clearTimeout(debounceTimer);
+                        renderResults();
+                    });
+                })();
+        </script>
 
-@await RenderSectionAsync("Scripts", required: false)
-    <!-- Cookie Banner -->
-    <div id="cookie-banner" style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1a1a2e; color: white; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 24px;">🍪</span>
-            <span style="font-size: 14px;">We use cookies to improve your experience on our site.</span>
+        @await RenderSectionAsync("Scripts", required: false)
+        <!-- Cookie Banner -->
+        <div id="cookie-banner" style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: #1a1a2e; color: white; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-size: 24px;">🍪</span>
+                <span style="font-size: 14px;">We use cookies to improve your experience on our site.</span>
+            </div>
+            <button onclick="acceptCookies()" style="background: #2ecc71; color: white; border: none; padding: 8px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 14px;">Got it! 👍</button>
         </div>
-        <button onclick="acceptCookies()" style="background: #2ecc71; color: white; border: none; padding: 8px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 14px;">Got it! 👍</button>
-    </div>
 
-    <script>
-            // Check if user already accepted cookies
-            if (document.cookie.indexOf('CookieConsent=true') !== -1) {
-                document.getElementById('cookie-banner').style.display = 'none';
-            }
+        <script>
+                // Check if user already accepted cookies
+                if (document.cookie.indexOf('CookieConsent=true') !== -1) {
+                    document.getElementById('cookie-banner').style.display = 'none';
+                }
     
-            function acceptCookies() {
-                // Set cookie that expires in 1 year
-                var expireDate = new Date();
-                expireDate.setFullYear(expireDate.getFullYear() + 1);
-                document.cookie = "CookieConsent=true; expires=" + expireDate.toUTCString() + "; path=/";
+                function acceptCookies() {
+                    // Set cookie that expires in 1 year
+                    var expireDate = new Date();
+                    expireDate.setFullYear(expireDate.getFullYear() + 1);
+                    document.cookie = "CookieConsent=true; expires=" + expireDate.toUTCString() + "; path=/";
         
-                // Hide the banner
-                document.getElementById('cookie-banner').style.display = 'none';
-            }
-    </script>
-</body>
+                    // Hide the banner
+                    document.getElementById('cookie-banner').style.display = 'none';
+                }
+        </script>
+    </body>
 </html>
