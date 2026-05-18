@@ -66,8 +66,7 @@ public class ZucchiniPageTest : PageTest
     {
         var isProduction = Environment.GetEnvironmentVariable("TEST_ENV") == "azure";
         var properties = TestContext.CurrentContext.Test.Properties;
-        var isWriteTest = properties.ContainsKey("Category") &&
-            properties["Category"].Contains("WriteOnly");
+        var isWriteTest = properties["Category"]?.Contains("WriteOnly") == true;
 
         if (isProduction && isWriteTest)
         {
