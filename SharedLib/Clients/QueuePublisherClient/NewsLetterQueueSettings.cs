@@ -1,4 +1,4 @@
-﻿namespace SharedLib.Clients.conifgs
+﻿namespace SharedLib.Clients.QueuePublisherClient
 {
     public class NewsLetterQueueSettings
     {

@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Resend;
-using SharedLib.Clients.conifgs;
 using SharedLib.Clients.QueuePublisherClient;
 using SharedLib.QueuePublishier;
 using zucchini_functions.Clients.ZucchiniApiClient;
