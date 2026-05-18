@@ -45,14 +45,10 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
+
                     <div id="mobileSearchResultsDropdown"
                          class="position-absolute bg-white shadow-sm rounded"
-                         style="
-                        top: calc(100% + 4px);
-                        left: 0;
-                        width: 100%;
-                        z-index: 9999;
-                        ">
+                         style="top: calc(100% + 4px); left: 0; width: 100%; z-index: 9999;">
                     </div>
                 </div>
 
@@ -146,13 +142,19 @@
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script>
-                (() => {
-                    const input = document.getElementById('searchInput');
-                    const button = document.getElementById('searchButton');
-                    const results = document.getElementById('searchResultsDropdown');
-                    const searchSuggestionsUrl = '@Url.Action("SearchSuggestions", "Home")';
-                    const debounceDelayMs = 250;
+    <script>
+            (() => {
+                const searchSuggestionsUrl = '@Url.Action("SearchSuggestions", "Home")';
+                const debounceDelayMs = 250;
+
+                setupSearch('searchInput', 'searchButton', 'searchResultsDropdown');
+                setupSearch('mobileSearchInput', 'mobileSearchButton', 'mobileSearchResultsDropdown');
+
+                function setupSearch(inputId, buttonId, resultsId) {
+                    const input = document.getElementById(inputId);
+                    const button = document.getElementById(buttonId);
+                    const results = document.getElementById(resultsId);
+
                     let debounceTimer;
                     let currentSearchController;
 
@@ -160,11 +162,13 @@
 
                     const renderResults = async () => {
                         const query = input.value.trim();
+
                         if (!query) {
                             if (currentSearchController) {
                                 currentSearchController.abort();
                                 currentSearchController = null;
                             }
+
                             results.innerHTML = '';
                             return;
                         }
@@ -180,6 +184,7 @@
 
                         try {
                             const response = await fetch(`${searchSuggestionsUrl}?query=${encodeURIComponent(query)}`, { signal });
+
                             if (!response.ok) {
                                 results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
                                 return;
@@ -201,12 +206,11 @@
 
                     const scheduleRenderResults = () => {
                         clearTimeout(debounceTimer);
-                        debounceTimer = setTimeout(() => {
-                            renderResults();
-                        }, debounceDelayMs);
+                        debounceTimer = setTimeout(renderResults, debounceDelayMs);
                     };
 
                     input.addEventListener('input', scheduleRenderResults);
+
                     input.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
@@ -219,8 +223,9 @@
                         clearTimeout(debounceTimer);
                         renderResults();
                     });
-                })();
-        </script>
+                }
+            })();
+    </script>
 
         @await RenderSectionAsync("Scripts", required: false)
         <!-- Cookie Banner -->
