@@ -56,7 +56,14 @@ public class ZucchiniPageTest : PageTest
                 var response = await client.GetAsync($"{BaseUrl}");
                 if (response.IsSuccessStatusCode) break;
             }
-            catch { }
+            catch (HttpRequestException ex)
+            {
+                TestContext.Progress.WriteLine($"Startup check attempt {i + 1}/30 failed: {ex.Message}");
+            }
+            catch (TaskCanceledException ex)
+            {
+                TestContext.Progress.WriteLine($"Startup check attempt {i + 1}/30 timed out: {ex.Message}");
+            }
             await Task.Delay(1000);
         }    
     }
