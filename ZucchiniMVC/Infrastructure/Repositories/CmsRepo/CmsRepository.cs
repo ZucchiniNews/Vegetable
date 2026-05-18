@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.CMS.DTOs;
 using Zucchinimvc.Infrastructure.Data;
-using Zucchinimvc.Models.DTOs.StrapiDTOs;
 
 
 namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo

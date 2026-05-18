@@ -1,4 +1,7 @@
+using SharedLib.QueuePublishier.DTOs;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.UsersService.DTOs;
+
 
 namespace Zucchinimvc.Application.Services.UsersService;
 
@@ -26,6 +29,6 @@ public interface IUserService
     Task<User?> GetUserWithSubscriptionAsync(string userId);
 
     // Newsletter 
-    Task UpdateNewsletterPreferenceAsync(string userId, bool subscribe);
-    Task<List<User>> GetNewsletterSubscribersAsync();
+    Task<List<NewsletterSubscriberDto>> GetNewsletterSubscribersAsync();
+    Task<NewsletterChangeResultDto> ChangeNewsletterPreferenceAsync(string userId, bool subscribe);
 }

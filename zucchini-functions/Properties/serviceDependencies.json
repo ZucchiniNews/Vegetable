@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "secrets1": {
-      "type": "secrets"
+    "appInsights": {
+      "type": "appInsights",
+      "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
     },
     "storage1": {
       "type": "storage",
@@ -9,7 +10,7 @@
     },
     "appInsights1": {
       "type": "appInsights",
-      "dynamicId": null
+      "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
     }
   }
 }

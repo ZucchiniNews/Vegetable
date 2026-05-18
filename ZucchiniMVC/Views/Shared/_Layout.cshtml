@@ -32,18 +32,23 @@
                 </a>
 
                 <!-- MOBILE SEARCH -->
-                <div class="news-search-mobile d-lg-none flex-grow-1 mx-2">
+                <div class="news-search-mobile d-lg-none flex-grow-1 mx-2 position-relative">
                     <div class="input-group">
                         <input type="text"
-                               id="searchInput"
+                               id="mobileSearchInput"
                                class="form-control"
                                placeholder="Search..." />
 
                         <button type="button"
-                                id="searchButton"
+                                id="mobileSearchButton"
                                 class="btn btn-primary">
                             <i class="bi bi-search"></i>
                         </button>
+                    </div>
+
+                    <div id="mobileSearchResultsDropdown"
+                         class="position-absolute bg-white shadow-sm rounded"
+                         style="top: calc(100% + 4px); left: 0; width: 100%; z-index: 9999;">
                     </div>
                 </div>
 
@@ -64,20 +69,32 @@
                         @await Component.InvokeAsync("Categories")
 
                         <!-- DESKTOP SEARCH -->
-                        <div class="news-search-box mx-lg-4 flex-grow-1 d-none d-lg-block">
+                        <div class="news-search-box mx-lg-4 flex-grow-1 d-none d-lg-block position-relative">
                             <div class="input-group">
                                 <input type="text"
-                                       id="desktopSearchInput"
+                                       id="searchInput"
                                        class="form-control"
                                        placeholder="Search articles..." />
 
                                 <button type="button"
-                                        id="desktopSearchButton"
+                                        id="searchButton"
                                         class="btn btn-primary">
                                     <i class="bi bi-search"></i>
                                 </button>
+                              
                             </div>
+                            <div id="searchResultsDropdown"
+                                 class="position-absolute bg-white shadow-sm rounded"
+                                 style="
+                                top: calc(100% + 4px);
+                                left: 0;
+                                width: 100%;
+                                z-index: 9999;
+                                ">
+                            </div>
+
                         </div>
+                      
 
                         <!-- Right side -->
                         <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 news-header-right">
@@ -125,13 +142,19 @@
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script>
-                (() => {
-                    const input = document.getElementById('searchInput');
-                    const button = document.getElementById('searchButton');
-                    const results = document.getElementById('searchResultsDropdown');
-                    const searchSuggestionsUrl = '@Url.Action("SearchSuggestions", "Home")';
-                    const debounceDelayMs = 250;
+    <script>
+            (() => {
+                const searchSuggestionsUrl = '@Url.Action("SearchSuggestions", "Home")';
+                const debounceDelayMs = 250;
+
+                setupSearch('searchInput', 'searchButton', 'searchResultsDropdown');
+                setupSearch('mobileSearchInput', 'mobileSearchButton', 'mobileSearchResultsDropdown');
+
+                function setupSearch(inputId, buttonId, resultsId) {
+                    const input = document.getElementById(inputId);
+                    const button = document.getElementById(buttonId);
+                    const results = document.getElementById(resultsId);
+
                     let debounceTimer;
                     let currentSearchController;
 
@@ -139,11 +162,13 @@
 
                     const renderResults = async () => {
                         const query = input.value.trim();
+
                         if (!query) {
                             if (currentSearchController) {
                                 currentSearchController.abort();
                                 currentSearchController = null;
                             }
+
                             results.innerHTML = '';
                             return;
                         }
@@ -159,6 +184,7 @@
 
                         try {
                             const response = await fetch(`${searchSuggestionsUrl}?query=${encodeURIComponent(query)}`, { signal });
+
                             if (!response.ok) {
                                 results.innerHTML = '<div class="dropdown-menu show w-100 shadow-sm mt-2"><span class="dropdown-item-text text-muted py-2">Search unavailable.</span></div>';
                                 return;
@@ -180,12 +206,11 @@
 
                     const scheduleRenderResults = () => {
                         clearTimeout(debounceTimer);
-                        debounceTimer = setTimeout(() => {
-                            renderResults();
-                        }, debounceDelayMs);
+                        debounceTimer = setTimeout(renderResults, debounceDelayMs);
                     };
 
                     input.addEventListener('input', scheduleRenderResults);
+
                     input.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
@@ -198,8 +223,9 @@
                         clearTimeout(debounceTimer);
                         renderResults();
                     });
-                })();
-        </script>
+                }
+            })();
+    </script>
 
         @await RenderSectionAsync("Scripts", required: false)
         <!-- Cookie Banner -->

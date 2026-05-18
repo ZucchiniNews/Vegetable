@@ -27,7 +27,7 @@
 
 	<ItemGroup>
 		<Compile Remove="Controllers\CmsController.cs" />
-		<Compile Remove="Models\DTOs\StrapiDTOs\ArticleRawDto.cs" />
+		<Compile Remove="Application\Services\CMS\DTOs\ArticleRawDto.cs" />
 	</ItemGroup>
 
 	<!-- Main dependencies -->
@@ -48,6 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SharedLib\SharedLib.csproj" />
 		<ProjectReference Include="..\ZucchiniCore\ZucchiniCore.csproj" />
 	</ItemGroup>
 

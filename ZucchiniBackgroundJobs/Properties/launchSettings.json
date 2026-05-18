@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "ZucchiniBackgroundJobs": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7287",
-      "launchBrowser": false
-    }
-  }
-}

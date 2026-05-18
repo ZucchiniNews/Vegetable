@@ -1,4 +1,4 @@
-﻿using Zucchinimvc.Models.DTOs.SearchDTOs;
+﻿using Zucchinimvc.Application.Services.Searches.DTOs;
 
 namespace Zucchinimvc.Infrastructure.Repositories.SearchRepo
 {

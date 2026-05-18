@@ -1,5 +1,5 @@
+using Zucchinimvc.Application.Services.Searches.DTOs;
 using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
-using Zucchinimvc.Models.DTOs.SearchDTOs;
 
 namespace Zucchinimvc.Application.Services.Searches
 {
