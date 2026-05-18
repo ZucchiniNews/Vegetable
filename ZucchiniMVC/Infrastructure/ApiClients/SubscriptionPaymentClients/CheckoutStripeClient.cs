@@ -3,21 +3,23 @@ using Stripe;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Config;
 
-
 namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
 {
     public class CheckoutStripeClient
     {
         public StripeClient Client { get; }
         public StripeSettings Settings { get; }
+
         public CheckoutStripeClient(IOptions<StripeSettings> stripeOptions)
         {
             Settings = stripeOptions.Value;
             Client = new StripeClient(Settings.SecretKey);
         }
 
-
-        public async Task<string> CreateCheckoutStripeSessionAsync(string userId, ZucchiniCore.Entities.Plan chosenPlan, BillingAccount billingAccount)
+        public async Task<string> CreateCheckoutStripeSessionAsync(
+            string userId,
+            ZucchiniCore.Entities.Plan chosenPlan,
+            BillingAccount billingAccount)
         {
             var options = new Stripe.Checkout.SessionCreateOptions
             {
@@ -36,10 +38,10 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
                 ClientReferenceId = userId,
                 Customer = billingAccount.StripeCustomerId,
                 Metadata = new Dictionary<string, string>
-                 {
-                        { "userId", userId },
-                        { "planId", chosenPlan.Id.ToString() }
-                 },
+                {
+                    { "userId", userId },
+                    { "planId", chosenPlan.Id.ToString() }
+                },
                 SubscriptionData = new Stripe.Checkout.SessionSubscriptionDataOptions
                 {
                     Metadata = new Dictionary<string, string>
@@ -59,11 +61,43 @@ namespace Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients
         public async Task<Customer> CreateStripeCustomerAsync(string userId)
         {
             var customerService = new CustomerService(Client);
+
             var customer = await customerService.CreateAsync(new CustomerCreateOptions
             {
-                Metadata = new Dictionary<string, string> { { "UserId", userId } }
+                Metadata = new Dictionary<string, string>
+                {
+                    { "UserId", userId }
+                }
             });
+
             return customer;
+        }
+
+        public async Task<Subscription> CancelSubscriptionAsync(
+            string subscriptionId,
+            bool cancelAtPeriodEnd = false)
+        {
+            var subscriptionService = new SubscriptionService(Client);
+
+            if (cancelAtPeriodEnd)
+            {
+                // Keeps subscription active until current billing period ends
+                var updatedSubscription = await subscriptionService.UpdateAsync(
+                    subscriptionId,
+                    new SubscriptionUpdateOptions
+                    {
+                        CancelAtPeriodEnd = true
+                    });
+
+                return updatedSubscription;
+            }
+
+            // Immediate cancellation
+            var canceledSubscription = await subscriptionService.CancelAsync(
+                subscriptionId,
+                null);
+
+            return canceledSubscription;
         }
     }
 }

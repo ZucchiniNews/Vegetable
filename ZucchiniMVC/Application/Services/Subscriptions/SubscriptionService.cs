@@ -39,4 +39,10 @@ public class SubscriptionService : ISubscriptionService
     {
         return await _subscriptionRepository.UserHasActiveSubscription(userId);
     }
+
+    public async Task CancelSubscription(UserSubscription subscription)
+    {
+        subscription.Status = "canceled";
+        await _subscriptionRepository.UpdateSubscriptionAsync(subscription);
+    }
 }

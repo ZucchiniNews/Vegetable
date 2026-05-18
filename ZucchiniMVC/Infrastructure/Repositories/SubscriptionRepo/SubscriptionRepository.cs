@@ -87,6 +87,20 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
                 .FirstOrDefaultAsync();
         }
 
-    }
+        public async Task CancelSubscriptionAsync(UserSubscription subscription)
+        {
+            try
+            {
+                subscription.Status = SubscriptionStatus.;
+                _context.UserSubscriptions.Update(subscription);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
 
-}
+        }
+
+    }

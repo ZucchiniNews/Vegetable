@@ -7,6 +7,7 @@ public interface ISubscriptionService
 {
     Task<UserSubscription> CreateSubscriptionAsync(UserSubscription subscription);
     Task UpdateSubscriptionAsync(UserSubscription subscription);
+    Task CancelSubscription(UserSubscription subscription);
     Task<UserSubscription?> FindByProviderSubscriptionIdAsync(string providerSubscriptionId);
     Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId);
     Task<bool> UserHasActiveSubscription(string userId);
