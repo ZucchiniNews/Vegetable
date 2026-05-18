@@ -31,7 +31,7 @@ public class ZucchiniPageTest : PageTest
     public async Task StartApp()
     {
         var projectPath = Path.GetFullPath(
-        Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "ZucchiniMVC", "ZucchiniMVC.csproj")
+        Path.Join(AppContext.BaseDirectory, "..", "..", "..", "..", "ZucchiniMVC", "ZucchiniMVC.csproj")
         );
 
         if (Environment.GetEnvironmentVariable("TEST_ENV") == "azure")
