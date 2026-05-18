@@ -3,7 +3,7 @@ using SharedLib.QueuePublishier.DTOs;
 using System.Net.Http.Json;
 
 
-namespace zucchini_functions.Clients.ZucchiniApiClient
+namespace SharedLib.Clients.ZucchiniApiClient
 {
 
     public class ZucchiniClient : IZucchiniClient
