@@ -10,7 +10,8 @@ namespace ZucchiniMVC.E2ETests;
 
 public class ZucchiniPageTest : PageTest
 {
-    private Process? _appProcess;
+    private static Process? _appProcess;
+    private static bool _appStarted = false;
 
     public override BrowserNewContextOptions ContextOptions()
     {
@@ -31,6 +32,9 @@ public class ZucchiniPageTest : PageTest
         if (Environment.GetEnvironmentVariable("TEST_ENV") == "azure")
             return;
 
+        if (_appStarted) return;
+        _appStarted = true;
+
         _appProcess = new Process
         {
             StartInfo = new ProcessStartInfo
@@ -43,7 +47,18 @@ public class ZucchiniPageTest : PageTest
             }
         };
         _appProcess.Start();
-        await Task.Delay(5000);
+
+        using var client = new HttpClient();
+        for (int i = 0; i < 30; i++)
+        {
+            try
+            {
+                var response = await client.GetAsync($"{BaseUrl}");
+                if (response.IsSuccessStatusCode) break;
+            }
+            catch { }
+            await Task.Delay(1000);
+        }    
     }
 
     [SetUp]
@@ -51,8 +66,8 @@ public class ZucchiniPageTest : PageTest
     {
         var isProduction = Environment.GetEnvironmentVariable("TEST_ENV") == "azure";
         var properties = TestContext.CurrentContext.Test.Properties;
-        var isWriteTest = properties.TryGet("Category", out var categories) &&
-            categories.Contains("WriteOnly");
+        var isWriteTest = properties.ContainsKey("Category") &&
+            properties["Category"].Contains("WriteOnly");
 
         if (isProduction && isWriteTest)
         {
@@ -63,20 +78,22 @@ public class ZucchiniPageTest : PageTest
     [OneTimeTearDown]
     public async Task CleanUp()
     {
+        if (_appStarted)
+        {
+            _appStarted = false;
+            _appProcess?.Kill();
+            _appProcess?.Dispose();
+        }
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer("Server=(LocalDB)\\MSSQLLocalDB;Database=ZucchiniNewsDb;Trusted_Connection=True;TrustServerCertificate=True;")
             .Options;
 
         using var context = new ApplicationDbContext(options);
-
         var testUsers = context.Users
-            .Where(u => u.Email.EndsWith("@e2etest.zucchininews.com"))
+            .Where(u => u.Email != null && u.Email.EndsWith("@e2etest.zucchininews.com"))
             .ToList();
 
         context.Users.RemoveRange(testUsers);
         await context.SaveChangesAsync();
-
-        _appProcess?.Kill();
-        _appProcess?.Dispose();
     }
 }
