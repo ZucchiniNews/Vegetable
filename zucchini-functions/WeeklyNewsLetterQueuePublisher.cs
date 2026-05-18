@@ -1,8 +1,8 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using SharedLib.Clients.ZucchiniApiClient;
 using SharedLib.QueuePublishier;
 using SharedLib.QueuePublishier.DTOs;
-using zucchini_functions.Clients.ZucchiniApiClient;
 
 
 public class WeeklyNewsLetterQueuePublisher
