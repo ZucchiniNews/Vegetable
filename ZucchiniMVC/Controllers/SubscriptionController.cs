@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLib.DTOs.QueuePublisherDOTs;
-using SharedLib.QueuePublishier;
+using SharedLib.QueuePublisher;
 using System.Security.Claims;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;

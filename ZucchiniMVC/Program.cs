@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SharedLib.Clients.QueuePublisherClient;
+using SharedLib.QueuePublisher;
 using SharedLib.QueuePublishier;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Analytics;
