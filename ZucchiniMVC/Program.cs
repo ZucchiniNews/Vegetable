@@ -69,8 +69,8 @@ builder.Services.Configure<CmsSettings>(builder.Configuration.GetSection("Strapi
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 builder.Services.Configure<CurrencySettings>(builder.Configuration.GetSection("CurrencyApi"));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
-builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeQueueSettings"));
-builder.Services.Configure<NewLetterQueueSettings>(builder.Configuration.GetSection("NewLetterQueueSettings"));
+builder.Services.Configure<WelcomeQueueSettings>(builder.Configuration.GetSection("WelcomeEmailQueueSettings"));
+builder.Services.Configure<NewLetterQueueSettings>(builder.Configuration.GetSection("WeeklyNewsLetterQueueSettings"));
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
