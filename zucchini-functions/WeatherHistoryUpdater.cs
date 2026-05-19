@@ -1,24 +1,22 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SharedLib.Clients.ZucchiniApiClient;
 
 namespace zucchini_functions;
 
 internal class WeatherHistoryUpdater
 {
     private readonly ILogger _logger;
-    private readonly IWeatherService _weatherService;
+    private readonly IZucchiniClient _zucchiniClient;
 
-    public WeatherHistoryUpdater(ILoggerFactory loggerFactory, IWeatherService weatherService)
+    public WeatherHistoryUpdater(ILoggerFactory loggerFactory, IZucchiniClient zucchiniClient)
     {
         _logger = loggerFactory.CreateLogger<WeatherHistoryUpdater>();
-        _weatherService = weatherService;
+        _zucchiniClient = zucchiniClient;
     }
 
-    [Function("WeatherJob")]
-    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *", RunOnStartup = false)] TimerInfo myTimer)
+    [Function("SaveWeatherHistory")]
+    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *", RunOnStartup = true)] TimerInfo myTimer)
 
     {
         var cities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
@@ -27,12 +25,9 @@ internal class WeatherHistoryUpdater
         {
             try
             {
-                var weather = await _weatherService.GetWeatherByCityAsync(city);
-                if (weather != null)
-                {
-                    await _weatherService.SaveWeatherHistoryAsync(weather);
+                await _zucchiniClient.SaveWeatherHistoryAsync(city);
                     _logger.LogInformation("Saved history for {City}", city);
-                }
+                
             }
             catch (Exception ex)
             {

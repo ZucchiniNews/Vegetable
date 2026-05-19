@@ -9,40 +9,31 @@ namespace SharedLib.Clients.ZucchiniApiClient
     public class ZucchiniClient : IZucchiniClient
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly string _apiKey;
 
         public ZucchiniClient(
         HttpClient httpClient,
         IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _configuration = configuration;
+            _apiKey = configuration["ZucchiniInternal:ApiKey"]!;
+            _httpClient.DefaultRequestHeaders.Add("x-api-key", _apiKey);
         }
 
         public async Task<List<NewsletterSubscriberDto>> GetSubscribedUsersAsync()
         {
-            var apiKey = _configuration["ZucchiniInternal:ApiKey"];
-            using var request = new HttpRequestMessage(
-            HttpMethod.Get,
-            "api/internal/users/subscribed");
-
-            request.Headers.Add("X-API-Key", apiKey);
-
-            var response = await _httpClient.SendAsync(request);
-
+            var response = await _httpClient.GetAsync("api/internal/users/subscribed");
             response.EnsureSuccessStatusCode();
 
-            var users = await response.Content
-            .ReadFromJsonAsync<List<NewsletterSubscriberDto>>();
+            return await response.Content.ReadFromJsonAsync<List<NewsletterSubscriberDto>>()
+                   ?? new List<NewsletterSubscriberDto>();
+        }
 
-            return users ?? new List<NewsletterSubscriberDto>();
+        public async Task SaveWeatherHistoryAsync(string city)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/internal/weather/save-history", city);
+            response.EnsureSuccessStatusCode();
         }
     }
 
 }
-
-
-
-
-
-
