@@ -95,7 +95,7 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                _logger.LogError(ex, "Error cancelling subscription.");
                 throw;
             }
 
