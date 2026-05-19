@@ -1,7 +1,7 @@
 ﻿using Azure.Identity;
 using Azure.Monitor.Query;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient
+namespace Zucchinimvc.Infrastructure.ApiClients.LogQueryClient
 {
     public class ZuccLogQueryClient
     {
