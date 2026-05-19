@@ -493,20 +493,24 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", null)
+                    b.HasOne("ZucchiniCore.Entities.User", "User")
                         .WithMany("LikedArticles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserSubscription", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", null)
+                    b.HasOne("ZucchiniCore.Entities.User", "User")
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.Category", b =>
