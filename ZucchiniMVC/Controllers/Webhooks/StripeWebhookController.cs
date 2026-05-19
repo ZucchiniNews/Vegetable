@@ -151,13 +151,12 @@ public class StripeWebhookController : ControllerBase
                         }
                     }
                     // If subscription is active and not cancelled, update status
-                    else if (stripeSubscription.Status == "active" && stripeSubscription.CanceledAt == null)
+                    else if (stripeSubscription.Status == "active" &&
+                             stripeSubscription.CanceledAt == null &&
+                             existing.Status != SubscriptionStatus.Active)
                     {
-                        if (existing.Status != SubscriptionStatus.Active)
-                        {
-                            existing.Status = SubscriptionStatus.Active;
-                            await _subscriptionService.UpdateSubscriptionAsync(existing);
-                        }
+                        existing.Status = SubscriptionStatus.Active;
+                        await _subscriptionService.UpdateSubscriptionAsync(existing);
                     }
 
                     break;
