@@ -1,7 +1,7 @@
 using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Config;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.PaymentsClients
+namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Payments
 {
     public class ProviderPayment : IProviderPayment
     {

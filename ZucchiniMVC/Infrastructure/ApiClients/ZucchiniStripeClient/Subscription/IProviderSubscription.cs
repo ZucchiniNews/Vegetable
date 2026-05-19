@@ -1,6 +1,6 @@
 ﻿using Stripe;
 
-namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.SubscriptionClients
+namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Subscription
 {
     public interface IProviderSubscription
     {

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.PaymentsClients;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Payments;
 using Zucchinimvc.Infrastructure.Data;
 
 

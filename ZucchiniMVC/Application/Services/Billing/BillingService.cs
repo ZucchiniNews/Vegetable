@@ -1,7 +1,7 @@
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.PaymentsClients;
-using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.SubscriptionClients;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Payments;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Subscription;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Models.ViewModels;
 
