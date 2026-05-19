@@ -20,7 +20,7 @@ using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
-using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
+using Zucchinimvc.Infrastructure.ApiClients.LogQueryClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient;
