@@ -283,7 +283,7 @@ namespace Zucchinimvc.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plans");
+                    b.ToTable("SubscriptionPlans");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.User", b =>
