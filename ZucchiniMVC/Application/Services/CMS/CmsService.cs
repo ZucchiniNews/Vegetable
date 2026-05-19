@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 
 namespace Zucchinimvc.Application.Services.CMS;
@@ -9,10 +11,12 @@ public class CmsService : ICmsService
 {
 
     private readonly ICmsRepository _cmsRepository;
+    private readonly CmsSettings _cmsSettings;
     private readonly IMemoryCache _cache;
-    public CmsService(ICmsRepository cmsRepository, IMemoryCache cache)
+    public CmsService(ICmsRepository cmsRepository, IOptions<CmsSettings> cmsSettingsOptios, IMemoryCache cache)
     {
         _cmsRepository = cmsRepository;
+        _cmsSettings = cmsSettingsOptios.Value;
         _cache = cache;
     }
 
@@ -91,11 +95,13 @@ public class CmsService : ICmsService
 
     public async Task<List<Article>> GetLatestArticles()
     {
-        int take = 6;
+        var cutoffDate = DateTime.UtcNow.AddDays(_cmsSettings.DaysToShow);
         var articles = await GetArticles();
+
         return articles
+            .Where(a => a.PublishedAt >= cutoffDate)
             .OrderByDescending(a => a.PublishedAt)
-            .Take(take)
+            .Take(_cmsSettings.HomeShownArticles)
             .ToList();
     }
 }
