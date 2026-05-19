@@ -116,6 +116,12 @@ public class StripeWebhookController : ControllerBase
                         return Ok();
                     }
 
+                    if (stripeSubscription == null)
+                    {
+                        _logger.LogWarning("customer.subscription.updated payload was not a valid subscription object.");
+                        return Ok();
+                    }
+
                     var existing = await _subscriptionService
                         .FindByProviderSubscriptionIdAsync(providerSubscriptionId);
 
@@ -129,7 +135,7 @@ public class StripeWebhookController : ControllerBase
 
                     // Check if subscription was cancelled in Stripe
                     // Either the status is "canceled" or canceled_at is set (even if still active during final period)
-                    if (stripeSubscription?.Status == "canceled" || stripeSubscription?.CanceledAt.HasValue == true)
+                    if (stripeSubscription.Status == "canceled" || stripeSubscription.CanceledAt.HasValue)
                     {
                         if (existing.Status != SubscriptionStatus.Cancelled)
                         {
@@ -137,14 +143,14 @@ public class StripeWebhookController : ControllerBase
                                 "Cancelling subscription {ProviderSubscriptionId} for user {UserId}. CanceledAt: {CanceledAt}, Reason: {Reason}",
                                 providerSubscriptionId,
                                 existing.UserId,
-                                stripeSubscription?.CanceledAt,
-                                stripeSubscription?.CancellationDetails?.Reason);
+                                stripeSubscription.CanceledAt,
+                                stripeSubscription.CancellationDetails?.Reason);
 
                             await _subscriptionService.CancelZucchiniSubscription(existing);
                         }
                     }
                     // If subscription is active and not cancelled, update status
-                    else if (stripeSubscription?.Status == "active" && stripeSubscription?.CanceledAt == null)
+                    else if (stripeSubscription.Status == "active" && stripeSubscription.CanceledAt == null)
                     {
                         if (existing.Status != SubscriptionStatus.Active)
                         {
