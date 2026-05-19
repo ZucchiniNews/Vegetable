@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
+
 using Zucchinimvc.Infrastructure.Data;
 
 namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
@@ -12,14 +12,12 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
 
         private readonly ILogger<SubscriptionRepository> _logger;
 
-        public SubscriptionRepository(ApplicationDbContext context, CheckoutStripeClient checkoutStripeClient, ILogger<SubscriptionRepository> logger)
+        public SubscriptionRepository(ApplicationDbContext context, ILogger<SubscriptionRepository> logger)
         {
             _context = context;
 
             _logger = logger;
         }
-
-
 
 
 
@@ -87,6 +85,21 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
                 .FirstOrDefaultAsync();
         }
 
-    }
+        public async Task CancelSubscriptionAsync(UserSubscription subscription)
+        {
+            try
+            {
+                subscription.Status = SubscriptionStatus.Cancelled;
+                _context.UserSubscriptions.Update(subscription);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error cancelling subscription.");
+                throw;
+            }
 
+        }
+
+    }
 }

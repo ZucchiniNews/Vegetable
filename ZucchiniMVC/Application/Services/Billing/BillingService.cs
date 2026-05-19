@@ -1,6 +1,7 @@
 using ZucchiniCore.Entities;
 using Zucchinimvc.Application.Services.Plans;
-using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Payments;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Subscription;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Models.ViewModels;
 
@@ -10,13 +11,15 @@ namespace Zucchinimvc.Application.Services.Billing
     {
         private readonly IBillingRepository _billingRepository;
         private readonly IPlanService _planService;
-        private readonly CheckoutStripeClient _checkoutStripeClient;
+        private readonly IProviderPayment _paymentProvider;
+        private readonly IProviderSubscription _subscriptionProvider;
 
-        public BillingService(IBillingRepository billingRepository, IPlanService planService, CheckoutStripeClient checkoutStripeClient)
+        public BillingService(IBillingRepository billingRepository, IPlanService planService, IProviderPayment paymentProvider, IProviderSubscription subscriptionProvider)
         {
             _billingRepository = billingRepository;
             _planService = planService;
-            _checkoutStripeClient = checkoutStripeClient;
+            _paymentProvider = paymentProvider;
+            _subscriptionProvider = subscriptionProvider;
         }
 
         public async Task<BillingAccount> GetOrCreateStripeCustomerAsync(string userId)
@@ -25,7 +28,7 @@ namespace Zucchinimvc.Application.Services.Billing
             if (billing != null)
                 return billing;
 
-            var customer = await _checkoutStripeClient.CreateStripeCustomerAsync(userId);
+            var customer = await _subscriptionProvider.CreateCustomerAsync(userId);
 
             billing = new BillingAccount
             {
@@ -41,7 +44,7 @@ namespace Zucchinimvc.Application.Services.Billing
         {
             var chosenPlan = await _planService.FindPlanByIdAsync(planId) ?? throw new Exception("Plan not found");
             var billingAccount = await GetOrCreateStripeCustomerAsync(userId);
-            var checkoutUrl = await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(userId, chosenPlan, billingAccount);
+            var checkoutUrl = await _paymentProvider.CreateCheckoutSessionAsync(userId, chosenPlan, billingAccount.StripeCustomerId);
             return new PaymentSessionResult
             {
                 CheckoutUrl = checkoutUrl,

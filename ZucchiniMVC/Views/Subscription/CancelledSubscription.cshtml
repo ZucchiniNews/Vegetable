@@ -1,0 +1,71 @@
+@using Zucchinimvc.Models.ViewModels
+@{
+    ViewData["Title"] = "Subscription Cancelled";
+}
+
+<div class="container my-5">
+
+    <div class="mx-auto" style="max-width: 900px;">
+        <div class="text-center mb-4">
+            <div class="display-1 mb-3">
+                ✓
+            </div>
+            <h2 class="fw-bold mb-3">Your subscription has been cancelled</h2>
+
+            <p class="text-muted mb-4 fs-5">
+                We're sorry to see you go. Your subscription is now cancelled and you will no longer have access to premium features at the end of your current billing period.
+            </p>
+        </div>
+
+        <div class="p-4 border rounded-4 bg-light mb-4">
+            <div class="text-uppercase text-muted small fw-bold mb-3">
+                What happens next?
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <h5 class="fw-semibold">Your Access</h5>
+                        <p class="text-muted small mb-0">
+                            You'll retain access to premium features until the end of your current billing cycle.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <h5 class="fw-semibold">No Charges</h5>
+                        <p class="text-muted small mb-0">
+                            You won't be charged again for future billing cycles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border rounded-4 bg-light mb-4">
+            <div class="text-uppercase text-muted small fw-bold mb-3">
+                Change your mind?
+            </div>
+
+            <p class="text-muted mb-3">
+                If you'd like to reactivate your subscription and regain access to premium features, you can do so anytime.
+            </p>
+
+            <a asp-controller="Subscription"
+               asp-action="Index"
+               asp-route-showPlans="true"
+               class="btn btn-primary rounded-pill px-4">
+                View Plans
+            </a>
+        </div>
+
+        <div class="text-center mt-4">
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                Go to Home
+            </a>
+        </div>
+    </div>
+
+</div>

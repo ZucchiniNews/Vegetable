@@ -13,10 +13,10 @@ public class CmsService : ICmsService
     private readonly ICmsRepository _cmsRepository;
     private readonly CmsSettings _cmsSettings;
     private readonly IMemoryCache _cache;
-    public CmsService(ICmsRepository cmsRepository, IOptions<CmsSettings> cmsSettingsOptios, IMemoryCache cache)
+    public CmsService(ICmsRepository cmsRepository, IOptions<CmsSettings> cmsSettingsOptions, IMemoryCache cache)
     {
         _cmsRepository = cmsRepository;
-        _cmsSettings = cmsSettingsOptios.Value;
+        _cmsSettings = cmsSettingsOptions.Value;
         _cache = cache;
     }
 

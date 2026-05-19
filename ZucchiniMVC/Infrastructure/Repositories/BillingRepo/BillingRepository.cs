@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ZucchiniCore.Entities;
-using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Payments;
 using Zucchinimvc.Infrastructure.Data;
 
 
@@ -9,12 +9,12 @@ namespace Zucchinimvc.Infrastructure.Repositories.BillingRepo
     public class BillingRepository : IBillingRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly CheckoutStripeClient _checkoutStripeClient;
+        private readonly IProviderPayment _paymentProvider;
         private readonly ILogger<BillingRepository> _logger;
-        public BillingRepository(ApplicationDbContext context, CheckoutStripeClient checkoutStripeClient, ILogger<BillingRepository> logger)
+        public BillingRepository(ApplicationDbContext context, IProviderPayment paymentProvider, ILogger<BillingRepository> logger)
         {
             _context = context;
-            _checkoutStripeClient = checkoutStripeClient;
+            _paymentProvider = paymentProvider;
             _logger = logger;
         }
 
@@ -29,11 +29,11 @@ namespace Zucchinimvc.Infrastructure.Repositories.BillingRepo
             await _context.SaveChangesAsync();
         }
 
-        public async Task<string> CreatePaymentSessionAsync(string userId, Plan chosenPlan, BillingAccount billingAccount)
+        public async Task<string> CreatePaymentSessionAsync(string userId, SubscriptionPlan chosenPlan, string StripeCustomerId)
         {
             try
             {
-                return await _checkoutStripeClient.CreateCheckoutStripeSessionAsync(userId, chosenPlan, billingAccount);
+                return await _paymentProvider.CreateCheckoutSessionAsync(userId, chosenPlan, StripeCustomerId);
             }
             catch (Exception ex)
             {

@@ -22,5 +22,7 @@ namespace Zucchinimvc.Controllers.ApiInternal
             var users = await _userService.GetNewsletterSubscribersAsync();
             return Ok(users);
         }
+
+
     }
 }

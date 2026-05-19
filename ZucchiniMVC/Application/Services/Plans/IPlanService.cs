@@ -4,7 +4,7 @@ namespace Zucchinimvc.Application.Services.Plans
 {
     public interface IPlanService
     {
-        Task<List<Plan>> GetAllPlansAsync();
-        Task<Plan?> FindPlanByIdAsync(int id);
+        Task<List<SubscriptionPlan>> GetAllPlansAsync();
+        Task<SubscriptionPlan?> FindPlanByIdAsync(int id);
     }
 }

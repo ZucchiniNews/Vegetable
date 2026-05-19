@@ -1,4 +1,4 @@
-﻿
+﻿@using ZucchiniCore.enums
 @model Zucchinimvc.Models.ViewModels.SubscriptionStatusViewModel
 
 @if (!Model.HasSubscription)
@@ -32,14 +32,33 @@ else
                 @Model.PlanName
             </div>
 
-            <span class="badge bg-success mt-1">
-                @Model.Status
-            </span>
+            @if (Model.Status == SubscriptionStatus.Cancelled)
+            {
+                <span class="badge bg-danger mt-1">
+                    Cancelled
+                </span>
+            }
+            else
+            {
+                <span class="badge bg-success mt-1">
+                    @Model.Status
+                </span>
+            }
 
             <div class="text-muted small mt-2">
                 Started @Model.ActivatedAt?.ToString("yyyy-MM-dd")
             </div>
         </div>
+
+        @if (Model.Status != SubscriptionStatus.Cancelled)
+        {
+            <form asp-action="CancelSubscription" asp-controller="Subscription" method="post" style="display: inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger rounded-pill px-4" onclick="return confirm('Are you sure you want to cancel your subscription?');">
+                    Cancel
+                </button>
+            </form>
+        }
 
     </div>
 }
