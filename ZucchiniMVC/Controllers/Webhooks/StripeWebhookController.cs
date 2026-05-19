@@ -108,17 +108,18 @@ public class StripeWebhookController : ControllerBase
             case "customer.subscription.updated":
                 {
                     var stripeSubscription = stripeEvent.Data.Object as Subscription;
-                    var providerSubscriptionId = stripeSubscription?.Id;
-
-                    if (string.IsNullOrWhiteSpace(providerSubscriptionId))
-                    {
-                        _logger.LogWarning("customer.subscription.updated missing subscription id.");
-                        return Ok();
-                    }
 
                     if (stripeSubscription == null)
                     {
                         _logger.LogWarning("customer.subscription.updated payload was not a valid subscription object.");
+                        return Ok();
+                    }
+
+                    var providerSubscriptionId = stripeSubscription.Id;
+
+                    if (string.IsNullOrWhiteSpace(providerSubscriptionId))
+                    {
+                        _logger.LogWarning("customer.subscription.updated missing subscription id.");
                         return Ok();
                     }
 
