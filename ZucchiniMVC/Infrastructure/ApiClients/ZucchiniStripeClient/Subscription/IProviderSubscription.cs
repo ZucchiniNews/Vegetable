@@ -5,6 +5,6 @@ namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Subscriptio
     public interface IProviderSubscription
     {
         Task<Customer> CreateCustomerAsync(string userId);
-        Task<Subscription> CancelSubscriptionAsync(string subscriptionId, bool cancelAtPeriodEnd = false);
+        Task<Stripe.Subscription> CancelSubscriptionAsync(string subscriptionId, bool cancelAtPeriodEnd = false);
     }
 }

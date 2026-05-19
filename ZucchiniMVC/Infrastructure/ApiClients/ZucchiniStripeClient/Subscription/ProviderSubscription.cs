@@ -28,7 +28,7 @@ namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Subscriptio
             return customer;
         }
 
-        public async Task<Subscription> CancelSubscriptionAsync(
+        public async Task<Stripe.Subscription> CancelSubscriptionAsync(
             string subscriptionId,
             bool cancelAtPeriodEnd = false
             )
