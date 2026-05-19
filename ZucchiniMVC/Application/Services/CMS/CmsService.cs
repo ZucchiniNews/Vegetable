@@ -92,8 +92,11 @@ public class CmsService : ICmsService
     public async Task<List<Article>> GetLatestArticles()
     {
         int take = 6;
+        var cutoffDate = DateTime.UtcNow.AddDays(-31);
         var articles = await GetArticles();
+
         return articles
+            .Where(a => a.PublishedAt >= cutoffDate)
             .OrderByDescending(a => a.PublishedAt)
             .Take(take)
             .ToList();
