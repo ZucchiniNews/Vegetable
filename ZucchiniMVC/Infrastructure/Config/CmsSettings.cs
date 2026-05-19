@@ -3,10 +3,8 @@
     public class CmsSettings
     {
         public string BaseUrl { get; set; } = string.Empty;
-        public string Token { get; set; } = string.Empty;
-        public int HomeShownArticles { get; set; } = int.MaxValue;
-
-
+        public string ApiKey { get; set; } = string.Empty;
+        public string IndexName { get; set; } = string.Empty;
     }
 
 }

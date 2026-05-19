@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using ZucchiniCore.enums;
 using Zucchinimvc.Application.Services.Billing;
 using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Application.Services.Subscriptions;
@@ -36,10 +37,20 @@ public class SubscriptionController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-        var hasSubscription = await _subscriptionService
-            .UserHasActiveSubscription(userId);
+        var subscription = await _subscriptionService.GetLatestSubscriptionForUserAsync(userId);
 
-        if (hasSubscription)
+        // Check if user has a cancelled subscription
+        if (subscription?.Status == SubscriptionStatus.Cancelled)
+        {
+            return View("CancelledSubscription", new SubscriptionPlansViewModel
+            {
+                CurrentSubscriptionStatus = subscription.Status,
+                CurrentPlanName = subscription.PlanId
+            });
+        }
+
+        // Check if user has an active subscription
+        if (subscription?.Status == SubscriptionStatus.Active)
         {
             return View("AlreadySubscribed");
         }
@@ -78,9 +89,29 @@ public class SubscriptionController : Controller
 
         if (!result.Success && result.StatusType == "error")
             return NotFound();
-
         TempData["StatusMessage"] = result.StatusMessage;
         TempData["StatusType"] = result.StatusType;
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CancelSubscription()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+        var subscription = await _subscriptionService.GetLatestSubscriptionForUserAsync(userId);
+        if (subscription == null)
+            return NotFound("Subscription not found.");
+
+        // Cancel the subscription in Stripe (and in the local database)
+        await _subscriptionService.CancelProviderSubscription(subscription);
+        await _subscriptionService.CancelZucchiniSubscription(subscription);
+
+        TempData["StatusMessage"] = "Your subscription has been cancelled.";
+        TempData["StatusType"] = "success";
+
         return RedirectToAction(nameof(Index));
     }
 

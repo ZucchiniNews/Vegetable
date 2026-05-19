@@ -6,6 +6,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.BillingRepo
     {
         Task<BillingAccount?> GetByUserId(string userId);
         Task Create(BillingAccount billingAccount);
-        Task<string> CreatePaymentSessionAsync(string userId, Plan chosenPlan, BillingAccount billingAccount);
+        Task<string> CreatePaymentSessionAsync(string userId, SubscriptionPlan chosenPlan, string StripeCustomerId);
     }
 }

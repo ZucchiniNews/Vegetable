@@ -12,7 +12,7 @@ namespace Zucchinimvc.Infrastructure.Data
         }
 
         public DbSet<UserSubscription> UserSubscriptions { get; set; }
-        public DbSet<Plan> Plans { get; set; }
+        public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
         public DbSet<UserLikedArticle> UserLikedArticles { get; set; }
         public DbSet<BillingAccount> BillingAccounts { get; set; }
 
@@ -28,6 +28,21 @@ namespace Zucchinimvc.Infrastructure.Data
 
             modelBuilder.Entity<UserLikedArticle>()
               .HasKey(ul => new { ul.ArticleId, ul.UserId });
+
+            modelBuilder.Entity<User>()
+              .HasQueryFilter(u => !u.IsDeleted);
+
+            modelBuilder.Entity<UserLikedArticle>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.LikedArticles)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserSubscription>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.Subscriptions)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

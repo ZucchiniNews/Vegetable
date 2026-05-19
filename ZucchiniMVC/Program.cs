@@ -20,13 +20,16 @@ using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
-using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
-using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
+using Zucchinimvc.Infrastructure.ApiClients.LogQueryClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.PaymentsClients;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.SubscriptionClients;
 using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
+using Zucchinimvc.Infrastructure.Repositories.AnalyticsRepo;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
@@ -73,7 +76,9 @@ builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Week
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
-builder.Services.AddScoped<CheckoutStripeClient>();
+builder.Services.AddScoped<ZucchiniStripeClient>();
+builder.Services.AddScoped<IProviderSubscription, ProviderSubscription>();
+builder.Services.AddScoped<IProviderPayment, ProviderPayment>();
 builder.Services.AddScoped<ZucchiniSearchClient>();
 
 builder.Services.AddHttpClient<WeatherClient>();
@@ -89,7 +94,6 @@ builder.Services.AddTransient<IQueuePublisher>(sp =>
     var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
     return new ZucchiniQueuePublisher(queueClient);
 });
-
 
 
 
@@ -112,6 +116,7 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
 // Repositories
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
