@@ -12,15 +12,15 @@ using Zucchinimvc.Infrastructure.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260511074117_init")]
-    partial class init
+    [Migration("20260519075528_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.7")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -163,9 +163,6 @@ namespace Zucchinimvc.Migrations
                     b.Property<DateTime>("PublishedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReadingTimeMinutes")
-                        .HasColumnType("int");
-
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -307,6 +304,9 @@ namespace Zucchinimvc.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -319,6 +319,9 @@ namespace Zucchinimvc.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -493,20 +496,24 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", null)
+                    b.HasOne("ZucchiniCore.Entities.User", "User")
                         .WithMany("LikedArticles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserSubscription", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", null)
+                    b.HasOne("ZucchiniCore.Entities.User", "User")
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.Category", b =>

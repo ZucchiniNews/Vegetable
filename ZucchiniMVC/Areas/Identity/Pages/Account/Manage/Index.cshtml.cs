@@ -234,6 +234,8 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostDeleteAccountAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+
             var passwordCorrect = await _userManager.CheckPasswordAsync(user, DeleteForm.Password);
 
             if (!passwordCorrect)
@@ -242,13 +244,37 @@ namespace Zucchinimvc.Areas.Identity.Pages.Account.Manage
                 return RedirectToPage();
             }
 
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
+            user.IsDeleted = true;
+            user.DeletedAt = DateTime.UtcNow;
+            user.IsActive = false;
+
+            user.FirstName = "";
+            user.LastName = "";
+            user.DateOfBirth = null;
+
+            user.Email = $"deleted_{user.Id}@deleted.local";
+            user.NormalizedEmail = user.Email.ToUpper();
+
+            user.UserName = $"deleted_{user.Id}";
+            user.NormalizedUserName = user.UserName.ToUpper();
+
+            user.PhoneNumber = null;
+            user.NewsletterSubscribed = false;
+
+            user.LockoutEnabled = true;
+            user.LockoutEnd = DateTimeOffset.MaxValue;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
             {
-                await _signInManager.SignOutAsync();
-                return RedirectToPage("/Index");
+                SetStatus("Unexpected error deleting account.", "danger");
+                return RedirectToPage();
             }
-            return RedirectToPage();
+
+            await _signInManager.SignOutAsync();
+            return RedirectToPage("~/");
+
         }
 
         public class ChangeEmailInput

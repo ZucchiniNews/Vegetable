@@ -11,6 +11,7 @@
         public DateTime? ActivatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? PlanId { get; set; }
+        public User User { get; set; } = null!;
     }
 }
 

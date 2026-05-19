@@ -29,6 +29,21 @@ namespace Zucchinimvc.Infrastructure.Data
             modelBuilder.Entity<UserLikedArticle>()
               .HasKey(ul => new { ul.ArticleId, ul.UserId });
 
+            modelBuilder.Entity<User>()
+              .HasQueryFilter(u => !u.IsDeleted);
+
+            modelBuilder.Entity<UserLikedArticle>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.LikedArticles)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserSubscription>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.Subscriptions)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
