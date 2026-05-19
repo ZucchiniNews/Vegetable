@@ -21,9 +21,9 @@ using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
 using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
-using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient;
 using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
@@ -73,7 +73,7 @@ builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Week
 
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
-builder.Services.AddScoped<CheckoutStripeClient>();
+builder.Services.AddScoped<ZucchiniStripeClient>();
 builder.Services.AddScoped<ZucchiniSearchClient>();
 
 builder.Services.AddHttpClient<WeatherClient>();

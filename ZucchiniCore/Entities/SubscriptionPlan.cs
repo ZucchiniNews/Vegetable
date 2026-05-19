@@ -1,6 +1,6 @@
 ﻿namespace ZucchiniCore.Entities
 {
-    public class Plan
+    public class SubscriptionPlan
     {
         public int Id { get; set; }
         public required string Name { get; set; }

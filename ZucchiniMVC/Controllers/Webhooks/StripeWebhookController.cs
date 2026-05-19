@@ -101,7 +101,36 @@ public class StripeWebhookController : ControllerBase
                         PlanId = planId
                     };
 
-                    await _subscriptionService.CreateSubscriptionAsync(subscription);
+                    await _subscriptionService.CreateZucchiniSubscription(subscription);
+
+                    break;
+                }
+            case "customer.subscription.deleted":
+                {
+                    var stripeSubscription = stripeEvent.Data.Object as Subscription;
+                    var providerSubscriptionId = stripeSubscription?.Id;
+
+                    if (string.IsNullOrWhiteSpace(providerSubscriptionId))
+                    {
+                        _logger.LogWarning("customer.subscription.deleted missing subscription id.");
+                        return Ok();
+                    }
+
+                    var existing = await _subscriptionService
+                        .FindByProviderSubscriptionIdAsync(providerSubscriptionId);
+
+                    if (existing == null)
+                    {
+                        _logger.LogWarning(
+                            "No local subscription found for deleted Stripe subscription {ProviderSubscriptionId}.",
+                            providerSubscriptionId);
+                        return Ok();
+                    }
+
+                    if (existing.Status != SubscriptionStatus.Cancelled)
+                    {
+                        await _subscriptionService.CancelZucchiniSubscription(existing);
+                    }
 
                     break;
                 }

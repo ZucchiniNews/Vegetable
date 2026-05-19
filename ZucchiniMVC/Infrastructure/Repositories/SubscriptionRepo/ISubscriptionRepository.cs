@@ -16,7 +16,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
 
         Task CancelSubscriptionAsync(UserSubscription subscription);
 
-
     }
 }
 
