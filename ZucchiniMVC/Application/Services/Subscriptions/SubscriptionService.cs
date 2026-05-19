@@ -1,6 +1,5 @@
 
 using ZucchiniCore.Entities;
-using Zucchinimvc.Application.Services.Plans;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Subscription;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
 
@@ -12,7 +11,7 @@ public class SubscriptionService : ISubscriptionService
     private readonly IProviderSubscription _providerSubscription;
     private readonly ILogger<SubscriptionService> _logger;
 
-    public SubscriptionService(ISubscriptionRepository subscriptionRepository, IPlanService planService, ILogger<SubscriptionService> logger, IProviderSubscription providerSubscription)
+    public SubscriptionService(ISubscriptionRepository subscriptionRepository, ILogger<SubscriptionService> logger, IProviderSubscription providerSubscription)
     {
         _subscriptionRepository = subscriptionRepository;
         _logger = logger;
