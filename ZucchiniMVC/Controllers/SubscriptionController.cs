@@ -33,14 +33,14 @@ public class SubscriptionController : Controller
     }
 
     [Authorize]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(bool showPlans = false)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         var subscription = await _subscriptionService.GetLatestSubscriptionForUserAsync(userId);
 
         // Check if user has a cancelled subscription
-        if (subscription?.Status == SubscriptionStatus.Cancelled)
+        if (subscription?.Status == SubscriptionStatus.Cancelled && !showPlans)
         {
             return View("CancelledSubscription", new SubscriptionPlansViewModel
             {
