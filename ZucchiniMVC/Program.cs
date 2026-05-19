@@ -20,13 +20,14 @@ using Zucchinimvc.Application.Services.Weather;
 using Zucchinimvc.Infrastructure.ApiClients.AzureInsightClient;
 using Zucchinimvc.Infrastructure.ApiClients.AzureTableClient;
 using Zucchinimvc.Infrastructure.ApiClients.CurrencyClient;
-using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
+using Zucchinimvc.Infrastructure.ApiClients.LogQueryClient;
 using Zucchinimvc.Infrastructure.ApiClients.SubscriptionPaymentClients;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
 using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
+using Zucchinimvc.Infrastructure.Repositories.AnalyticsRepo;
 using Zucchinimvc.Infrastructure.Repositories.BillingRepo;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
@@ -112,6 +113,7 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
 // Repositories
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ICmsRepository, CmsRepository>();
 builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
