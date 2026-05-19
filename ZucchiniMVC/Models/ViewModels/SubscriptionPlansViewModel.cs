@@ -4,6 +4,6 @@ namespace Zucchinimvc.Models.ViewModels
 {
     public class SubscriptionPlansViewModel
     {
-        public List<SubscriptionPlan> Plans { get; set; } = new();
+        public List<Plan> Plans { get; set; } = new();
     }
 }

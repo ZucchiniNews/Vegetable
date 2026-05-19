@@ -78,29 +78,9 @@ public class SubscriptionController : Controller
 
         if (!result.Success && result.StatusType == "error")
             return NotFound();
+
         TempData["StatusMessage"] = result.StatusMessage;
         TempData["StatusType"] = result.StatusType;
-        return RedirectToAction(nameof(Index));
-    }
-
-    [Authorize]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CancelSubscription()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-
-        var subscription = await _subscriptionService.GetLatestSubscriptionForUserAsync(userId);
-        if (subscription == null)
-            return NotFound("Subscription not found.");
-
-        // Cancel the subscription in Stripe (and in the local database)
-        await _subscriptionService.CancelProviderSubscription(subscription);
-        await _subscriptionService.CancelZucchiniSubscription(subscription);
-
-        TempData["StatusMessage"] = "Your subscription has been cancelled.";
-        TempData["StatusType"] = "success";
-
         return RedirectToAction(nameof(Index));
     }
 
