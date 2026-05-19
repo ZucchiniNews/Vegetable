@@ -31,6 +31,8 @@ namespace Zucchinimvc.Infrastructure.Data
 
             modelBuilder.Entity<User>()
               .HasQueryFilter(u => !u.IsDeleted);
+
+
         }
     }
 }

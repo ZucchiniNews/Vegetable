@@ -7,7 +7,7 @@
             Some historical data may be retained for legal and subscription records.
         </p>
         
-        <form method="post" asp-page-handler="DeleteAccount">
+        <form method="post" asp-page-handler="/Account/Manage/DeletePersonalData">
             <div class="mb-3">
                 <label asp-for="DeleteForm.Password" class="form-label">Enter password to delete</label>
                 <input asp-for="DeleteForm.Password" class="form-control" placeholder="Enter password..." />
