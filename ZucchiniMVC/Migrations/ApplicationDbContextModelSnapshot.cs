@@ -8,7 +8,7 @@ using Zucchinimvc.Infrastructure.Data;
 
 #nullable disable
 
-namespace Zucchinimvc.Migrations
+namespace ZucchiniMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot

@@ -9,11 +9,11 @@ using Zucchinimvc.Infrastructure.Data;
 
 #nullable disable
 
-namespace Zucchinimvc.Migrations
+namespace ZucchiniMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260519085135_RenamePlanToSubscriptionPlan")]
-    partial class RenamePlanToSubscriptionPlan
+    [Migration("20260519124506_TestBranchAdmin")]
+    partial class TestBranchAdmin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,7 +286,7 @@ namespace Zucchinimvc.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plans");
+                    b.ToTable("SubscriptionPlans");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.User", b =>
@@ -304,6 +304,9 @@ namespace Zucchinimvc.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -316,6 +319,9 @@ namespace Zucchinimvc.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -490,20 +496,24 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", null)
+                    b.HasOne("ZucchiniCore.Entities.User", "User")
                         .WithMany("LikedArticles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserSubscription", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", null)
+                    b.HasOne("ZucchiniCore.Entities.User", "User")
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ZucchiniCore.Entities.Category", b =>

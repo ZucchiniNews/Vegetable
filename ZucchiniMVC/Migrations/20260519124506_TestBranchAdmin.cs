@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Zucchinimvc.Migrations
+namespace ZucchiniMVC.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class TestBranchAdmin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,7 +89,7 @@ namespace Zucchinimvc.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plans",
+                name: "SubscriptionPlans",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -101,7 +101,7 @@ namespace Zucchinimvc.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Plans", x => x.Id);
+                    table.PrimaryKey("PK_SubscriptionPlans", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -361,7 +361,7 @@ namespace Zucchinimvc.Migrations
                 name: "BillingAccounts");
 
             migrationBuilder.DropTable(
-                name: "Plans");
+                name: "SubscriptionPlans");
 
             migrationBuilder.DropTable(
                 name: "UserLikedArticles");

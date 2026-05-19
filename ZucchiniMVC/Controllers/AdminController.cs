@@ -2,11 +2,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.UsersService;
 
 namespace Zucchinimvc.Controllers;
 
 public class AdminController : Controller
 {
+    private readonly IUserService _usersService;
+
+    public AdminController(IUserService usersService)
+    {
+        _usersService = usersService;
+    }
     public async Task SetupAdminAsync(IServiceProvider serviceProvider)
     {
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -36,8 +43,9 @@ public class AdminController : Controller
     }
 
     [Authorize(Roles = "Admin")]
-    public IActionResult ManageUsers()
+    public async Task<IActionResult> ManageUsers()
     {
-        return View();
+        var users = await _usersService.GetAllUsersAsync();
+        return View(users);
     }
 }
