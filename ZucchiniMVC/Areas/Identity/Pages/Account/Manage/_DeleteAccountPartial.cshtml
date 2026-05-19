@@ -2,7 +2,10 @@
 <div class="row">
     <div class="col-md-6">
         <h4 class="text-danger">Delete Account</h4>
-        <p>This action is permanent and cannot be undone.</p>
+        <p>
+            Your account will be deactivated and personal information removed.
+            Some historical data may be retained for legal and subscription records.
+        </p>
         
         <form method="post" asp-page-handler="DeleteAccount">
             <div class="mb-3">
@@ -10,9 +13,22 @@
                 <input asp-for="DeleteForm.Password" class="form-control" placeholder="Enter password..." />
                 <span asp-validation-for="DeleteForm.Password" class="text-danger small"></span>
             </div>
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you absolutely sure?')">
+            <button type="submit" class="btn btn-danger" onclick="return validateAndConfirmDelete()">
                 Permanently Delete My Account
             </button>
         </form>
     </div>
 </div>
+
+
+
+<script>
+    function validateAndConfirmDelete() {
+        const password = document.getElementById('DeleteForm_Password').value;
+        if (!password || password.trim() === '') {
+            document.querySelector('[data-valmsg-for="DeleteForm.Password"]').textContent = 'Password is required.';
+            return false;
+        }
+        return confirm('Proceed to delete your account?');
+    }
+</script>
