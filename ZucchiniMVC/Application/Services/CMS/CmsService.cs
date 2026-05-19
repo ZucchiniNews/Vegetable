@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
@@ -12,10 +13,10 @@ public class CmsService : ICmsService
     private readonly ICmsRepository _cmsRepository;
     private readonly CmsSettings _cmsSettings;
     private readonly IMemoryCache _cache;
-    public CmsService(ICmsRepository cmsRepository, CmsSettings cmsSettings, IMemoryCache cache)
+    public CmsService(ICmsRepository cmsRepository, IOptions<CmsSettings> cmsSettingsOptios, IMemoryCache cache)
     {
         _cmsRepository = cmsRepository;
-        _cmsSettings = cmsSettings;
+        _cmsSettings = cmsSettingsOptios.Value;
         _cache = cache;
     }
 
