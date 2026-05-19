@@ -14,12 +14,12 @@ namespace Zucchinimvc.Infrastructure.Repositories.PlanRepo
 
         public async Task<List<SubscriptionPlan>> GetAllPlansAsync()
         {
-            return await _context.Plans.ToListAsync();
+            return await _context.SubscriptionPlans.ToListAsync();
         }
 
         public async Task<SubscriptionPlan?> FindPlanByIdAsync(int id)
         {
-            return await _context.Plans.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.SubscriptionPlans.FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

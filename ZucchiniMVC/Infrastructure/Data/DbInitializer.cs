@@ -43,7 +43,7 @@ namespace Zucchinimvc.Infrastructure.Data
         }
         public static async Task SeedPlansAsync(ApplicationDbContext context)
         {
-            if (!context.Plans.Any())
+            if (!context.SubscriptionPlans.Any())
             {
                 var types = new List<SubscriptionPlan>
                 {
@@ -51,7 +51,7 @@ namespace Zucchinimvc.Infrastructure.Data
                     new SubscriptionPlan { Name = "Monthly", Description = "Unlimited news access, Daily morning briefings, Ad-free experience", Price = 49, StripePriceId="price_1TQo13Rz2wduS8uUJEcnXnV2"},
                     new SubscriptionPlan { Name = "Yearly", Description = "Save 15% annually, All Monthly benefits, Exclusive in-depth reports", Price = 500, StripePriceId ="price_1TQo13Rz2wduS8uULKNXjMuo"}
                 };
-                context.Plans.AddRange(types);
+                context.SubscriptionPlans.AddRange(types);
                 await context.SaveChangesAsync();
             }
         }

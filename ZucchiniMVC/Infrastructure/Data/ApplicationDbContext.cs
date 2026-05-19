@@ -12,7 +12,7 @@ namespace Zucchinimvc.Infrastructure.Data
         }
 
         public DbSet<UserSubscription> UserSubscriptions { get; set; }
-        public DbSet<SubscriptionPlan> Plans { get; set; }
+        public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
         public DbSet<UserLikedArticle> UserLikedArticles { get; set; }
         public DbSet<BillingAccount> BillingAccounts { get; set; }
 
