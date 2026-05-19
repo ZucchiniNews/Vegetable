@@ -24,6 +24,8 @@ using Zucchinimvc.Infrastructure.ApiClients.ILogQueryClient;
 using Zucchinimvc.Infrastructure.ApiClients.WeatherClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchininSearchClient;
 using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.PaymentsClients;
+using Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.SubscriptionClients;
 using Zucchinimvc.Infrastructure.ApiFilter;
 using Zucchinimvc.Infrastructure.Config;
 using Zucchinimvc.Infrastructure.Data;
@@ -74,6 +76,8 @@ builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("Week
 // Http Clients (Typed)
 builder.Services.AddHttpClient<CmsClient>();
 builder.Services.AddScoped<ZucchiniStripeClient>();
+builder.Services.AddScoped<IProviderSubscription, ProviderSubscription>();
+builder.Services.AddScoped<IProviderPayment, ProviderPayment>();
 builder.Services.AddScoped<ZucchiniSearchClient>();
 
 builder.Services.AddHttpClient<WeatherClient>();
@@ -89,7 +93,6 @@ builder.Services.AddTransient<IQueuePublisher>(sp =>
     var queueClient = new ZucchiniQueueClient(settings.ConnectionString, settings.QueueName);
     return new ZucchiniQueuePublisher(queueClient);
 });
-
 
 
 
