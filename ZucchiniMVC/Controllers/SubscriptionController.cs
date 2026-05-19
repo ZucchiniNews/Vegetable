@@ -96,6 +96,7 @@ public class SubscriptionController : Controller
 
         await _subscriptionService.CancelProviderSubscription(subscription);
 
+
         TempData["StatusMessage"] = "Your subscription has been cancelled.";
         TempData["StatusType"] = "success";
 

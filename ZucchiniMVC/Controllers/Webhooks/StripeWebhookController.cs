@@ -105,14 +105,14 @@ public class StripeWebhookController : ControllerBase
 
                     break;
                 }
-            case "customer.subscription.deleted":
+            case "customer.subscription.updated":
                 {
                     var stripeSubscription = stripeEvent.Data.Object as Subscription;
                     var providerSubscriptionId = stripeSubscription?.Id;
 
                     if (string.IsNullOrWhiteSpace(providerSubscriptionId))
                     {
-                        _logger.LogWarning("customer.subscription.deleted missing subscription id.");
+                        _logger.LogWarning("customer.subscription.updated missing subscription id.");
                         return Ok();
                     }
 
@@ -122,14 +122,35 @@ public class StripeWebhookController : ControllerBase
                     if (existing == null)
                     {
                         _logger.LogWarning(
-                            "No local subscription found for deleted Stripe subscription {ProviderSubscriptionId}.",
+                            "No local subscription found for Stripe subscription {ProviderSubscriptionId}.",
                             providerSubscriptionId);
                         return Ok();
                     }
 
-                    if (existing.Status != SubscriptionStatus.Cancelled)
+                    // Check if subscription was cancelled in Stripe
+                    // Either the status is "canceled" or canceled_at is set (even if still active during final period)
+                    if (stripeSubscription?.Status == "canceled" || stripeSubscription?.CanceledAt.HasValue == true)
                     {
-                        await _subscriptionService.CancelZucchiniSubscription(existing);
+                        if (existing.Status != SubscriptionStatus.Cancelled)
+                        {
+                            _logger.LogInformation(
+                                "Cancelling subscription {ProviderSubscriptionId} for user {UserId}. CanceledAt: {CanceledAt}, Reason: {Reason}",
+                                providerSubscriptionId,
+                                existing.UserId,
+                                stripeSubscription?.CanceledAt,
+                                stripeSubscription?.CancellationDetails?.Reason);
+
+                            await _subscriptionService.CancelZucchiniSubscription(existing);
+                        }
+                    }
+                    // If subscription is active and not cancelled, update status
+                    else if (stripeSubscription?.Status == "active" && stripeSubscription?.CanceledAt == null)
+                    {
+                        if (existing.Status != SubscriptionStatus.Active)
+                        {
+                            existing.Status = SubscriptionStatus.Active;
+                            await _subscriptionService.UpdateSubscriptionAsync(existing);
+                        }
                     }
 
                     break;
