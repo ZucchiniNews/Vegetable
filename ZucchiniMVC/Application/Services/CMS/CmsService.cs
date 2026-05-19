@@ -94,7 +94,7 @@ public class CmsService : ICmsService
 
     public async Task<List<Article>> GetLatestArticles()
     {
-        var cutoffDate = DateTime.UtcNow.AddDays(-31);
+        var cutoffDate = DateTime.UtcNow.AddDays(_cmsSettings.DaysToShow);
         var articles = await GetArticles();
 
         return articles
