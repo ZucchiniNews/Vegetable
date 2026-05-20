@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using SharedLib.Clients.ZucchiniApiClient;
+using System.Net.Http;
 
 namespace zucchini_functions;
 
@@ -29,7 +30,7 @@ internal class WeatherHistoryUpdater
                     _logger.LogInformation("Saved history for {City}", city);
                 
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 _logger.LogError(ex, "Error processing weather for {City}", city);
             }
