@@ -17,7 +17,7 @@ internal class WeatherHistoryUpdater
     }
 
     [Function("SaveWeatherHistory")]
-    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *", RunOnStartup = false)] TimerInfo myTimer)
+    public async Task Run([TimerTrigger("0 0 0,6,12,18 * * *")] TimerInfo myTimer)
 
     {
         var cities = new[] { "Linköping", "Stockholm", "Oslo", "Helsinki", "Copenhagen" };
