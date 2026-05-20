@@ -372,3 +372,9 @@ MigrationBackup/
 FodyWeavers.xsd
 /ZucchiniBackgroundJobs/local.settings.json
 /zucchini-functions/__azurite_db_blob__.json
+
+# Azurite
+.azurite/
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
