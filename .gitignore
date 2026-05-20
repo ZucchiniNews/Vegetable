@@ -371,3 +371,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ZucchiniBackgroundJobs/local.settings.json
+/zucchini-functions/__azurite_db_blob__.json
