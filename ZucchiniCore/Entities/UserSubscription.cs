@@ -11,6 +11,10 @@
         public DateTime? ActivatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? PlanId { get; set; }
+        // Recommended fields for Stripe lifecycle
+        public DateTime? CurrentPeriodEnd { get; set; }
+        public bool CancelAtPeriodEnd { get; set; }
+        public DateTime? CancelledAt { get; set; }
         public User User { get; set; } = null!;
     }
 }
