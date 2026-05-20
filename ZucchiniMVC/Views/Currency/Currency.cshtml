@@ -17,7 +17,11 @@
 <div style="width: 100%; max-width: 900px;">
     <canvas id="currencyChart"></canvas>
 </div>
-
+<div class="mb-3">
+    <a asp-controller="Currency" asp-action="Currency" asp-route-range="1d" class="btn btn-sm btn-primary">1 Day</a>
+    <a asp-controller="Currency" asp-action="Currency" asp-route-range="7d" class="btn btn-sm btn-primary">1 Week</a>
+    <a asp-controller="Currency" asp-action="Currency" asp-route-range="1m" class="btn btn-sm btn-primary">1 Month</a>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -27,7 +31,7 @@
     const ctx = document.getElementById('currencyChart');
 
     new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
     labels: labels,
     datasets: [{

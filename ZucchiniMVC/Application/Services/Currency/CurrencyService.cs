@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System.Globalization;
+using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Repositories.CurrencyRepo;
 
 namespace Zucchinimvc.Application.Services.Currency
@@ -10,7 +11,10 @@ namespace Zucchinimvc.Application.Services.Currency
         private readonly ICurrencyRepository _currencyRepo;
         private readonly IMemoryCache _cache;
 
-        public CurrencyService(ILogger<CurrencyService> logger, ICurrencyRepository currencyRepo, IMemoryCache cache)
+        public CurrencyService(
+            ILogger<CurrencyService> logger,
+            ICurrencyRepository currencyRepo,
+            IMemoryCache cache)
         {
             _logger = logger;
             _currencyRepo = currencyRepo;
@@ -21,7 +25,7 @@ namespace Zucchinimvc.Application.Services.Currency
         {
             var cacheKey = $"currency_rates_{baseCurrency}";
 
-            if (_cache.TryGetValue(cacheKey, out Dictionary<string, decimal> cachedRates))
+            if (_cache.TryGetValue(cacheKey, out Dictionary<string, decimal>? cachedRates))
             {
                 _logger.LogInformation("Cache hit for {Base}", baseCurrency);
                 return cachedRates;
@@ -55,6 +59,19 @@ namespace Zucchinimvc.Application.Services.Currency
             _logger.LogInformation("Cache set for {Base}", baseCurrency);
 
             return results;
+        }
+
+        public async Task<List<CurrencyHistoryEntity>> GetCurrencyHistoryAsync(
+     string baseCurrency,
+     string targetCurrency,
+     int days)
+        {
+            var fromDate = DateTime.Today.AddDays(-days);
+
+            return await _currencyRepo.GetCurrencyHistoryAsync(
+                baseCurrency,
+                targetCurrency,
+                fromDate);
         }
     }
 }

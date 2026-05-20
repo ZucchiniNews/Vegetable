@@ -13,7 +13,7 @@ namespace Zucchinimvc.Controllers
             _currencyService = currencyService;
         }
 
-        public async Task<IActionResult> Currency()
+        public async Task<IActionResult> Currency(string range = "7d")
         {
             var baseCurrency = "USD";
 
@@ -22,7 +22,8 @@ namespace Zucchinimvc.Controllers
             var model = new CurrencyGraphViewModel
             {
                 BaseCurrency = baseCurrency,
-                Rates = rates
+                Rates = rates,
+                Range = range
             };
 
             return View(model);
