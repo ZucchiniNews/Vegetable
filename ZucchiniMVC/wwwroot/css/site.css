@@ -197,7 +197,7 @@ body {
 
 @media (max-width: 600px) {
     .editors-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 
     .featured-hero {
@@ -773,6 +773,12 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
+}
+
+@media (max-width: 768px) {
+    .editors-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .editor-card {
