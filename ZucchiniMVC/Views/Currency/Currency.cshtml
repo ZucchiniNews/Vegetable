@@ -1,0 +1,44 @@
+﻿@model Zucchinimvc.Models.ViewModels.CurrencyGraphViewModel
+
+@{
+    ViewData["Title"] = "Currency Rates";
+}
+
+<h1>Currency Rates</h1>
+
+<p>
+    Base Currency: <strong>@Model.BaseCurrency</strong>
+</p>
+
+<div style="width: 100%; max-width: 900px;">
+    <canvas id="currencyChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = @Html.Raw(Json.Serialize(Model.Rates.Keys));
+    const values = @Html.Raw(Json.Serialize(Model.Rates.Values));
+
+    const ctx = document.getElementById('currencyChart');
+
+    new Chart(ctx, {
+    type: 'bar',
+    data: {
+    labels: labels,
+    datasets: [{
+    label: 'Exchange Rates',
+    data: values,
+    borderWidth: 1
+    }]
+    },
+    options: {
+    responsive: true,
+    scales: {
+    y: {
+    beginAtZero: true
+    }
+    }
+    }
+    });
+</script>
