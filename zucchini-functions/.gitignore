@@ -265,3 +265,6 @@ __pycache__/
 
 # Azurite
 .azurite/
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
