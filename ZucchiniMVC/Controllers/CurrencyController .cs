@@ -13,7 +13,7 @@ namespace Zucchinimvc.Controllers
             _currencyService = currencyService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Currency()
         {
             var baseCurrency = "USD";
 
