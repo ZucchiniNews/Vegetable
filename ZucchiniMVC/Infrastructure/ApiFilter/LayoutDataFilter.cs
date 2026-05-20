@@ -30,15 +30,6 @@ public class LayoutDataFilter : IAsyncActionFilter
         var city = context.HttpContext.Request.Query["city"].ToString();
         string baseCurrency = "USD";
 
-        /*
-         maybe later use session to get user preference instead...
-            public interface IUserPreferencesService
-                {
-                    string GetCurrency();
-                    string GetCity();
-                }
-         */
-
         var cmsTask = _cmsService.GetArticles();
 
         var weatherTask = _weatherService.GetWeatherByCityAsync(
