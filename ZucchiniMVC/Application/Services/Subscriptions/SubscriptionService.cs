@@ -61,4 +61,10 @@ public class SubscriptionService : ISubscriptionService
     {
         return await _subscriptionRepository.UserHasActiveSubscription(userId);
     }
+    public async Task ReactivateProviderSubscription(UserSubscription subscription)
+    {
+        await _providerSubscription
+            .ReactivateSubscriptionAsync(subscription.ProviderSubscriptionId);
+    }
+
 }

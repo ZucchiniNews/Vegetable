@@ -28,30 +28,50 @@ namespace Zucchinimvc.Infrastructure.ApiClients.ZucchiniStripeClient.Subscriptio
             return customer;
         }
 
+        public async Task<Stripe.Subscription> GetSubscriptionAsync(
+    string subscriptionId)
+        {
+            var subscriptionService =
+                new SubscriptionService(_zucchiniStripeClient.Client);
+
+            return await subscriptionService.GetAsync(subscriptionId);
+        }
+
         public async Task<Stripe.Subscription> CancelSubscriptionAsync(
             string subscriptionId,
-            bool cancelAtPeriodEnd = false
-            )
+            bool cancelAtPeriodEnd = false)
         {
-            var subscriptionService = new SubscriptionService(_zucchiniStripeClient.Client);
+            var subscriptionService =
+                new SubscriptionService(_zucchiniStripeClient.Client);
 
+            // Cancel when billing period ends
             if (cancelAtPeriodEnd)
             {
-                var updatedSubscription = await subscriptionService.UpdateAsync(
+                return await subscriptionService.UpdateAsync(
                     subscriptionId,
                     new SubscriptionUpdateOptions
                     {
                         CancelAtPeriodEnd = true
                     });
-
-                return updatedSubscription;
             }
-            // Immediate cancellation
-            var canceledSubscription = await subscriptionService.CancelAsync(
-                subscriptionId,
-                null);
 
-            return canceledSubscription;
+            // Immediate cancellation
+            return await subscriptionService.CancelAsync(subscriptionId);
+        }
+        public async Task<Stripe.Subscription> ReactivateSubscriptionAsync(
+    string subscriptionId)
+        {
+            var subscriptionService =
+                new SubscriptionService(_zucchiniStripeClient.Client);
+
+            var updatedSubscription = await subscriptionService.UpdateAsync(
+                subscriptionId,
+                new SubscriptionUpdateOptions
+                {
+                    CancelAtPeriodEnd = false
+                });
+
+            return updatedSubscription;
         }
     }
 }

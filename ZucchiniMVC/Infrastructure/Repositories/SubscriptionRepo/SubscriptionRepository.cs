@@ -73,8 +73,16 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
 
         public async Task<bool> UserHasActiveSubscription(string userId)
         {
-            return await _context.UserSubscriptions
-                .AnyAsync(s => s.UserId == userId && s.Status == SubscriptionStatus.Active);
+            var subscription = await _context.UserSubscriptions
+                .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.Created)
+                .FirstOrDefaultAsync();
+
+            if (subscription == null)
+                return false;
+
+            return subscription.Status == SubscriptionStatus.Active
+                || subscription.Status == SubscriptionStatus.PendingCancellation;
         }
 
         public async Task<UserSubscription?> GetLatestSubscriptionForUserAsync(string userId)
@@ -90,7 +98,11 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
             try
             {
                 subscription.Status = SubscriptionStatus.Cancelled;
+                subscription.CancelAtPeriodEnd = false;
+                subscription.CancelledAt ??= DateTime.UtcNow;
+
                 _context.UserSubscriptions.Update(subscription);
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -98,7 +110,6 @@ namespace Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo
                 _logger.LogError(ex, "Error cancelling subscription.");
                 throw;
             }
-
         }
 
     }
