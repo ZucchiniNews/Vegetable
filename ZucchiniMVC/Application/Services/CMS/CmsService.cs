@@ -107,11 +107,8 @@ public class CmsService : ICmsService
 
     public async Task<List<Article>> GetRecommendArticles(string userId)
     {
-        // 1. Get all articles (from your cache)
         var allArticles = await GetArticles();
 
-        // 2. Get User's liked articles including the Article data
-        // This allows us to see WHICH categories they actually like
         var likedArticles = await _cmsRepository.GetUserLikedArticles()
             .Include(ul => ul.Article)
             .Where(ul => ul.UserId == userId)
@@ -122,10 +119,8 @@ public class CmsService : ICmsService
             return allArticles.OrderByDescending(a => a.PublishedAt).Take(6).ToList();
         }
 
-        // 3. Extract the IDs they've already liked (so we don't suggest them again)
         var alreadyLikedIds = likedArticles.Select(ul => ul.ArticleId).ToList();
 
-        // 4. Find the most frequent categories among their likes
         var topCategoryIds = likedArticles
             .GroupBy(ul => ul.Article.Category.Name)
             .OrderByDescending(g => g.Count())
@@ -133,7 +128,6 @@ public class CmsService : ICmsService
             .Take(2)
             .ToList();
 
-        // 5. Filter the cached articles for these categories
         return allArticles
             .Where(a => !alreadyLikedIds.Contains(a.Id))
             .Where(a => topCategoryIds.Contains(a.Category.Name))
