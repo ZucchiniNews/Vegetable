@@ -1,0 +1,87 @@
+﻿@using ZucchiniCore.Entities
+@using ZucchiniCore.enums
+@model IEnumerable<User>
+@functions {
+    public string GetStatusBadgeClass(SubscriptionStatus status)
+    {
+        return status switch
+        {
+            SubscriptionStatus.Active => "badge bg-success",
+            SubscriptionStatus.Pending => "badge bg-warning text-dark",
+            SubscriptionStatus.PastDue => "badge bg-danger",
+            SubscriptionStatus.Expired => "badge bg-dark",
+            _ => "badge bg-light text-dark"
+        };
+    }
+    
+    public string GetPlanName(string planId)
+    {
+        if (string.IsNullOrEmpty(planId)) return "-";
+        
+        return planId switch
+        {
+            "1" => "Weekly",
+            "2" => "Monthly",
+            "3" => "Yearly",
+            _ => $"Plan ID: {planId}"
+        };
+    }
+}
+@if (User.IsInRole("Admin"))
+{
+    <div class="container mt-4">
+        <h1 class="mb-4">Manage Users</h1>
+
+        <table class="table table-striped autonumber table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th></th>
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Newsletter Subscribed</th>
+                    <th>Stripe Status</th>
+                    <th>Plan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                @foreach (var user in Model)
+                {
+                    var latestSub = user.Subscriptions?.OrderByDescending(s => s.ActivatedAt).FirstOrDefault();
+                <tr>
+                    <td></td>
+                    <td>@user.Id</td>
+                    <td>@user.Email</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.NewsletterSubscribed</td>
+                    <td>
+                        @if (latestSub != null)
+                        {
+                            <span class="badge @GetStatusBadgeClass(latestSub.Status)">
+                                @latestSub.Status.ToString()
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-light text-dark">No Record</span>
+                        }
+                    </td>
+                    <td>
+                        @if (latestSub != null)
+                        {
+                            <span>@GetPlanName(latestSub.PlanId!)</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">-</span>
+                        }
+                    </td>
+                </tr>
+                } 
+            </tbody>
+        </table>
+    </div>
+}

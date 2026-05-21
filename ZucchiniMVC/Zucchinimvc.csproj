@@ -5,6 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<NoWarn>$(NoWarn);NU1902</NoWarn>
+		<RootNamespace>ZucchiniMVC</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

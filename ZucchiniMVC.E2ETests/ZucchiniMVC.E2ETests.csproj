@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);NU1902</NoWarn>
     <IsPackable>false</IsPackable>
+    <RootNamespace>ZucchiniMVC.E2ETests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

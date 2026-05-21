@@ -187,7 +187,9 @@ public class UserService : IUserService
     {
         try
         {
-            return await _userManager.Users.ToListAsync();
+            return await _userManager.Users
+            .Include(u => u.Subscriptions)
+            .ToListAsync();
         }
         catch (Exception ex)
         {
