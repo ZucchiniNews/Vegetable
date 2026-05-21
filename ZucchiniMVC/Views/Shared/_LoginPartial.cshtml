@@ -46,20 +46,21 @@
                 </li>
 
                 <li><hr class="dropdown-divider my-2"></li>
-
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a class="dropdown-item rounded-3 py-2 admin-link" asp-controller="Admin" asp-action="Index">
+                            <i class="bi bi-shield-lock me-2"></i>Admin Dashboard
+                        </a>
+                    </li>
+                }
+                else
+                {
                 <li>
                     <a class="dropdown-item rounded-3 py-2" asp-area="Identity" asp-page="/Account/Manage/Index">
                         <i class="bi bi-person me-2"></i>Account Settings
                     </a>
                 </li>
-
-                @if (User.IsInRole("Admin"))
-                {
-                    <li>
-                        <a class="dropdown-item rounded-3 py-2 admin-link" asp-controller="Admin" asp-action="ManageUsers">
-                            <i class="bi bi-shield-lock me-2"></i>Admin Dashboard
-                        </a>
-                    </li>
                 }
 
                 <li><hr class="dropdown-divider my-2"></li>

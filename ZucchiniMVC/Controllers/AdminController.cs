@@ -2,11 +2,22 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ZucchiniCore.Entities;
+using Zucchinimvc.Application.Services.Analytics;
+using Zucchinimvc.Application.Services.UsersService;
+using Zucchinimvc.Models.ViewModels;
 
 namespace Zucchinimvc.Controllers;
 
 public class AdminController : Controller
 {
+    private readonly IUserService _usersService;
+    private readonly IAnalyticsService _analyticsService;
+
+    public AdminController(IUserService usersService, IAnalyticsService analyticsService)
+    {
+        _usersService = usersService;
+        _analyticsService = analyticsService;
+    }
     public async Task SetupAdminAsync(IServiceProvider serviceProvider)
     {
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -30,14 +41,14 @@ public class AdminController : Controller
     }
 
     [Authorize(Roles = "Admin")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
-    }
-
-    [Authorize(Roles = "Admin")]
-    public IActionResult ManageUsers()
-    {
-        return View();
+        var model = new AdminDashboardViewModel
+        {
+            Analytics = await _analyticsService.GetDashboardSummaryAsync(
+                DateTime.UtcNow.AddDays(-30), DateTime.UtcNow),
+            Users = await _usersService.GetAllUsersAsync()
+        };
+        return View(model);
     }
 }
