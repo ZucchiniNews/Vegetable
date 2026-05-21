@@ -1,6 +1,15 @@
-﻿@if (User.IsInRole("Admin"))
-{
+﻿@using Zucchinimvc.Models.ViewModels
+@model AdminDashboardViewModel
+
     <a class="btn btn-danger" href="https://strapi-cms.orangeground-d9911dc7.northeurope.azurecontainerapps.io/admin">
         Open Strapi
     </a>
-}
+
+    <div>
+        <partial name="_ManageUsers" model="Model.Users"/>
+    </div>
+
+    <div>
+        <partial name="_Analytics" model="Model.Analytics"/>
+    </div>
+

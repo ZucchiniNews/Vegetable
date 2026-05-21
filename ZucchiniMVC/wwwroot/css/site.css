@@ -934,6 +934,18 @@ body {
     overflow-y: auto;
 }
 
+table.autonumber {
+    counter-reset: rowNumber;
+}
+
+table.autonumber tbody tr {
+    counter-increment: rowNumber;
+}
+
+table.autonumber tbody tr td:first-child::before {
+    content: counter(rowNumber);
+}
+
 @media (max-width: 991px) {
     .news-nav-links {
         gap: 0.5rem;
