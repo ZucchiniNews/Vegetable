@@ -30,6 +30,7 @@ public class HomeController : Controller
         var editorsChoice = await _cmsService.GetEditorsChoice();
         var featured = await _cmsService.GetFeaturedArticle();
         var latest = await _cmsService.GetLatestArticles();
+        
 
         return View(new HomeIndexViewModel
         {
