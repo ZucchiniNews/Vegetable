@@ -26,17 +26,8 @@ namespace Zucchinimvc.Infrastructure.Data
                     entity.Ignore(e => e.Thumbnail);
                 });
 
-            modelBuilder.Entity<UserLikedArticle>()
-              .HasKey(ul => new { ul.ArticleId, ul.UserId });
-
             modelBuilder.Entity<User>()
               .HasQueryFilter(u => !u.IsDeleted);
-
-            modelBuilder.Entity<UserLikedArticle>()
-                .HasOne(u => u.User)
-                .WithMany(u => u.LikedArticles)
-                .HasForeignKey(u => u.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<UserSubscription>()
                 .HasOne(u => u.User)
@@ -44,6 +35,18 @@ namespace Zucchinimvc.Infrastructure.Data
                 .HasForeignKey(u => u.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<UserLikedArticle>(entity =>
+            {
+                entity.HasKey(ul => new { ul.UserId, ul.ArticleId });
+
+                entity.HasOne(ul => ul.User)
+                      .WithMany()
+                      .HasForeignKey(ul => ul.UserId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(ul => ul.ArticleId);
+                entity.Ignore(ul => ul.Article);  
+            });
         }
     }
 }

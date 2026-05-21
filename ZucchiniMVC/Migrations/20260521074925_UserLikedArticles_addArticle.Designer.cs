@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zucchinimvc.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Zucchinimvc.Infrastructure.Data;
 namespace Zucchinimvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260521074925_UserLikedArticles_addArticle")]
+    partial class UserLikedArticles_addArticle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -376,18 +379,15 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("UserId", "ArticleId");
+                    b.HasKey("ArticleId", "UserId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserLikedArticles");
                 });
@@ -496,15 +496,19 @@ namespace Zucchinimvc.Migrations
 
             modelBuilder.Entity("ZucchiniCore.Entities.UserLikedArticle", b =>
                 {
-                    b.HasOne("ZucchiniCore.Entities.User", "User")
+                    b.HasOne("ZucchiniCore.Entities.Article", "Article")
                         .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ZucchiniCore.Entities.User", "User")
+                        .WithMany("LikedArticles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ZucchiniCore.Entities.User", null)
-                        .WithMany("LikedArticles")
-                        .HasForeignKey("UserId1");
+                    b.Navigation("Article");
 
                     b.Navigation("User");
                 });

@@ -5,32 +5,41 @@
     ViewData["Title"] = "Home";
 }
 
+<section class="hero-layout">
+    
+    <div class="featured-column">
+        @if (Model.FeaturedArticle != null)
+        {
+            var featured = Model.FeaturedArticle;
 
-@if (Model.FeaturedArticle != null)
-{
-    var featured = Model.FeaturedArticle;
+            <a href="/article/@featured.Article.Slug">
+                <section class="featured-hero" style="background-image: url('@featured.Article.Cover?.OriginalUrl')">
+                    <div class="featured-overlay">
+                        <div class="featured-content">
+                            <span class="badge badge-featured">Featured</span>
+                            @if (featured.Article.Category != null)
+                            {
+                                <span class="badge badge-category">@featured.Article.Category.Name.ToUpper()</span>
+                            }
+                            <h1 class="featured-title">@featured.Article.Title</h1>
+                            <p class="featured-excerpt">@featured.Article.ContentSummary</p>
+                            <div class="featured-meta">
+                                <span>📅 @featured.Article.PublishedAt.ToString("MMM d, yyyy")</span>
+                                <span>🕐 @featured.ReadTimeMin min read</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </a>
+        }
+    </div>
 
-     <a href="/article/@featured.Article.Slug">
-        <section class="featured-hero" style="background-image: url('@featured.Article.Cover?.OriginalUrl')">
-        <div class="featured-overlay">
-            <div class="featured-content">
-                <span class="badge badge-featured">Featured</span>
-                    @if (featured.Article.Category != null)
-                {
-                        <span class="badge badge-category">@featured.Article.Category.Name.ToUpper()</span>
-                }
-                    <h1 class="featured-title">@featured.Article.Title</h1>
-                    <p class="featured-excerpt">@featured.Article.ContentSummary</p>
-                <div class="featured-meta">
-                        <span>📅 @featured.Article.PublishedAt.ToString("MMM d, yyyy")</span>
-                        <span>🕐 @featured.ReadTimeMin min read</span>
-                </div>
-            </div>
-        </div>
-        </section>
-    </a>
-}
+    <div class="recommend-column">
+        <partial name="_RecommendedArticlesPartial"
+                 model="Model.RecommendArticles" />
+    </div>
 
+</section>
 
 @if (Model.EditorsChoiceArticles.Any())
 {

@@ -107,32 +107,31 @@ public class CmsService : ICmsService
 
     public async Task<List<Article>> GetRecommendArticles(string userId)
     {
-        var allArticles = await GetArticles();
+        var allArticles = (await GetArticles()).ToList();
 
-        var likedArticles = await _cmsRepository.GetUserLikedArticles()
-            .Include(ul => ul.Article)
+        var likedArticleIds = await _cmsRepository.GetUserLikedArticles()
             .Where(ul => ul.UserId == userId)
+            .Select(ul => ul.ArticleId)
             .ToListAsync();
 
-        if (!likedArticles.Any())
+        if (!likedArticleIds.Any())
         {
             return allArticles.OrderByDescending(a => a.PublishedAt).Take(6).ToList();
         }
 
-        var alreadyLikedIds = likedArticles.Select(ul => ul.ArticleId).ToList();
-
-        var topCategoryIds = likedArticles
-            .GroupBy(ul => ul.Article.Category.Name)
+        var topCategoryNames = allArticles
+            .Where(a => likedArticleIds.Contains(a.Id) && a.Category != null)
+            .GroupBy(a => a.Category!.Name)
             .OrderByDescending(g => g.Count())
             .Select(g => g.Key)
             .Take(2)
             .ToList();
 
         return allArticles
-            .Where(a => !alreadyLikedIds.Contains(a.Id))
-            .Where(a => topCategoryIds.Contains(a.Category.Name))
+            .Where(a => !likedArticleIds.Contains(a.Id))
+            .Where(a => a.Category != null && topCategoryNames.Contains(a.Category.Name))
             .OrderByDescending(a => a.PublishedAt)
-            .Take(6)
+            .Take(4)
             .ToList();
     }
 }
