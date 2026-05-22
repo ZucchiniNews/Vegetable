@@ -1,4 +1,5 @@
 using System.Configuration;
+using System.Diagnostics.Metrics;
 using Azure.Core;
 using Azure.Monitor.Query;
 using Zucchinimvc.Application.Services.Analytics.DTOs;
@@ -21,9 +22,11 @@ public class AnalyticsRepository : IAnalyticsRepository
     public async Task<(int Views, int UniqueVisitors)> GetSummaryAsync(DateTime from, DateTime to)
     {
         var query = $@"
-        requests
-        | where timestamp >= ago(30d)
-        | summarize TotalRequests = count(), UniqueUsers = dcount(user_Id)";
+            union requests, pageViews
+            | where timestamp >= ago(30d)
+            | summarize 
+                TotalRequests = countif(sdkVersion startswith 'a' or isnotempty(id)),
+                UniqueUsers = dcount(session_Id)";
 
         var response = await _logQueryClient.QueryResourceAsync(
             new ResourceIdentifier(_resourceId),
