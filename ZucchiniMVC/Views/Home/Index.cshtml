@@ -73,16 +73,10 @@
 
 @if (Model.LatestArticles?.Any() == true)
 {
-    <section class="section latest-news-section">
-        <div class="section-header">
-            <span class="section-icon">↗</span>
-            <h2 class="section-title">Latest News</h2>
-        </div>
-        <div class="news-grid">
-            @foreach (var article in Model.LatestArticles)
-            {
-                <partial name="_NewscardPartial" model="article" />
-            }
-        </div>
-    </section>
+    <div class="editors-grid latest-grid">
+        @foreach (var article in Model.LatestArticles)
+        {
+            <partial name="_NewscardPartial" model="article" />
+        }
+    </div>
 }
