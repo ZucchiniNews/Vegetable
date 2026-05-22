@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using ZucchiniCore.Entities;
 using ZucchiniCore.enums;
 using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Subscriptions;
@@ -27,9 +28,24 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var editorsChoice = await _cmsService.GetEditorsChoice();
-        var featured = await _cmsService.GetFeaturedArticle();
-        var latest = await _cmsService.GetLatestArticles();
+        var editorsChoiceTask = _cmsService.GetEditorsChoice();
+        var featuredTask = _cmsService.GetFeaturedArticle();
+        var latestTask = _cmsService.GetLatestArticles();
+
+        await Task.WhenAll(editorsChoiceTask, featuredTask, latestTask);
+
+        var editorsChoice = await editorsChoiceTask;
+        var featured = await featuredTask;
+        var latest = await latestTask;
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        List<Article> recommend = new();
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+            recommend = await _cmsService.GetRecommendArticles(userId);
+        }
 
         return View(new HomeIndexViewModel
         {
@@ -38,6 +54,11 @@ public class HomeController : Controller
                 Article = featured,
                 ReadTimeMin = _utilsService.CalculateReadTime(featured.BodyPreview + featured.BodyGated)
             },
+            RecommendArticles = recommend.Select(a => new ArticleCardViewModel
+            {
+                Article = a,
+                ReadTimeMin = _utilsService.CalculateReadTime(a.BodyPreview + a.BodyGated)
+            }).ToList(),
             EditorsChoiceArticles = editorsChoice.Select(a => new ArticleCardViewModel
             {
                 Article = a,
@@ -59,16 +80,17 @@ public class HomeController : Controller
         if (article == null)
             return NotFound();
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        bool isLiked = false;
 
         bool isActiveSubscription = false;
         var likeCount = await _utilsService.GetLikeCountAsync(article.Id);
-        var isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
         var viewCount = await _analyticsService.GetArticleViewCountAsync(article.Slug);
         int readTime = _utilsService.CalculateReadTime(article.BodyPreview + article.BodyGated);
 
         if (!string.IsNullOrEmpty(userId))
         {
+            isLiked = await _utilsService.IsLikedByUserAsync(article.Id, userId);
             isActiveSubscription = await _subscriptionService.UserHasActiveSubscription(userId);
         }
 

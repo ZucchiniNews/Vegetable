@@ -1,19 +1,19 @@
 ﻿@using Zucchinimvc.Models.ViewModels
 @model ArticleCardViewModel
 
-<article class="news-card">
-    <a asp-controller="Home" asp-action="Article" asp-route-slug="@Model.Article.Slug" class="text-decoration-none" style="color: inherit; display: contents;">
+<a href="/article/@Model.Article.Slug" class="editor-card latest-card">
+    <div class="editor-card-image">
         <img src="@Model.Article.Cover?.DisplayUrl" alt="@Model.Article.Title" />
-
-        <div class="news-card-body">
-            <span class="news-tag light">@Model.Article.Category?.Name</span>
-
-            <h3>@Model.Article.Title</h3>
-
-            <div class="news-meta">
-                <span>@Model.Article.PublishedAt.ToString("MMMM dd, yyyy")</span>
-                <span>@Model.ReadTimeMin min read</span>
-            </div>
+    </div>
+    <div class="editor-card-body">
+        <div class="latest-title-row">
+            <h3 class="card-title">@Model.Article.Title</h3>
+            <span class="card-category">@Model.Article.Category?.Name.ToUpper()</span>
         </div>
-    </a>
-</article>
+        <p class="card-excerpt">@(Model.Article.ContentSummary?.Length > 100 ? (Model.Article.ContentSummary[..100] + "…") : Model.Article.ContentSummary)</p>
+        <div class="card-meta">
+            <span>📅 @Model.Article.PublishedAt.ToString("MMM d, yyyy")</span>
+            <span>🕐 @Model.ReadTimeMin min read</span>
+        </div>
+    </div>
+</a>

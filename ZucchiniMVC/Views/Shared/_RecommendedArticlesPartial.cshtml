@@ -1,0 +1,42 @@
+﻿@using Zucchinimvc.Models.ViewModels;
+
+@model List<ArticleCardViewModel>
+
+@if (Model.Any())
+{
+    <div class="recommend-section">
+        
+        <div class="section-header">
+            <span class="section-icon">✨</span>
+            <h3 class="section-title">Recommended For You</h3>
+        </div>
+
+        <div class="recommend-list">
+
+            @foreach (var article in Model)
+            {
+                <a href="/article/@article.Article.Slug" class="recommend-item">
+
+                    <span class="recommend-category">
+                        @article.Article.Category?.Name
+                    </span>
+
+                    <h3 class="recommend-title">
+                        @article.Article.Title
+                    </h3>
+                </a>
+            }
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="recommend-ad">
+        <picture>
+            <source srcset="/images/zucchini-ad.svg" type="image/svg+xml" />
+            <img src="/images/zucchiniAd.png" alt="Eat Organic. Stay Healthy." />
+        </picture>
+    </div>
+}

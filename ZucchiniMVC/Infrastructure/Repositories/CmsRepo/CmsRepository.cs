@@ -91,13 +91,23 @@ namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
         }
         public async Task ToggleLikeAsync(int articleId, string userId)
         {
-            var existingLike = await _context.UserLikedArticles
-                .FirstOrDefaultAsync(ul => ul.ArticleId == articleId && ul.UserId == userId);
+            var like = await _context.UserLikedArticles
+                .FirstOrDefaultAsync(x =>
+                    x.ArticleId == articleId &&
+                    x.UserId == userId);
 
-            if (existingLike != null)
-                _context.UserLikedArticles.Remove(existingLike);
+            if (like == null)
+            {
+                _context.UserLikedArticles.Add(new UserLikedArticle
+                {
+                    ArticleId = articleId,
+                    UserId = userId
+                });
+            }
             else
-                _context.UserLikedArticles.Add(new UserLikedArticle { ArticleId = articleId, UserId = userId });
+            {
+                _context.UserLikedArticles.Remove(like);
+            }
 
             await _context.SaveChangesAsync();
         }
