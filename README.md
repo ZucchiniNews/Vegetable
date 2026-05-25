@@ -61,7 +61,7 @@ Vegetable/
 
 | Concern | Technology |
 |---|---|
-| Web framework | ASP.NET Core MVC (.NET 8) |
+| Web framework | ASP.NET Core MVC (.NET ) |
 | CMS / content source | Strapi (headless, REST API) |
 | Authentication | ASP.NET Core Identity |
 | ORM | Entity Framework Core |
@@ -79,7 +79,7 @@ Vegetable/
 
 ## Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Azure Functions Core Tools v4](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local)
 - [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (or SQL Server Express / LocalDB for local dev)
 - [Node.js 18+](https://nodejs.org/) — required for Strapi
