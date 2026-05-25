@@ -8,7 +8,6 @@ using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Utils;
 using Zucchinimvc.Models.ViewModels;
-using ZucchiniMVC.Application.Services.RecommendationService;
 using ZucchiniMVC.Application.Services.RecommendationServcie;
 
 namespace Zucchinimvc.Controllers;
