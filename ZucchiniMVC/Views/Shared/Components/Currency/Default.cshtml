@@ -7,8 +7,13 @@
 
     <div class="currency-bar">
         <div class="currency-bar-content">
-            <span class="currency-label">RATES</span>
-            
+
+            <a asp-controller="Currency"
+               asp-action="Currency"
+               class="currency-label-link">
+                <span class="currency-label">RATES</span>
+            </a>
+
             @if (hasSek)
             {
                 <span class="currency-pair">
@@ -16,7 +21,7 @@
                     <strong>@sekRate.ToString("N3")</strong>
                 </span>
             }
-            
+
             @if (hasEur)
             {
                 <span class="currency-pair">
@@ -24,7 +29,7 @@
                     <strong>@eurRate.ToString("N3")</strong>
                 </span>
             }
-            
+
             @if (hasSek && hasEur)
             {
                 <span class="currency-pair">
@@ -43,7 +48,7 @@
         background: #f8f9fa;
         padding: 6px 0;
     }
-    
+
     .currency-bar-content {
         max-width: 1200px;
         margin: 0 auto;
@@ -53,7 +58,11 @@
         gap: 25px;
         flex-wrap: wrap;
     }
-    
+
+    .currency-label-link {
+        text-decoration: none;
+    }
+
     .currency-label {
         font-weight: 700;
         color: #ffd700;
@@ -61,17 +70,22 @@
         padding: 3px 8px;
         border-radius: 3px;
         font-size: 11px;
+        cursor: pointer;
     }
-    
+
+        .currency-label:hover {
+            background: #1f2d3a;
+        }
+
     .currency-pair {
         font-size: 13px;
         color: #555;
     }
-    
+
         .currency-pair span {
             margin-right: 6px;
         }
-    
+
         .currency-pair strong {
             color: #1a1a1a;
             font-family: monospace;

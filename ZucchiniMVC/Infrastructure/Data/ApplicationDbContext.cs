@@ -15,6 +15,7 @@ namespace Zucchinimvc.Infrastructure.Data
         public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
         public DbSet<UserLikedArticle> UserLikedArticles { get; set; }
         public DbSet<BillingAccount> BillingAccounts { get; set; }
+        public DbSet<CurrencyHistoryEntity> CurrencyHistory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
