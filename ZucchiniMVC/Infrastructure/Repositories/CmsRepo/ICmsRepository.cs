@@ -1,4 +1,6 @@
 ﻿using ZucchiniCore.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace Zucchinimvc.Infrastructure.Repositories.CmsRepo
 {
     public interface ICmsRepository

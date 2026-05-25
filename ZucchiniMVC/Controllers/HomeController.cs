@@ -8,6 +8,7 @@ using Zucchinimvc.Application.Services.Analytics;
 using Zucchinimvc.Application.Services.Subscriptions;
 using Zucchinimvc.Application.Services.Utils;
 using Zucchinimvc.Models.ViewModels;
+using ZucchiniMVC.Application.Services.Recommendation;
 
 namespace Zucchinimvc.Controllers;
 
@@ -17,13 +18,15 @@ public class HomeController : Controller
     private readonly ISubscriptionService _subscriptionService;
     private readonly IUtilsService _utilsService;
     private readonly IAnalyticsService _analyticsService;
+    private readonly IRecommendationService _recommendationService;
 
-    public HomeController(ICmsService cmsService, ISubscriptionService subscriptionService, IUtilsService utilsService, IAnalyticsService analyticsService)
+    public HomeController(ICmsService cmsService, ISubscriptionService subscriptionService, IUtilsService utilsService, IAnalyticsService analyticsService, IRecommendationService recommendationService)
     {
         _cmsService = cmsService;
         _subscriptionService = subscriptionService;
         _utilsService = utilsService;
         _analyticsService = analyticsService;
+        _recommendationService = recommendationService;
     }
 
     public async Task<IActionResult> Index()
@@ -44,7 +47,7 @@ public class HomeController : Controller
 
         if (!string.IsNullOrEmpty(userId))
         {
-            recommend = await _cmsService.GetRecommendArticles(userId);
+            recommend = await _recommendationService.GetRecommendArticles(userId);
         }
 
         return View(new HomeIndexViewModel
