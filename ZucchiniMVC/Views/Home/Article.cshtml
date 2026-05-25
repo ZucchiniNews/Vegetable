@@ -28,7 +28,7 @@
             }
 
             <div class="article-interaction my-4">
-                @if (User.Identity.IsAuthenticated)
+                @if (User.Identity!.IsAuthenticated)
                 {
                     <button id="like-btn"
                             class="btn @(Model.IsLikedByCurrentUser ? "btn-danger" : "btn-outline-danger")"
