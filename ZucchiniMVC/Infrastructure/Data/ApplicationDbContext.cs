@@ -45,7 +45,6 @@ namespace Zucchinimvc.Infrastructure.Data
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.Property(ul => ul.ArticleId);
-                entity.Ignore(ul => ul.Article);  
             });
         }
     }

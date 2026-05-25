@@ -9,6 +9,6 @@ public interface ICmsService
     Task<Article> GetFeaturedArticle();
     Task<List<Article>> GetEditorsChoice();
     Task<List<Article>> GetLatestArticles();
-    Task<List<Article>> GetRecommendArticles(string userId);
+    
 
 }
