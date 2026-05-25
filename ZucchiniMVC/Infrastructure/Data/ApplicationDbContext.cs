@@ -41,7 +41,7 @@ namespace Zucchinimvc.Infrastructure.Data
                 entity.HasKey(ul => new { ul.UserId, ul.ArticleId });
 
                 entity.HasOne<User>()
-                      .WithMany()
+                      .WithMany(ul => ul.LikedArticles)
                       .HasForeignKey(ul => ul.UserId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
