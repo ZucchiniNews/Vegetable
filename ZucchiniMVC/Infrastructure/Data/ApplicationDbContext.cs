@@ -39,12 +39,10 @@ namespace Zucchinimvc.Infrastructure.Data
             {
                 entity.HasKey(ul => new { ul.UserId, ul.ArticleId });
 
-                entity.HasOne(ul => ul.User)
+                entity.HasOne<User>()
                       .WithMany()
                       .HasForeignKey(ul => ul.UserId)
                       .OnDelete(DeleteBehavior.Restrict);
-
-                entity.Property(ul => ul.ArticleId);
             });
         }
     }
