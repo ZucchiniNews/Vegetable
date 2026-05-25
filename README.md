@@ -317,7 +317,7 @@ Set this under **App Service → Configuration → General settings → Startup 
 
 ## Project Notes
 
-- The solution targets **.NET 8**.
+- The solution targets **.NET 10**.
 - `appsettings.json` is git-ignored for security. Use user secrets locally and App Service environment variables in production.
 - The `development` branch is the main working branch. `main` triggers deployments.
 - CodeQL is used for static security analysis — it scans for vulnerabilities, not build errors. A separate `dotnet build` step in CI covers build validation.
