@@ -38,7 +38,7 @@ using Zucchinimvc.Infrastructure.Repositories.PlanRepo;
 using Zucchinimvc.Infrastructure.Repositories.SearchRepo;
 using Zucchinimvc.Infrastructure.Repositories.SubscriptionRepo;
 using Zucchinimvc.Infrastructure.Repositories.WeatherRepo;
-using ZucchiniMVC.Application.Services.RecommendationServcie;
+using ZucchiniMVC.Application.Services.Recommendation;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using ZucchiniCore.Entities;
 
-namespace ZucchiniMVC.Application.Services.RecommendationServcie;
+namespace ZucchiniMVC.Application.Services.Recommendation;
 
 public interface IRecommendationService
 {

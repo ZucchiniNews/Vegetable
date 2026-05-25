@@ -1,8 +1,8 @@
 ﻿using ZucchiniCore.Entities;
 using Zucchinimvc.Infrastructure.Repositories.CmsRepo;
-using ZucchiniMVC.Application.Services.RecommendationServcie;using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace ZucchiniMVC.Application.Services.RecommendationService
+namespace ZucchiniMVC.Application.Services.Recommendation
 {
     public class RecommendationService : IRecommendationService
     {
